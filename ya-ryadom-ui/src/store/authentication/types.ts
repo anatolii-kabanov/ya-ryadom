@@ -1,0 +1,17 @@
+export enum AuthenticationTypes {
+    FETCH_VK_USER_INFO = '[Authentication] (GET) VK User info',
+    FETCH_VK_USER_INFO_SUCCESS = '[Authentication] (GET) VK User info success',
+    FETCH_VK_USER_INFO_ERROR = '[Authentication] (GET) VK User info error',
+    FETCH_USER_GEO = '[Authentication] (GET) User geo',
+    FETCH_USER_GEO_SUCCESS = '[Authentication] (GET) User geo success',
+    FETCH_USER_GEO_ERROR = '[Authentication] (GET) User geo error',
+    SAVE_USER_INFO = '[Authentication] (POST) Save user info',
+    SAVE_USER_INFO_SUCCESS = '[Authentication] Save user info success',
+    SAVE_USER_INFO_ERROR = '[Authentication] Save user info error',
+    FETCH_USER_INFO = '[Authentication] (GET) User info',
+    FETCH_USER_INFO_SUCCESS = '[Authentication] (GET) User info success',
+    FETCH_USER_INFO_ERROR = '[Authentication] (GET) User info error',
+    SAVE_USER_INFO_GUIDE = '[Authentication] (POST) Save user info guide',
+    SAVE_USER_INFO_GUIDE_SUCCESS = '[Authentication] Save user info guide success',
+    SAVE_USER_INFO_GUIDE_ERROR = '[Authentication] Save user info guide error',
+};

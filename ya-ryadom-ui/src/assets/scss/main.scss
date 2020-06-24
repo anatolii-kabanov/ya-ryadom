@@ -1,0 +1,13 @@
+@import "/variables";
+
+.btn-primary {
+  background-color: $background-color !important;
+}
+
+.nav-icon {
+  color: $secondary-color;
+}
+
+.nav-icon-selected {
+  color: $primary-color;
+}
