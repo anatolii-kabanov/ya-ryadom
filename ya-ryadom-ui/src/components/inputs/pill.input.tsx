@@ -12,7 +12,7 @@ interface PillProps {
 
 const PillInput: React.FC<PillProps> = ({ id, text, selected, onClick }) => {
     return (
-        <Div className={`pill-container ${selected && 'selected'}`} onClick={() => onClick(id)}>{text}</Div>
+        <Div className={`pill-container ${selected ? 'selected' : ''}`} onClick={() => onClick(id)}>{text}</Div>
     );
 }
 

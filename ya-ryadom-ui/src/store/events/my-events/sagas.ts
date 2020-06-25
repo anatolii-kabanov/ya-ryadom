@@ -15,7 +15,6 @@ const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/my-events`;
 function* handleMyEventsFetch() {
     try {
         const vkUserId = yield select(getVkUserId);
-        console.log(vkUserId)
         const result = yield call(callApi, 'get', API_ENDPOINT, `/${vkUserId}`);
 
         if (result.errors) {

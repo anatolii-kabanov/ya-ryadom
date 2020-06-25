@@ -4,15 +4,9 @@ import {
     Panel,
     PanelHeader,
     Group,
-    Div,
-    Button
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
-import { goForward } from '../../../store/history/actions';
-import { VkHistoryModel } from '../../../store/history/models';
-import { VIEWS } from '../../../utils/constants/view.constants';
-import { PANELS } from '../../../utils/constants/panel.constants';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import ProfileForm from '../../forms/profile.form';
 
@@ -22,7 +16,7 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    goForwardView: typeof goForward,
+   
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -39,8 +33,7 @@ class ProfileIntroPanel extends React.Component<AllProps>  {
     }
 
     onIntroCompleted() {
-        const { goForwardView } = this.props;
-        goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL));
+       
     }
 
     render() {
@@ -63,7 +56,7 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    goForwardView: goForward,
+
 }
 
 export default connect(

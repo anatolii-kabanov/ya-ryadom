@@ -1,4 +1,4 @@
-import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery, takeLatest, select } from 'redux-saga/effects';
 import vkBridge, { UserInfo } from '@vkontakte/vk-bridge';
 import { AuthenticationTypes } from './types';
 import {
@@ -13,8 +13,9 @@ import {
     fetchVkUserInfoSuccess,
     fetchUserGeoError,
     fetchUserGeoSuccess,
-    saveUserInfoGuideSuccess,
-    saveUserInfoGuideError
+    saveUserIntroRequest,
+    saveUserIntroError,
+    saveUserIntroSuccess
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo } from './models';
@@ -22,13 +23,14 @@ import { goForward } from '../history/actions';
 import { VkHistoryModel } from '../history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
+import { getVkUserId } from './reducer';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/auth`;
 
 function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
-    try {        
+    try {
         const result = yield call(callApi, 'get', API_ENDPOINT, `/user-info/${action.payload}`);
-        
+
         if (result.errors) {
             yield put(fetchUserInfoError(result.errors));
         } else {
@@ -58,12 +60,13 @@ function* handleFetchVkUserInfo(action: ReturnType<typeof fetchVkUserInfoRequest
         } else {
             const vkUserInfo = result as UserInfo;
             yield put(fetchVkUserInfoSuccess(vkUserInfo));
-            yield put(saveUserInfoRequest({ 
-                guideCompleted: true, 
-                vkUserId: vkUserInfo.id, 
+            yield put(saveUserInfoRequest({
+                guideCompleted: true,
+                vkUserId: vkUserInfo.id,
                 firstName: vkUserInfo.first_name,
                 lastName: vkUserInfo.last_name,
-                vkUserAvatarUrl: vkUserInfo.photo_200
+                vkUserAvatarUrl: vkUserInfo.photo_200,
+                selectedThemes: []
             }))
             // Request our user info
             yield put(fetchUserInfoRequest(vkUserInfo.id));
@@ -128,41 +131,45 @@ function* watchSaveUserInfoRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_INFO, handleSaveUserInfoRequest)
 }
 
-function* handleSaveUserInfoGuideRequest() {
+function* handleSaveUserIntroRequest(action: ReturnType<typeof saveUserIntroRequest>) {
     try {
-        console.log('222')
-        const vkUserInfo = yield vkBridge.send('VKWebAppGetUserInfo', {});
-        console.log(vkUserInfo)
-        if (vkUserInfo.errors) {
-            yield put(saveUserInfoGuideError(vkUserInfo.errors));
+        const vkUserId = yield select(getVkUserId);
+        const userIntro = {
+            vkUserId:  vkUserId,
+            selectedThemes: action.payload
+        };
+
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/user-info/intro/save', userIntro);
+
+        if (result.errors) {
+            yield put(saveUserIntroError(result.errors));
         } else {
-            yield put(saveUserInfoRequest({ 
-                guideCompleted: true, 
-                vkUserId: vkUserInfo.id, 
-                firstName: vkUserInfo.first_name,
-                lastName: vkUserInfo.last_name,
-                vkUserAvatarUrl: vkUserInfo.photo_200
-            }))
-            yield put(goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL)))
-            yield put(saveUserInfoGuideSuccess(vkUserInfo));
+            yield put(saveUserIntroSuccess(result));
+            yield put(goForward(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL)));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
-            yield put(saveUserInfoGuideError(error.stack));
+            yield put(saveUserIntroError(error.stack));
         } else {
-            yield put(saveUserInfoGuideError('An unknown error occured.'));
+            yield put(saveUserIntroError('An unknown error occured.'));
         }
     } finally {
 
     }
 }
 
-function* watchSaveUserInfoGuideRequest() {
-    yield takeLatest(AuthenticationTypes.SAVE_USER_INFO_GUIDE, handleSaveUserInfoGuideRequest)
+function* watchSaveUserIntroRequest() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_INTRO, handleSaveUserIntroRequest)
 }
 
 function* authenticationSagas() {
-    yield all([fork(watchSaveUserInfoGuideRequest), fork(watchFetchUserInfoRequest), fork(watchFetchVkUserInfoRequest), fork(watchSaveUserInfoRequest), fork(watchFetchUserGeoRequest)])
+    yield all([
+        fork(watchFetchUserInfoRequest),
+        fork(watchFetchVkUserInfoRequest),
+        fork(watchSaveUserInfoRequest),
+        fork(watchFetchUserGeoRequest),
+        fork(watchSaveUserIntroRequest),
+    ])
 }
 
 export default authenticationSagas;
