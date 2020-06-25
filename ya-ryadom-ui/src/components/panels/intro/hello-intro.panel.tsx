@@ -5,7 +5,8 @@ import {
     PanelHeader,
     Group,
     Div,
-    Button
+    Button,
+    Title
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { ReactComponent as IntroImage } from '../../../assets/images/svg/hello-intro.svg';
@@ -52,8 +53,8 @@ class HelloIntroPanel extends React.Component<AllProps>  {
         return (
             <Panel id={id} className="hello-intro-panel">
                 <PanelHeader>
-                    {vkUserInfo?.first_name && `Здравствуй, ${vkUserInfo.first_name}!`}
                 </PanelHeader>
+                <Title level="2" weight="semibold" className="title">{vkUserInfo?.first_name && `Здравствуй, ${vkUserInfo.first_name}!`}</Title>
                 <Group className="intro-group">
                     <Div className="intro-image">
                         <IntroImage></IntroImage>
