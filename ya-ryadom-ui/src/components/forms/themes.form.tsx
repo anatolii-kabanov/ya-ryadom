@@ -73,8 +73,8 @@ class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[]
     render() {
 
         return (
-            <Div className="profile-form">
-                <Title level="3" weight="bold">Выберите темы</Title >
+            <Div className="themes-form">
+                <Div><Title level="3" weight="bold" className="title">Выберите темы</Title ></Div>
                 <Div className="pills">
                     {this.renderThemePills()}
                 </Div>
