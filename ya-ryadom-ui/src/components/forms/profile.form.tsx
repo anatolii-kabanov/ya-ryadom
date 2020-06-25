@@ -9,6 +9,7 @@ import {
 } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
+import { ALL_THEMES } from '../../utils/constants/theme.constants';
 
 interface PropsFromState {
 
@@ -39,12 +40,22 @@ class ProfileForm extends React.Component<AllProps>  {
         })
     }
 
+    renderThemePills() {
+        const themes = ALL_THEMES;
+        if (themes) {
+            return themes
+                .map((item, key) => {
+                    return <div key={key}>{item.name}</div>
+                });
+        }
+    }
+
     render() {
 
         return (
             <FormLayout className="profile-form">
                 <Title level="3" weight="bold">Выберите темы</Title >
-                <Input top="Тема" type="text" placeholder="Введите текст" name="eventName" onChange={this.handleInputChange} />
+                {this.renderThemePills()}
                 <Div className="btn-container">
                     <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Продолжить</Button>
                 </Div>

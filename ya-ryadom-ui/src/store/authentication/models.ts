@@ -6,6 +6,7 @@ export interface User {
     vkUserAvatarUrl: string,
     // some settings
 }
+
 export interface Geo {
     available: boolean,
     lat: number,
