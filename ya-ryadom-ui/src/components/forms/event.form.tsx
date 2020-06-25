@@ -38,6 +38,7 @@ interface EventState {
     eventDescription: string,
     eventDate: string,
     eventTime: string,
+    [key: string]: any
 }
 
 class EventForm extends React.Component<AllProps, EventState> {
