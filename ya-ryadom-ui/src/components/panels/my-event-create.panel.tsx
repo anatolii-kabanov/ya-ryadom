@@ -1,6 +1,6 @@
 import React from 'react';
 import { Panel, Group } from '@vkontakte/vkui';
-import EventForm from '../forms/profile.form';
+import EventForm from '../forms/event.form';
 import { goBack } from '../../store/history/actions';
 import { connect } from 'react-redux';
 import { AppState } from '../../store/app-state';

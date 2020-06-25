@@ -8,7 +8,7 @@ import {
     Button
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
-import { ReactComponent as IntroImage } from '../../../assets/images/svg/intro.svg';
+import { ReactComponent as IntroImage } from '../../../assets/images/svg/hello-intro.svg';
 import { AppState } from '../../../store/app-state';
 import { goForward } from '../../../store/history/actions';
 import { saveUserInfoGuideRequest, fetchUserGeoRequest } from "../../../store/authentication/actions";
@@ -34,7 +34,7 @@ class HelloIntroPanel extends React.Component<AllProps>  {
 
     constructor(props) {
         super(props);
-        this.onIntroCompleted = this.onIntroCompleted.bind(this)
+        this.onHelloIntroCompleted = this.onHelloIntroCompleted.bind(this)
     }
 
     componentDidMount() {
@@ -42,9 +42,9 @@ class HelloIntroPanel extends React.Component<AllProps>  {
         getGeoData();
     }
 
-    onIntroCompleted() {
+    onHelloIntroCompleted() {
         const { goForwardView } = this.props;
-        goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL));
+        goForwardView(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.PROFILE_INTRO_PANEL));
     }
 
     render() {
@@ -66,7 +66,7 @@ class HelloIntroPanel extends React.Component<AllProps>  {
                             <p className="second-row-text">Весь спектр интересов в одном приложении. <br /> Каждый найдёт себе дело по душе.</p>
                         </Div>
                         <Div>
-                            <Button size="l" className="btn-primary" onClick={() => this.onIntroCompleted()}>Начать</Button>
+                            <Button size="l" className="btn-primary" onClick={() => this.onHelloIntroCompleted()}>Начать</Button>
                         </Div>
                     </Div>
                 </Group>

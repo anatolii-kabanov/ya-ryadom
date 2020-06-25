@@ -1,4 +1,4 @@
-import './profile.form.scss';
+import './event.form.scss';
 import React from 'react';
 import {
     FormLayout,
