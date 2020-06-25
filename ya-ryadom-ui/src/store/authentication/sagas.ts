@@ -92,8 +92,13 @@ function* handleFetchUserGeo() {
         if (result.error_type) {
             yield put(fetchUserGeoError(result.errors));
         } else {
-            yield put(fetchUserGeoSuccess(result as Geo));
-            yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.PROFILE_INTRO_PANEL)));
+            const geoData = result as Geo;
+            yield put(fetchUserGeoSuccess(geoData));
+            if (geoData?.available) {
+                yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.THEMES_INTRO_PANEL)));
+            } else {
+                yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.SELECT_CITY_INTRO_PANEL)));
+            }
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -137,7 +142,7 @@ function* handleSaveUserIntroRequest(action: ReturnType<typeof saveUserIntroRequ
         const vkUserId = yield select(getVkUserId);
 
         const userIntro = {
-            vkUserId:  vkUserId,
+            vkUserId: vkUserId,
             selectedThemes: action.payload
         };
 
