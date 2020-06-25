@@ -4,7 +4,7 @@ import { PANELS } from '../../utils/constants/panel.constants';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import HelloIntroPanel from "../panels/intro/hello-intro.panel";
-import ProfileIntroPanel from "../panels/intro/profile-intro.panel";
+import ThemesIntroPanel from "../panels/intro/themes-intro.panel";
 
 interface PropsFromState {
     id: string;
@@ -24,7 +24,7 @@ class IntroView extends React.Component<AllProps>  {
         return (
             <View id={id} activePanel={activePanel}>
                 <HelloIntroPanel id={PANELS.HELLO_INTRO_PANEL}></HelloIntroPanel>
-                <ProfileIntroPanel id={PANELS.PROFILE_INTRO_PANEL}></ProfileIntroPanel>
+                <ThemesIntroPanel id={PANELS.PROFILE_INTRO_PANEL}></ThemesIntroPanel>
             </View>
         )
     }

@@ -1,4 +1,4 @@
-import './profile-intro.panel.scss';
+import './themes-intro.panel.scss';
 import React from 'react';
 import {
     Panel,
@@ -8,7 +8,7 @@ import {
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
 import { UserInfo } from '@vkontakte/vk-bridge';
-import ProfileForm from '../../forms/profile.form';
+import ThemesForm from '../../forms/themes.form';
 
 interface PropsFromState {
     id: string,
@@ -21,7 +21,7 @@ interface PropsFromDispatch {
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class ProfileIntroPanel extends React.Component<AllProps>  {
+class ThemesIntroPanel extends React.Component<AllProps>  {
 
     constructor(props) {
         super(props);
@@ -44,7 +44,7 @@ class ProfileIntroPanel extends React.Component<AllProps>  {
                     Я рядом
                 </PanelHeader>
                 <Group className="profile-group">
-                    <ProfileForm></ProfileForm>
+                    <ThemesForm></ThemesForm>
                 </Group>
             </Panel>
         )
@@ -62,4 +62,4 @@ const mapDispatchToProps: PropsFromDispatch = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ProfileIntroPanel);
+)(ThemesIntroPanel);

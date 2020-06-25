@@ -1,8 +1,7 @@
-import './profile.form.scss';
+import './themes.form.scss';
 import React from 'react';
 import {
     FormLayout,
-    Input,
     Button,
     Title,
     Div
@@ -25,7 +24,7 @@ interface PropsFromDispatch {
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class ProfileForm extends React.Component<AllProps, { selectedThemes: ThemeType[] }>  {
+class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[] }>  {
 
     constructor(props) {
         super(props);
@@ -100,4 +99,4 @@ const mapDispatchToProps: PropsFromDispatch = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ProfileForm);
+)(ThemesForm);
