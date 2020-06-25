@@ -14,6 +14,7 @@ import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
 import { UserInfo } from '@vkontakte/vk-bridge';
+import ProfileForm from '../../forms/profile.form';
 
 interface PropsFromState {
     id: string,
@@ -50,7 +51,7 @@ class ProfileIntroPanel extends React.Component<AllProps>  {
                     Я рядом
                 </PanelHeader>
                 <Group className="profile-group">
-
+                    <ProfileForm></ProfileForm>
                 </Group>
             </Panel>
         )
