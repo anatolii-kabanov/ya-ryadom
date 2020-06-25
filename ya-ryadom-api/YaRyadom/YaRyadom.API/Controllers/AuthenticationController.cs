@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using YaRyadom.API.Models;
+using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
 
 namespace YaRyadom.API.Controllers
@@ -41,6 +42,16 @@ namespace YaRyadom.API.Controllers
 		public async Task<IActionResult> Save([FromBody] UserInfoModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserInfoAsync(model, cancellationToken).ConfigureAwait(false);
+			return Ok();
+		}
+
+		[AllowAnonymous]
+		[HttpPost("user-info/themes/save")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> SaveThemes([FromBody] UserIntroRequestModel model, CancellationToken cancellationToken = default)
+		{
+			await _authenticationService.SaveUserIntroAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok();
 		}
 	}

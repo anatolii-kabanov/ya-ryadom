@@ -51,5 +51,6 @@ namespace YaRyadom.Domain.DbContexts
 
 		public DbSet<YaRyadomUser> YaVDeleUsers { get; set; }
 
+		public DbSet<YaRyadomUserTheme> YaRyadomUserThemes { get; set; }
 	}
 }

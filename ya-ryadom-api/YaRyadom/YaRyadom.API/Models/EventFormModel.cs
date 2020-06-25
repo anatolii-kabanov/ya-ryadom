@@ -24,6 +24,6 @@ namespace YaRyadom.API.Models
 
 		public int UserId { get; set; }
 
-		public int MaxQuantiyty { get; set; }
+		public int MaxQuantity { get; set; }
 	}
 }

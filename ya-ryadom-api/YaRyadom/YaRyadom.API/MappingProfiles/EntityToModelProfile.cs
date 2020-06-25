@@ -14,6 +14,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.VkUserId, opt => opt.MapFrom(src => src.VkId))
 				.ForMember(dest => dest.GuideCompleted, opt => opt.MapFrom(src => src.GuideCompleted))
 				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.VkUserAvatarUrl))
+				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMySelf))
 				.ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
 				.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName));
 			CreateMap<YaRyadomEventServiceModel, YaRyadomEventModel>()
