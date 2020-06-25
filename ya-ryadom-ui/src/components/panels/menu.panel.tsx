@@ -26,8 +26,8 @@ export class MenuPanel extends React.Component<AllProps>  {
                     Главное меню
                 </PanelHeader>
                 <Group>
-                    <CellButton onClick={() => goForwardView(new VkHistoryModel(VIEWS.PEOPLE_NEAR_ME_VIEW, PANELS.PEOPLE_NEAR_ME_PANEL))}>
-                        Люди рядом
+                    <CellButton onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL))}>
+                        Карта
                     </CellButton>
                 </Group>
                 <Group>

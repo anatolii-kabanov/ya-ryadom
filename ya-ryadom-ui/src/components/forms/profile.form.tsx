@@ -13,8 +13,8 @@ import { MAP } from '../../utils/constants/map.constants';
 import { Geo } from '../../store/authentication/models';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
-import { saveMyEventRequest } from "../../store/people-near-me/actions";
 import { UserInfo } from "@vkontakte/vk-bridge";
+import { saveMyEventRequest } from '../../store/events/my-events/actions';
 
 interface PropsFromState {
     userPosition: Geo,

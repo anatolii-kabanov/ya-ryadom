@@ -1,6 +1,7 @@
 import { Reducer } from 'redux';
 import { AuthenticationState } from './state';
 import { AuthenticationTypes } from './types';
+import { AppState } from '../app-state';
 
 export const initialState: AuthenticationState = {
     currentUser: null,
@@ -26,3 +27,5 @@ const reducer: Reducer<AuthenticationState> = (state = initialState, action) => 
 };
 
 export { reducer as authenticationReducer };
+
+export const getVkUserId = (state: AppState) => state.authentication.vkUserInfo?.id;

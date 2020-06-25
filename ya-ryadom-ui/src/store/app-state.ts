@@ -1,9 +1,9 @@
 import { HistoryState } from "./history/state";
 import { AuthenticationState } from "./authentication/state";
-import {PeopleNearMeState} from "./people-near-me/state";
+import { EventsState } from "./events/state";
 
 export interface AppState {
     authentication: AuthenticationState,
     history: HistoryState,
-    peopleNearMe: PeopleNearMeState
+    events: EventsState
 }

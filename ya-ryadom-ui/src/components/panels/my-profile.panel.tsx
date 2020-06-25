@@ -12,14 +12,14 @@ import { connect } from 'react-redux';
 import { AppState } from "../../store/app-state";
 
 import MainHeaderPanel from "./headers/main.header";
-import { MyEvent } from "../../store/people-near-me/models";
+import { MyEvent } from "../../store/events/events-near-me/models";
 import { UserInfo } from "@vkontakte/vk-bridge";
-import { fetchMyEventsListRequest } from "../../store/people-near-me/actions";
 import { goForward } from "../../store/history/actions";
 import { VkHistoryModel } from "../../store/history/models";
 import { VIEWS } from "../../utils/constants/view.constants";
 import { PANELS } from "../../utils/constants/panel.constants";
 import Marker from "../map/marker";
+import { fetchMyEventsListRequest } from "../../store/events/my-events/actions";
 
 interface PropsFromState {
     id: string;
@@ -95,8 +95,8 @@ class MyProfilePanel extends React.Component<AllProps>{
     }
 }
 
-const mapStateToProps = ({ peopleNearMe, authentication }: AppState) => ({
-    myEvents: peopleNearMe.myEvents,
+const mapStateToProps = ({ events, authentication }: AppState) => ({
+    myEvents: events.myEvents.eventsList,
     currentUser: authentication.vkUserInfo
 })
 

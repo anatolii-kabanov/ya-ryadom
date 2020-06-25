@@ -3,7 +3,7 @@ import { View } from '@vkontakte/vkui';
 import { PANELS } from '../../utils/constants/panel.constants';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
-import IntroPanel from "../panels/intro.panel";
+import HelloIntroPanel from "../panels/intro/hello-intro.panel";
 
 interface PropsFromState {
     id: string;
@@ -22,7 +22,7 @@ class IntroView extends React.Component<AllProps>  {
 
         return (
             <View id={id} activePanel={activePanel}>
-                <IntroPanel id={PANELS.INTRO_PANEL}></IntroPanel>
+                <HelloIntroPanel id={PANELS.INTRO_PANEL}></HelloIntroPanel>
             </View>
         )
     }

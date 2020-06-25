@@ -3,15 +3,15 @@ import { View, Div, Tabbar, Epic, TabbarItem } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { PANELS } from '../../utils/constants/panel.constants';
-import { fetchListRequest } from "../../store/people-near-me/actions";
-import PeopleNearMePanel from "../panels/people-near-me.panel";
+import { fetchListRequest } from "../../store/events/events-near-me/actions";
+import EventsNearMeMapPanel from "../panels/events/events-near-me-map.panel";
 import Icon28Place from '@vkontakte/icons/dist/28/place';
 import Icon28Menu from '@vkontakte/icons/dist/28/menu';
 import Icon28Catalog from '@vkontakte/icons/dist/28/newsfeed_outline';
 import { goForward } from '../../store/history/actions';
 import { VkHistoryModel } from '../../store/history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
-import PeopleNearMeListPanel from '../panels/people-near-me-list.panel';
+import EventsNearMeListPanel from '../panels/events/events-near-me-list.panel';
 
 interface PropsFromState {
     id: string;
@@ -25,7 +25,7 @@ interface PropsFromDispatch {
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class PeopleNearMeView extends React.Component<AllProps>  {
+class EventsView extends React.Component<AllProps>  {
 
     public componentDidMount() {
         const { fetchList } = this.props;
@@ -38,15 +38,15 @@ class PeopleNearMeView extends React.Component<AllProps>  {
             <Div><Epic activeStory={activePanel} tabbar={
                 <Tabbar>
                      <TabbarItem
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.PEOPLE_NEAR_ME_VIEW, PANELS.PEOPLE_NEAR_ME_PANEL_CATALOG))}
-                        selected={activePanel === PANELS.PEOPLE_NEAR_ME_PANEL_CATALOG}
-                        data-story={PANELS.PEOPLE_NEAR_ME_PANEL_CATALOG}
-                    ><Icon28Catalog className={activePanel === PANELS.PEOPLE_NEAR_ME_PANEL_CATALOG ? 'nav-icon-selected' : 'nav-icon'}/></TabbarItem>
+                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_LIST_PANEL))}
+                        selected={activePanel === PANELS.EVENTS_NEAR_ME_LIST_PANEL}
+                        data-story={PANELS.EVENTS_NEAR_ME_LIST_PANEL}
+                    ><Icon28Catalog className={activePanel === PANELS.EVENTS_NEAR_ME_LIST_PANEL ? 'nav-icon-selected' : 'nav-icon'}/></TabbarItem>
                     <TabbarItem
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.PEOPLE_NEAR_ME_VIEW, PANELS.PEOPLE_NEAR_ME_PANEL))}
-                        selected={activePanel === PANELS.PEOPLE_NEAR_ME_PANEL}
-                        data-story={PANELS.PEOPLE_NEAR_ME_PANEL}
-                    ><Icon28Place className={activePanel === PANELS.PEOPLE_NEAR_ME_PANEL ? 'nav-icon-selected' : 'nav-icon'}/></TabbarItem>
+                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL))}
+                        selected={activePanel === PANELS.EVENTS_NEAR_ME_MAP_PANEL}
+                        data-story={PANELS.EVENTS_NEAR_ME_MAP_PANEL}
+                    ><Icon28Place className={activePanel === PANELS.EVENTS_NEAR_ME_MAP_PANEL ? 'nav-icon-selected' : 'nav-icon'}/></TabbarItem>
                     <TabbarItem
                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.MAIN_VIEW, PANELS.MENU_PANEL))}
                         selected={activePanel === PANELS.MENU_PANEL}
@@ -55,10 +55,10 @@ class PeopleNearMeView extends React.Component<AllProps>  {
                 </Tabbar>
             }></Epic>
             <View id={id} activePanel={activePanel}>
-                <PeopleNearMePanel id={PANELS.PEOPLE_NEAR_ME_PANEL}>
-                </PeopleNearMePanel>
-                <PeopleNearMeListPanel id={PANELS.PEOPLE_NEAR_ME_PANEL_CATALOG}>
-                </PeopleNearMeListPanel>
+                <EventsNearMeMapPanel id={PANELS.EVENTS_NEAR_ME_MAP_PANEL}>
+                </EventsNearMeMapPanel>
+                <EventsNearMeListPanel id={PANELS.EVENTS_NEAR_ME_LIST_PANEL}>
+                </EventsNearMeListPanel>
             </View>
             </Div >
         )
@@ -77,4 +77,4 @@ const mapDispatchToProps: PropsFromDispatch = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(PeopleNearMeView);
+)(EventsView);

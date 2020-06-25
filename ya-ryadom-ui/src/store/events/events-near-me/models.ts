@@ -1,16 +1,3 @@
-export interface PersonNearMe {
-    userInfo: {
-        first_name: string,
-        id: number
-    };
-    id: number;
-    lat: number;
-    lng: number;
-    title: string;
-    description: string;
-    date: Date;
-};
-
 export interface EventNearMe {
     longitude: number,
     latitude: number,

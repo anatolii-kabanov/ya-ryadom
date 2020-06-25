@@ -143,7 +143,7 @@ function* handleSaveUserInfoGuideRequest() {
                 lastName: vkUserInfo.last_name,
                 vkUserAvatarUrl: vkUserInfo.photo_200
             }))
-            yield put(goForward(new VkHistoryModel(VIEWS.PEOPLE_NEAR_ME_VIEW, PANELS.PEOPLE_NEAR_ME_PANEL)))
+            yield put(goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL)))
             yield put(saveUserInfoGuideSuccess(vkUserInfo));
         }
     } catch (error) {

@@ -1,46 +1,22 @@
 import { all, call, fork, put, takeEvery, takeLatest, select } from 'redux-saga/effects';
-import { PeopleNearMeTypes } from './types';
+import { MyEventsTypes } from './types';
 import {
-    fetchListError,
-    fetchListSuccess,
-    fetchMyEventsListSuccess,
     fetchMyEventsListError,
+    fetchMyEventsListSuccess,
     saveMyEventRequest,
     saveMyEventError,
-    saveMyEventSuccess
+    saveMyEventSuccess,
 } from './actions'
-import { callApi } from '../../utils/api';
-import { getVkUserId } from './reducer';
+import { callApi } from '../../../utils/api';
+import { getVkUserId } from '../../authentication/reducer';
 
-const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/events-near-me`;
-
-function* handleFetch(action) {
-    try {
-        const result = yield call(callApi, 'POST', API_ENDPOINT,  '', action.payload);
-
-        if (result.errors) {
-            yield put(fetchListError(result.errors));
-        } else {
-            yield put(fetchListSuccess(result));
-        }
-    } catch (error) {
-        if (error instanceof Error && error.stack) {
-            yield put(fetchListError(error.stack));
-        } else {
-            yield put(fetchListError('An unknown error occured.'));
-        }
-    }
-}
-
-function* watchFetchRequest() {
-    yield takeEvery(PeopleNearMeTypes.FETCH_LIST, handleFetch)
-}
+const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/my-events`;
 
 function* handleMyEventsFetch() {
     try {
         const vkUserId = yield select(getVkUserId);
         console.log(vkUserId)
-        const result = yield call(callApi, 'get', `${process.env.REACT_APP_API_ENDPOINT}/my-events`, `/${vkUserId}`);
+        const result = yield call(callApi, 'get', API_ENDPOINT, `/${vkUserId}`);
 
         if (result.errors) {
             yield put(fetchMyEventsListError(result.errors));
@@ -57,12 +33,12 @@ function* handleMyEventsFetch() {
 }
 
 function* watchMyEventsFetchRequest() {
-    yield takeEvery(PeopleNearMeTypes.FETCH_MY_EVENTS_LIST, handleMyEventsFetch)
+    yield takeEvery(MyEventsTypes.FETCH_LIST, handleMyEventsFetch)
 }
 
 function* handleSaveEventRequest(action: ReturnType<typeof saveMyEventRequest>) {
     try {
-        const result = yield call(callApi, 'post', `${process.env.REACT_APP_API_ENDPOINT}/my-events`, '/create', action.payload);
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/create', action.payload);
 
         if (result.errors) {
             yield put(saveMyEventError(result.errors));
@@ -81,16 +57,15 @@ function* handleSaveEventRequest(action: ReturnType<typeof saveMyEventRequest>) 
 }
 
 function* watchSaveEventRequest() {
-    yield takeLatest(PeopleNearMeTypes.SAVE_MY_EVENT, handleSaveEventRequest)
+    yield takeLatest(MyEventsTypes.SAVE_MY_EVENT, handleSaveEventRequest)
 }
 
 
-function* peopleNearMeSagas() {
+function* myEventsSagas() {
     yield all([
-        fork(watchFetchRequest),
         fork(watchMyEventsFetchRequest),
         fork(watchSaveEventRequest),
     ])
 }
 
-export default peopleNearMeSagas;
+export default myEventsSagas;

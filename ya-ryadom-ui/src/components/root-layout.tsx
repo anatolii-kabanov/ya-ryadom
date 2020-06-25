@@ -4,21 +4,17 @@ import MainView from './views/main.view';
 import { AppState } from '../store/app-state';
 import { connect } from 'react-redux';
 import { VIEWS } from '../utils/constants/view.constants';
-import { fetchVkUserInfoRequest, fetchUserGeoRequest } from '../store/authentication/actions';
+import { fetchVkUserInfoRequest } from '../store/authentication/actions';
 import MyProfileView from "./views/my-profile.view";
-import PeopleNearMeView from "./views/people-near-me.view";
+import EventsView from "./views/events.view";
 import IntroView from "./views/intro.view";
 
 interface PropsFromState {
     activeView: string;
-    currentUserId: number;
-    guideCompleted: boolean;
-    isLoading: boolean;
 }
 
 interface PropsFromDispatch {
     getVkUserInfo: typeof fetchVkUserInfoRequest,
-    getGeoData: typeof fetchUserGeoRequest,
 }
 
 
@@ -28,35 +24,30 @@ class RootLayout extends React.Component<AllProps>  {
 
     componentDidMount() {
         // here we can init data
-        const { getVkUserInfo, getGeoData } = this.props;
+        const { getVkUserInfo } = this.props;
         getVkUserInfo();
-        getGeoData();
     }
 
     render() {
-        let { activeView, guideCompleted, isLoading } = this.props;
+        let { activeView } = this.props;
 
         return (
             <Root activeView={activeView}>
                 <IntroView id={VIEWS.INTRO_VIEW}></IntroView>
                 <MainView id={VIEWS.MAIN_VIEW}></MainView>
                 <MyProfileView id={VIEWS.MY_PROFILE_VIEW}></MyProfileView>
-                <PeopleNearMeView id={VIEWS.PEOPLE_NEAR_ME_VIEW}></PeopleNearMeView>
+                <EventsView id={VIEWS.EVENTS_NEAR_ME_VIEW}></EventsView>
             </Root>
         )
     }
 }
 
-const mapStateToProps = ({ history, authentication }: AppState) => ({
+const mapStateToProps = ({ history }: AppState) => ({
     activeView: history.currentViewPanel.view,
-    currentUserId: authentication.vkUserInfo?.id,
-    guideCompleted: authentication.currentUser?.guideCompleted,
-    isLoading: !authentication.currentUser
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    getVkUserInfo: fetchVkUserInfoRequest,
-    getGeoData: fetchUserGeoRequest,
+    getVkUserInfo: fetchVkUserInfoRequest
 }
 
 export default connect(
