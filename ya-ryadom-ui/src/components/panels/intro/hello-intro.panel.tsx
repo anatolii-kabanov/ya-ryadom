@@ -60,12 +60,8 @@ class HelloIntroPanel extends React.Component<AllProps>  {
                         <IntroImage></IntroImage>
                     </Div>
                     <Div className="intro-text">
-                        <Div>
-                            <p className="first-row-text">Твой будущий друг уже рядом. <br /> Несколько действий и ты в большой тусовке своего города.</p>
-                        </Div>
-                        <Div>
-                            <p className="second-row-text">Весь спектр интересов в одном приложении. <br /> Каждый найдёт себе дело по душе.</p>
-                        </Div>
+                        <p className="first-row-text">Твой будущий друг уже рядом. <br /> Несколько действий и ты в большой тусовке своего города.</p>
+                        <p className="second-row-text">Весь спектр интересов в одном приложении. <br /> Каждый найдёт себе дело по душе.</p>
                         <Div>
                             <Button size="l" className="btn-primary" onClick={() => this.onHelloIntroCompleted()}>Начать</Button>
                         </Div>
