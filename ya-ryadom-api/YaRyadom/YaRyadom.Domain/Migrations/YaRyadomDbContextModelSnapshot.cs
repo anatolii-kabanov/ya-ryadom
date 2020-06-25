@@ -30,7 +30,11 @@ namespace YaRyadom.Domain.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset>("Date")
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnName("created_date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("Date")
                         .HasColumnName("date")
                         .HasColumnType("timestamp with time zone");
 
@@ -54,7 +58,12 @@ namespace YaRyadom.Domain.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<NpgsqlTsVector>("SearchVector")
+                        .HasColumnName("search_vector")
                         .HasColumnType("tsvector");
+
+                    b.Property<TimeSpan?>("Time")
+                        .HasColumnName("time")
+                        .HasColumnType("interval");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -74,6 +83,29 @@ namespace YaRyadom.Domain.Migrations
                     b.HasIndex("YaVDeleUserOwnerId");
 
                     b.ToTable("ya_ryadom_events");
+                });
+
+            modelBuilder.Entity("YaRyadom.Domain.Entities.YaRyadomEventTheme", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("Type")
+                        .HasColumnName("type")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YaRyadomEventId")
+                        .HasColumnName("ya_ryadom_event_id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("YaRyadomEventId");
+
+                    b.ToTable("ya_ryadom_event_themes");
                 });
 
             modelBuilder.Entity("YaRyadom.Domain.Entities.YaRyadomUser", b =>
@@ -144,6 +176,15 @@ namespace YaRyadom.Domain.Migrations
                     b.HasOne("YaRyadom.Domain.Entities.YaRyadomUser", "YaVDeleUserOwner")
                         .WithMany("OwnYaVDeleEvents")
                         .HasForeignKey("YaVDeleUserOwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("YaRyadom.Domain.Entities.YaRyadomEventTheme", b =>
+                {
+                    b.HasOne("YaRyadom.Domain.Entities.YaRyadomEvent", "YaRyadomEvent")
+                        .WithMany("YaRyadomEventThemes")
+                        .HasForeignKey("YaRyadomEventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using NetTopologySuite.Geometries;
+using System;
+using System.Globalization;
 using YaRyadom.API.Models;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.Domain.Entities;
@@ -26,7 +28,15 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
 				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
+				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => 
+					!string.IsNullOrWhiteSpace(src.Date) 
+					? DateTimeOffset.ParseExact(src.Date, "dd.MM.yyyy", CultureInfo.InvariantCulture).ToOffset(TimeSpan.FromMinutes(src.TimeZoneMinutes)) 
+					: default ))
+				.ForMember(dest => dest.Time, opt => opt.MapFrom(src =>
+					!string.IsNullOrWhiteSpace(src.Time)
+					? TimeSpan.Parse(src.Time)
+					: default))
+				.ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTimeOffset.Now))
 				.ForMember(dest => dest.MaxQuantity, opt => opt.MapFrom(src => src.MaxQuantity))
 				.ForMember(dest => dest.Location, opt => opt.MapFrom(src => geometryFactory.CreatePoint(new Coordinate(src.Longitude, src.Latitude))));
 		}

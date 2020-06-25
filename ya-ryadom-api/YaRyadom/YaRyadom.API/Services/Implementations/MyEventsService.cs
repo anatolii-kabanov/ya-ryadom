@@ -9,6 +9,7 @@ using YaRyadom.API.Models.ServiceModels;
 using YaRyadom.API.Services.Interfaces;
 using YaRyadom.Domain.DbContexts;
 using YaRyadom.Domain.Entities;
+using YaRyadom.Domain.Entities.Enums;
 
 namespace YaRyadom.API.Services.Implementations
 {
@@ -24,10 +25,21 @@ namespace YaRyadom.API.Services.Implementations
 		public async Task<bool> AddAsync(EventFormModel model, CancellationToken cancellationToken = default)
 		{
 			var yaVDeleEvent = _mapper.Map<YaRyadomEvent>(model);
+
 			var yaVDeleUser = await _dbContext
 				.YaVDeleUsers
 				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
 				.ConfigureAwait(false);
+
+			foreach (var theme in model.SelectedThemes)
+			{
+				_dbContext.YaRyadomEventThemes.Add(
+					new YaRyadomEventTheme
+					{
+						Type = (ThemeType)theme,
+						YaRyadomEvent = yaVDeleEvent
+					});
+			}
 
 			yaVDeleEvent.YaVDeleUserOwner = yaVDeleUser;
 

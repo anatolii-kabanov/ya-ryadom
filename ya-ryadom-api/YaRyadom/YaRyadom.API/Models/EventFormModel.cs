@@ -1,4 +1,5 @@
 ﻿using System;
+using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models
 {
@@ -14,7 +15,9 @@ namespace YaRyadom.API.Models
 		/// </summary>
 		public double Latitude { get; set; }
 
-		public DateTimeOffset Date { get; set; }
+		public string Date { get; set; }
+
+		public string Time { get; set; }
 
 		public string Title { get; set; }
 
@@ -25,5 +28,9 @@ namespace YaRyadom.API.Models
 		public int UserId { get; set; }
 
 		public int MaxQuantity { get; set; }
+
+		public double TimeZoneMinutes { get; set; }
+
+		public ThemeTypeModel[] SelectedThemes { get; set; }
 	}
 }

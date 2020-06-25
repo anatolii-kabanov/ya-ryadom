@@ -1,6 +1,7 @@
 ﻿using NetTopologySuite.Geometries;
 using NpgsqlTypes;
 using System;
+using System.Collections.Generic;
 using YaRyadom.Domain.Entities.Base;
 
 namespace YaRyadom.Domain.Entities
@@ -9,13 +10,19 @@ namespace YaRyadom.Domain.Entities
 	{
 		#region Navigation fields		
 
+		private ICollection<YaRyadomEventTheme> _yaRyadomEventThemes;
+
 		#endregion
 
 		public string Title { get; set; }
 
 		public string Description { get; set; }
 
-		public DateTimeOffset Date { get; set; }
+		public DateTimeOffset CreatedDate { get; set; }
+
+		public TimeSpan? Time { get; set; }
+
+		public DateTimeOffset? Date { get; set; }
 
 		public int MaxQuantity { get; set; }
 
@@ -30,6 +37,12 @@ namespace YaRyadom.Domain.Entities
 		#region Navigation properties
 
 		public YaRyadomUser YaVDeleUserOwner { get; set; }
+
+		public ICollection<YaRyadomEventTheme> YaRyadomEventThemes
+		{
+			get => _yaRyadomEventThemes ?? new List<YaRyadomEventTheme>();
+			set => _yaRyadomEventThemes = value;
+		}
 
 		#endregion
 	}

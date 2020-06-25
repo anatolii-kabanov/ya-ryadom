@@ -39,12 +39,14 @@ namespace YaRyadom.Domain.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     title = table.Column<string>(maxLength: 255, nullable: false),
                     description = table.Column<string>(maxLength: 1023, nullable: false),
-                    date = table.Column<DateTimeOffset>(nullable: false),
+                    created_date = table.Column<DateTimeOffset>(nullable: false),
+                    time = table.Column<TimeSpan>(nullable: true),
+                    date = table.Column<DateTimeOffset>(nullable: true),
                     max_quantity = table.Column<int>(nullable: false),
                     location = table.Column<Point>(type: "geography (point)", nullable: false),
                     revoked = table.Column<bool>(nullable: false),
                     ya_ryadom_user_owner_id = table.Column<int>(nullable: false),
-                    SearchVector = table.Column<NpgsqlTsVector>(nullable: true)
+                    search_vector = table.Column<NpgsqlTsVector>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,10 +79,35 @@ namespace YaRyadom.Domain.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ya_ryadom_event_themes",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    type = table.Column<int>(nullable: false),
+                    ya_ryadom_event_id = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ya_ryadom_event_themes", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_ya_ryadom_event_themes_ya_ryadom_events_ya_ryadom_event_id",
+                        column: x => x.ya_ryadom_event_id,
+                        principalTable: "ya_ryadom_events",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_ya_ryadom_events_SearchVector",
+                name: "IX_ya_ryadom_event_themes_ya_ryadom_event_id",
+                table: "ya_ryadom_event_themes",
+                column: "ya_ryadom_event_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ya_ryadom_events_search_vector",
                 table: "ya_ryadom_events",
-                column: "SearchVector")
+                column: "search_vector")
                 .Annotation("Npgsql:IndexMethod", "GIN");
 
             migrationBuilder.CreateIndex(
@@ -100,19 +127,23 @@ namespace YaRyadom.Domain.Migrations
                 unique: true);
 
 				migrationBuilder.Sql(
-					@"CREATE TRIGGER ya_ryadom_event_search_vector_update BEFORE INSERT OR UPDATE
+					@"CREATE TRIGGER events_search_vector_update BEFORE INSERT OR UPDATE
 					ON ""ya_ryadom_events"" FOR EACH ROW EXECUTE PROCEDURE
 					tsvector_update_trigger(""search_vector"", 'pg_catalog.russian', ""title"", ""description"");");
 		}
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-				migrationBuilder.Sql("DROP TRIGGER ya_ryadom_event_search_vector_update");
+				migrationBuilder.Sql("DROP TRIGGER events_search_vector_update");
+
 				migrationBuilder.DropTable(
-                name: "ya_ryadom_events");
+                name: "ya_ryadom_event_themes");
 
             migrationBuilder.DropTable(
                 name: "ya_ryadom_user_themes");
+
+            migrationBuilder.DropTable(
+                name: "ya_ryadom_events");
 
             migrationBuilder.DropTable(
                 name: "ya_ryadom_users");

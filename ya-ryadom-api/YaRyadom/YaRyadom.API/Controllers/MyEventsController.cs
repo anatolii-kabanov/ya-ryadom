@@ -5,6 +5,7 @@ using System;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
+using YaRyadom.API.Helpers;
 using YaRyadom.API.Models;
 using YaRyadom.API.Services.Interfaces;
 
@@ -37,6 +38,10 @@ namespace YaRyadom.API.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> Create([FromBody] EventFormModel model, CancellationToken cancellationToken = default)
 		{
+			if (double.TryParse(Request.Headers[Header.TimeZone], out var minutes))
+			{
+				model.TimeZoneMinutes = minutes;
+			}
 			await _myEventsService.AddAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok();
 		}

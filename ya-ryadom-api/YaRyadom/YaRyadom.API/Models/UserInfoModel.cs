@@ -1,5 +1,4 @@
 ﻿using YaRyadom.API.Models.Base;
-using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models
 {
