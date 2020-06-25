@@ -3,5 +3,12 @@
     bottom: 0;
     position: fixed;
     width: 100%;
+    padding-left: 0px;
+    margin-left: -12px;
+  }
+  .pills {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 }
