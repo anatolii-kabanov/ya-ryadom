@@ -93,6 +93,7 @@ function* handleFetchUserGeo() {
             yield put(fetchUserGeoError(result.errors));
         } else {
             yield put(fetchUserGeoSuccess(result as Geo));
+            yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.PROFILE_INTRO_PANEL)));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -134,7 +135,7 @@ function* watchSaveUserInfoRequest() {
 function* handleSaveUserIntroRequest(action: ReturnType<typeof saveUserIntroRequest>) {
     try {
         const vkUserId = yield select(getVkUserId);
-        
+
         const userIntro = {
             vkUserId:  vkUserId,
             selectedThemes: action.payload

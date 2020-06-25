@@ -39,13 +39,12 @@ class HelloIntroPanel extends React.Component<AllProps>  {
     }
 
     componentDidMount() {
-        const { getGeoData } = this.props;
-        getGeoData();
+       
     }
 
     onHelloIntroCompleted() {
-        const { goForwardView } = this.props;
-        goForwardView(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.PROFILE_INTRO_PANEL));
+        const { getGeoData } = this.props;
+        getGeoData();        
     }
 
     render() {
@@ -63,7 +62,7 @@ class HelloIntroPanel extends React.Component<AllProps>  {
                         <p className="first-row-text">Твой будущий друг уже рядом. <br /> Несколько действий и ты в большой тусовке своего города.</p>
                         <p className="second-row-text">Весь спектр интересов в одном приложении. <br /> Каждый найдёт себе дело по душе.</p>
                         <Div>
-                            <Button size="l" className="btn-primary" onClick={() => this.onHelloIntroCompleted()}>Начать</Button>
+                            <Button size="xl" className="btn-primary" onClick={() => this.onHelloIntroCompleted()}>Начать</Button>
                         </Div>
                     </Div>
                 </Group>
