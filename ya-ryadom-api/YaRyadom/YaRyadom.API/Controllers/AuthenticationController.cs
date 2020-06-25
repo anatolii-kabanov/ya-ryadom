@@ -46,7 +46,7 @@ namespace YaRyadom.API.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpPost("user-info/themes/save")]
+		[HttpPost("user-info/intro/save")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> SaveThemes([FromBody] UserIntroRequestModel model, CancellationToken cancellationToken = default)
