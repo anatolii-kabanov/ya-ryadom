@@ -134,6 +134,7 @@ function* watchSaveUserInfoRequest() {
 function* handleSaveUserIntroRequest(action: ReturnType<typeof saveUserIntroRequest>) {
     try {
         const vkUserId = yield select(getVkUserId);
+        
         const userIntro = {
             vkUserId:  vkUserId,
             selectedThemes: action.payload
@@ -144,7 +145,7 @@ function* handleSaveUserIntroRequest(action: ReturnType<typeof saveUserIntroRequ
         if (result.errors) {
             yield put(saveUserIntroError(result.errors));
         } else {
-            yield put(saveUserIntroSuccess(result));
+            yield put(saveUserIntroSuccess(action.payload));
             yield put(goForward(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL)));
         }
     } catch (error) {
