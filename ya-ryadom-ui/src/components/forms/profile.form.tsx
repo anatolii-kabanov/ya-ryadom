@@ -3,10 +3,9 @@ import React from 'react';
 import {
     FormLayout,
     Input,
-    Textarea,
     Button,
-    Div,
-    Text
+    Title,
+    Div
 } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
@@ -43,10 +42,12 @@ class ProfileForm extends React.Component<AllProps>  {
     render() {
 
         return (
-            <FormLayout>
-                <Text weight="medium">Text medium</Text>
+            <FormLayout className="profile-form">
+                <Title level="3" weight="bold">Выберите темы</Title >
                 <Input top="Тема" type="text" placeholder="Введите текст" name="eventName" onChange={this.handleInputChange} />
-                <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Продолжить</Button>
+                <Div className="btn-container">
+                    <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Продолжить</Button>
+                </Div>
             </FormLayout>
         )
     }
