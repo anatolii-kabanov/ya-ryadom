@@ -42,7 +42,7 @@ namespace YaRyadom.API.Controllers
 		public async Task<IActionResult> Save([FromBody] UserInfoModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserInfoAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok();
+			return Ok(true);
 		}
 
 		[AllowAnonymous]
@@ -52,7 +52,7 @@ namespace YaRyadom.API.Controllers
 		public async Task<IActionResult> SaveThemes([FromBody] UserIntroRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserIntroAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok();
+			return Ok(true);
 		}
 	}
 }
