@@ -12,6 +12,8 @@ namespace YaRyadom.Domain.Entities
 
 		private ICollection<YaRyadomEventTheme> _yaRyadomEventThemes;
 
+		private ICollection<YaRyadomUserApplication> _yaRyadomUserApplications;
+
 		#endregion
 
 		public string Title { get; set; }
@@ -42,6 +44,12 @@ namespace YaRyadom.Domain.Entities
 		{
 			get => _yaRyadomEventThemes ?? new List<YaRyadomEventTheme>();
 			set => _yaRyadomEventThemes = value;
+		}
+
+		public ICollection<YaRyadomUserApplication> YaRyadomUserApplications
+		{
+			get => _yaRyadomUserApplications ?? new List<YaRyadomUserApplication>();
+			set => _yaRyadomUserApplications = value;
 		}
 
 		#endregion

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NetTopologySuite.Geometries;
+using System.Collections.Generic;
 using YaRyadom.Domain.Entities.Base;
 
 namespace YaRyadom.Domain.Entities
@@ -10,6 +11,8 @@ namespace YaRyadom.Domain.Entities
 		private ICollection<YaRyadomEvent> _ownYaVDeleEvents;
 
 		private ICollection<YaRyadomUserTheme> _yaRyadomUserThemes;
+
+		private ICollection<YaRyadomUserApplication> _yaRyadomUserApplications;
 
 		#endregion
 
@@ -25,6 +28,8 @@ namespace YaRyadom.Domain.Entities
 
 		public string VkUserAvatarUrl { get; set; }
 
+		public Point LastLocation { get; set; }
+
 		#region Navigation properties
 
 		public ICollection<YaRyadomEvent> OwnYaVDeleEvents
@@ -38,7 +43,13 @@ namespace YaRyadom.Domain.Entities
 			get => _yaRyadomUserThemes ?? new List<YaRyadomUserTheme>();
 			set => _yaRyadomUserThemes = value;
 		}
-
+		
+		public ICollection<YaRyadomUserApplication> YaRyadomUserApplications
+		{
+			get => _yaRyadomUserApplications ?? new List<YaRyadomUserApplication>();
+			set => _yaRyadomUserApplications = value;
+		}
+		
 		#endregion
 	}
 }
