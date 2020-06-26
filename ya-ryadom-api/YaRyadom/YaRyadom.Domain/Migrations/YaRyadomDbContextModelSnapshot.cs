@@ -128,6 +128,10 @@ namespace YaRyadom.Domain.Migrations
                         .HasColumnName("guide_completed")
                         .HasColumnType("boolean");
 
+                    b.Property<Point>("LastLocation")
+                        .HasColumnName("last_location")
+                        .HasColumnType("geometry");
+
                     b.Property<string>("LastName")
                         .HasColumnName("last_name")
                         .HasColumnType("text");
@@ -146,6 +150,42 @@ namespace YaRyadom.Domain.Migrations
                         .IsUnique();
 
                     b.ToTable("ya_ryadom_users");
+                });
+
+            modelBuilder.Entity("YaRyadom.Domain.Entities.YaRyadomUserApplication", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Revoked")
+                        .HasColumnName("revoked")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Status")
+                        .HasColumnName("status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YaRyadomEventId")
+                        .HasColumnName("ya_ryadom_event_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YaRyadomUserRequestedId")
+                        .HasColumnName("ya_ryadom_user_requested_id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("YaRyadomEventId");
+
+                    b.HasIndex("YaRyadomUserRequestedId");
+
+                    b.ToTable("ya_ryadom_user_applications");
                 });
 
             modelBuilder.Entity("YaRyadom.Domain.Entities.YaRyadomUserTheme", b =>
@@ -185,6 +225,21 @@ namespace YaRyadom.Domain.Migrations
                     b.HasOne("YaRyadom.Domain.Entities.YaRyadomEvent", "YaRyadomEvent")
                         .WithMany("YaRyadomEventThemes")
                         .HasForeignKey("YaRyadomEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("YaRyadom.Domain.Entities.YaRyadomUserApplication", b =>
+                {
+                    b.HasOne("YaRyadom.Domain.Entities.YaRyadomEvent", "YaRyadomEvent")
+                        .WithMany("YaRyadomUserApplications")
+                        .HasForeignKey("YaRyadomEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("YaRyadom.Domain.Entities.YaRyadomUser", "YaRyadomUserRequested")
+                        .WithMany("YaRyadomUserApplications")
+                        .HasForeignKey("YaRyadomUserRequestedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

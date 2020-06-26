@@ -18,6 +18,7 @@ namespace YaRyadom.Domain.Mapping
 			builder.Property(m => m.AboutMySelf).HasColumnName("about_my_self");
 			builder.Property(m => m.VkUserAvatarUrl).HasColumnName("vk_user_avatar_url");
 			builder.Property(m => m.VkId).HasColumnName("vk_id");
+			builder.Property(m => m.LastLocation).HasColumnName("last_location");
 			builder.HasIndex(m => m.VkId).IsUnique();
 		}
 	}
