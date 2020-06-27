@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YaRyadom.API.Models;
+using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Models.ServiceModels;
 using YaRyadom.API.Services.Interfaces;
 using YaRyadom.Domain.DbContexts;
@@ -27,7 +28,7 @@ namespace YaRyadom.API.Services.Implementations
 			var yaVDeleEvent = _mapper.Map<YaRyadomEvent>(model);
 
 			var yaVDeleUser = await _dbContext
-				.YaVDeleUsers
+				.YaRyadomUsers
 				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
 				.ConfigureAwait(false);
 
@@ -79,6 +80,30 @@ namespace YaRyadom.API.Services.Implementations
 				.ToArray();
 
 			return resultEvents;
+		}
+
+		public async Task<bool> ApproveApplicationAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
+		{
+			var application = await _dbContext
+				.YaRyadomUserApplications
+				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
+				.FirstOrDefaultAsync(cancellationToken);
+
+			application.Status = ApplicationStatus.Confirmed;
+
+			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
+		}
+
+		public async Task<bool> RejectApplicationAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
+		{
+			var application = await _dbContext
+				.YaRyadomUserApplications
+				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
+				.FirstOrDefaultAsync(cancellationToken);
+
+			application.Status = ApplicationStatus.Rejected;
+
+			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
 	}

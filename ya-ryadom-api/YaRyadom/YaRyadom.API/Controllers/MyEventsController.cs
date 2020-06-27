@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YaRyadom.API.Helpers;
 using YaRyadom.API.Models;
+using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
 
 namespace YaRyadom.API.Controllers
@@ -53,6 +54,27 @@ namespace YaRyadom.API.Controllers
 		public async Task<IActionResult> Revoke(int id, CancellationToken cancellationToken = default)
 		{
 			await _myEventsService.RevokeAsync(id, cancellationToken).ConfigureAwait(false);
+			return Ok();
+		}
+
+
+		[AllowAnonymous]
+		[HttpPost("approve")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> ApproveApplication([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken = default)
+		{
+			await _myEventsService.ApproveApplicationAsync(model, cancellationToken).ConfigureAwait(false);
+			return Ok();
+		}
+
+		[AllowAnonymous]
+		[HttpPost("reject")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> RejectApplication([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken = default)
+		{
+			await _myEventsService.RejectApplicationAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok();
 		}
 	}

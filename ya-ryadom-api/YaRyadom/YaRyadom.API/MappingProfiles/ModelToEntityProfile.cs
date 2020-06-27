@@ -5,6 +5,7 @@ using System.Globalization;
 using YaRyadom.API.Models;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.Domain.Entities;
+using YaRyadom.Domain.Entities.Enums;
 
 namespace YaRyadom.API.MappingProfiles
 {
@@ -39,6 +40,13 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTimeOffset.Now))
 				.ForMember(dest => dest.MaxQuantity, opt => opt.MapFrom(src => src.MaxQuantity))
 				.ForMember(dest => dest.Location, opt => opt.MapFrom(src => geometryFactory.CreatePoint(new Coordinate(src.Longitude, src.Latitude))));
+
+			CreateMap<ApplicationRequestModel, YaRyadomUserApplication>()
+				.ForMember(dest => dest.Id, opt => opt.Ignore())
+				.ForMember(dest => dest.YaRyadomEventId, opt => opt.MapFrom(src => src.EventId))
+				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => false))
+				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => ApplicationStatus.Sent))
+				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromMinutes(src.TimeZoneMinutes))));
 		}
 	}
 }

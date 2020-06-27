@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using YaRyadom.API.Models;
+using YaRyadom.API.Models.Requests;
 using YaRyadom.Domain.Entities;
 
 namespace YaRyadom.API.Services.Interfaces
@@ -12,5 +13,9 @@ namespace YaRyadom.API.Services.Interfaces
 		Task<bool> AddAsync(EventFormModel model, CancellationToken cancellationToken = default);
 
 		Task<bool> RevokeAsync(int eventId, CancellationToken cancellationToken = default);
+
+		Task<bool> ApproveApplicationAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
+
+		Task<bool> RejectApplicationAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
 	}
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using YaRyadom.API.Helpers;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
 
@@ -32,5 +33,30 @@ namespace YaRyadom.API.Controllers
 				.ConfigureAwait(false);
 			return Ok(events);
 		}
+
+		[AllowAnonymous]
+		[HttpPost("apply")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> Apply([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken = default)
+		{
+			if (double.TryParse(Request.Headers[Header.TimeZone], out var minutes))
+			{
+				model.TimeZoneMinutes = minutes;
+			}
+			await _eventsNearMeService.ApplyAsync(model, cancellationToken).ConfigureAwait(false);
+			return Ok(true);
+		}
+
+		[AllowAnonymous]
+		[HttpPost("revoke")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> Revoke([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken)
+		{
+			await _eventsNearMeService.RevokeAsync(model, cancellationToken).ConfigureAwait(false);
+			return Ok();
+		}
+
 	}
 }

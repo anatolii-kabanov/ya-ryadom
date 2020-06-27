@@ -9,5 +9,9 @@ namespace YaRyadom.API.Services.Interfaces
 	public interface IEventsNearMeService : IBaseService<YaRyadomEvent>
 	{
 		Task<YaRyadomEventModel[]> GetAllEventsByDistance(EventsRequestModel model, CancellationToken cancellationToken = default);
+
+		Task<bool> ApplyAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
+
+		Task<bool> RevokeAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
 	}
 }

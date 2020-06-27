@@ -49,10 +49,12 @@ namespace YaRyadom.Domain.DbContexts
 			}
 		}
 
-		public DbSet<YaRyadomUser> YaVDeleUsers { get; set; }
+		public DbSet<YaRyadomUser> YaRyadomUsers { get; set; }
 
 		public DbSet<YaRyadomUserTheme> YaRyadomUserThemes { get; set; }
 
 		public DbSet<YaRyadomEventTheme> YaRyadomEventThemes { get; set; }
+
+		public DbSet<YaRyadomUserApplication> YaRyadomUserApplications { get; set; }
 	}
 }
