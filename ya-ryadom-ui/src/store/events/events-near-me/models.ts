@@ -1,3 +1,5 @@
+import { ThemeType } from "../../../utils/enums/theme-type.enum";
+
 export interface EventNearMe {
     longitude: number,
     latitude: number,
@@ -28,9 +30,11 @@ export interface MyEvent {
 export interface MyEventCreate {
     longitude: number,
     latitude: number,
-    date: Date,
+    date: string,
+    time: string,
     title: string,
     description: string,
     maxQuantiyty: number,
     vkUserId: number,
+    selectedThemes: ThemeType[],
 }

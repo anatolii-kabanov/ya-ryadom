@@ -14,17 +14,18 @@ import { Geo } from '../../store/authentication/models';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { UserInfo } from "@vkontakte/vk-bridge";
-import { saveMyEventRequest } from '../../store/events/my-events/actions';
 import { Position } from '../../store/authentication/models';
+import { MyEventCreate } from '../../store/events/events-near-me/models';
 
 interface PropsFromState {
     userPosition: Geo,
     vkUserInfo: UserInfo,
     lastLocation: Position,
+    onSave: (myEvent: MyEventCreate) => void;
 }
 
 interface PropsFromDispatch {
-    save: typeof saveMyEventRequest,
+
 }
 
 
@@ -70,7 +71,8 @@ class EventForm extends React.Component<AllProps, EventState> {
     }
 
     onFillInProfile = (data) => {
-        this.props.save({
+        const { onSave } = this.props;
+        onSave({
             title: this.state.eventName,
             longitude: this.state.selectedPosition.lng,
             latitude: this.state.selectedPosition.lat,
@@ -131,7 +133,7 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    save: saveMyEventRequest
+
 }
 
 export default connect(

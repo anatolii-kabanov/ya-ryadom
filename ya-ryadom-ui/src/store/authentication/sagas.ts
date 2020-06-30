@@ -224,7 +224,7 @@ function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAbo
             yield put(saveUserAboutMyselfError(result.errors));
         } else {
             yield put(saveUserAboutMyselfSuccess(action.payload));
-            yield put(goForward(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL)));
+            yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.CREATE_EVENT_PANEL)));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {

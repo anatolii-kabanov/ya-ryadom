@@ -1,23 +1,24 @@
 import React from 'react';
 import { Panel, Group } from '@vkontakte/vkui';
-import EventForm from '../forms/event.form';
+import EventForm from '../../forms/event.form';
 import { connect } from 'react-redux';
-import { AppState } from '../../store/app-state';
-import MainHeaderPanel from "./headers/main.header";
-import { saveMyEventRequest } from '../../store/events/my-events/actions';
+import { AppState } from '../../../store/app-state';
+import MainHeaderPanel from "../headers/main.header";
+import { saveMyEventIntroRequest } from '../../../store/events/my-events/actions';
 
 interface PropsFromState {
     id: string;
 }
 
 interface PropsFromDispatch {
-    saveEvent: typeof saveMyEventRequest
+    saveEvent: typeof saveMyEventIntroRequest
 }
 
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class MyEventCreatePanel extends React.Component<AllProps>  {
+class CreateFirstEventIntroPanel extends React.Component<AllProps>  {
+    
     render() {
         const { id, saveEvent } = this.props;
         return (
@@ -36,10 +37,10 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    saveEvent: saveMyEventRequest
+    saveEvent: saveMyEventIntroRequest
 }
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(MyEventCreatePanel);
+)(CreateFirstEventIntroPanel);

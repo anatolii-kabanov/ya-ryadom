@@ -1,4 +1,4 @@
-import { all, call, fork, put, takeEvery, takeLatest, select } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery, takeLatest, select, take } from 'redux-saga/effects';
 import { MyEventsTypes } from './types';
 import {
     fetchMyEventsListError,
@@ -6,9 +6,14 @@ import {
     saveMyEventRequest,
     saveMyEventError,
     saveMyEventSuccess,
+    saveMyEventIntroRequest,
 } from './actions'
 import { callApi } from '../../../utils/api';
 import { getVkUserId } from '../../authentication/reducer';
+import { goForward } from '../../history/actions';
+import { VkHistoryModel } from '../../history/models';
+import { VIEWS } from '../../../utils/constants/view.constants';
+import { PANELS } from '../../../utils/constants/panel.constants';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/my-events`;
 
@@ -59,11 +64,22 @@ function* watchSaveEventRequest() {
     yield takeLatest(MyEventsTypes.SAVE_MY_EVENT, handleSaveEventRequest)
 }
 
+function* handleSaveEventIntroRequest(action: ReturnType<typeof saveMyEventIntroRequest>) {
+    yield put(saveMyEventRequest(action.payload));
+    yield take(saveMyEventRequest);
+    yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.EVENT_CREATED_INTRO_PANEL)));
+}
+
+function* watchSaveEventIntroRequest() {
+    yield takeLatest(MyEventsTypes.SAVE_MY_EVENT_INTRO, handleSaveEventIntroRequest)
+}
+
 
 function* myEventsSagas() {
     yield all([
         fork(watchMyEventsFetchRequest),
         fork(watchSaveEventRequest),
+        fork(watchSaveEventIntroRequest),
     ])
 }
 
