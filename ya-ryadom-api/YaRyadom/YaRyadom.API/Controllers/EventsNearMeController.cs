@@ -55,7 +55,7 @@ namespace YaRyadom.API.Controllers
 		public async Task<IActionResult> Revoke([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken)
 		{
 			await _eventsNearMeService.RevokeAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok();
+			return Ok(true);
 		}
 
 	}

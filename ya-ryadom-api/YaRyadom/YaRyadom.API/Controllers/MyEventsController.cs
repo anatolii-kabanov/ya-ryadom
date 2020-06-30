@@ -44,7 +44,7 @@ namespace YaRyadom.API.Controllers
 				model.TimeZoneMinutes = minutes;
 			}
 			await _myEventsService.AddAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok();
+			return Ok(true);
 		}
 
 		[AllowAnonymous]
@@ -54,7 +54,7 @@ namespace YaRyadom.API.Controllers
 		public async Task<IActionResult> Revoke(int id, CancellationToken cancellationToken = default)
 		{
 			await _myEventsService.RevokeAsync(id, cancellationToken).ConfigureAwait(false);
-			return Ok();
+			return Ok(true);
 		}
 
 
@@ -65,7 +65,7 @@ namespace YaRyadom.API.Controllers
 		public async Task<IActionResult> ApproveApplication([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _myEventsService.ApproveApplicationAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok();
+			return Ok(true);
 		}
 
 		[AllowAnonymous]
@@ -75,7 +75,7 @@ namespace YaRyadom.API.Controllers
 		public async Task<IActionResult> RejectApplication([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _myEventsService.RejectApplicationAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok();
+			return Ok(true);
 		}
 	}
 }
