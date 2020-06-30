@@ -40,6 +40,7 @@ interface EventState {
     eventDescription: string,
     eventDate: string,
     eventTime: string,
+    selectedThemes: [],
     [key: string]: any
 }
 
@@ -55,6 +56,7 @@ class EventForm extends React.Component<AllProps, EventState> {
             eventDescription: '',
             eventDate: '',
             eventTime: '',
+            selectedThemes: []
         };
         this.onLocationClick = this.onLocationClick.bind(this);
         this.onFillInProfile = this.onFillInProfile.bind(this)
@@ -72,10 +74,12 @@ class EventForm extends React.Component<AllProps, EventState> {
             title: this.state.eventName,
             longitude: this.state.selectedPosition.lng,
             latitude: this.state.selectedPosition.lat,
-            date: new Date(),
+            date: new Date(this.state.eventDate).toLocaleDateString('ru-RU', "dd.MM.yyyy" as any),
+            time: this.state.eventTime,
             description: this.state.eventDescription,
             maxQuantiyty: 50,
             vkUserId: this.props.vkUserInfo.id,
+            selectedThemes: [],
         });
     }
 
