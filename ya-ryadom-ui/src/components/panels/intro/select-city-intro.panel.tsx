@@ -62,7 +62,7 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
                     <AutocompleteMap onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                 </Group>
                 <Group>
-                    <Div className={"btn-container"}>
+                    <Div className="btn-container-bottom">
                         <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Далее</Button>
                     </Div>
                 </Group>

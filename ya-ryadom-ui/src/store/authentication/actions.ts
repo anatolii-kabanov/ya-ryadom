@@ -32,3 +32,7 @@ export const saveUserThemesError = (payload: any) => action(AuthenticationTypes.
 export const saveUserLocationRequest = (payload: Position) => action(AuthenticationTypes.SAVE_USER_LOCATION, payload);
 export const saveUserLocationSuccess = (payload: Position) => action(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS, payload);
 export const saveUserLocationError = (payload: any) => action(AuthenticationTypes.SAVE_USER_LOCATION_ERROR, payload);
+
+export const saveUserAboutMyselfRequest = (payload: string) => action(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF, payload);
+export const saveUserAboutMyselfSuccess = (payload: string) => action(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS, payload);
+export const saveUserAboutMyselfError = (payload: any) => action(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_ERROR, payload);

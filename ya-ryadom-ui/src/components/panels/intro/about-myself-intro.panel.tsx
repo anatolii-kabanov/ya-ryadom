@@ -12,13 +12,14 @@ import {
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
+import { saveUserAboutMyselfRequest } from '../../../store/authentication/actions';
 
 interface PropsFromState {
     id: string,
 }
 
 interface PropsFromDispatch {
-
+    saveAboutMyself: typeof saveUserAboutMyselfRequest
 }
 
 interface State {
@@ -35,7 +36,8 @@ class AboutMyselfIntroPanel extends React.Component<AllProps, State>  {
     }
 
     onClickNext() {
-
+        const { saveAboutMyself } = this.props;
+        saveAboutMyself(this.state.aboutMyself);
     }
 
     handleInputChange = (event) => {
@@ -55,12 +57,12 @@ class AboutMyselfIntroPanel extends React.Component<AllProps, State>  {
                     <Div className="themes-form">
                         <Div><Title level="3" weight="bold" className="title text-center">Напишите о себе</Title ></Div>
                         <FormLayout>
-                            <Input top="text" name="aboutMySelf" onChange={this.handleInputChange}></Input>
+                            <Input name="aboutMySelf" onChange={this.handleInputChange}></Input>
                         </FormLayout>
                     </Div>
                 </Group>
                 <Group>
-                    <Div className={"btn-container"}>
+                    <Div className="btn-container-bottom">
                         <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Далее</Button>
                     </Div>
                 </Group>
@@ -74,7 +76,7 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-
+    saveAboutMyself: saveUserAboutMyselfRequest
 }
 
 export default connect(

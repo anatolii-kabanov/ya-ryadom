@@ -18,7 +18,10 @@ import {
     saveUserThemesSuccess,
     saveUserLocationRequest,
     saveUserLocationError,
-    saveUserLocationSuccess
+    saveUserLocationSuccess,
+    saveUserAboutMyselfRequest,
+    saveUserAboutMyselfError,
+    saveUserAboutMyselfSuccess
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo } from './models';
@@ -156,7 +159,7 @@ function* handleSaveUserThemesRequest(action: ReturnType<typeof saveUserThemesRe
             yield put(saveUserThemesError(result.errors));
         } else {
             yield put(saveUserThemesSuccess(action.payload));
-            yield put(goForward(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL)));
+            yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.ABOUT_MYSELF_INTRO_PANEL)));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -189,7 +192,7 @@ function* handleSaveUserLocationRequest(action: ReturnType<typeof saveUserLocati
             yield put(saveUserLocationError(result.errors));
         } else {
             yield put(saveUserLocationSuccess(action.payload));
-            yield put(goForward(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL)));
+            yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.THEMES_INTRO_PANEL)));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -206,6 +209,38 @@ function* watchSaveUserLocationRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_LOCATION, handleSaveUserLocationRequest)
 }
 
+function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAboutMyselfRequest>) {
+    try {
+        const vkUserId = yield select(getVkUserId);
+
+        const userAboutMySelf = {
+            vkUserId: vkUserId,
+            aboutMyself: action.payload,
+        };
+
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/user-info/about-myself/save', userAboutMySelf);
+
+        if (result.errors) {
+            yield put(saveUserAboutMyselfError(result.errors));
+        } else {
+            yield put(saveUserAboutMyselfSuccess(action.payload));
+            yield put(goForward(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL)));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(saveUserAboutMyselfError(error.stack));
+        } else {
+            yield put(saveUserAboutMyselfError('An unknown error occured.'));
+        }
+    } finally {
+
+    }
+}
+
+function* watchSaveUserAboutMyselfRequest() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF, handleSaveUserAboutMyselfRequest)
+}
+
 function* authenticationSagas() {
     yield all([
         fork(watchFetchUserInfoRequest),
@@ -213,7 +248,8 @@ function* authenticationSagas() {
         fork(watchSaveUserInfoRequest),
         fork(watchFetchUserGeoRequest),
         fork(watchSaveUserThemesRequest),
-        fork(watchSaveUserLocationRequest)
+        fork(watchSaveUserLocationRequest),
+        fork(watchSaveUserAboutMyselfRequest)
     ])
 }
 
