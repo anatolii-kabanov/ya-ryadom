@@ -14,7 +14,10 @@ export enum AuthenticationTypes {
     SAVE_USER_INFO_GUIDE = '[Authentication] (POST) Save user info guide',
     SAVE_USER_INFO_GUIDE_SUCCESS = '[Authentication] Save user info guide success',
     SAVE_USER_INFO_GUIDE_ERROR = '[Authentication] Save user info guide error',
-    SAVE_USER_INTRO = '[Authentication] (POST) Save user intro',
-    SAVE_USER_INTRO_SUCCESS = '[Authentication] Save user intro success',
-    SAVE_USER_INTRO_ERROR = '[Authentication] Save user intro error',
+    SAVE_USER_THEMES = '[Authentication] (POST) Save user themes',
+    SAVE_USER_THEMES_SUCCESS = '[Authentication] Save user themes success',
+    SAVE_USER_THEMES_ERROR = '[Authentication] Save user themes error',
+    SAVE_USER_LOCATION = '[Authentication] (POST) Save user location',
+    SAVE_USER_LOCATION_SUCCESS = '[Authentication] Save user location success',
+    SAVE_USER_LOCATION_ERROR = '[Authentication] Save user location error',
 };

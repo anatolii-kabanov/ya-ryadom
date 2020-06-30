@@ -3,6 +3,7 @@ import { AuthenticationTypes } from "./types";
 import { User } from './models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ThemeType } from '../../utils/enums/theme-type.enum';
+import { Position } from './models';
 
 export const fetchUserInfoRequest = (payload: number) => action(AuthenticationTypes.FETCH_USER_INFO, payload);
 export const fetchUserInfoSuccess = (payload: User) => action(AuthenticationTypes.FETCH_USER_INFO_SUCCESS, payload);
@@ -24,6 +25,10 @@ export const saveUserInfoGuideRequest = () => action(AuthenticationTypes.SAVE_US
 export const saveUserInfoGuideSuccess = (payload: any) => action(AuthenticationTypes.SAVE_USER_INFO_GUIDE_SUCCESS, payload);
 export const saveUserInfoGuideError = (payload: any) => action(AuthenticationTypes.SAVE_USER_INFO_GUIDE_ERROR, payload);
 
-export const saveUserIntroRequest = (payload: ThemeType[]) => action(AuthenticationTypes.SAVE_USER_INTRO, payload);
-export const saveUserIntroSuccess = (payload: any) => action(AuthenticationTypes.SAVE_USER_INTRO_SUCCESS, payload);
-export const saveUserIntroError = (payload: any) => action(AuthenticationTypes.SAVE_USER_INTRO_ERROR, payload);
+export const saveUserThemesRequest = (payload: ThemeType[]) => action(AuthenticationTypes.SAVE_USER_THEMES, payload);
+export const saveUserThemesSuccess = (payload: any) => action(AuthenticationTypes.SAVE_USER_THEMES_SUCCESS, payload);
+export const saveUserThemesError = (payload: any) => action(AuthenticationTypes.SAVE_USER_THEMES_ERROR, payload);
+
+export const saveUserLocationRequest = (payload: Position) => action(AuthenticationTypes.SAVE_USER_LOCATION, payload);
+export const saveUserLocationSuccess = (payload: Position) => action(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS, payload);
+export const saveUserLocationError = (payload: any) => action(AuthenticationTypes.SAVE_USER_LOCATION_ERROR, payload);

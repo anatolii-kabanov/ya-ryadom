@@ -7,7 +7,16 @@ export interface User {
     lastName: string,
     vkUserAvatarUrl: string,
     selectedThemes: ThemeType[],
+    lastLocation: Position | null
     // some settings
+}
+
+export interface Position {
+    // X
+    longitude: number;
+
+    // Y
+    latitude: number;
 }
 
 export interface Geo {

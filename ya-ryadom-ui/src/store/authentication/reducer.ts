@@ -20,8 +20,11 @@ const reducer: Reducer<AuthenticationState> = (state = initialState, action) => 
         case AuthenticationTypes.FETCH_USER_GEO_SUCCESS: {
             return { ...state, geoData: action.payload }
         }
-        case AuthenticationTypes.SAVE_USER_INTRO_SUCCESS: {
+        case AuthenticationTypes.SAVE_USER_THEMES_SUCCESS: {
             return { ...state, currentUser: { ...state.currentUser, selectedThemes: action.payload } }
+        }
+        case AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS: {
+            return { ...state, currentUser: { ...state.currentUser, lastLocation: action.payload } }
         }
         default: {
             return state

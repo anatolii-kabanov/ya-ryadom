@@ -13,9 +13,12 @@ import {
     fetchVkUserInfoSuccess,
     fetchUserGeoError,
     fetchUserGeoSuccess,
-    saveUserIntroRequest,
-    saveUserIntroError,
-    saveUserIntroSuccess
+    saveUserThemesRequest,
+    saveUserThemesError,
+    saveUserThemesSuccess,
+    saveUserLocationRequest,
+    saveUserLocationError,
+    saveUserLocationSuccess
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo } from './models';
@@ -66,7 +69,8 @@ function* handleFetchVkUserInfo(action: ReturnType<typeof fetchVkUserInfoRequest
                 firstName: vkUserInfo.first_name,
                 lastName: vkUserInfo.last_name,
                 vkUserAvatarUrl: vkUserInfo.photo_200,
-                selectedThemes: []
+                selectedThemes: [],
+                lastLocation: null
             }))
             // Request our user info
             yield put(fetchUserInfoRequest(vkUserInfo.id));
@@ -87,6 +91,7 @@ function* watchFetchVkUserInfoRequest() {
 function* handleFetchUserGeo() {
     try {
         // Work only via vk tunnel
+        yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.SELECT_CITY_INTRO_PANEL)));
         const result = yield vkBridge.send("VKWebAppGetGeodata", {});
 
         if (result.error_type) {
@@ -137,7 +142,7 @@ function* watchSaveUserInfoRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_INFO, handleSaveUserInfoRequest)
 }
 
-function* handleSaveUserIntroRequest(action: ReturnType<typeof saveUserIntroRequest>) {
+function* handleSaveUserThemesRequest(action: ReturnType<typeof saveUserThemesRequest>) {
     try {
         const vkUserId = yield select(getVkUserId);
 
@@ -146,27 +151,60 @@ function* handleSaveUserIntroRequest(action: ReturnType<typeof saveUserIntroRequ
             selectedThemes: action.payload
         };
 
-        const result = yield call(callApi, 'post', API_ENDPOINT, '/user-info/intro/save', userIntro);
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/user-info/themes/save', userIntro);
 
         if (result.errors) {
-            yield put(saveUserIntroError(result.errors));
+            yield put(saveUserThemesError(result.errors));
         } else {
-            yield put(saveUserIntroSuccess(action.payload));
+            yield put(saveUserThemesSuccess(action.payload));
             yield put(goForward(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL)));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
-            yield put(saveUserIntroError(error.stack));
+            yield put(saveUserThemesError(error.stack));
         } else {
-            yield put(saveUserIntroError('An unknown error occured.'));
+            yield put(saveUserThemesError('An unknown error occured.'));
         }
     } finally {
 
     }
 }
 
-function* watchSaveUserIntroRequest() {
-    yield takeLatest(AuthenticationTypes.SAVE_USER_INTRO, handleSaveUserIntroRequest)
+function* watchSaveUserThemesRequest() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_THEMES, handleSaveUserThemesRequest)
+}
+
+function* handleSaveUserLocationRequest(action: ReturnType<typeof saveUserLocationRequest>) {
+    try {
+        const vkUserId = yield select(getVkUserId);
+
+        const userLocation = {
+            vkUserId: vkUserId,
+            latitude: action.payload.latitude,
+            longitude: action.payload.longitude
+        };
+
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/user-info/location/save', userLocation);
+
+        if (result.errors) {
+            yield put(saveUserLocationError(result.errors));
+        } else {
+            yield put(saveUserLocationSuccess(action.payload));
+            yield put(goForward(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL)));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(saveUserLocationError(error.stack));
+        } else {
+            yield put(saveUserLocationError('An unknown error occured.'));
+        }
+    } finally {
+
+    }
+}
+
+function* watchSaveUserLocationRequest() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_LOCATION, handleSaveUserLocationRequest)
 }
 
 function* authenticationSagas() {
@@ -175,7 +213,8 @@ function* authenticationSagas() {
         fork(watchFetchVkUserInfoRequest),
         fork(watchSaveUserInfoRequest),
         fork(watchFetchUserGeoRequest),
-        fork(watchSaveUserIntroRequest),
+        fork(watchSaveUserThemesRequest),
+        fork(watchSaveUserLocationRequest)
     ])
 }
 

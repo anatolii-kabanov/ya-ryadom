@@ -5,34 +5,49 @@ import {
     PanelHeader,
     Group,
     Button,
+    Div,
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
+import AutocompleteMap from '../../inputs/autocomplete-map.input';
+import { Position } from '../../../store/authentication/models';
+import { saveUserLocationRequest } from '../../../store/authentication/actions';
 
 interface PropsFromState {
     id: string,
 }
 
 interface PropsFromDispatch {
+    saveLocation: typeof saveUserLocationRequest
+}
 
+interface State {
+    userLocation: Position | null;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class SelectCityIntroPanel extends React.Component<AllProps>  {
+class SelectCityIntroPanel extends React.Component<AllProps, State>  {
 
-    
+
+
     constructor(props) {
         super(props);
         this.onClickNext = this.onClickNext.bind(this);
-    }
-
-    componentDidMount() {
-
+        this.onLocationChanged = this.onLocationChanged.bind(this);
     }
 
     onClickNext = () => {
-        
+        const { saveLocation } = this.props;
+        const { userLocation } = this.state;
+        if (userLocation)
+            saveLocation(userLocation);
+    }
+
+    onLocationChanged = (location: Position) => {
+        this.setState({
+            userLocation: location
+        })
     }
 
     render() {
@@ -42,8 +57,13 @@ class SelectCityIntroPanel extends React.Component<AllProps>  {
                 <PanelHeader>
                     Выберите город
                 </PanelHeader>
-                <Group className="select-city-group">
-                    <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Продолжить</Button>
+                <Group>
+                    <AutocompleteMap onLocationChanged={this.onLocationChanged}></AutocompleteMap>
+                </Group>
+                <Group>
+                    <Div className={"btn-container"}>
+                        <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Продолжить</Button>
+                    </Div>
                 </Group>
             </Panel>
         )
@@ -55,7 +75,7 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-
+    saveLocation: saveUserLocationRequest
 }
 
 export default connect(
