@@ -99,5 +99,18 @@ namespace YaRyadom.API.Services.Implementations
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
+
+		public async Task<bool> SaveUserAboutMyselfAsync(UserAboutMyselfRequestModel model, CancellationToken cancellationToken = default)
+		{
+			var yaRyadomUser = await Entities
+				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
+				.ConfigureAwait(false);
+
+			if (yaRyadomUser == null) throw new ArgumentNullException(nameof(yaRyadomUser));
+
+			_mapper.Map(model, yaRyadomUser);
+
+			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
+		}
 	}
 }

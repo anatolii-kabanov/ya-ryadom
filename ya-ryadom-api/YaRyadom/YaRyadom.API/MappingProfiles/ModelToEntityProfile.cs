@@ -28,10 +28,10 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
 				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => 
-					!string.IsNullOrWhiteSpace(src.Date) 
-					? DateTimeOffset.ParseExact(src.Date, "dd.MM.yyyy", CultureInfo.InvariantCulture).ToOffset(-TimeSpan.FromMinutes(src.TimeZoneMinutes)) 
-					: default ))
+				.ForMember(dest => dest.Date, opt => opt.MapFrom(src =>
+					!string.IsNullOrWhiteSpace(src.Date)
+					? DateTimeOffset.ParseExact(src.Date, "dd.MM.yyyy", CultureInfo.InvariantCulture).ToOffset(-TimeSpan.FromMinutes(src.TimeZoneMinutes))
+					: default))
 				.ForMember(dest => dest.Time, opt => opt.MapFrom(src =>
 					!string.IsNullOrWhiteSpace(src.Time)
 					? TimeSpan.Parse(src.Time)
@@ -51,6 +51,11 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.VkId, opt => opt.Ignore())
 				.ForMember(dest => dest.LastLocation, opt => opt.MapFrom(src => geometryFactory.CreatePoint(new Coordinate(src.Longitude, src.Latitude))));
+
+			CreateMap<UserAboutMyselfRequestModel, YaRyadomUser>()
+				.ForMember(dest => dest.Id, opt => opt.Ignore())
+				.ForMember(dest => dest.VkId, opt => opt.Ignore())
+				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMyself));
 		}
 	}
 }

@@ -64,5 +64,15 @@ namespace YaRyadom.API.Controllers
 			await _authenticationService.SaveUserLocationAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
 		}
+
+		[AllowAnonymous]
+		[HttpPost("user-info/about-myself/save")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> SaveAboutMyself([FromBody] UserAboutMyselfRequestModel model, CancellationToken cancellationToken = default)
+		{
+			await _authenticationService.SaveUserAboutMyselfAsync(model, cancellationToken).ConfigureAwait(false);
+			return Ok(true);
+		}
 	}
 }
