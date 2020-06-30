@@ -90,7 +90,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
                 "vkUserId": 6476088,
                 "latitude": this.getLatitude(),
                 "longitude": this.getLongitude(),
-                "maxDistance": 2500000000,
+                "maxDistance": 250000000000,
                 "searchText": event.target.value
             })
         }

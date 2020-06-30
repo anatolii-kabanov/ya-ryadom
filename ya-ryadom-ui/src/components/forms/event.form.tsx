@@ -16,6 +16,11 @@ import { connect } from 'react-redux';
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { saveMyEventRequest } from '../../store/events/my-events/actions';
 import { Position } from '../../store/authentication/models';
+import { goForward } from "../../store/history/actions";
+import { VkHistoryModel } from "../../store/history/models";
+import { VIEWS } from "../../utils/constants/view.constants";
+import { PANELS } from "../../utils/constants/panel.constants";
+import isEmpty from "lodash/isEmpty";
 
 interface PropsFromState {
     userPosition: Geo,
@@ -25,6 +30,7 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     save: typeof saveMyEventRequest,
+    goForwardView: typeof goForward
 }
 
 
@@ -45,7 +51,6 @@ interface EventState {
 }
 
 class EventForm extends React.Component<AllProps, EventState> {
-
 
     constructor(props) {
         super(props);
@@ -70,17 +75,23 @@ class EventForm extends React.Component<AllProps, EventState> {
     }
 
     onFillInProfile = (data) => {
-        this.props.save({
-            title: this.state.eventName,
-            longitude: this.state.selectedPosition.lng,
-            latitude: this.state.selectedPosition.lat,
-            date: new Date(this.state.eventDate).toLocaleDateString('ru-RU', "dd.MM.yyyy" as any),
-            time: this.state.eventTime,
-            description: this.state.eventDescription,
-            maxQuantiyty: 50,
-            vkUserId: this.props.vkUserInfo.id,
-            selectedThemes: [],
-        });
+        if (isEmpty(this.state.selectedPosition)){
+            // TODO handle show error
+            console.log('handle error')
+        } else {
+            this.props.save({
+                title: this.state.eventName,
+                longitude: this.state.selectedPosition.lng,
+                latitude: this.state.selectedPosition.lat,
+                date: new Date(this.state.eventDate).toLocaleDateString('ru-RU', "dd.MM.yyyy" as any),
+                time: this.state.eventTime,
+                description: this.state.eventDescription,
+                maxQuantiyty: 50,
+                vkUserId: this.props.vkUserInfo.id,
+                selectedThemes: [],
+            });
+            this.props.goForwardView(new VkHistoryModel(VIEWS.MAIN_VIEW, PANELS.MENU_PANEL))
+        }
     }
 
     handleInputChange = event => {
@@ -131,7 +142,8 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    save: saveMyEventRequest
+    save: saveMyEventRequest,
+    goForwardView: goForward
 }
 
 export default connect(
