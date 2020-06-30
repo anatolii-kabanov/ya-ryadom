@@ -30,7 +30,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
 				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => 
 					!string.IsNullOrWhiteSpace(src.Date) 
-					? DateTimeOffset.ParseExact(src.Date, "dd.MM.yyyy", CultureInfo.InvariantCulture).ToOffset(TimeSpan.FromMinutes(src.TimeZoneMinutes)) 
+					? DateTimeOffset.ParseExact(src.Date, "dd.MM.yyyy", CultureInfo.InvariantCulture).ToOffset(-TimeSpan.FromMinutes(src.TimeZoneMinutes)) 
 					: default ))
 				.ForMember(dest => dest.Time, opt => opt.MapFrom(src =>
 					!string.IsNullOrWhiteSpace(src.Time)
