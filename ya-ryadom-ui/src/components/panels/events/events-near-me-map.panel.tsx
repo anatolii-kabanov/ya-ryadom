@@ -22,6 +22,7 @@ import {
 } from "../../../store/events/events-near-me/actions";
 import { EventNearMe } from "../../../store/events/events-near-me/models";
 import { UserInfo } from '@vkontakte/vk-bridge';
+import { Position } from '../../../store/authentication/models';
 
 
 interface PropsFromState {
@@ -29,6 +30,7 @@ interface PropsFromState {
     events: EventNearMe[];
     userPosition: Geo;
     vkUserInfo: UserInfo;
+    lastLocation: Position;
 }
 
 interface PropsFromDispatch {
@@ -63,12 +65,12 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
     }
 
     componentDidMount() {
-        const { fetchListRequest, userPosition } = this.props
+        const { fetchListRequest } = this.props
         fetchListRequest({
             "userId": 0,
             "vkUserId": 6476088,
-            "latitude": userPosition?.lat,
-            "longitude": userPosition?.long,
+            "latitude": this.getLatitude(),
+            "longitude": this.getLongitude(),
             "maxDistance": 2500000000,
             "searchText": '',
         })
@@ -82,20 +84,30 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
 
     onSearch(event) {
         if (event.key === 'Enter') {
-            const { fetchListRequest, userPosition } = this.props
+            const { fetchListRequest } = this.props
             fetchListRequest({
                 "userId": 0,
                 "vkUserId": 6476088,
-                "latitude": userPosition?.lat,
-                "longitude": userPosition?.long,
+                "latitude": this.getLatitude(),
+                "longitude": this.getLongitude(),
                 "maxDistance": 2500000000,
                 "searchText": event.target.value
             })
         }
     }
 
+    getLatitude = () => {
+        const { userPosition, lastLocation } = this.props;
+        return userPosition?.lat ?? lastLocation.latitude;
+    }
+
+    getLongitude = () => {
+        const { userPosition, lastLocation } = this.props;
+        return userPosition?.long ?? lastLocation.longitude;
+    }
+
     render() {
-        const { id, userPosition } = this.props;
+        const { id } = this.props;
         let mapHeight = this.state.personOnMap ? { height: "40vh" } : { height: "70vh" }
 
         let personOnMap;
@@ -132,8 +144,8 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
                         <GoogleMapReact
                             bootstrapURLKeys={{ key: MAP.KEY }}
                             defaultCenter={{
-                                lat: userPosition?.lat ?? 33,
-                                lng: userPosition?.long ?? 33,
+                                lat: this.getLatitude(),
+                                lng: this.getLongitude(),
                             }}
                             defaultZoom={14}
                             distanceToMouse={(pt, m) => 0}
@@ -153,6 +165,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
 const mapStateToProps = ({ events, authentication }: AppState) => ({
     events: events.eventsNearMe.eventsList,
     userPosition: authentication.geoData,
+    lastLocation: authentication.currentUser?.lastLocation,
     vkUserInfo: authentication.vkUserInfo
 })
 

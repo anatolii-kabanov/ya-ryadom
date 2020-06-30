@@ -15,10 +15,12 @@ import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { saveMyEventRequest } from '../../store/events/my-events/actions';
+import { Position } from '../../store/authentication/models';
 
 interface PropsFromState {
     userPosition: Geo,
-    vkUserInfo: UserInfo
+    vkUserInfo: UserInfo,
+    lastLocation: Position,
 }
 
 interface PropsFromDispatch {
@@ -84,9 +86,18 @@ class EventForm extends React.Component<AllProps, EventState> {
         })
     }
 
+    getLatitude = () => {
+        const { userPosition, lastLocation } = this.props;
+        return userPosition?.lat ?? lastLocation.latitude;
+    }
+
+    getLongitude = () => {
+        const { userPosition, lastLocation } = this.props;
+        return userPosition?.long ?? lastLocation.longitude;
+    }
+
     render() {
         const { selectedPosition } = this.state;
-        const { userPosition } = this.props;
         return (
             <FormLayout>
                 <Input top="Тема" type="text" placeholder="Введите текст" name="eventName" onChange={this.handleInputChange} />
@@ -96,7 +107,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                 <Div style={{ height: '100vh', width: '92%', margin: '0 auto' }}>
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: MAP.KEY }}
-                        center={{ lat: userPosition?.lat ?? 33, lng: userPosition?.long ?? 54 }}
+                        center={{ lat: this.getLatitude(), lng: this.getLongitude() }}
                         defaultZoom={this.state.zoom}
                         onClick={this.onLocationClick}
                     >
@@ -111,7 +122,8 @@ class EventForm extends React.Component<AllProps, EventState> {
 
 const mapStateToProps = ({ authentication }: AppState) => ({
     userPosition: authentication.geoData,
-    vkUserInfo: authentication.vkUserInfo
+    vkUserInfo: authentication.vkUserInfo,
+    lastLocation: authentication.currentUser?.lastLocation,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
