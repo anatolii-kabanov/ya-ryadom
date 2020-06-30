@@ -91,7 +91,6 @@ function* watchFetchVkUserInfoRequest() {
 function* handleFetchUserGeo() {
     try {
         // Work only via vk tunnel
-        yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.SELECT_CITY_INTRO_PANEL)));
         const result = yield vkBridge.send("VKWebAppGetGeodata", {});
 
         if (result.error_type) {
