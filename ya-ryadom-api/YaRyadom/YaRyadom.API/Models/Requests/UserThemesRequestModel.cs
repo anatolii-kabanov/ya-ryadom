@@ -2,7 +2,7 @@
 
 namespace YaRyadom.API.Models.Requests
 {
-	public class UserIntroRequestModel : BaseUserInfoModel
+	public class UserThemesRequestModel : BaseUserInfoModel
 	{
 	}
 }

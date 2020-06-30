@@ -21,10 +21,9 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMySelf))
 				.ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
 				.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName));
-			CreateMap<UserIntroRequestModel, YaRyadomUser>()
+			CreateMap<UserThemesRequestModel, YaRyadomUser>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
-				.ForMember(dest => dest.VkId, opt => opt.Ignore())
-				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMySelf));
+				.ForMember(dest => dest.VkId, opt => opt.Ignore());
 			CreateMap<EventFormModel, YaRyadomEvent>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
@@ -47,6 +46,11 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => false))
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => ApplicationStatus.Sent))
 				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromMinutes(src.TimeZoneMinutes))));
+
+			CreateMap<UserLocationRequestModel, YaRyadomUser>()
+				.ForMember(dest => dest.Id, opt => opt.Ignore())
+				.ForMember(dest => dest.VkId, opt => opt.Ignore())
+				.ForMember(dest => dest.LastLocation, opt => opt.MapFrom(src => geometryFactory.CreatePoint(new Coordinate(src.Longitude, src.Latitude))));
 		}
 	}
 }

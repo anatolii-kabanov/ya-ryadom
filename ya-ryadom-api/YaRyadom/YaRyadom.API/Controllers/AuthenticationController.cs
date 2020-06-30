@@ -46,12 +46,22 @@ namespace YaRyadom.API.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpPost("user-info/intro/save")]
+		[HttpPost("user-info/themes/save")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> SaveThemes([FromBody] UserIntroRequestModel model, CancellationToken cancellationToken = default)
+		public async Task<IActionResult> SaveThemes([FromBody] UserThemesRequestModel model, CancellationToken cancellationToken = default)
 		{
-			await _authenticationService.SaveUserIntroAsync(model, cancellationToken).ConfigureAwait(false);
+			await _authenticationService.SaveUserThemesAsync(model, cancellationToken).ConfigureAwait(false);
+			return Ok(true);
+		}
+
+		[AllowAnonymous]
+		[HttpPost("user-info/location/save")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> SaveLocation([FromBody] UserLocationRequestModel model, CancellationToken cancellationToken = default)
+		{
+			await _authenticationService.SaveUserLocationAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
 		}
 	}

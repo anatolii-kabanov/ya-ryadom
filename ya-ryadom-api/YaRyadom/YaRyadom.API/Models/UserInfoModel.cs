@@ -4,6 +4,8 @@ namespace YaRyadom.API.Models
 {
 	public class UserInfoModel : BaseUserInfoModel
 	{
+		public string AboutMySelf { get; set; }
+
 		public bool GuideCompleted { get; set; }
 
 		public string FirstName { get; set; }
