@@ -13,5 +13,9 @@ namespace YaRyadom.API.Services.Interfaces
 		Task<bool> ApproveAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
 
 		Task<bool> RejectAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
+
+		Task<bool> ApplyAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
+
+		Task<bool> RevokeAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
 	}
 }
