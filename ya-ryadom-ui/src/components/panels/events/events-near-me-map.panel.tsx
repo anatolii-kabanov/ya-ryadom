@@ -24,6 +24,8 @@ import { EventNearMe } from "../../../store/events/events-near-me/models";
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { Position } from '../../../store/authentication/models';
 
+import './events-near-me.scss';
+
 
 interface PropsFromState {
     id: string;
@@ -108,14 +110,13 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
 
     render() {
         const { id } = this.props;
-        let mapHeight = this.state.personOnMap ? { height: "40vh" } : { height: "70vh" }
 
         let personOnMap;
         if (this.state.personOnMap) {
-            personOnMap = <Div>
+            personOnMap = <Div className="card-container">
                 <CardGrid>
                     <Card size="l">
-                        <div style={{ height: 200 }}>
+                        <div className="cell-container">
                             <RichCell
                                 before={<Avatar size={48} src={this.state.personOnMap?.vkUserAvatarUrl} />}
                                 text={this.state.personOnMap?.title}
@@ -123,11 +124,21 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
                             >
                                 {this.state.personOnMap?.userFullName}
                                 <InfoRow header="Расстояние">
-                                    {this.state.personOnMap?.distance && (this.state.personOnMap?.distance / 1000).toFixed(2)} км.
+                                    {this.state.personOnMap?.distance && (this.state.personOnMap?.distance / 1000).toFixed(2)} км
                                 </InfoRow>
                             </RichCell>
-                            <Icon24Dismiss style={{ position: 'absolute', top: "10px", right: "10px" }} onClick={() => this.setState({ personOnMap: null })}></Icon24Dismiss>
-                            <Button href={`https://vk.com/id${this.state.personOnMap.vkUserOwnerId}`} onClick={() => window.open("https://vk.com/id" + this.state.personOnMap.vkUserOwnerId, '_blank')} className="btn-primary" style={{ marginTop: "20px" }}>Страница ВКонтакте</Button>
+
+                            <Icon24Dismiss
+                                className="close-cross"
+                                onClick={() => this.setState({ personOnMap: null })}/>
+
+                            <Div className="map-card-buttons-div">
+                                <Button className="button-primary">Иду</Button>
+                                <Button className="button-secondary"
+                                        href={`https://vk.com/id${this.state.personOnMap.vkUserOwnerId}`}
+                                        onClick={() => window.open("https://vk.com/id" + this.state.personOnMap.vkUserOwnerId, '_blank')}
+                                >Посмотреть профить</Button>
+                            </Div>
                         </div>
                     </Card>
                 </CardGrid>
@@ -140,7 +151,8 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
                     <Input type="text" placeholder="Поиск по интересам" name="Search" onKeyDown={(event) => this.onSearch(event)}></Input>
                 </FormLayout>
                 <Group>
-                    <div style={{ ...mapHeight, width: "100%" }}>
+                    {/* <Div> from VKUI mess it up for some reason*/}
+                    <div className="map">
                         <GoogleMapReact
                             bootstrapURLKeys={{ key: MAP.KEY }}
                             defaultCenter={{

@@ -117,8 +117,8 @@ class EventForm extends React.Component<AllProps, EventState> {
             <FormLayout>
                 <Input top="Тема" type="text" placeholder="Введите текст" name="eventName" onChange={this.handleInputChange} />
                 <Textarea top="Описание" placeholder="Введите текст" name="eventDescription" onChange={this.handleInputChange}></Textarea>
-                <Input top="Дата встречи (не обязательно)" type="date" name="eventDate" onChange={this.handleInputChange} />
-                <Input top="Время встречи (не обязательно)" type="time" name="eventTime" onChange={this.handleInputChange} />
+                <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} />
+                <Input top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} />
                 <Div style={{ height: '100vh', width: '92%', margin: '0 auto' }}>
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: MAP.KEY }}
