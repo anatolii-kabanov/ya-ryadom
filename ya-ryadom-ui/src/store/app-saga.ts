@@ -3,12 +3,14 @@ import authenticationSagas from "./authentication/sagas";
 import historySagas from "./history/sagas";
 import eventsNearMeSagas from "./events/events-near-me/sagas";
 import myEventsSagas from "./events/my-events/sagas";
+import applicationsSagas from "./applications/sagas";
 
 export function* rootSaga() {
     yield all([
         fork(authenticationSagas),
         fork(historySagas),
         fork(eventsNearMeSagas),
-        fork(myEventsSagas)
+        fork(myEventsSagas),
+        fork(applicationsSagas)
     ])
 }
