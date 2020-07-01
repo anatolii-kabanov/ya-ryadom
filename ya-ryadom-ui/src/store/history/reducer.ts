@@ -21,6 +21,9 @@ const reducer: Reducer<HistoryState> = (state = initialState, action) => {
             const currentViewPanel = { ...history[history.length - 1] };
             return { ...state, history: history, currentViewPanel: currentViewPanel }
         }
+        case HistoryTypes.RESET_VIEW_PANEL: {
+            return { ...state, history: [action.payload], currentViewPanel: action.payload }
+        }
         default: {
             return state
         }
