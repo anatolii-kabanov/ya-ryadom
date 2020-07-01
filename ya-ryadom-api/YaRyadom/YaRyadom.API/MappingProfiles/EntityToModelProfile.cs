@@ -39,6 +39,20 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => src.Revoked))
 				.ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location.Y))
 				.ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location.X));
+
+			CreateMap<YaRyadomReview, UserReviewModel>()
+				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+				.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
+				.ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
+				.ForMember(dest => dest.EventTitle, opt => opt.MapFrom(src => src.YaRyadomEvent.Title))
+				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.YaRyadomUserToReview.FirstName + ' ' + src.YaRyadomUserToReview.LastName));
+
+			CreateMap<YaRyadomReview, UserReviewAboutMeModel>()
+				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+				.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
+				.ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
+				.ForMember(dest => dest.EventTitle, opt => opt.MapFrom(src => src.YaRyadomEvent.Title))
+				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.YaRyadomUserReviewer.FirstName + ' ' + src.YaRyadomUserReviewer.LastName));
 		}
 	}
 }

@@ -25,9 +25,9 @@ namespace YaRyadom.API.Services.Implementations
 
 		public async Task<bool> AddAsync(EventFormModel model, CancellationToken cancellationToken = default)
 		{
-			var yaVDeleEvent = _mapper.Map<YaRyadomEvent>(model);
+			var yaRyadomEvent = _mapper.Map<YaRyadomEvent>(model);
 
-			var yaVDeleUser = await _dbContext
+			var yaRyadomUser = await _dbContext
 				.YaRyadomUsers
 				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
 				.ConfigureAwait(false);
@@ -38,13 +38,13 @@ namespace YaRyadom.API.Services.Implementations
 					new YaRyadomEventTheme
 					{
 						Type = (ThemeType)theme,
-						YaRyadomEvent = yaVDeleEvent
+						YaRyadomEvent = yaRyadomEvent
 					});
 			}
 
-			yaVDeleEvent.YaVDeleUserOwner = yaVDeleUser;
+			yaRyadomEvent.YaVDeleUserOwner = yaRyadomUser;
 
-			Entities.Add(yaVDeleEvent);
+			Entities.Add(yaRyadomEvent);
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}

@@ -52,6 +52,8 @@ namespace YaRyadom.API
 			services.AddTransient<IAuthenticationService, AuthenticationService>();
 			services.AddTransient<IEventsNearMeService, EventsNearMeService>();
 			services.AddTransient<IMyEventsService, MyEventsService>();
+			services.AddTransient<IReviewsService, ReviewsService>();
+			services.AddTransient<IApplicationsService, ApplicationsService>();
 
 			#endregion
 
