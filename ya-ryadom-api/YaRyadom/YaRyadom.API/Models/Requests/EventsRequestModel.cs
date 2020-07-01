@@ -16,6 +16,9 @@
 		/// </summary>
 		public double Latitude { get; set; }
 
+		/// <summary>
+		/// Km
+		/// </summary>
 		public double MaxDistance { get; set; }
 
 		public string SearchText { get; set; }

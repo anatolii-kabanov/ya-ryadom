@@ -1,5 +1,4 @@
-﻿using System;
-using YaRyadom.API.Models.Base;
+﻿using YaRyadom.API.Models.Base;
 
 namespace YaRyadom.API.Models
 {

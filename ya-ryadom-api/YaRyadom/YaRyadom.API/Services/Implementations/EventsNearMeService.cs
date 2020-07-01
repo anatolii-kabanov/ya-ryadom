@@ -30,6 +30,7 @@ namespace YaRyadom.API.Services.Implementations
 		{
 			var userPosition = _geometryFactory.CreatePoint(new Coordinate(model.Longitude, model.Latitude));
 			YaRyadomEventServiceModel[] events;
+			model.MaxDistance *= 1000;
 			if (string.IsNullOrWhiteSpace(model.SearchText))
 			{
 				events = await TableNoTracking
