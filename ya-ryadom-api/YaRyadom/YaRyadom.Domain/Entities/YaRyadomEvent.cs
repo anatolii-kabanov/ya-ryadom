@@ -14,6 +14,8 @@ namespace YaRyadom.Domain.Entities
 
 		private ICollection<YaRyadomUserApplication> _yaRyadomUserApplications;
 
+		private ICollection<YaRyadomReview> _yaRyadomReviews;
+
 		#endregion
 
 		public string Title { get; set; }
@@ -50,6 +52,12 @@ namespace YaRyadom.Domain.Entities
 		{
 			get => _yaRyadomUserApplications ?? new List<YaRyadomUserApplication>();
 			set => _yaRyadomUserApplications = value;
+		}
+
+		public ICollection<YaRyadomReview> YaRyadomReviews
+		{
+			get => _yaRyadomReviews ?? new List<YaRyadomReview>();
+			set => _yaRyadomReviews = value;
 		}
 
 		#endregion

@@ -6,6 +6,7 @@ import {
     Group,
     Button,
     Div,
+    Title,
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
@@ -55,14 +56,14 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
         return (
             <Panel id={id} className="select-city-intro-panel">
                 <PanelHeader>
-                    Выберите город
                 </PanelHeader>
+                <Div><Title level="3" weight="bold" className="title text-center">Выберите город</Title ></Div>
                 <Group>
                     <AutocompleteMap onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                 </Group>
                 <Group>
-                    <Div className={"btn-container"}>
-                        <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Продолжить</Button>
+                    <Div className="btn-container-bottom">
+                        <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Далее</Button>
                     </Div>
                 </Group>
             </Panel>

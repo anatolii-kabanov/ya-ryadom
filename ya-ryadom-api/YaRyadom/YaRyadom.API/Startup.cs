@@ -52,12 +52,14 @@ namespace YaRyadom.API
 			services.AddTransient<IAuthenticationService, AuthenticationService>();
 			services.AddTransient<IEventsNearMeService, EventsNearMeService>();
 			services.AddTransient<IMyEventsService, MyEventsService>();
+			services.AddTransient<IReviewsService, ReviewsService>();
+			services.AddTransient<IApplicationsService, ApplicationsService>();
 
 			#endregion
 
 			services.AddSwaggerGen(c =>
 			{
-				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Ya V Dele API", Version = "v1" });
+				c.SwaggerDoc("v1", new OpenApiInfo { Title = "YaRyadom API", Version = "v1" });
 			});
 
 			services.AddApiVersioning(x =>
@@ -85,7 +87,7 @@ namespace YaRyadom.API
 			// specifying the Swagger JSON endpoint.
 			app.UseSwaggerUI(c =>
 			{
-				c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ya V Dele V1");
+				c.SwaggerEndpoint("/swagger/v1/swagger.json", "YaRyadom V1");
 				c.RoutePrefix = string.Empty;
 			});
 

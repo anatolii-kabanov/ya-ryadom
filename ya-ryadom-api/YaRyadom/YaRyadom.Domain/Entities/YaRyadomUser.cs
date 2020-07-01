@@ -14,6 +14,10 @@ namespace YaRyadom.Domain.Entities
 
 		private ICollection<YaRyadomUserApplication> _yaRyadomUserApplications;
 
+		private ICollection<YaRyadomReview> _yaRyadomReviewsMine;
+
+		private ICollection<YaRyadomReview> _yaRyadomMyReviewsAboutMe;
+
 		#endregion
 
 		public long VkId { get; set; }
@@ -49,7 +53,19 @@ namespace YaRyadom.Domain.Entities
 			get => _yaRyadomUserApplications ?? new List<YaRyadomUserApplication>();
 			set => _yaRyadomUserApplications = value;
 		}
-		
+
+		public ICollection<YaRyadomReview> YaRyadomReviewsMine
+		{
+			get => _yaRyadomReviewsMine ?? new List<YaRyadomReview>();
+			set => _yaRyadomReviewsMine = value;
+		}
+
+		public ICollection<YaRyadomReview> YaRyadomReviewsAboutMe
+		{
+			get => _yaRyadomMyReviewsAboutMe ?? new List<YaRyadomReview>();
+			set => _yaRyadomMyReviewsAboutMe = value;
+		}
+
 		#endregion
 	}
 }

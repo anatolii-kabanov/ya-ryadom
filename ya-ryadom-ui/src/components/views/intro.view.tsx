@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import HelloIntroPanel from '../panels/intro/hello-intro.panel';
 import ThemesIntroPanel from '../panels/intro/themes-intro.panel';
 import SelectCityIntroPanel from '../panels/intro/select-city-intro.panel';
+import AboutMyselfIntroPanel from '../panels/intro/about-myself-intro.panel';
+import EventCreatedIntroPanel from '../panels/intro/event-created-intro.panel';
+import CreateFirstEventIntroPanel from '../panels/intro/create-first-event-intro.panel';
 
 interface PropsFromState {
     id: string;
@@ -13,6 +16,7 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
+
 }
 
 
@@ -27,6 +31,9 @@ class IntroView extends React.Component<AllProps>  {
                 <HelloIntroPanel id={PANELS.HELLO_INTRO_PANEL}></HelloIntroPanel>
                 <ThemesIntroPanel id={PANELS.THEMES_INTRO_PANEL}></ThemesIntroPanel>
                 <SelectCityIntroPanel id={PANELS.SELECT_CITY_INTRO_PANEL}></SelectCityIntroPanel>
+                <AboutMyselfIntroPanel id={PANELS.ABOUT_MYSELF_INTRO_PANEL}></AboutMyselfIntroPanel>
+                <CreateFirstEventIntroPanel id={PANELS.CREATE_EVENT_PANEL}></CreateFirstEventIntroPanel>
+                <EventCreatedIntroPanel id={PANELS.EVENT_CREATED_INTRO_PANEL}></EventCreatedIntroPanel>
             </View>
         )
     }

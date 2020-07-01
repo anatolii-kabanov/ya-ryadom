@@ -79,7 +79,7 @@ class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[]
                     {this.renderThemePills()}
                 </Div>
                 <FormLayout>
-                    <Div className="btn-container">
+                    <Div className="btn-container-bottom">
                         <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Продолжить</Button>
                     </Div>
                 </FormLayout>

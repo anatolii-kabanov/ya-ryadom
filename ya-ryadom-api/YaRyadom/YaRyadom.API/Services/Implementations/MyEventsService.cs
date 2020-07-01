@@ -25,9 +25,9 @@ namespace YaRyadom.API.Services.Implementations
 
 		public async Task<bool> AddAsync(EventFormModel model, CancellationToken cancellationToken = default)
 		{
-			var yaVDeleEvent = _mapper.Map<YaRyadomEvent>(model);
+			var yaRyadomEvent = _mapper.Map<YaRyadomEvent>(model);
 
-			var yaVDeleUser = await _dbContext
+			var yaRyadomUser = await _dbContext
 				.YaRyadomUsers
 				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
 				.ConfigureAwait(false);
@@ -38,13 +38,13 @@ namespace YaRyadom.API.Services.Implementations
 					new YaRyadomEventTheme
 					{
 						Type = (ThemeType)theme,
-						YaRyadomEvent = yaVDeleEvent
+						YaRyadomEvent = yaRyadomEvent
 					});
 			}
 
-			yaVDeleEvent.YaVDeleUserOwner = yaVDeleUser;
+			yaRyadomEvent.YaVDeleUserOwner = yaRyadomUser;
 
-			Entities.Add(yaVDeleEvent);
+			Entities.Add(yaRyadomEvent);
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
@@ -82,29 +82,7 @@ namespace YaRyadom.API.Services.Implementations
 			return resultEvents;
 		}
 
-		public async Task<bool> ApproveApplicationAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
-		{
-			var application = await _dbContext
-				.YaRyadomUserApplications
-				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
-				.FirstOrDefaultAsync(cancellationToken);
 
-			application.Status = ApplicationStatus.Confirmed;
-
-			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
-		}
-
-		public async Task<bool> RejectApplicationAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
-		{
-			var application = await _dbContext
-				.YaRyadomUserApplications
-				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
-				.FirstOrDefaultAsync(cancellationToken);
-
-			application.Status = ApplicationStatus.Rejected;
-
-			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
-		}
 
 	}
 }
