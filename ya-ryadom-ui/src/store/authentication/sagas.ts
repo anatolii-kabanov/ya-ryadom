@@ -61,7 +61,6 @@ function* watchFetchUserInfoRequest() {
 
 function* handleFetchVkUserInfo(action: ReturnType<typeof fetchVkUserInfoRequest>) {
     try {
-        console.log(API_ENDPOINT);
         // Work only via vk tunnel
         const result = yield vkBridge.send('VKWebAppGetUserInfo', {});
 

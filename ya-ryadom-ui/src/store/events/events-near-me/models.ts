@@ -1,4 +1,5 @@
 import { ThemeType } from "../../../utils/enums/theme-type.enum";
+import { ApplicationStatus } from "../../../utils/enums/application-status.enum";
 
 export interface EventNearMe {
     longitude: number,
@@ -12,7 +13,8 @@ export interface EventNearMe {
     vkUserAvatarUrl: string,
     userFullName: string,
     distance: number,
-    id: number
+    id: number,
+    applicationStatus: ApplicationStatus
 }
 
 export interface MyEvent {

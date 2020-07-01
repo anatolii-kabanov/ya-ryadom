@@ -25,6 +25,8 @@ import { UserInfo } from '@vkontakte/vk-bridge';
 import { Position } from '../../../store/authentication/models';
 
 import './events-near-me.scss';
+import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
+import { applyToEventRequest } from '../../../store/applications/actions';
 
 
 interface PropsFromState {
@@ -36,8 +38,9 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    goForwardView: typeof goForward
-    fetchListRequest: typeof fetchListRequest
+    goForwardView: typeof goForward,
+    fetchListRequest: typeof fetchListRequest,
+    applyToEvent: typeof applyToEventRequest
 }
 type AllProps = PropsFromState & PropsFromDispatch;
 
@@ -67,10 +70,10 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
     }
 
     componentDidMount() {
-        const { fetchListRequest } = this.props
+        const { fetchListRequest, vkUserInfo } = this.props
         fetchListRequest({
             "userId": 0,
-            "vkUserId": 6476088,
+            "vkUserId": vkUserInfo.id,
             "latitude": this.getLatitude(),
             "longitude": this.getLongitude(),
             "maxDistance": 2500000,
@@ -87,10 +90,10 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
     onSearch(event) {
         if (event.key === 'Enter') {
             console.log('fetch')
-            const { fetchListRequest } = this.props
+            const { fetchListRequest, vkUserInfo } = this.props
             fetchListRequest({
                 "userId": 0,
-                "vkUserId": 6476088,
+                "vkUserId": vkUserInfo.id,
                 "latitude": this.getLatitude(),
                 "longitude": this.getLongitude(),
                 "maxDistance": 250000000,
@@ -107,6 +110,24 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
     getLongitude = () => {
         const { userPosition, lastLocation } = this.props;
         return userPosition?.long ?? lastLocation.longitude;
+    }
+
+    apply(eventId: number) {
+        const { applyToEvent } = this.props;
+        applyToEvent(eventId);
+    }
+
+    private renderApplicationStatus(status: ApplicationStatus) {
+        switch (status) {
+            case ApplicationStatus.sent:
+                return 'Отправлено';
+            case ApplicationStatus.confirmed:
+                return 'Подтверждено';
+            case ApplicationStatus.rejected:
+                return 'Отклонено';
+            default:
+                return '';
+        }
     }
 
     render() {
@@ -131,13 +152,15 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
 
                             <Icon24Dismiss
                                 className="close-cross"
-                                onClick={() => this.setState({ personOnMap: null })}/>
+                                onClick={() => this.setState({ personOnMap: null })} />
 
                             <Div className="map-card-buttons-div">
-                                <Button className="button-primary">Иду</Button>
+                                {this.state.personOnMap.applicationStatus === ApplicationStatus.none
+                                    ? <Button className="button-primary" onClick={() => this.apply(this.state.personOnMap.id)}>Иду</Button>
+                                    : <Button className="button-primary" disabled={true}>{this.renderApplicationStatus(this.state.personOnMap.applicationStatus)}</Button>}
                                 <Button className="button-secondary"
-                                        href={`https://vk.com/id${this.state.personOnMap.vkUserOwnerId}`}
-                                        onClick={() => window.open("https://vk.com/id" + this.state.personOnMap.vkUserOwnerId, '_blank')}
+                                    href={`https://vk.com/id${this.state.personOnMap.vkUserOwnerId}`}
+                                    onClick={() => window.open("https://vk.com/id" + this.state.personOnMap.vkUserOwnerId, '_blank')}
                                 >Посмотреть профить</Button>
                             </Div>
                         </div>
@@ -184,7 +207,8 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
 
 const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
-    fetchListRequest: fetchListRequest
+    fetchListRequest: fetchListRequest,
+    applyToEvent: applyToEventRequest
 }
 
 export default connect(

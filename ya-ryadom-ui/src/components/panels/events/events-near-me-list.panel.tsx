@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel, Group, RichCell, Button, Avatar, Div, CardGrid, Card, FormLayout, Input, InfoRow, Slider, } from '@vkontakte/vkui';
+import { Panel, Group, RichCell, Button, Avatar, Div, CardGrid, Card, FormLayout, Input, InfoRow, Slider, Text} from '@vkontakte/vkui';
 import { AppState } from '../../../store/app-state';
 import { connect } from 'react-redux';
 import MainHeaderPanel from '../headers/main.header';
@@ -8,12 +8,15 @@ import { EventNearMe } from '../../../store/events/events-near-me/models';
 import { Geo } from '../../../store/authentication/models';
 import { applyToEventRequest } from '../../../store/applications/actions';
 import { Position } from '../../../store/authentication/models';
+import { UserInfo } from '@vkontakte/vk-bridge';
+import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 
 interface PropsFromState {
     id: string;
     eventsList: EventNearMe[];
     userPosition: Geo;
     lastLocation: Position;
+    vkUserInfo: UserInfo;
 }
 
 interface PropsFromDispatch {
@@ -39,10 +42,10 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
     }
 
     componentDidMount() {
-        const { fetchList } = this.props
+        const { fetchList, vkUserInfo } = this.props
         fetchList({
             "userId": 0,
-            "vkUserId": 6476088,
+            "vkUserId": vkUserInfo.id,
             latitude: this.getLatitude(),
             longitude: this.getLongitude(),
             "maxDistance": this.state.radius,
@@ -52,11 +55,11 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
 
     onSearch(event) {
         if (event.key === 'Enter') {
-            const { fetchList } = this.props;
+            const { fetchList, vkUserInfo } = this.props;
             this.setState({ searchText: event.target.value });
             fetchList({
                 "userId": 0,
-                vkUserId: 6476088,
+                vkUserId: vkUserInfo.id,
                 latitude: this.getLatitude(),
                 longitude: this.getLongitude(),
                 maxDistance: this.state.radius,
@@ -66,11 +69,11 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
     }
 
     onRadiusChanged(radius: number) {
-        const { fetchList } = this.props;
+        const { fetchList, vkUserInfo } = this.props;
         this.setState({ radius });
         fetchList({
             "userId": 0,
-            vkUserId: 6476088,
+            vkUserId: vkUserInfo.id,
             latitude: this.getLatitude(),
             longitude: this.getLongitude(),
             maxDistance: this.state.radius,
@@ -91,6 +94,19 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
     apply(eventId: number) {
         const { applyToEvent } = this.props;
         applyToEvent(eventId);
+    }
+
+    private renderApplicationStatus(status: ApplicationStatus) {
+        switch (status) {
+            case ApplicationStatus.sent:
+                return 'Отправлено';
+            case ApplicationStatus.confirmed:
+                return 'Подтверждено';
+            case ApplicationStatus.rejected:
+                return 'Отклонено';
+            default:
+                return '';
+        }
     }
 
     private renderEvents() {
@@ -114,8 +130,10 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
                                             </InfoRow>
                                         </RichCell>
                                         <Div className="map-card-buttons-div">
-                                            <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
-                                            <Button className="button-secondary"
+                                            {item.applicationStatus === ApplicationStatus.none
+                                                ? <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
+                                                : <Button className="button-primary" disabled={true}>{this.renderApplicationStatus(item.applicationStatus)}</Button>}
+                                            <Button className="button-secondary width-50 text-center"
                                                 href={`https://vk.com/id${item?.vkUserOwnerId}`}
                                                 onClick={() => window.open("https://vk.com/id" + item?.vkUserOwnerId, '_blank')}
                                             >Посмотреть профить</Button>
@@ -161,6 +179,7 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
     eventsList: events.eventsNearMe.eventsList,
     userPosition: authentication.geoData,
     lastLocation: authentication.currentUser?.lastLocation,
+    vkUserInfo: authentication.vkUserInfo,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
