@@ -1,5 +1,6 @@
 ﻿using System;
 using YaRyadom.API.Models.Base;
+using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models
 {
@@ -17,5 +18,7 @@ namespace YaRyadom.API.Models
 		public string VkUserAvatarUrl { get; set; }
 
 		public string UserFullName { get; set; }
+
+		public ApplicationStatusModel ApplicationStatus { get; set; }
 	}
 }

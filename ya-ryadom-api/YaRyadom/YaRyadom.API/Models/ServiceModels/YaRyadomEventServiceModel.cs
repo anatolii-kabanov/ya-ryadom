@@ -1,6 +1,7 @@
 ﻿using NetTopologySuite.Geometries;
 using System;
 using YaRyadom.API.Models.Base;
+using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models.ServiceModels
 {
@@ -32,5 +33,7 @@ namespace YaRyadom.API.Models.ServiceModels
 		public string VkUserAvatarUrl { get; set; }
 
 		public string UserFullName { get; set; }
+
+		public ApplicationStatusModel ApplicationStatus { get; set;}
 	}
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YaRyadom.API.Models;
+using YaRyadom.API.Models.Enums;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Models.ServiceModels;
 using YaRyadom.API.Services.Implementations;
@@ -47,7 +48,11 @@ namespace YaRyadom.API.Services.Implementations
 					Location = m.Location,
 					Distance = m.Location.Distance(userPosition),
 					VkUserAvatarUrl = m.YaVDeleUserOwner.VkUserAvatarUrl,
-					UserFullName = m.YaVDeleUserOwner.FirstName + ' ' + m.YaVDeleUserOwner.LastName
+					UserFullName = m.YaVDeleUserOwner.FirstName + ' ' + m.YaVDeleUserOwner.LastName,
+					ApplicationStatus = m.YaRyadomUserApplications
+						.Where(mm => mm.YaRyadomUserRequested.VkId == model.VkUserId)
+						.Select(mm => (ApplicationStatusModel)mm.Status)
+						.FirstOrDefault()
 				})
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
@@ -68,7 +73,11 @@ namespace YaRyadom.API.Services.Implementations
 					Location = m.Location,
 					Distance = m.Location.Distance(userPosition),
 					VkUserAvatarUrl = m.YaVDeleUserOwner.VkUserAvatarUrl,
-					UserFullName = m.YaVDeleUserOwner.FirstName + ' ' + m.YaVDeleUserOwner.LastName
+					UserFullName = m.YaVDeleUserOwner.FirstName + ' ' + m.YaVDeleUserOwner.LastName,
+					ApplicationStatus = m.YaRyadomUserApplications
+						.Where(mm => mm.YaRyadomUserRequested.VkId == model.VkUserId)
+						.Select(mm => (ApplicationStatusModel)mm.Status)
+						.FirstOrDefault()
 				})
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
