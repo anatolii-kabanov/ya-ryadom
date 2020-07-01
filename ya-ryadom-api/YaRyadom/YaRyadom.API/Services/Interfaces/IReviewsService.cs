@@ -13,5 +13,7 @@ namespace YaRyadom.API.Services.Interfaces
 		Task<UserReviewAboutMeModel[]> GetReviewsAboutMeAsync(long vkId, CancellationToken cancellationToken = default);
 
 		Task<bool> AddAsync(UserReviewRequestModel model, CancellationToken cancellationToken = default);
+
+		Task<double> GetAvgRatingAsync(long vkId, CancellationToken cancellationToken = default);
 	}
 }

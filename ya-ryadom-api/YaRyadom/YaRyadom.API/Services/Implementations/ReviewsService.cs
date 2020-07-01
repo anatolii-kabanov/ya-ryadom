@@ -39,6 +39,16 @@ namespace YaRyadom.API.Services.Implementations
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
+		public async Task<double> GetAvgRatingAsync(long vkId, CancellationToken cancellationToken = default)
+		{
+			var avgRating = await TableNoTracking
+				.Where(m => m.YaRyadomUserToReview.VkId == vkId)
+				.AverageAsync(m => m.Rating, cancellationToken)
+				.ConfigureAwait(false);
+
+			return avgRating;
+		}
+
 		public async Task<UserReviewModel[]> GetMineReviewsAsync(long vkId, CancellationToken cancellationToken = default)
 		{
 			var reviews = await _mapper

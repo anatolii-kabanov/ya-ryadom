@@ -56,5 +56,15 @@ namespace YaRyadom.API.Controllers
 			await _reviewsService.AddAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
 		}
+
+		[AllowAnonymous]
+		[HttpGet("user-rating/{vkUserId}")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> GetAvgUserRating(long vkUserId, CancellationToken cancellationToken = default)
+		{
+			var result = await _reviewsService.GetAvgRatingAsync(vkUserId, cancellationToken).ConfigureAwait(false);
+			return Ok(result);
+		}
 	}
 }
