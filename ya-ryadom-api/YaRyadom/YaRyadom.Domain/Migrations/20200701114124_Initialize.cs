@@ -101,6 +101,42 @@ namespace YaRyadom.Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ya_ryadom_reviews",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    created_date = table.Column<DateTimeOffset>(nullable: false),
+                    text = table.Column<string>(maxLength: 1023, nullable: false),
+                    rating = table.Column<int>(nullable: false),
+                    ya_ryadom_event_id = table.Column<int>(nullable: false),
+                    ya_ryadom_user_reviewer_id = table.Column<int>(nullable: false),
+                    ya_ryadom_user_to_review_id = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ya_ryadom_reviews", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_ya_ryadom_reviews_ya_ryadom_events_ya_ryadom_event_id",
+                        column: x => x.ya_ryadom_event_id,
+                        principalTable: "ya_ryadom_events",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ya_ryadom_reviews_ya_ryadom_users_ya_ryadom_user_reviewer_id",
+                        column: x => x.ya_ryadom_user_reviewer_id,
+                        principalTable: "ya_ryadom_users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ya_ryadom_reviews_ya_ryadom_users_ya_ryadom_user_to_review_~",
+                        column: x => x.ya_ryadom_user_to_review_id,
+                        principalTable: "ya_ryadom_users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ya_ryadom_user_applications",
                 columns: table => new
                 {
@@ -146,6 +182,21 @@ namespace YaRyadom.Domain.Migrations
                 column: "ya_ryadom_user_owner_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ya_ryadom_reviews_ya_ryadom_event_id",
+                table: "ya_ryadom_reviews",
+                column: "ya_ryadom_event_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ya_ryadom_reviews_ya_ryadom_user_reviewer_id",
+                table: "ya_ryadom_reviews",
+                column: "ya_ryadom_user_reviewer_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ya_ryadom_reviews_ya_ryadom_user_to_review_id",
+                table: "ya_ryadom_reviews",
+                column: "ya_ryadom_user_to_review_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ya_ryadom_user_applications_ya_ryadom_event_id",
                 table: "ya_ryadom_user_applications",
                 column: "ya_ryadom_event_id");
@@ -165,19 +216,22 @@ namespace YaRyadom.Domain.Migrations
                 table: "ya_ryadom_users",
                 column: "vk_id",
                 unique: true);
+
 				migrationBuilder.Sql(
 					@"CREATE TRIGGER events_search_vector_update BEFORE INSERT OR UPDATE
 					ON ""ya_ryadom_events"" FOR EACH ROW EXECUTE PROCEDURE
 					tsvector_update_trigger(""search_vector"", 'pg_catalog.russian', ""title"", ""description"");");
-
 		}
 
-		protected override void Down(MigrationBuilder migrationBuilder)
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
 				migrationBuilder.Sql("DROP TRIGGER events_search_vector_update");
 
 				migrationBuilder.DropTable(
                 name: "ya_ryadom_event_themes");
+
+            migrationBuilder.DropTable(
+                name: "ya_ryadom_reviews");
 
             migrationBuilder.DropTable(
                 name: "ya_ryadom_user_applications");

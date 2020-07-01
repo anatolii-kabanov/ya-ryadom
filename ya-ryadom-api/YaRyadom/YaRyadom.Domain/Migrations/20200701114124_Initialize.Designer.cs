@@ -12,7 +12,7 @@ using YaRyadom.Domain.DbContexts;
 namespace YaRyadom.Domain.Migrations
 {
     [DbContext(typeof(YaRyadomDbContext))]
-    [Migration("20200626212418_Initialize")]
+    [Migration("20200701114124_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -108,6 +108,51 @@ namespace YaRyadom.Domain.Migrations
                     b.HasIndex("YaRyadomEventId");
 
                     b.ToTable("ya_ryadom_event_themes");
+                });
+
+            modelBuilder.Entity("YaRyadom.Domain.Entities.YaRyadomReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnName("created_date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Rating")
+                        .HasColumnName("rating")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnName("text")
+                        .HasColumnType("character varying(1023)")
+                        .HasMaxLength(1023);
+
+                    b.Property<int>("YaRyadomEventId")
+                        .HasColumnName("ya_ryadom_event_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YaRyadomUserReviewerId")
+                        .HasColumnName("ya_ryadom_user_reviewer_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("YaRyadomUserToReviewId")
+                        .HasColumnName("ya_ryadom_user_to_review_id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("YaRyadomEventId");
+
+                    b.HasIndex("YaRyadomUserReviewerId");
+
+                    b.HasIndex("YaRyadomUserToReviewId");
+
+                    b.ToTable("ya_ryadom_reviews");
                 });
 
             modelBuilder.Entity("YaRyadom.Domain.Entities.YaRyadomUser", b =>
@@ -227,6 +272,27 @@ namespace YaRyadom.Domain.Migrations
                     b.HasOne("YaRyadom.Domain.Entities.YaRyadomEvent", "YaRyadomEvent")
                         .WithMany("YaRyadomEventThemes")
                         .HasForeignKey("YaRyadomEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("YaRyadom.Domain.Entities.YaRyadomReview", b =>
+                {
+                    b.HasOne("YaRyadom.Domain.Entities.YaRyadomEvent", "YaRyadomEvent")
+                        .WithMany("YaRyadomReviews")
+                        .HasForeignKey("YaRyadomEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("YaRyadom.Domain.Entities.YaRyadomUser", "YaRyadomUserReviewer")
+                        .WithMany("YaRyadomReviewsMine")
+                        .HasForeignKey("YaRyadomUserReviewerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("YaRyadom.Domain.Entities.YaRyadomUser", "YaRyadomUserToReview")
+                        .WithMany("YaRyadomReviewsAboutMe")
+                        .HasForeignKey("YaRyadomUserToReviewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
