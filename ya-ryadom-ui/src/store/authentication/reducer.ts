@@ -35,3 +35,4 @@ const reducer: Reducer<AuthenticationState> = (state = initialState, action) => 
 export { reducer as authenticationReducer };
 
 export const getVkUserId = (state: AppState) => state.authentication.vkUserInfo?.id;
+export const getGeoData = (state: AppState) => state.authentication.geoData;

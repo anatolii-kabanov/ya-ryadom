@@ -130,7 +130,7 @@ class EventForm extends React.Component<AllProps, EventState> {
 
         return (
             <FormLayout>
-                <Input top="Тема" type="text" placeholder="Введите текст" name="eventName" onChange={this.handleInputChange} />
+                <Input top="Название" type="text" placeholder="Введите текст" name="eventName" onChange={this.handleInputChange} />
                 <Textarea top="Описание" placeholder="Введите текст" name="eventDescription" onChange={this.handleInputChange}></Textarea>
                 <Select placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange}>
                     {this.renderThemesSelect()}

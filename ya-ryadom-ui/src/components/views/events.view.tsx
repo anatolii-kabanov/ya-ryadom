@@ -28,8 +28,7 @@ type AllProps = PropsFromState & PropsFromDispatch;
 class EventsView extends React.Component<AllProps>  {
 
     public componentDidMount() {
-        const { fetchList } = this.props;
-        fetchList({});
+        
     }
 
     render() {

@@ -1,4 +1,4 @@
-import { all, call, fork, put, takeEvery, takeLatest, select } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery, takeLatest, select, take } from 'redux-saga/effects';
 import vkBridge, { UserInfo } from '@vkontakte/vk-bridge';
 import { AuthenticationTypes } from './types';
 import {
@@ -24,12 +24,12 @@ import {
     saveUserAboutMyselfSuccess
 } from './actions'
 import { callApi } from '../../utils/api';
-import { Geo } from './models';
-import { goForward } from '../history/actions';
+import { Geo, User } from './models';
+import { goForward, reset } from '../history/actions';
 import { VkHistoryModel } from '../history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
-import { getVkUserId } from './reducer';
+import { getVkUserId, getGeoData } from './reducer';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/auth`;
 
@@ -40,7 +40,11 @@ function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
         if (result.errors) {
             yield put(fetchUserInfoError(result.errors));
         } else {
-            yield put(fetchUserInfoSuccess(result));
+            var user: User = result;
+            yield put(fetchUserInfoSuccess(user));
+            if (user.guideCompleted) {
+                yield put(reset(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL)));
+            }
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -66,15 +70,17 @@ function* handleFetchVkUserInfo(action: ReturnType<typeof fetchVkUserInfoRequest
         } else {
             const vkUserInfo = result as UserInfo;
             yield put(fetchVkUserInfoSuccess(vkUserInfo));
+            const geo: Geo = yield vkBridge.send("VKWebAppGetGeodata", {});
             yield put(saveUserInfoRequest({
-                guideCompleted: true,
+                guideCompleted: false,  
                 vkUserId: vkUserInfo.id,
                 firstName: vkUserInfo.first_name,
                 lastName: vkUserInfo.last_name,
                 vkUserAvatarUrl: vkUserInfo.photo_200,
                 selectedThemes: [],
-                lastLocation: null
-            }))
+                lastLocation: { latitude: geo?.lat, longitude: geo?.long }
+            }));
+            yield take(saveUserInfoRequest);
             // Request our user info
             yield put(fetchUserInfoRequest(vkUserInfo.id));
         }
