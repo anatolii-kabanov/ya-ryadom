@@ -82,29 +82,7 @@ namespace YaRyadom.API.Services.Implementations
 			return resultEvents;
 		}
 
-		public async Task<bool> ApproveApplicationAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
-		{
-			var application = await _dbContext
-				.YaRyadomUserApplications
-				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
-				.FirstOrDefaultAsync(cancellationToken);
 
-			application.Status = ApplicationStatus.Confirmed;
-
-			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
-		}
-
-		public async Task<bool> RejectApplicationAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
-		{
-			var application = await _dbContext
-				.YaRyadomUserApplications
-				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
-				.FirstOrDefaultAsync(cancellationToken);
-
-			application.Status = ApplicationStatus.Rejected;
-
-			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
-		}
 
 	}
 }
