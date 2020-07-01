@@ -1,3 +1,5 @@
+import { EventsApplications } from "./models";
+
 export interface ApplicationsState {
-   eventsApplicants: any
+   eventsApplicants: EventsApplications
 }

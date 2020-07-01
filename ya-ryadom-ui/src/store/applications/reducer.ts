@@ -3,13 +3,18 @@ import { ApplicationsState } from './state';
 import { ApplicationsTypes } from './types';
 
 export const initialState: ApplicationsState = {
-    eventsApplicants: null
+    eventsApplicants: {}
 }
 
 const reducer: Reducer<ApplicationsState> = (state = initialState, action) => {
     switch (action.type) {
         case ApplicationsTypes.FETCH_EVENT_APPLICANTS: {
-            return { ...state, vkUserInfo: action.payload }
+            return {
+                ...state, eventsApplicants: {
+                    ...state.eventsApplicants,
+                    [action.payload.eventId]: action.payload.applications
+                }
+            }
         }
         default: {
             return state

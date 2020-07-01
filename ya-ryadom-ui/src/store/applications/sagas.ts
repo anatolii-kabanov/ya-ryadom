@@ -2,7 +2,7 @@ import { all, call, fork, put, takeEvery, takeLatest, select } from 'redux-saga/
 import { ApplicationsTypes } from './types';
 import { fetchEventApplicantsRequest, fetchEventApplicantsError, fetchEventApplicantsSuccess, applyToEventRequest, applyToEventError, applyToEventSuccess, confirmApplicantRequest, confirmApplicantError, confirmApplicantSuccess, rejectApplicantRequest, rejectApplicantError, rejectApplicantSuccess, revokeApplicationRequest, revokeApplicationError, revokeApplicationSuccess } from './actions'
 import { callApi } from '../../utils/api';
-import { Application } from './models';
+import { ApplicationRequest } from './models';
 import { getVkUserId } from '../authentication/reducer';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/applicatioins`;
@@ -33,7 +33,7 @@ function* handleApplyToEventRequest(action: ReturnType<typeof applyToEventReques
     try {
         const vkUserId = yield select(getVkUserId);
 
-        const applyToEvent: Application = {
+        const applyToEvent: ApplicationRequest = {
             vkUserId: vkUserId,
             eventId: action.payload,
         };
@@ -64,7 +64,7 @@ function* handleConfirmApplicantRequest(action: ReturnType<typeof confirmApplica
     try {
         const vkUserId = yield select(getVkUserId);
 
-        const application: Application = {
+        const application: ApplicationRequest = {
             vkUserId: vkUserId,
             eventId: action.payload,
         };
@@ -95,7 +95,7 @@ function* handleRejectApplicantRequest(action: ReturnType<typeof rejectApplicant
     try {
         const vkUserId = yield select(getVkUserId);
 
-        const application: Application = {
+        const application: ApplicationRequest = {
             vkUserId: vkUserId,
             eventId: action.payload,
         };
@@ -126,7 +126,7 @@ function* handleRevokeApplicationRequest(action: ReturnType<typeof revokeApplica
     try {
         const vkUserId = yield select(getVkUserId);
 
-        const application: Application = {
+        const application: ApplicationRequest = {
             vkUserId: vkUserId,
             eventId: action.payload,
         };
