@@ -74,7 +74,6 @@ function* watchSaveEventIntroRequest() {
     yield takeLatest(MyEventsTypes.SAVE_MY_EVENT_INTRO, handleSaveEventIntroRequest)
 }
 
-
 function* myEventsSagas() {
     yield all([
         fork(watchMyEventsFetchRequest),

@@ -5,7 +5,8 @@ import {
     Input,
     Textarea,
     Button,
-    Div
+    Div,
+    Select
 } from '@vkontakte/vkui';
 import GoogleMapReact, { ClickEventValue } from 'google-map-react';
 import Marker from '../map/marker';
@@ -16,6 +17,7 @@ import { connect } from 'react-redux';
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { Position } from '../../store/authentication/models';
 import { MyEventCreate } from '../../store/events/events-near-me/models';
+import { ALL_THEMES } from '../../utils/constants/theme.constants';
 
 interface PropsFromState {
     userPosition: Geo,
@@ -41,7 +43,7 @@ interface EventState {
     eventDescription: string,
     eventDate: string,
     eventTime: string,
-    selectedThemes: [],
+    selectedTheme: number,
     [key: string]: any
 }
 
@@ -57,7 +59,7 @@ class EventForm extends React.Component<AllProps, EventState> {
             eventDescription: '',
             eventDate: '',
             eventTime: '',
-            selectedThemes: []
+            selectedTheme: 0
         };
         this.onLocationClick = this.onLocationClick.bind(this);
         this.onFillInProfile = this.onFillInProfile.bind(this)
@@ -81,7 +83,7 @@ class EventForm extends React.Component<AllProps, EventState> {
             description: this.state.eventDescription,
             maxQuantiyty: 50,
             vkUserId: this.props.vkUserInfo.id,
-            selectedThemes: [],
+            selectedThemes: [this.state.selectedTheme],
         });
     }
 
@@ -102,12 +104,30 @@ class EventForm extends React.Component<AllProps, EventState> {
         return userPosition?.long ?? lastLocation.longitude;
     }
 
+    renderThemesSelect() {
+        const themes = ALL_THEMES;
+        if (themes) {
+            return themes
+                .map((item, key) => {
+                    return <option
+                        key={key}
+                        value={item.id}>
+                        {item.name}
+                    </option>
+                });
+        }
+    }
+
     render() {
         const { selectedPosition } = this.state;
+
         return (
             <FormLayout>
                 <Input top="Тема" type="text" placeholder="Введите текст" name="eventName" onChange={this.handleInputChange} />
                 <Textarea top="Описание" placeholder="Введите текст" name="eventDescription" onChange={this.handleInputChange}></Textarea>
+                <Select placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange}>
+                    {this.renderThemesSelect()}
+                </Select>
                 <Input top="Дата встречи (не обязательно)" type="date" name="eventDate" onChange={this.handleInputChange} />
                 <Input top="Время встречи (не обязательно)" type="time" name="eventTime" onChange={this.handleInputChange} />
                 <Div style={{ height: '100vh', width: '92%', margin: '0 auto' }}>
