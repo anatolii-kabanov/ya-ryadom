@@ -4,6 +4,7 @@ import { fetchEventApplicantsRequest, fetchEventApplicantsError, fetchEventAppli
 import { callApi } from '../../utils/api';
 import { ApplicationRequest } from './models';
 import { getVkUserId } from '../authentication/reducer';
+import { setSentStatus } from '../events/events-near-me/actions';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/applicatioins`;
 
@@ -44,6 +45,7 @@ function* handleApplyToEventRequest(action: ReturnType<typeof applyToEventReques
             yield put(applyToEventError(result.errors));
         } else {
             yield put(applyToEventSuccess(action.payload));
+            yield put(setSentStatus(action.payload));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
