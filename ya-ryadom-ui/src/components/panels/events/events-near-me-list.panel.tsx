@@ -54,9 +54,9 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
     }
 
     onSearch(event) {
+        this.setState({ searchText: event.target.value });
         if (event.key === 'Enter') {
-            const { fetchList, vkUserInfo } = this.props;
-            this.setState({ searchText: event.target.value });
+            const { fetchList, vkUserInfo } = this.props;            
             fetchList({
                 "userId": 0,
                 vkUserId: vkUserInfo.id,
@@ -163,7 +163,6 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
                         top="Радиус"
                     />
                     <Div>
-
                         {this.state.radius}  км
                     </Div>
                 </FormLayout>

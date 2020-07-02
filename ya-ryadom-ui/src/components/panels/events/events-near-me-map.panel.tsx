@@ -6,7 +6,7 @@ import {
     Input,
     Div,
     CardGrid,
-    Card, RichCell, Avatar, Button, InfoRow
+    Card, RichCell, Avatar, Button, InfoRow, Slider
 } from '@vkontakte/vkui';
 import { AppState } from '../../../store/app-state';
 import { connect } from 'react-redux';
@@ -44,16 +44,20 @@ interface PropsFromDispatch {
 }
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class EventsNearMeMapPanel extends React.Component<AllProps>  {
+interface State {
+    personOnMap: any;
+    searchText: string;
+    radius: number;
+}
 
-    state = {
-        personOnMap: null as any
-    }
+class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
 
     constructor(props) {
         super(props);
         this.state = {
-            personOnMap: null as any
+            personOnMap: null,
+            searchText: "",
+            radius: 10,
         }
         this.onMarkerClick = this.onMarkerClick.bind(this)
         this.onSearch = this.onSearch.bind(this)
@@ -88,15 +92,15 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
     }
 
     onSearch(event) {
+        this.setState({ searchText: event.target.value });
         if (event.key === 'Enter') {
-            console.log('fetch')
-            const { fetchListRequest, vkUserInfo } = this.props
+            const { fetchListRequest, vkUserInfo } = this.props;            
             fetchListRequest({
                 "userId": 0,
                 "vkUserId": vkUserInfo.id,
                 "latitude": this.getLatitude(),
                 "longitude": this.getLongitude(),
-                "maxDistance": 250000000,
+                "maxDistance": this.state.radius,
                 "searchText": event.target.value
             })
         }
@@ -115,6 +119,19 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
     apply(eventId: number) {
         const { applyToEvent } = this.props;
         applyToEvent(eventId);
+    }
+
+    onRadiusChanged(radius: number) {
+        const { fetchListRequest, vkUserInfo } = this.props;
+        this.setState({ radius });
+        fetchListRequest({
+            "userId": 0,
+            vkUserId: vkUserInfo.id,
+            latitude: this.getLatitude(),
+            longitude: this.getLongitude(),
+            maxDistance: this.state.radius,
+            searchText: this.state.searchText,
+        })
     }
 
     private renderApplicationStatus(status: ApplicationStatus) {
@@ -173,6 +190,17 @@ class EventsNearMeMapPanel extends React.Component<AllProps>  {
                 <MainHeaderPanel text={"Карта"}></MainHeaderPanel>
                 <FormLayout>
                     <Input type="text" placeholder="Поиск по интересам" name="Search" onKeyDown={(event) => this.onSearch(event)}></Input>
+                    <Slider
+                        min={1}
+                        max={250}
+                        step={0.5}
+                        value={this.state.radius}
+                        onChange={radius => this.onRadiusChanged(radius)}
+                        top="Радиус"
+                    />
+                    <Div>
+                        {this.state.radius}  км
+                    </Div>
                 </FormLayout>
                 <Group>
                     {/* <Div> from VKUI mess it up for some reason*/}
