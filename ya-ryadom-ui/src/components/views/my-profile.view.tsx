@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View } from '@vkontakte/vkui';
 import { PANELS } from '../../utils/constants/panel.constants';
-import MyProfilePanel from "../panels/my-profile.panel";
+import MyProfilePanel from "../panels/profile/my-profile.panel";
 import {AppState} from "../../store/app-state";
 import MyEventCreatePanel from '../panels/my-event-create.panel';
 
