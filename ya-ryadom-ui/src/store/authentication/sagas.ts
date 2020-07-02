@@ -77,7 +77,8 @@ function* handleFetchVkUserInfo(action: ReturnType<typeof fetchVkUserInfoRequest
                 lastName: vkUserInfo.last_name,
                 vkUserAvatarUrl: vkUserInfo.photo_200,
                 selectedThemes: [],
-                lastLocation: { latitude: geo?.lat, longitude: geo?.long }
+                lastLocation: { latitude: geo?.lat, longitude: geo?.long },
+                aboutMySelf: ''
             }));
             yield take(saveUserInfoRequest);
             // Request our user info

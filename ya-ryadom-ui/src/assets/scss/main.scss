@@ -7,6 +7,14 @@
   width: calc(100% - 2 * 24px) !important;
 }
 
+.btn-info {
+  background-color: $info-color !important;
+  color: black !important;
+  margin-left: 24px !important;
+  margin-right: 24px !important;
+  width: calc(100% - 2 * 24px) !important;
+}
+
 .nav-icon {
   color: $secondary-color;
 }
@@ -25,9 +33,14 @@
   width: 100%;
   padding-left: 0px;
   margin-bottom: 12px;
-  margin-left: -12px;
 }
 
 .Slider__dragger::before {
   background: $primary-color !important;
+}
+
+.pills {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }

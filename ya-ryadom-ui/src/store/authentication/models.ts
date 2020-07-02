@@ -7,7 +7,8 @@ export interface User {
     lastName: string,
     vkUserAvatarUrl: string,
     selectedThemes: ThemeType[],
-    lastLocation: Position | null
+    lastLocation: Position | null,
+    aboutMySelf: string;
     // some settings
 }
 

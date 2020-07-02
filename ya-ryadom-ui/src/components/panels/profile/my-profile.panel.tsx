@@ -5,24 +5,26 @@ import {
     Panel,
     Avatar,
     RichCell,
-    Card,
-    CardGrid,
+    Div,
 } from "@vkontakte/vkui";
 import { connect } from 'react-redux';
 import { AppState } from "../../../store/app-state";
 
 import MainHeaderPanel from "../headers/main.header";
-import { MyEvent } from "../../../store/events/events-near-me/models";
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { goForward } from "../../../store/history/actions";
 import { VkHistoryModel } from "../../../store/history/models";
 import { VIEWS } from "../../../utils/constants/view.constants";
 import { PANELS } from "../../../utils/constants/panel.constants";
 import { fetchMyEventsListRequest } from "../../../store/events/my-events/actions";
+import { User } from "../../../store/authentication/models";
+import PillInput from "../../inputs/pill.input";
+import { ALL_THEMES } from "../../../utils/constants/theme.constants";
 
 interface PropsFromState {
     id: string;
-    currentUser: UserInfo;
+    vkUserInfo: UserInfo;
+    currentUser: User;
 }
 
 interface PropsFromDispatch {
@@ -39,28 +41,19 @@ class MyProfilePanel extends React.Component<AllProps>{
         fetchMyEventsListRequest();
     }
 
-    private renderEventsList() {
-        // const { myEvents, } = this.props;
-        // if (myEvents) {
-        //     return myEvents
-        //         .map((item, key) => {
-        //             return <CardGrid key={key}><Card size="l" mode="outline">
-        //                 <RichCell
-        //                     disabled
-        //                     multiline
-        //                     text={item.description}
-        //                     caption={new Date(item.date).toLocaleDateString()}
-        //                 >
-        //                     {item.title}
-        //                 </RichCell>
-        //             </Card>
-        //             </CardGrid>
-        //         });
-        // }
+    private renderThemes() {
+        const { currentUser } = this.props;
+        if (currentUser?.selectedThemes) {
+            const themes = ALL_THEMES.filter(t => currentUser.selectedThemes.indexOf(t.id) !== -1);
+            return themes
+                .map((item, key) => {
+                    return <PillInput id={item.id} selected={true} onClick={() => ''} text={item.name}></PillInput>
+                });
+        }
     }
 
     render() {
-        const { id, currentUser, goForwardView } = this.props;
+        const { id, vkUserInfo, goForwardView, currentUser } = this.props;
         return (
             <Panel id={id}>
                 <MainHeaderPanel text='Мой профиль'></MainHeaderPanel>
@@ -68,15 +61,24 @@ class MyProfilePanel extends React.Component<AllProps>{
                     <RichCell
                         disabled
                         multiline
-                        before={<Avatar size={72} src={currentUser?.photo_100} />}
+                        text={currentUser.aboutMySelf}
+                        before={<Avatar size={72} src={vkUserInfo?.photo_100} />}
                     >
-                        Привет {currentUser?.first_name}
+                        {vkUserInfo?.first_name} {vkUserInfo?.last_name}
                     </RichCell>
-
-                    {this.renderEventsList()}
+                    <Div className="pills">
+                        {this.renderThemes()}
+                    </Div>
                 </Group>
                 <Group>
-                    <Button size="xl" className="btn-primary" onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL))}>Добавить</Button>
+                    <Div>
+                        <Button size="xl" className="btn-primary"
+                            onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL))}>Создать событие</Button>
+                    </Div>
+                    <Div>
+                        <Button size="xl" className="btn-info"
+                            onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL))}>Посмотреть историю</Button>
+                    </Div>
                 </Group>
             </Panel>
         );
@@ -85,7 +87,8 @@ class MyProfilePanel extends React.Component<AllProps>{
 
 const mapStateToProps = ({ events, authentication }: AppState) => ({
     myEvents: events.myEvents.eventsList,
-    currentUser: authentication.vkUserInfo
+    vkUserInfo: authentication.vkUserInfo,
+    currentUser: authentication.currentUser,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

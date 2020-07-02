@@ -26,6 +26,9 @@ const reducer: Reducer<AuthenticationState> = (state = initialState, action) => 
         case AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS: {
             return { ...state, currentUser: { ...state.currentUser, lastLocation: action.payload } }
         }
+        case AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS: {
+            return { ...state, currentUser: { ...state.currentUser, aboutMySelf: action.payload } }
+        }
         default: {
             return state
         }
