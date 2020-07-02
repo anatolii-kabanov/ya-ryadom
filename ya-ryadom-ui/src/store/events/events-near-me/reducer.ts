@@ -18,7 +18,7 @@ const reducer: Reducer<EventsNearMeState> = (state = initialState, action) => {
             const event = { ...state.eventsList[index] };
             event.applicationStatus = ApplicationStatus.sent;
             return {
-                ...state, discountsList: [
+                ...state, eventsList: [
                     ...state.eventsList.slice(0, index),
                     event,
                     ...state.eventsList.slice(index + 1),
