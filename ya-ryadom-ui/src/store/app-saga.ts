@@ -4,6 +4,7 @@ import historySagas from "./history/sagas";
 import eventsNearMeSagas from "./events/events-near-me/sagas";
 import myEventsSagas from "./events/my-events/sagas";
 import applicationsSagas from "./applications/sagas";
+import reviewsSagas from "./reviews/sagas";
 
 export function* rootSaga() {
     yield all([
@@ -11,6 +12,7 @@ export function* rootSaga() {
         fork(historySagas),
         fork(eventsNearMeSagas),
         fork(myEventsSagas),
-        fork(applicationsSagas)
+        fork(applicationsSagas),
+        fork(reviewsSagas),
     ])
 }
