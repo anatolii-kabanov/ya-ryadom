@@ -1,5 +1,7 @@
-import { EventsApplications } from "./models";
+import { EventsApplications, Application } from "./models";
 
 export interface ApplicationsState {
-   eventsApplicants: EventsApplications
+   eventsApplicants: EventsApplications,
+   mineApplications: Application[],
+   applicationsToMe: Application[],
 }
