@@ -30,6 +30,7 @@ import { VkHistoryModel } from '../history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
 import { getVkUserId, getGeoData } from './reducer';
+import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/auth`;
 
@@ -147,6 +148,7 @@ function* watchSaveUserInfoRequest() {
 
 function* handleSaveUserThemesRequest(action: ReturnType<typeof saveUserThemesRequest>) {
     try {
+        yield put(showSpinner());
         const vkUserId = yield select(getVkUserId);
 
         const userIntro = {
@@ -169,7 +171,7 @@ function* handleSaveUserThemesRequest(action: ReturnType<typeof saveUserThemesRe
             yield put(saveUserThemesError('An unknown error occured.'));
         }
     } finally {
-
+        yield put(hideSpinner());
     }
 }
 

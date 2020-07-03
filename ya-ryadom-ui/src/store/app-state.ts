@@ -3,6 +3,7 @@ import { AuthenticationState } from "./authentication/state";
 import { EventsState } from "./events/state";
 import { ApplicationsState } from "./applications/state";
 import { ReviewsState } from "./reviews/state";
+import { UiState } from "./ui/state";
 
 export interface AppState {
     authentication: AuthenticationState,
@@ -10,4 +11,5 @@ export interface AppState {
     events: EventsState,
     applications: ApplicationsState,
     reviews: ReviewsState,
+    ui: UiState,
 }
