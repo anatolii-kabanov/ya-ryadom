@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery, takeLatest, select } from 'redux-saga/effects';
 import { ApplicationsTypes } from './types';
-import { fetchEventApplicantsRequest, fetchEventApplicantsError, fetchEventApplicantsSuccess, applyToEventRequest, applyToEventError, applyToEventSuccess, confirmApplicantRequest, confirmApplicantError, confirmApplicantSuccess, rejectApplicantRequest, rejectApplicantError, rejectApplicantSuccess, revokeApplicationRequest, revokeApplicationError, revokeApplicationSuccess } from './actions'
+import { fetchEventApplicantsRequest, fetchEventApplicantsError, fetchEventApplicantsSuccess, applyToEventRequest, applyToEventError, applyToEventSuccess, confirmApplicantRequest, confirmApplicantError, confirmApplicantSuccess, rejectApplicantRequest, rejectApplicantError, rejectApplicantSuccess, revokeApplicationRequest, revokeApplicationError, revokeApplicationSuccess, fetchMineApplicationsRequest, fetchMineApplicationsError, fetchMineApplicationsSuccess, fetchApplicationsToMeRequest, fetchApplicationsToMeError, fetchApplicationsToMeSuccess } from './actions'
 import { callApi } from '../../utils/api';
 import { ApplicationRequest } from './models';
 import { getVkUserId } from '../authentication/reducer';
@@ -28,6 +28,50 @@ function* handleFetchEventApplicantsRequest(action: ReturnType<typeof fetchEvent
 
 function* watchFetchEventApplicantsRequest() {
     yield takeEvery(ApplicationsTypes.FETCH_EVENT_APPLICANTS, handleFetchEventApplicantsRequest)
+}
+
+function* handleFetchMineApplicationsRequest(action: ReturnType<typeof fetchMineApplicationsRequest>) {
+    try {
+        const result = yield call(callApi, 'get', API_ENDPOINT, `/mine/${action.payload}`);
+
+        if (result.errors) {
+            yield put(fetchMineApplicationsError(result.errors));
+        } else {
+            yield put(fetchMineApplicationsSuccess(result));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(fetchMineApplicationsError(error.stack));
+        } else {
+            yield put(fetchMineApplicationsError('An unknown error occured.'));
+        }
+    }
+}
+
+function* watchFetchMineApplicationsRequest() {
+    yield takeEvery(ApplicationsTypes.FETCH_MINE_APPLICATIONS, handleFetchMineApplicationsRequest)
+}
+
+function* handleFetchApplicationsToMeRequest(action: ReturnType<typeof fetchApplicationsToMeRequest>) {
+    try {
+        const result = yield call(callApi, 'get', API_ENDPOINT, `/to-me/${action.payload}`);
+
+        if (result.errors) {
+            yield put(fetchApplicationsToMeError(result.errors));
+        } else {
+            yield put(fetchApplicationsToMeSuccess(result));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(fetchApplicationsToMeError(error.stack));
+        } else {
+            yield put(fetchApplicationsToMeError('An unknown error occured.'));
+        }
+    }
+}
+
+function* watchFetchApplicationsToMeRequest() {
+    yield takeEvery(ApplicationsTypes.FETCH_APPLICATIONS_TO_ME, handleFetchApplicationsToMeRequest)
 }
 
 function* handleApplyToEventRequest(action: ReturnType<typeof applyToEventRequest>) {
@@ -161,7 +205,9 @@ function* applicationsSagas() {
         fork(watchApplyToEventRequest),
         fork(watchConfirmApplicantRequest),
         fork(watchRejectApplicantRequest),
-        fork(watchRevokeApplicationRequest)
+        fork(watchRevokeApplicationRequest),
+        fork(watchFetchMineApplicationsRequest),
+        fork(watchFetchApplicationsToMeRequest),
     ])
 }
 

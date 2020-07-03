@@ -69,7 +69,7 @@ function* handleFetchVkUserInfo(action: ReturnType<typeof fetchVkUserInfoRequest
         } else {
             const vkUserInfo = result as UserInfo;
             yield put(fetchVkUserInfoSuccess(vkUserInfo));
-            const geo: Geo = yield vkBridge.send("VKWebAppGetGeodata", {});
+            const geo: Geo = yield vkBridge.send("VKWebAppGetGeodata", {}); // need to be replaced in other place
             yield put(saveUserInfoRequest({
                 guideCompleted: false,  
                 vkUserId: vkUserInfo.id,

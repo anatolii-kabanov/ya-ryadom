@@ -6,6 +6,14 @@ export const fetchEventApplicantsRequest = (payload: number) => action(Applicati
 export const fetchEventApplicantsSuccess = (payload: EventApplications) => action(ApplicationsTypes.FETCH_EVENT_APPLICANTS_SUCCESS, payload);
 export const fetchEventApplicantsError = (payload: any) => action(ApplicationsTypes.FETCH_EVENT_APPLICANTS_ERROR, payload);
 
+export const fetchMineApplicationsRequest = (payload: number) => action(ApplicationsTypes.FETCH_MINE_APPLICATIONS, payload);
+export const fetchMineApplicationsSuccess = (payload: any) => action(ApplicationsTypes.FETCH_MINE_APPLICATIONS_SUCCESS, payload);
+export const fetchMineApplicationsError = (payload: any) => action(ApplicationsTypes.FETCH_MINE_APPLICATIONS_ERROR, payload);
+
+export const fetchApplicationsToMeRequest = (payload: number) => action(ApplicationsTypes.FETCH_APPLICATIONS_TO_ME, payload);
+export const fetchApplicationsToMeSuccess = (payload: any) => action(ApplicationsTypes.FETCH_APPLICATIONS_TO_ME_SUCCESS, payload);
+export const fetchApplicationsToMeError = (payload: any) => action(ApplicationsTypes.FETCH_APPLICATIONS_TO_ME_ERROR, payload);
+
 export const applyToEventRequest = (payload: number) => action(ApplicationsTypes.APPLY_TO_EVENT, payload);
 export const applyToEventSuccess = (payload: any) => action(ApplicationsTypes.APPLY_TO_EVENT_SUCCESS, payload);
 export const applyToEventError = (payload: any) => action(ApplicationsTypes.APPLY_TO_EVENT_ERROR, payload);
