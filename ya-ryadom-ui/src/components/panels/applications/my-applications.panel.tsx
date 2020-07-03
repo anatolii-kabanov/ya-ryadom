@@ -76,14 +76,14 @@ class MyApplicationsPanel extends React.Component<AllProps, State>  {
                 .map((item, key) => {
                     return <Div key={key}>
                         <CardGrid>
-                            <Card size="l">
+                            <Div className="application-card">
                                 <Group header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                                     <RichCell
                                         before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
                                         text={`Отправлено: ${new Date(item.sentDate).toLocaleDateString('ru-RU')}`}
                                         caption={item.eventDate}
                                     >
-                                        {item?.userFullName} <span>{item?.distance && (item?.distance / 1000).toFixed(2)} км.</span>
+                                        {item?.userFullName} <span className="distance">{item?.distance && (item?.distance / 1000).toFixed(2)} км.</span>
                                         <InfoRow header>
                                             {item.text}
                                         </InfoRow>
@@ -95,7 +95,7 @@ class MyApplicationsPanel extends React.Component<AllProps, State>  {
                                         }
                                     </Div>
                                 </Group>
-                            </Card>
+                            </Div>
                         </CardGrid>
                     </Div>
                 });
