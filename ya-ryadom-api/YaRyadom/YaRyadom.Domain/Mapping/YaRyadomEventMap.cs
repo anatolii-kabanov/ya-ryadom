@@ -20,11 +20,11 @@ namespace YaRyadom.Domain.Mapping
 			builder.Property(m => m.Location).HasColumnName("location").IsRequired().HasColumnType("geography (point)");
 			builder.Property(m => m.MaxQuantity).HasColumnName("max_quantity").IsRequired();
 			builder.Property(m => m.Revoked).HasColumnName("revoked").IsRequired();
-			builder.Property(m => m.YaVDeleUserOwnerId).HasColumnName("ya_ryadom_user_owner_id");
+			builder.Property(m => m.YaRyadomUserOwnerId).HasColumnName("ya_ryadom_user_owner_id");
 			builder.Property(m => m.SearchVector).HasColumnName("search_vector");
 			builder.HasIndex(p => p.SearchVector).HasMethod("GIN");
 
-			builder.HasOne(m => m.YaVDeleUserOwner).WithMany(a => a.OwnYaVDeleEvents).HasForeignKey(s => s.YaVDeleUserOwnerId);
+			builder.HasOne(m => m.YaRyadomUserOwner).WithMany(a => a.OwnYaVDeleEvents).HasForeignKey(s => s.YaRyadomUserOwnerId);
 		}
 	}
 }

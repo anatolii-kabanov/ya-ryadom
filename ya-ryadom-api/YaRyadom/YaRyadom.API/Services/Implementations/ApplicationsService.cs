@@ -22,7 +22,7 @@ namespace YaRyadom.API.Services.Implementations
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 		}
 
-		public async Task<ApplicationModel[]> GetAllAsync(int eventId, CancellationToken cancellationToken = default)
+		public async Task<ApplicationModel[]> GetAllByEventAsync(int eventId, CancellationToken cancellationToken = default)
 		{
 			var applications = await _mapper
 				.ProjectTo<ApplicationModel>(
@@ -84,6 +84,30 @@ namespace YaRyadom.API.Services.Implementations
 			application.Revoked = true;
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
+		}
+
+		public async Task<ApplicationModel[]> GetAllToMeAsync(int vkUserId, CancellationToken cancellationToken = default)
+		{
+			var applications = await _mapper
+				.ProjectTo<ApplicationModel>(
+					TableNoTracking.Where(m => m.YaRyadomEvent.YaRyadomUserOwner.VkId == vkUserId)
+				)
+				.ToArrayAsync(cancellationToken)
+				.ConfigureAwait(false);
+
+			return applications;
+		}
+
+		public async Task<ApplicationModel[]> GetAllMineAsync(int vkUserId, CancellationToken cancellationToken = default)
+		{
+			var applications = await _mapper
+				.ProjectTo<ApplicationModel>(
+					TableNoTracking.Where(m => m.YaRyadomUserRequested.VkId == vkUserId)
+				)
+				.ToArrayAsync(cancellationToken)
+				.ConfigureAwait(false);
+
+			return applications;
 		}
 	}
 }

@@ -8,7 +8,11 @@ namespace YaRyadom.API.Services.Interfaces
 {
 	public interface IApplicationsService : IBaseService<YaRyadomUserApplication>
 	{
-		Task<ApplicationModel[]> GetAllAsync(int eventId, CancellationToken cancellationToken = default);
+		Task<ApplicationModel[]> GetAllByEventAsync(int eventId, CancellationToken cancellationToken = default);
+
+		Task<ApplicationModel[]> GetAllToMeAsync(int vkUserId, CancellationToken cancellationToken = default);
+
+		Task<ApplicationModel[]> GetAllMineAsync(int vkUserId, CancellationToken cancellationToken = default);
 
 		Task<bool> ApproveAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
 

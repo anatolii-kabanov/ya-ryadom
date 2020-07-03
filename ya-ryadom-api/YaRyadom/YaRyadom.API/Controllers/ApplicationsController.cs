@@ -26,9 +26,29 @@ namespace YaRyadom.API.Controllers
 		[HttpGet("{eventId}")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> GetMyEvents(int eventId, CancellationToken cancellationToken = default)
+		public async Task<IActionResult> GetApplicationsByEvent(int eventId, CancellationToken cancellationToken = default)
 		{
-			var result = await _applicationsService.GetAllAsync(eventId, cancellationToken).ConfigureAwait(false);
+			var result = await _applicationsService.GetAllByEventAsync(eventId, cancellationToken).ConfigureAwait(false);
+			return Ok(result);
+		}
+
+		[AllowAnonymous]
+		[HttpGet("to-me/{vkUserId}")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> GetAllApplicationsToMe(int vkUserId, CancellationToken cancellationToken = default)
+		{
+			var result = await _applicationsService.GetAllToMeAsync(vkUserId, cancellationToken).ConfigureAwait(false);
+			return Ok(result);
+		}
+
+		[AllowAnonymous]
+		[HttpGet("mine/{vkUserId}")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> GetAllMineApplications(int vkUserId, CancellationToken cancellationToken = default)
+		{
+			var result = await _applicationsService.GetAllMineAsync(vkUserId, cancellationToken).ConfigureAwait(false);
 			return Ok(result);
 		}
 

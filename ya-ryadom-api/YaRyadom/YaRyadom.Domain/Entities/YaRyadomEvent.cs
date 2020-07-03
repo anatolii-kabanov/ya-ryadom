@@ -34,13 +34,13 @@ namespace YaRyadom.Domain.Entities
 
 		public bool Revoked { get; set; }
 
-		public int YaVDeleUserOwnerId { get; set; }
+		public int YaRyadomUserOwnerId { get; set; }
 
 		public NpgsqlTsVector SearchVector { get; set; }
 
 		#region Navigation properties
 
-		public YaRyadomUser YaVDeleUserOwner { get; set; }
+		public YaRyadomUser YaRyadomUserOwner { get; set; }
 
 		public ICollection<YaRyadomEventTheme> YaRyadomEventThemes
 		{

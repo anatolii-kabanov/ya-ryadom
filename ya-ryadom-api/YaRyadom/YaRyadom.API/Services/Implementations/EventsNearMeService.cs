@@ -44,11 +44,11 @@ namespace YaRyadom.API.Services.Implementations
 					Date = m.Date,
 					MaxQuantiyty = m.MaxQuantity,
 					Revoked = m.Revoked,
-					VkUserOwnerId = m.YaVDeleUserOwner.VkId,
+					VkUserOwnerId = m.YaRyadomUserOwner.VkId,
 					Location = m.Location,
 					Distance = m.Location.Distance(userPosition),
-					VkUserAvatarUrl = m.YaVDeleUserOwner.VkUserAvatarUrl,
-					UserFullName = m.YaVDeleUserOwner.FirstName + ' ' + m.YaVDeleUserOwner.LastName,
+					VkUserAvatarUrl = m.YaRyadomUserOwner.VkUserAvatarUrl,
+					UserFullName = m.YaRyadomUserOwner.FirstName + ' ' + m.YaRyadomUserOwner.LastName,
 					ApplicationStatus = m.YaRyadomUserApplications
 						.Where(mm => mm.YaRyadomUserRequested.VkId == model.VkUserId)
 						.Select(mm => (ApplicationStatusModel)mm.Status)
@@ -69,11 +69,11 @@ namespace YaRyadom.API.Services.Implementations
 					Date = m.Date,
 					MaxQuantiyty = m.MaxQuantity,
 					Revoked = m.Revoked,
-					VkUserOwnerId = m.YaVDeleUserOwner.VkId,
+					VkUserOwnerId = m.YaRyadomUserOwner.VkId,
 					Location = m.Location,
 					Distance = m.Location.Distance(userPosition),
-					VkUserAvatarUrl = m.YaVDeleUserOwner.VkUserAvatarUrl,
-					UserFullName = m.YaVDeleUserOwner.FirstName + ' ' + m.YaVDeleUserOwner.LastName,
+					VkUserAvatarUrl = m.YaRyadomUserOwner.VkUserAvatarUrl,
+					UserFullName = m.YaRyadomUserOwner.FirstName + ' ' + m.YaRyadomUserOwner.LastName,
 					ApplicationStatus = m.YaRyadomUserApplications
 						.Where(mm => mm.YaRyadomUserRequested.VkId == model.VkUserId)
 						.Select(mm => (ApplicationStatusModel)mm.Status)

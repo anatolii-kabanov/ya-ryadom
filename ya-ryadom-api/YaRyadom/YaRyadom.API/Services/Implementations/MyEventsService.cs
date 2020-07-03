@@ -42,7 +42,7 @@ namespace YaRyadom.API.Services.Implementations
 					});
 			}
 
-			yaRyadomEvent.YaVDeleUserOwner = yaRyadomUser;
+			yaRyadomEvent.YaRyadomUserOwner = yaRyadomUser;
 
 			Entities.Add(yaRyadomEvent);
 
@@ -61,7 +61,7 @@ namespace YaRyadom.API.Services.Implementations
 		public async Task<MyEventModel[]> GetAllMyEvents(long vkId, CancellationToken cancellationToken = default)
 		{
 			var events = await TableNoTracking
-				.Where(m => m.YaVDeleUserOwner.VkId == vkId)
+				.Where(m => m.YaRyadomUserOwner.VkId == vkId)
 				.Select(m => new MyEventServiceModel
 				{
 					Id = m.Id,
