@@ -1,4 +1,4 @@
-# ya-v-dele
+# ya-ryadom
 ## Требования:
 1. Net Core SDK [Net Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 
@@ -20,17 +20,17 @@
 
 - Создаем пользователя в БД с правами **Superuser**  **(Логин: 'ya_ryadom'; Пароль: '123456';)**
 
-4. По умолчанию порт для API 4044, изменить его можно *YaVDele.API/Program.cs* в методе UseUrls("http://localhost:4044", "https://localhost:4045")
+4. По умолчанию порт для API 4044, изменить его можно *YaRyadom.API/Program.cs* в методе UseUrls("http://localhost:4044", "https://localhost:4045")
 
-- Сначала нужно запустить build, для этого открываем консоль в директории *ya-v-dele-api\YaVDele\YaVDele.API* 
+- Сначала нужно запустить build, для этого открываем консоль в директории *ya-ryadom-api\YaVDele\YaVDele.API* 
 
-	**dotnet publish YaVDele.API.csproj**
+	**dotnet publish YaRyadom.API.csproj**
 
--  Открываем консоль в директории *ya-v-dele-api\YaVDele\YaVDele.API\bin\Debug\netcoreapp3.1* 
+-  Открываем консоль в директории *ya-ryadom-api\YaRyadom\YaRyadom.API\bin\Debug\netcoreapp3.1* 
 
 	И запускаем API
 
-	**dotnet YaVDele.API.dll**
+	**dotnet YaRyadom.API.dll**
 
 *во время первого старта будет инициализирована БД*
 	
@@ -48,11 +48,11 @@
 	
 	Forwarding  https://xxxxxxxxxxxx.ngrok.io -> http://localhost:4044 
 	
-- Открываем файлы .env .env.development в корне директории ya-v-dele-ui
+- Открываем файлы .env .env.development в корне директории ya-ryadom-ui
 	и изменяем переменную на глобальный адрес. Теперь mini app может достучатся до api
 	REACT_APP_API_ENDPOINT=https://xxxxxxxxxxxx.ngrok.io/api/v1
 	
-6. Открываем консоль в директории *ya-v-dele-ui*
+6. Открываем консоль в директории *ya-ryadom-ui*
 
 **Выполняем команду npm i** 
 
