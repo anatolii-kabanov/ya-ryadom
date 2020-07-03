@@ -27,7 +27,7 @@ class MainHeaderPanel extends React.Component<AllProps>  {
         return (
             <PanelHeader
                 left={!firstPage && <PanelHeaderButton onClick={() => goBack()}>
-                    {osname === IOS ? <Icon28ChevronBack /> : <Icon24Back />}
+                    {osname === IOS ? <Icon28ChevronBack className="nav-icon-selected" /> : <Icon24Back className="nav-icon-selected" />}
                 </PanelHeaderButton>}
             >
                 {text}
