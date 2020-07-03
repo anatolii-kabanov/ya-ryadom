@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Linq;
 using YaRyadom.API.Models;
 using YaRyadom.API.Models.Enums;
 using YaRyadom.API.Models.ServiceModels;
@@ -61,10 +62,24 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 				.ForMember(dest => dest.VkUserId, opt => opt.MapFrom(src => src.YaRyadomUserRequested.VkId))
 				.ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.YaRyadomUserRequested.Id))
-				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
+				.ForMember(dest => dest.SentDate, opt => opt.MapFrom(src => src.Date))
 				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.YaRyadomUserRequested.VkUserAvatarUrl))
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (ApplicationStatusModel)src.Status))
 				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.YaRyadomUserRequested.FirstName + ' ' + src.YaRyadomUserRequested.LastName));
+
+			CreateMap<YaRyadomUserApplication, MineApplicationModel>()
+				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+				.ForMember(dest => dest.VkUserId, opt => opt.MapFrom(src => src.YaRyadomEvent.YaRyadomUserOwner.VkId))
+				.ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.YaRyadomEvent.YaRyadomUserOwnerId))
+				.ForMember(dest => dest.SentDate, opt => opt.MapFrom(src => src.Date))
+				.ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => $"{src.YaRyadomEvent.Date.Value.ToString()} {src.YaRyadomEvent.Time.Value.ToString()}"))
+				.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.YaRyadomEvent.Description))
+				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.YaRyadomEvent.YaRyadomUserOwner.VkUserAvatarUrl))
+				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (ApplicationStatusModel)src.Status))
+				.ForMember(dest => dest.EventId, opt => opt.MapFrom(src => src.YaRyadomEventId))
+				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => (ThemeTypeModel)src.YaRyadomEvent.YaRyadomEventThemes.Select(m => m.Type).FirstOrDefault()))
+				.ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.YaRyadomEvent.Location.Distance(src.YaRyadomUserRequested.LastLocation)))
+				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.YaRyadomEvent.YaRyadomUserOwner.FirstName + ' ' + src.YaRyadomEvent.YaRyadomUserOwner.LastName));
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace YaRyadom.API.Services.Interfaces
 
 		Task<ApplicationModel[]> GetAllToMeAsync(int vkUserId, CancellationToken cancellationToken = default);
 
-		Task<ApplicationModel[]> GetAllMineAsync(int vkUserId, CancellationToken cancellationToken = default);
+		Task<MineApplicationModel[]> GetAllMineAsync(int vkUserId, CancellationToken cancellationToken = default);
 
 		Task<bool> ApproveAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
 

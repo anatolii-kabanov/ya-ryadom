@@ -1,4 +1,5 @@
 import { ApplicationStatus } from "../../utils/enums/application-status.enum";
+import { ThemeType } from "../../utils/enums/theme-type.enum";
 
 export interface ApplicationRequest {
     eventId: number;
@@ -16,10 +17,13 @@ export interface Application {
     vkUserId: number;
     userFullName: string;
     vkUserAvatarUrl: string;
-    date: Date;
+    sentDate: Date;
+    eventDate: string;
+    text: string;
     status: ApplicationStatus;
     distance: number;
     eventId: number;
+    themeType: ThemeType;
 }
 
 export interface EventsApplications {

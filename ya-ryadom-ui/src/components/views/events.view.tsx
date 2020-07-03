@@ -6,7 +6,7 @@ import { PANELS } from '../../utils/constants/panel.constants';
 import { fetchListRequest } from "../../store/events/events-near-me/actions";
 import EventsNearMeMapPanel from "../panels/events/events-near-me-map.panel";
 import Icon28Place from '@vkontakte/icons/dist/28/place';
-import Icon28Menu from '@vkontakte/icons/dist/28/menu';
+import Icon28Menu from '@vkontakte/icons/dist/28/user_circle_outline';
 import Icon28Catalog from '@vkontakte/icons/dist/28/newsfeed_outline';
 import { goForward } from '../../store/history/actions';
 import { VkHistoryModel } from '../../store/history/models';

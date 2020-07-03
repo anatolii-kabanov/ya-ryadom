@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Root } from '@vkontakte/vkui';
+import { Root, ScreenSpinner } from '@vkontakte/vkui';
 import MainView from './views/main.view';
 import { AppState } from '../store/app-state';
 import { connect } from 'react-redux';
@@ -11,6 +11,7 @@ import IntroView from "./views/intro.view";
 
 interface PropsFromState {
     activeView: string;
+    spinnerVisible: boolean;
 }
 
 interface PropsFromDispatch {
@@ -29,10 +30,10 @@ class RootLayout extends React.Component<AllProps>  {
     }
 
     render() {
-        let { activeView } = this.props;
+        const { activeView, spinnerVisible } = this.props;
 
         return (
-            <Root activeView={activeView}>
+            <Root activeView={activeView} popout={spinnerVisible && <ScreenSpinner />}>
                 <IntroView id={VIEWS.INTRO_VIEW}></IntroView>
                 <MainView id={VIEWS.MAIN_VIEW}></MainView>
                 <MyProfileView id={VIEWS.MY_PROFILE_VIEW}></MyProfileView>
@@ -42,8 +43,9 @@ class RootLayout extends React.Component<AllProps>  {
     }
 }
 
-const mapStateToProps = ({ history }: AppState) => ({
+const mapStateToProps = ({ history, ui }: AppState) => ({
     activeView: history.currentViewPanel.view,
+    spinnerVisible: ui.spinner.spinnerVisible,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
