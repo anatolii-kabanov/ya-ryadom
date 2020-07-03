@@ -20,6 +20,6 @@ namespace YaRyadom.API.Services.Interfaces
 
 		Task<bool> ApplyAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
 
-		Task<bool> RevokeAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default);
+		Task<bool> RevokeAsync(int applicationId, CancellationToken cancellationToken = default);
 	}
 }

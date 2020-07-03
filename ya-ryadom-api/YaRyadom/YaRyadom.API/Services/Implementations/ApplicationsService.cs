@@ -74,10 +74,10 @@ namespace YaRyadom.API.Services.Implementations
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
-		public async Task<bool> RevokeAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
+		public async Task<bool> RevokeAsync(int applicationId, CancellationToken cancellationToken = default)
 		{
 			var application = await Query
-				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
+				.Where(m => m.Id == applicationId)
 				.FirstOrDefaultAsync(cancellationToken)
 				.ConfigureAwait(false);
 
@@ -102,7 +102,7 @@ namespace YaRyadom.API.Services.Implementations
 		{
 			var applications = await _mapper
 				.ProjectTo<ApplicationModel>(
-					TableNoTracking.Where(m => m.YaRyadomUserRequested.VkId == vkUserId)
+					TableNoTracking.Where(m => m.YaRyadomUserRequested.VkId == vkUserId && !m.Revoked)
 				)
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);

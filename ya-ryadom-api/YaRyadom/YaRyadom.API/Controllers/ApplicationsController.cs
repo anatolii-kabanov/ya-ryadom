@@ -91,9 +91,9 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("revoke")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> Revoke([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken)
+		public async Task<IActionResult> Revoke([FromBody] int applicationId, CancellationToken cancellationToken)
 		{
-			await _applicationsService.RevokeAsync(model, cancellationToken).ConfigureAwait(false);
+			await _applicationsService.RevokeAsync(applicationId, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
 		}
 	}
