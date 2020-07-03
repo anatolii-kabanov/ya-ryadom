@@ -69,16 +69,11 @@ function* handleFetchVkUserInfo(action: ReturnType<typeof fetchVkUserInfoRequest
         } else {
             const vkUserInfo = result as UserInfo;
             yield put(fetchVkUserInfoSuccess(vkUserInfo));
-            const geo: Geo = yield vkBridge.send("VKWebAppGetGeodata", {}); // need to be replaced in other place
             yield put(saveUserInfoRequest({
-                guideCompleted: false,  
                 vkUserId: vkUserInfo.id,
                 firstName: vkUserInfo.first_name,
                 lastName: vkUserInfo.last_name,
                 vkUserAvatarUrl: vkUserInfo.photo_200,
-                selectedThemes: [],
-                lastLocation: { latitude: geo?.lat, longitude: geo?.long },
-                aboutMySelf: ''
             }));
             yield take(saveUserInfoRequest);
             // Request our user info
@@ -108,7 +103,7 @@ function* handleFetchUserGeo() {
             const geoData = result as Geo;
             yield put(fetchUserGeoSuccess(geoData));
             if (geoData?.available) {
-                yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.THEMES_INTRO_PANEL)));
+                yield put(saveUserLocationRequest({ latitude: geoData?.lat, longitude: geoData?.long }));
             } else {
                 yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.SELECT_CITY_INTRO_PANEL)));
             }

@@ -31,6 +31,13 @@ export interface UserIntro {
     selectedThemes: ThemeType[],
 }
 
+export interface UserBaseInfo {
+    vkUserId: number,
+    firstName: string,
+    lastName: string,
+    vkUserAvatarUrl: string,
+}
+
 export class User implements User {
     constructor() {
 

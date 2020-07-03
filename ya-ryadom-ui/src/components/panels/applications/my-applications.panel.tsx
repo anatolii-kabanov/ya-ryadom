@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel, Group, Tabs, TabsItem, Div, CardGrid, Card, RichCell, Avatar, Button, InfoRow } from '@vkontakte/vkui';
+import { Panel, Group, Tabs, TabsItem, Div, CardGrid, Card, RichCell, Avatar, Button, InfoRow, HorizontalScroll } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
 import MainHeaderPanel from "./../headers/main.header";
@@ -104,32 +104,34 @@ class MyApplicationsPanel extends React.Component<AllProps, State>  {
             <Panel id={id}>
                 <MainHeaderPanel text='Мои заявки'></MainHeaderPanel>
                 <Group>
-                    <Tabs mode="buttons">
-                        <TabsItem
-                            onClick={() => this.onTabChanged(TABS.APPLICATIONS_I_WILL_GO)}
-                            selected={this.state.activeTab === TABS.APPLICATIONS_I_WILL_GO}
-                        >
-                            Иду
+                    <HorizontalScroll>
+                        <Tabs mode="buttons">
+                            <TabsItem
+                                onClick={() => this.onTabChanged(TABS.APPLICATIONS_I_WILL_GO)}
+                                selected={this.state.activeTab === TABS.APPLICATIONS_I_WILL_GO}
+                            >
+                                Иду
                         </TabsItem>
-                        <TabsItem
-                            onClick={() => this.onTabChanged(TABS.VISITED_APPLICATIONS)}
-                            selected={this.state.activeTab === TABS.VISITED_APPLICATIONS}
-                        >
-                            Сходил
+                            <TabsItem
+                                onClick={() => this.onTabChanged(TABS.VISITED_APPLICATIONS)}
+                                selected={this.state.activeTab === TABS.VISITED_APPLICATIONS}
+                            >
+                                Сходил
                         </TabsItem>
-                        <TabsItem
-                            onClick={() => this.onTabChanged(TABS.SENT_APPLICATIONS)}
-                            selected={this.state.activeTab === TABS.SENT_APPLICATIONS}
-                        >
-                            На рассмотрении
+                            <TabsItem
+                                onClick={() => this.onTabChanged(TABS.SENT_APPLICATIONS)}
+                                selected={this.state.activeTab === TABS.SENT_APPLICATIONS}
+                            >
+                                На рассмотрении
                         </TabsItem>
-                        <TabsItem
-                            onClick={() => this.onTabChanged(TABS.APPLICATIONS_REJECTED)}
-                            selected={this.state.activeTab === TABS.APPLICATIONS_REJECTED}
-                        >
-                            Отклоненные
+                            <TabsItem
+                                onClick={() => this.onTabChanged(TABS.APPLICATIONS_REJECTED)}
+                                selected={this.state.activeTab === TABS.APPLICATIONS_REJECTED}
+                            >
+                                Отклоненные
                         </TabsItem>
-                    </Tabs>
+                        </Tabs>
+                    </HorizontalScroll>
                 </Group>
                 <Group>
                     {this.renderApplications()}

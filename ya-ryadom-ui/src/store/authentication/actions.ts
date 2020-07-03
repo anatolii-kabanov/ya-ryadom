@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import { AuthenticationTypes } from "./types";
-import { User } from './models';
+import { User, UserBaseInfo } from './models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ThemeType } from '../../utils/enums/theme-type.enum';
 import { Position } from './models';
@@ -17,7 +17,7 @@ export const fetchUserGeoRequest = () => action(AuthenticationTypes.FETCH_USER_G
 export const fetchUserGeoSuccess = (payload: any) => action(AuthenticationTypes.FETCH_USER_GEO_SUCCESS, payload);
 export const fetchUserGeoError = (payload: any) => action(AuthenticationTypes.FETCH_USER_GEO_ERROR, payload);
 
-export const saveUserInfoRequest = (payload: User) => action(AuthenticationTypes.SAVE_USER_INFO, payload);
+export const saveUserInfoRequest = (payload: UserBaseInfo) => action(AuthenticationTypes.SAVE_USER_INFO, payload);
 export const saveUserInfoSuccess = (payload: any) => action(AuthenticationTypes.SAVE_USER_INFO_SUCCESS, payload);
 export const saveUserInfoError = (payload: any) => action(AuthenticationTypes.SAVE_USER_INFO_ERROR, payload);
 
