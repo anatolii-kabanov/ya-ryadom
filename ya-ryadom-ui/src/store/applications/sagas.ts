@@ -32,7 +32,9 @@ function* watchFetchEventApplicantsRequest() {
 
 function* handleFetchMineApplicationsRequest(action: ReturnType<typeof fetchMineApplicationsRequest>) {
     try {
-        const result = yield call(callApi, 'get', API_ENDPOINT, `/mine/${action.payload}`);
+        const vkUserId = yield select(getVkUserId);
+
+        const result = yield call(callApi, 'get', API_ENDPOINT, `/mine/${vkUserId}`);
 
         if (result.errors) {
             yield put(fetchMineApplicationsError(result.errors));
@@ -54,7 +56,9 @@ function* watchFetchMineApplicationsRequest() {
 
 function* handleFetchApplicationsToMeRequest(action: ReturnType<typeof fetchApplicationsToMeRequest>) {
     try {
-        const result = yield call(callApi, 'get', API_ENDPOINT, `/to-me/${action.payload}`);
+        const vkUserId = yield select(getVkUserId);
+
+        const result = yield call(callApi, 'get', API_ENDPOINT, `/to-me/${vkUserId}`);
 
         if (result.errors) {
             yield put(fetchApplicationsToMeError(result.errors));
@@ -170,14 +174,7 @@ function* watchRejectApplicantRequest() {
 
 function* handleRevokeApplicationRequest(action: ReturnType<typeof revokeApplicationRequest>) {
     try {
-        const vkUserId = yield select(getVkUserId);
-
-        const application: ApplicationRequest = {
-            vkUserId: vkUserId,
-            eventId: action.payload,
-        };
-
-        const result = yield call(callApi, 'post', API_ENDPOINT, '/revoke', application);
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/revoke', action.payload);
 
         if (result.errors) {
             yield put(revokeApplicationError(result.errors));

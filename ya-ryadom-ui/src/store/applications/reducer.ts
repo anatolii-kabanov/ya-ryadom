@@ -28,6 +28,16 @@ const reducer: Reducer<ApplicationsState> = (state = initialState, action) => {
                 ...state, applicationsToMe: action.payload
             }
         }
+        case ApplicationsTypes.REVOKE_APPLICATION_SUCCESS: {
+            const index = state.mineApplications.findIndex(m => m.id === action.payload);
+            return {
+                ...state, mineApplications: [
+                    ...state.mineApplications.slice(0, index),
+                    action.payload,
+                    ...state.mineApplications.slice(index + 1),
+                ]
+            }
+        }
         default: {
             return state
         }

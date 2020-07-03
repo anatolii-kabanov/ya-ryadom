@@ -36,6 +36,8 @@ const RevokeOnly = [
     ApplicationStatus.confirmed,
 ]
 
+const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
 class MyApplicationsPanel extends React.Component<AllProps, State>  {
 
     /**
@@ -76,7 +78,7 @@ class MyApplicationsPanel extends React.Component<AllProps, State>  {
                             <Card size="l">
                                 <RichCell
                                     before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
-                                    text={new Date(item.date).toLocaleDateString('ru-RU')}
+                                    text={`Отправлено: ${new Date(item.date).toLocaleDateString('ru-RU', dateOptions)}`}
                                 >
                                     {item?.userFullName}
                                     <InfoRow header="Расстояние">
@@ -86,7 +88,7 @@ class MyApplicationsPanel extends React.Component<AllProps, State>  {
                                 <Div className="">
                                     {
                                         RevokeOnly.indexOf(item.status) !== -1 &&
-                                        <Button className="button-info" onClick={() => this.revoke(item.id)}>Отменить</Button>
+                                        <Button className="btn-info" onClick={() => this.revoke(item.id)}>Отменить</Button>
                                     }
                                 </Div>
                             </Card>
