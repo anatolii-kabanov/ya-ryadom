@@ -30,7 +30,7 @@ namespace YaRyadom.API.Services.Implementations
 				.ConfigureAwait(false);
 		}
 
-		public async Task<bool> SaveUserInfoAsync(UserInfoModel model, CancellationToken cancellationToken = default)
+		public async Task<bool> SaveUserInfoAsync(UserInfoSaveRequestModel model, CancellationToken cancellationToken = default)
 		{
 			var yaRyadomUser = await Entities
 				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
@@ -42,19 +42,6 @@ namespace YaRyadom.API.Services.Implementations
 			if (yaRyadomUser.Id == 0)
 			{
 				Entities.Add(yaRyadomUser);
-			}
-
-			if (yaRyadomUser.YaRyadomUserThemes.Any())
-				_dbContext.YaRyadomUserThemes.RemoveRange(yaRyadomUser.YaRyadomUserThemes);
-
-			foreach (var theme in model.SelectedThemes)
-			{
-				_dbContext.YaRyadomUserThemes.Add(
-					new YaRyadomUserTheme
-					{
-						Type = (ThemeType)theme,
-						YaRyadomUser = yaRyadomUser
-					});
 			}
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;

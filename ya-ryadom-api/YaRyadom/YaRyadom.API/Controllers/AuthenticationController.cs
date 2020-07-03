@@ -39,7 +39,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("user-info/save")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> Save([FromBody] UserInfoModel model, CancellationToken cancellationToken = default)
+		public async Task<IActionResult> Save([FromBody] UserInfoSaveRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserInfoAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
