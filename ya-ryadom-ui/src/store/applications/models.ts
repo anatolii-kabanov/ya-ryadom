@@ -11,12 +11,15 @@ export interface EventApplications {
 }
 
 export interface Application {
+    id: number;
     userId: number;
     vkUserId: number;
     userFullName: string;
     vkUserAvatarUrl: string;
     date: Date;
     status: ApplicationStatus;
+    distance: number;
+    eventId: number;
 }
 
 export interface EventsApplications {
