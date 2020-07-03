@@ -98,10 +98,10 @@ namespace YaRyadom.API.Services.Implementations
 			return applications;
 		}
 
-		public async Task<ApplicationModel[]> GetAllMineAsync(int vkUserId, CancellationToken cancellationToken = default)
+		public async Task<MineApplicationModel[]> GetAllMineAsync(int vkUserId, CancellationToken cancellationToken = default)
 		{
 			var applications = await _mapper
-				.ProjectTo<ApplicationModel>(
+				.ProjectTo<MineApplicationModel>(
 					TableNoTracking.Where(m => m.YaRyadomUserRequested.VkId == vkUserId && !m.Revoked)
 				)
 				.ToArrayAsync(cancellationToken)

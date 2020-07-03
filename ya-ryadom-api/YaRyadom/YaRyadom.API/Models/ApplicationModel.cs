@@ -14,8 +14,21 @@ namespace YaRyadom.API.Models
 
 		public string VkUserAvatarUrl { get; set; }
 
-		public DateTimeOffset Date { get; set; }
+		public DateTimeOffset SentDate { get; set; }
+
+		public string EventDate { get; set; }
 
 		public ApplicationStatusModel Status { get; set; }
+
+		public string Text { get; set; }
+
+		public int EventId { get; set; }
+
+		/// <summary>
+		/// Meters
+		/// </summary>
+		public double Distance { get; set; }
+
+		public ThemeTypeModel ThemeType { get; set; }
 	}
 }
