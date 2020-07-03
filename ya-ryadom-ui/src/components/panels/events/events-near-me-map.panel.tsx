@@ -178,7 +178,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
                                 <Button className="button-secondary"
                                     href={`https://vk.com/id${this.state.personOnMap.vkUserOwnerId}`}
                                     onClick={() => window.open("https://vk.com/id" + this.state.personOnMap.vkUserOwnerId, '_blank')}
-                                >Посмотреть профить</Button>
+                                >Посмотреть профиль</Button>
                             </Div>
                         </div>
                     </Card>

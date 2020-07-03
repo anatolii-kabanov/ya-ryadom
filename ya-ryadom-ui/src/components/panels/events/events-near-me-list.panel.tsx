@@ -136,7 +136,7 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
                                             <Button className="button-secondary width-50 text-center"
                                                 href={`https://vk.com/id${item?.vkUserOwnerId}`}
                                                 onClick={() => window.open("https://vk.com/id" + item?.vkUserOwnerId, '_blank')}
-                                            >Посмотреть профить</Button>
+                                            >Посмотреть профиль</Button>
                                         </Div>
                                     </div>
                                 </Card>
