@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel, Group, Tabs, TabsItem, Div, CardGrid, Card, RichCell, Avatar, Button, InfoRow, HorizontalScroll } from '@vkontakte/vkui';
+import { Panel, Group, Tabs, TabsItem, Div, CardGrid, Card, RichCell, Avatar, Button, InfoRow, HorizontalScroll, Header } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
 import MainHeaderPanel from "./../headers/main.header";
@@ -7,6 +7,7 @@ import { Application } from '../../../store/applications/models';
 import { fetchMineApplicationsRequest, revokeApplicationRequest } from '../../../store/applications/actions';
 import { TABS } from '../../../utils/constants/tab.constants';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
+import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 
 interface PropsFromState {
     id: string;
@@ -76,21 +77,24 @@ class MyApplicationsPanel extends React.Component<AllProps, State>  {
                     return <Div key={key}>
                         <CardGrid>
                             <Card size="l">
-                                <RichCell
-                                    before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
-                                    text={`Отправлено: ${new Date(item.date).toLocaleDateString('ru-RU', dateOptions)}`}
-                                >
-                                    {item?.userFullName}
-                                    <InfoRow header="Расстояние">
-                                        {item?.distance && (item?.distance / 1000).toFixed(2)} км.
-                                    </InfoRow>
-                                </RichCell>
-                                <Div className="">
-                                    {
-                                        RevokeOnly.indexOf(item.status) !== -1 &&
-                                        <Button className="btn-info" onClick={() => this.revoke(item.id)}>Отменить</Button>
-                                    }
-                                </Div>
+                                <Group header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
+                                    <RichCell
+                                        before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
+                                        text={`Отправлено: ${new Date(item.sentDate).toLocaleDateString('ru-RU')}`}
+                                        caption={item.eventDate}
+                                    >
+                                        {item?.userFullName} <span>{item?.distance && (item?.distance / 1000).toFixed(2)} км.</span>
+                                        <InfoRow header>
+                                            {item.text}
+                                        </InfoRow>
+                                    </RichCell>
+                                    <Div className="">
+                                        {
+                                            RevokeOnly.indexOf(item.status) !== -1 &&
+                                            <Button className="btn-info" onClick={() => this.revoke(item.id)}>Отменить</Button>
+                                        }
+                                    </Div>
+                                </Group>
                             </Card>
                         </CardGrid>
                     </Div>
