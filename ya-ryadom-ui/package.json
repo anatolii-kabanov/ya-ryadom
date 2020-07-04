@@ -7,6 +7,7 @@
     "@vkontakte/vk-bridge": "^2.2.2",
     "@vkontakte/vkui": "^3.11.2",
     "@vkontakte/vkui-connect": "^1.5.4",
+    "dateformat": "^3.0.3",
     "google-map-react": "^1.1.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

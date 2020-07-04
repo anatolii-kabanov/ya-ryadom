@@ -9,6 +9,7 @@ import {
     Select
 } from '@vkontakte/vkui';
 import GoogleMapReact, { ClickEventValue } from 'google-map-react';
+import dateFormat from "dateformat";
 import Marker from '../map/marker';
 import { MAP } from '../../utils/constants/map.constants';
 import { Geo } from '../../store/authentication/models';
@@ -135,7 +136,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                 <Select placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange}>
                     {this.renderThemesSelect()}
                 </Select>
-                <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} />
+                <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} min={dateFormat(new Date(), "yyyy-mm-dd")} />
                 <Input top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} />
                 <Div style={{ height: '100vh', width: '92%', margin: '0 auto' }}>
                     <GoogleMapReact
