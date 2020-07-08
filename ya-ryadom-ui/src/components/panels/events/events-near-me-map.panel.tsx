@@ -10,7 +10,7 @@ import {
 } from '@vkontakte/vkui';
 import { AppState } from '../../../store/app-state';
 import { connect } from 'react-redux';
-import GoogleMapReact from 'google-map-react';
+import GoogleMapReact, { Maps } from 'google-map-react';
 import Marker from '../../map/marker';
 import MainHeaderPanel from '../headers/main.header';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
@@ -28,6 +28,7 @@ import './events-near-me.scss';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { applyToEventRequest } from '../../../store/applications/actions';
 import debounce from 'lodash/debounce';
+import UserMarker from '../../map/user-marker';
 
 interface PropsFromState {
     id: string;
@@ -48,6 +49,13 @@ interface State {
     personOnMap: any;
     searchText: string;
     radius: number;
+}
+
+const createMapOptions = (maps: Maps) => {
+    return {
+        ...maps,
+        mapTypeControl: true
+    };
 }
 
 class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
@@ -200,6 +208,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
                     {/* <Div> from VKUI mess it up for some reason*/}
                     <div className="map">
                         <GoogleMapReact
+
                             bootstrapURLKeys={{ key: MAP.KEY }}
                             defaultCenter={{
                                 lat: this.getLatitude(),
@@ -208,6 +217,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
                             defaultZoom={14}
                             distanceToMouse={(pt, m) => 0}
                         >
+                            <UserMarker lat={this.getLatitude()} lng={this.getLongitude()}></UserMarker>
                             {this.renderEvents()}
                         </GoogleMapReact>
                     </div>
