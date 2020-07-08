@@ -1,0 +1,10 @@
+@import "../../assets/scss/variables.scss";
+
+.rating {
+  display: flex;
+
+  > * {
+    color: $primary-color;
+    cursor: pointer;
+  }
+}

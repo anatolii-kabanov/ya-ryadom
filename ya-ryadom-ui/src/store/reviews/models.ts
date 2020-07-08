@@ -15,6 +15,14 @@ export interface Review {
     date: Date;
 }
 
+export interface SaveReviewRequest {
+    vkOwnerUserId: number;
+    text: string;
+    rating: number;
+    eventId: number;
+    vkUserId: number;
+}
+
 export interface EventsReviews {
-    [key:number]: Review[]
+    [key: number]: Review[]
 }

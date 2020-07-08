@@ -20,6 +20,7 @@ import { goForward } from "../../store/history/actions";
 import isEmpty from "lodash/isEmpty";
 import { MyEventCreate } from '../../store/events/events-near-me/models';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
+import { Validators } from '../../utils/validation/validators';
 
 interface PropsFromState {
     userPosition: Geo,
@@ -126,17 +127,32 @@ class EventForm extends React.Component<AllProps, EventState> {
     }
 
     render() {
-        const { selectedPosition } = this.state;
+        const { selectedPosition, eventName, eventDescription } = this.state;
 
         return (
             <FormLayout>
-                <Input top="Название" type="text" placeholder="Введите текст" name="eventName" onChange={this.handleInputChange} />
-                <Textarea top="Описание" placeholder="Введите текст" name="eventDescription" onChange={this.handleInputChange}></Textarea>
-                <Select placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange}>
+                <Input
+                    top="Название"
+                    type="text"
+                    placeholder="Введите текст"
+                    name="eventName"
+                    onChange={this.handleInputChange}
+                // status={eventName ? 'valid' : 'error'}
+                // bottom={Validators.required(eventName)} 
+                />
+                <Textarea
+                    top="Описание"
+                    placeholder="Введите текст"
+                    name="eventDescription"
+                    onChange={this.handleInputChange}
+                // status={eventDescription ? 'valid' : 'error'}
+                // bottom={Validators.required(eventDescription)}
+                ></Textarea>
+                <Select placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
                     {this.renderThemesSelect()}
                 </Select>
-                <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} />
-                <Input top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} />
+                <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} required />
+                <Input top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} required />
                 <Div style={{ height: '100vh', width: '92%', margin: '0 auto' }}>
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: MAP.KEY }}
