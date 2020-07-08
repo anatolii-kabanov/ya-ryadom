@@ -27,7 +27,7 @@ import { Position } from '../../../store/authentication/models';
 import './events-near-me.scss';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { applyToEventRequest } from '../../../store/applications/actions';
-
+import debounce from 'lodash/debounce';
 
 interface PropsFromState {
     id: string;
@@ -39,7 +39,7 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     goForwardView: typeof goForward,
-    fetchListRequest: typeof fetchListRequest,
+    fetchList: typeof fetchListRequest,
     applyToEvent: typeof applyToEventRequest
 }
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -74,8 +74,8 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
     }
 
     componentDidMount() {
-        const { fetchListRequest, vkUserInfo } = this.props
-        fetchListRequest({
+        const { fetchList, vkUserInfo } = this.props
+        fetchList({
             "userId": 0,
             "vkUserId": vkUserInfo.id,
             "latitude": this.getLatitude(),
@@ -85,6 +85,18 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
         })
     }
 
+    updateEvents = debounce((e: any) => {
+        const { fetchList, vkUserInfo } = this.props;
+        fetchList({
+            "userId": 0,
+            vkUserId: vkUserInfo.id,
+            latitude: this.getLatitude(),
+            longitude: this.getLongitude(),
+            maxDistance: this.state.radius,
+            searchText: this.state.searchText,
+        })
+    }, 100);
+
     onMarkerClick(person: object) {
         this.setState({
             personOnMap: person
@@ -93,17 +105,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
 
     onSearch(event) {
         this.setState({ searchText: event.target.value });
-        if (event.key === 'Enter') {
-            const { fetchListRequest, vkUserInfo } = this.props;            
-            fetchListRequest({
-                "userId": 0,
-                "vkUserId": vkUserInfo.id,
-                "latitude": this.getLatitude(),
-                "longitude": this.getLongitude(),
-                "maxDistance": this.state.radius,
-                "searchText": event.target.value
-            })
-        }
+        this.updateEvents();
     }
 
     getLatitude = () => {
@@ -122,16 +124,8 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
     }
 
     onRadiusChanged(radius: number) {
-        const { fetchListRequest, vkUserInfo } = this.props;
         this.setState({ radius });
-        fetchListRequest({
-            "userId": 0,
-            vkUserId: vkUserInfo.id,
-            latitude: this.getLatitude(),
-            longitude: this.getLongitude(),
-            maxDistance: this.state.radius,
-            searchText: this.state.searchText,
-        })
+        this.updateEvents();
     }
 
     private renderApplicationStatus(status: ApplicationStatus) {
@@ -235,7 +229,7 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
 
 const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
-    fetchListRequest: fetchListRequest,
+    fetchList: fetchListRequest,
     applyToEvent: applyToEventRequest
 }
 

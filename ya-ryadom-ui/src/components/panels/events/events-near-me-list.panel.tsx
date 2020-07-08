@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel, Group, RichCell, Button, Avatar, Div, CardGrid, Card, FormLayout, Input, InfoRow, Slider, Text} from '@vkontakte/vkui';
+import { Panel, Group, RichCell, Button, Avatar, Div, CardGrid, Card, FormLayout, Input, InfoRow, Slider } from '@vkontakte/vkui';
 import { AppState } from '../../../store/app-state';
 import { connect } from 'react-redux';
 import MainHeaderPanel from '../headers/main.header';
@@ -10,6 +10,7 @@ import { applyToEventRequest } from '../../../store/applications/actions';
 import { Position } from '../../../store/authentication/models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
+import debounce from 'lodash/debounce';
 
 interface PropsFromState {
     id: string;
@@ -55,22 +56,11 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
 
     onSearch(event) {
         this.setState({ searchText: event.target.value });
-        if (event.key === 'Enter') {
-            const { fetchList, vkUserInfo } = this.props;            
-            fetchList({
-                "userId": 0,
-                vkUserId: vkUserInfo.id,
-                latitude: this.getLatitude(),
-                longitude: this.getLongitude(),
-                maxDistance: this.state.radius,
-                searchText: event.target.value
-            });
-        }
+        this.updateEvents();
     }
 
-    onRadiusChanged(radius: number) {
+    updateEvents = debounce((e: any) => {
         const { fetchList, vkUserInfo } = this.props;
-        this.setState({ radius });
         fetchList({
             "userId": 0,
             vkUserId: vkUserInfo.id,
@@ -79,6 +69,11 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
             maxDistance: this.state.radius,
             searchText: this.state.searchText,
         })
+    }, 100);
+
+    onRadiusChanged(radius: number) {
+        this.setState({ radius });
+        this.updateEvents();
     }
 
     getLatitude = () => {
