@@ -214,6 +214,7 @@ function* watchSaveUserLocationRequest() {
 
 function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAboutMyselfRequest>) {
     try {
+        yield put(showSpinner());
         const vkUserId = yield select(getVkUserId);
 
         const userAboutMySelf = {
@@ -236,7 +237,7 @@ function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAbo
             yield put(saveUserAboutMyselfError('An unknown error occured.'));
         }
     } finally {
-
+        yield put(hideSpinner());
     }
 }
 

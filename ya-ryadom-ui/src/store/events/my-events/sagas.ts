@@ -14,6 +14,7 @@ import { goForward } from '../../history/actions';
 import { VkHistoryModel } from '../../history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
+import { showSpinner, hideSpinner } from '../../ui/spinner/actions';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/my-events`;
 
@@ -42,6 +43,7 @@ function* watchMyEventsFetchRequest() {
 
 function* handleSaveEventRequest(action: ReturnType<typeof saveMyEventRequest>) {
     try {
+        yield put(showSpinner());
         const result = yield call(callApi, 'post', API_ENDPOINT, '/create', action.payload);
 
         if (result.errors) {
@@ -56,7 +58,7 @@ function* handleSaveEventRequest(action: ReturnType<typeof saveMyEventRequest>) 
             yield put(saveMyEventError('An unknown error occured.'));
         }
     } finally {
-
+        yield put(hideSpinner());
     }
 }
 
