@@ -74,5 +74,15 @@ namespace YaRyadom.API.Controllers
 			await _authenticationService.SaveUserAboutMyselfAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
 		}
+
+		[AllowAnonymous]
+		[HttpPost("user-info/guide/save")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> SaveGuide([FromBody] UserGuideCompletedRequestModel model, CancellationToken cancellationToken = default)
+		{
+			await _authenticationService.SaveUserGuideCompletedAsync(model, cancellationToken).ConfigureAwait(false);
+			return Ok(true);
+		}
 	}
 }
