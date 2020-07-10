@@ -2,7 +2,7 @@
 
 .rating {
   display: flex;
-
+  justify-content: center;
   > * {
     color: $primary-color;
     cursor: pointer;

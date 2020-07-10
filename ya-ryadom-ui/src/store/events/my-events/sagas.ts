@@ -15,6 +15,7 @@ import { VkHistoryModel } from '../../history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
 import { showSpinner, hideSpinner } from '../../ui/spinner/actions';
+import { saveUserGuideCompletedRequest } from '../../authentication/actions';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/my-events`;
 
@@ -69,6 +70,8 @@ function* watchSaveEventRequest() {
 function* handleSaveEventIntroRequest(action: ReturnType<typeof saveMyEventIntroRequest>) {
     yield put(saveMyEventRequest(action.payload));
     yield take(saveMyEventRequest);
+    yield put(saveUserGuideCompletedRequest());
+    yield take(saveUserGuideCompletedRequest);
     yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.EVENT_CREATED_INTRO_PANEL)));
 }
 

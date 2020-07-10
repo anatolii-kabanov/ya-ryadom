@@ -11,6 +11,7 @@ import { Position } from '../../../store/authentication/models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import debounce from 'lodash/debounce';
+import EventsTab from './../../tabs/events.tab';
 
 interface PropsFromState {
     id: string;
@@ -46,7 +47,7 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
         const { fetchList, vkUserInfo } = this.props
         fetchList({
             "userId": 0,
-            "vkUserId": vkUserInfo.id,
+            "vkUserId": vkUserInfo?.id,
             latitude: this.getLatitude(),
             longitude: this.getLongitude(),
             "maxDistance": this.state.radius,
@@ -78,12 +79,12 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
 
     getLatitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return userPosition?.lat ?? lastLocation.latitude;
+        return userPosition?.lat ?? lastLocation?.latitude;
     }
 
     getLongitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return userPosition?.long ?? lastLocation.longitude;
+        return userPosition?.long ?? lastLocation?.longitude;
     }
 
     apply(eventId: number) {
@@ -146,7 +147,9 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
         const { id } = this.props;
         return (
             <Panel id={id}>
-                <MainHeaderPanel text={"Каталог"}></MainHeaderPanel>
+                <MainHeaderPanel text={"Каталог"}>
+                    <EventsTab></EventsTab>
+                </MainHeaderPanel>
                 <FormLayout>
                     <Input type="text" placeholder="Поиск по интересам" name="Search" onKeyDown={(event) => this.onSearch(event)}></Input>
                     <Slider

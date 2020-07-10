@@ -21,9 +21,9 @@ export const saveUserInfoRequest = (payload: UserBaseInfo) => action(Authenticat
 export const saveUserInfoSuccess = (payload: any) => action(AuthenticationTypes.SAVE_USER_INFO_SUCCESS, payload);
 export const saveUserInfoError = (payload: any) => action(AuthenticationTypes.SAVE_USER_INFO_ERROR, payload);
 
-export const saveUserInfoGuideRequest = () => action(AuthenticationTypes.SAVE_USER_INFO_GUIDE);
-export const saveUserInfoGuideSuccess = (payload: any) => action(AuthenticationTypes.SAVE_USER_INFO_GUIDE_SUCCESS, payload);
-export const saveUserInfoGuideError = (payload: any) => action(AuthenticationTypes.SAVE_USER_INFO_GUIDE_ERROR, payload);
+export const saveUserGuideCompletedRequest = () => action(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED);
+export const saveUserGuideCompletedSuccess = () => action(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED_SUCCESS);
+export const saveUserGuideCompletedError = (payload: any) => action(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED_ERROR, payload);
 
 export const saveUserThemesRequest = (payload: ThemeType[]) => action(AuthenticationTypes.SAVE_USER_THEMES, payload);
 export const saveUserThemesSuccess = (payload: any) => action(AuthenticationTypes.SAVE_USER_THEMES_SUCCESS, payload);

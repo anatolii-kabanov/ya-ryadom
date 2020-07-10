@@ -29,6 +29,7 @@ import { ApplicationStatus } from '../../../utils/enums/application-status.enum'
 import { applyToEventRequest } from '../../../store/applications/actions';
 import debounce from 'lodash/debounce';
 import UserMarker from '../../map/user-marker';
+import EventsTab from './../../tabs/events.tab';
 
 interface PropsFromState {
     id: string;
@@ -85,7 +86,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
         const { fetchList, vkUserInfo } = this.props
         fetchList({
             "userId": 0,
-            "vkUserId": vkUserInfo.id,
+            "vkUserId": vkUserInfo?.id,
             "latitude": this.getLatitude(),
             "longitude": this.getLongitude(),
             "maxDistance": 2500000,
@@ -118,12 +119,12 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
 
     getLatitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return userPosition?.lat ?? lastLocation.latitude;
+        return userPosition?.lat ?? lastLocation?.latitude;
     }
 
     getLongitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return userPosition?.long ?? lastLocation.longitude;
+        return userPosition?.long ?? lastLocation?.longitude;
     }
 
     apply(eventId: number) {
@@ -189,7 +190,9 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
         }
         return (
             <Panel id={id}>
-                <MainHeaderPanel text={"Карта"}></MainHeaderPanel>
+                <MainHeaderPanel text={"Карта"}>
+                    <EventsTab></EventsTab>
+                </MainHeaderPanel>
                 <FormLayout>
                     <Input type="text" placeholder="Поиск по интересам" name="Search" onKeyDown={(event) => this.onSearch(event)}></Input>
                     <Slider
@@ -234,7 +237,7 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
     events: events.eventsNearMe.eventsList,
     userPosition: authentication.geoData,
     lastLocation: authentication.currentUser?.lastLocation,
-    vkUserInfo: authentication.vkUserInfo
+    vkUserInfo: authentication.vkUserInfo,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

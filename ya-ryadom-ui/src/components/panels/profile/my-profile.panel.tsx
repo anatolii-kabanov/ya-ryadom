@@ -72,10 +72,6 @@ class MyProfilePanel extends React.Component<AllProps>{
                 </Group>
                 <Group>
                     <Div>
-                        <Button size="xl" className="btn-primary"
-                            onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL))}>Создать событие</Button>
-                    </Div>
-                    <Div>
                         <Button size="xl" className="btn-info"
                             onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL))}>Посмотреть историю</Button>
                     </Div>

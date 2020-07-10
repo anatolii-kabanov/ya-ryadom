@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { Root, ScreenSpinner } from '@vkontakte/vkui';
-import MainView from './views/main.view';
 import { AppState } from '../store/app-state';
 import { connect } from 'react-redux';
 import { VIEWS } from '../utils/constants/view.constants';
 import { fetchVkUserInfoRequest } from '../store/authentication/actions';
-import MyProfileView from "./views/my-profile.view";
-import EventsView from "./views/events.view";
 import IntroView from "./views/intro.view";
+import MyProfileView from './views/my-profile.view';
+import EventsView from './views/events.view';
+import MainEpic from './epics/manu.epic';
+import ReviewsView from './views/reviews.view';
+import ApplicationsView from './views/applications.view';
 
 interface PropsFromState {
     activeView: string;
@@ -33,12 +35,18 @@ class RootLayout extends React.Component<AllProps>  {
         const { activeView, spinnerVisible } = this.props;
 
         return (
-            <Root activeView={activeView} popout={spinnerVisible && <ScreenSpinner />}>
-                <IntroView id={VIEWS.INTRO_VIEW}></IntroView>
-                <MainView id={VIEWS.MAIN_VIEW}></MainView>
-                <MyProfileView id={VIEWS.MY_PROFILE_VIEW}></MyProfileView>
-                <EventsView id={VIEWS.EVENTS_NEAR_ME_VIEW}></EventsView>
-            </Root>
+            <div>
+                {activeView === VIEWS.INTRO_VIEW ?
+                    <Root activeView={activeView} popout={spinnerVisible && <ScreenSpinner />}>
+                        <IntroView id={VIEWS.INTRO_VIEW}></IntroView>
+                    </Root>
+                    : <MainEpic>
+                        <ApplicationsView id={VIEWS.APPLICATIONS_VIEW} popout={spinnerVisible && <ScreenSpinner />}></ApplicationsView>
+                        <ReviewsView id={VIEWS.REVIEWS_VIEW} popout={spinnerVisible && <ScreenSpinner />}></ReviewsView>
+                        <MyProfileView id={VIEWS.MY_PROFILE_VIEW} popout={spinnerVisible && <ScreenSpinner />}></MyProfileView>
+                        <EventsView id={VIEWS.EVENTS_NEAR_ME_VIEW} popout={spinnerVisible && <ScreenSpinner />}></EventsView>
+                    </MainEpic>}
+            </div>
         )
     }
 }

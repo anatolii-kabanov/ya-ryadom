@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { ReactComponent as IntroImage } from '../../../assets/images/svg/hello-intro.svg';
 import { AppState } from '../../../store/app-state';
 import { goForward } from '../../../store/history/actions';
-import { saveUserInfoGuideRequest, fetchUserGeoRequest } from "../../../store/authentication/actions";
+import { fetchUserGeoRequest } from "../../../store/authentication/actions";
 import { UserInfo } from '@vkontakte/vk-bridge';
 
 interface PropsFromState {
@@ -22,7 +22,6 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     goForwardView: typeof goForward,
-    saveUserInfo: typeof saveUserInfoGuideRequest,
     getGeoData: typeof fetchUserGeoRequest,
 }
 
@@ -74,7 +73,6 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 
 const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
-    saveUserInfo: saveUserInfoGuideRequest,
     getGeoData: fetchUserGeoRequest,
 }
 
