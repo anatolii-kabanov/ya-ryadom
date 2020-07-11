@@ -3,8 +3,20 @@
 .rating {
   display: flex;
   justify-content: center;
+  flex-direction: row-reverse;
+  .star {
+    transition: all 0.3s ease-in;
+  }
   > * {
-    color: $primary-color;
+    color: #c0c5cc;
     cursor: pointer;
+  }
+  .star:hover ~ .star,
+  .star:hover {
+    color: $primary-color;
+  }
+
+  .selected ~ .star, .selected {
+    color: $primary-color;
   }
 }

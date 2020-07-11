@@ -56,12 +56,12 @@ class ReviewForm extends React.Component<AllProps, State> {
 
         return (
             <FormLayout>
-                <RatingInput></RatingInput>
+                <RatingInput totalStars={5}></RatingInput>
                 <Textarea
                     onChange={this.handleInputChange}
-                    // status={text ? 'valid' : 'error'}
-                    // bottom={Validators.required(text)}
-                    ></Textarea>
+                // status={text ? 'valid' : 'error'}
+                // bottom={Validators.required(text)}
+                ></Textarea>
                 <Button className="btn-primary" size="xl" onClick={this.onSubmitClicked}>Отправить</Button>
             </FormLayout>
         )
