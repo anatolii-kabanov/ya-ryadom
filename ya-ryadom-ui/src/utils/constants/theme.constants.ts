@@ -32,5 +32,29 @@ export const ALL_THEMES = [
     {
         name: 'Прогулки',
         id: ThemeType.walks
-    }
+    },
+    {
+        name: 'Личные события',
+        id: ThemeType.personalEvents
+    },
+    {
+        name: 'Театр',
+        id: ThemeType.theatre
+    },
+    {
+        name: 'Спектакль',
+        id: ThemeType.spectacle
+    },
+    {
+        name: 'Бар',
+        id: ThemeType.bar
+    },
+    {
+        name: 'Митинг',
+        id: ThemeType.meeting
+    },
+    {
+        name: 'Благотворительность',
+        id: ThemeType.charity
+    },
 ]

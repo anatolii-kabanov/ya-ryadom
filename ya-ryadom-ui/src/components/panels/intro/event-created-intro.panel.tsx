@@ -52,6 +52,9 @@ class EventCreatedIntroPanel extends React.Component<AllProps, State>  {
                 <Group className="intro-image text-center" separator="hide">
                     <IntroFinishedImage></IntroFinishedImage>
                 </Group>
+                <Group className="intro-text" separator="hide">
+                    <p className="first-row-text">Поздравляем!<br/>Ваше первое событие создано.</p>
+                </Group>
                 <Group className="btn-container-bottom">
                     <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Каталог событий</Button>
                 </Group>
