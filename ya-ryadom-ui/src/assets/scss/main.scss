@@ -60,7 +60,27 @@
   border-radius: 6px;
 }
 
+/* Google maps*/
+
 .map {
   height: 50vh;
   width: 100%;
 }
+
+.pac-container {
+}
+
+.pac-icon {
+  display: none;
+}
+
+.pac-item {
+  border-top: none;
+  padding: 11px 12px;
+}
+
+.pac-container:after {
+  content: none;
+}
+
+/* Google maps*/

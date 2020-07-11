@@ -9,7 +9,7 @@ interface AutocompleteProps {
 
 interface State {
     query: string;
-    googleMapsReady: boolean;    
+    googleMapsReady: boolean;
 }
 
 class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
@@ -21,7 +21,7 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
         this.autoComplete = React.createRef();
         this.state = {
             query: "",
-            googleMapsReady: false            
+            googleMapsReady: false
         };
     }
 
