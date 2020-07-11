@@ -24,7 +24,7 @@ import { EventNearMe } from "../../../store/events/events-near-me/models";
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { Position } from '../../../store/authentication/models';
 
-import './events-near-me.scss';
+import './events-near-me-map.panel.scss';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { applyToEventRequest } from '../../../store/applications/actions';
 import debounce from 'lodash/debounce';
