@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { VkHistoryModel } from '../../store/history/models';
 import { goForward } from '../../store/history/actions';
 import { VIEWS } from '../../utils/constants/view.constants';
-import Icon28Add from '@vkontakte/icons/dist/28/add_square_outline';
 
 interface PropsFromState {
     activePanel: string;
@@ -26,14 +25,7 @@ class EventsTab extends React.Component<AllProps>  {
         const { activePanel, goForwardView } = this.props;
         return (
             <Tabs>
-                <HorizontalScroll>
-                    <TabsItem
-                        className="add-icon-tab"
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.CREATE_EVENT_PANEL))}
-                        selected={activePanel === PANELS.CREATE_EVENT_PANEL}
-                        after={<Icon28Add className="nav-icon-selected"></Icon28Add>}
-                    >
-                    </TabsItem>
+                <HorizontalScroll>                    
                     <TabsItem
                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL))}
                         selected={activePanel === PANELS.EVENTS_NEAR_ME_MAP_PANEL}

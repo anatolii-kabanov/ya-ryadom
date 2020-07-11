@@ -44,15 +44,7 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
     }
 
     componentDidMount() {
-        const { fetchList, vkUserInfo } = this.props
-        fetchList({
-            "userId": 0,
-            "vkUserId": vkUserInfo?.id,
-            latitude: this.getLatitude(),
-            longitude: this.getLongitude(),
-            "maxDistance": this.state.radius,
-            "searchText": '',
-        })
+        this.updateEvents();
     }
 
     onSearch(event) {
@@ -154,7 +146,7 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
                     <Input type="text" placeholder="Поиск по интересам" name="Search" onKeyDown={(event) => this.onSearch(event)}></Input>
                     <Slider
                         min={1}
-                        max={250}
+                        max={100}
                         step={0.5}
                         value={this.state.radius}
                         onChange={radius => this.onRadiusChanged(radius)}

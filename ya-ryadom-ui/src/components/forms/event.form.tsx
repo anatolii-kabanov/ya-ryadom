@@ -153,16 +153,16 @@ class EventForm extends React.Component<AllProps, EventState> {
                 </Select>
                 <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} required />
                 <Input top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} required />
-                <Div style={{ height: '100vh', width: '92%', margin: '0 auto' }}>
+                <div className="map">
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: MAP.KEY }}
                         center={{ lat: this.getLatitude(), lng: this.getLongitude() }}
                         defaultZoom={this.state.zoom}
                         onClick={this.onLocationClick}
                     >
-                        {selectedPosition && <Marker lat={selectedPosition?.lat} lng={selectedPosition?.lng} text={"asd"} />}
+                        {selectedPosition && <Marker lat={selectedPosition?.lat} lng={selectedPosition?.lng}/>}
                     </GoogleMapReact>
-                </Div>
+                </div>
                 <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Создать</Button>
             </FormLayout>
         )

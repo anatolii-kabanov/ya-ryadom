@@ -6,6 +6,7 @@ import {
     Avatar,
     RichCell,
     Div,
+    Header,
 } from "@vkontakte/vkui";
 import { connect } from 'react-redux';
 import { AppState } from "../../../store/app-state";
@@ -57,7 +58,7 @@ class MyProfilePanel extends React.Component<AllProps>{
         return (
             <Panel id={id}>
                 <MainHeaderPanel text='Мой профиль'></MainHeaderPanel>
-                <Group>
+                <Group separator="hide">
                     <RichCell
                         disabled
                         multiline
@@ -66,14 +67,10 @@ class MyProfilePanel extends React.Component<AllProps>{
                     >
                         {vkUserInfo?.first_name} {vkUserInfo?.last_name}
                     </RichCell>
+                </Group>
+                <Group header={<Header mode="secondary">Темы</Header>} separator="hide">
                     <Div className="pills">
                         {this.renderThemes()}
-                    </Div>
-                </Group>
-                <Group>
-                    <Div>
-                        <Button size="xl" className="btn-info"
-                            onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.CREATE_EVENT_PANEL))}>Посмотреть историю</Button>
                     </Div>
                 </Group>
             </Panel>
