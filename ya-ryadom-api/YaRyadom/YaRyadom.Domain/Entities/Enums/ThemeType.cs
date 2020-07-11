@@ -9,6 +9,13 @@
 		Sport = 5,
 		Concert = 6,
 		Relaxation = 7,
-		Walks = 8
+		Walks = 8,
+		PersonalEvents = 9,
+		Theatre = 10,
+		Spectacle = 11,
+		Bar = 12,
+		Meeting = 13,
+		Сharity =14,
+
 	}
 }
