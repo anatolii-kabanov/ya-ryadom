@@ -7,6 +7,7 @@ import {
     RichCell,
     Div,
     Header,
+    Caption,
 } from "@vkontakte/vkui";
 import { connect } from 'react-redux';
 import { AppState } from "../../../store/app-state";
@@ -46,7 +47,7 @@ class MyProfilePanel extends React.Component<AllProps>{
             const themes = ALL_THEMES.filter(t => currentUser.selectedThemes.indexOf(t.id) !== -1);
             return themes
                 .map((item, key) => {
-                    return <PillInput id={item.id} selected={true} onClick={() => ''} text={item.name}></PillInput>
+                    return <PillInput key={key} id={item.id} selected={true} onClick={() => ''} text={item.name}></PillInput>
                 });
         }
     }
@@ -63,7 +64,12 @@ class MyProfilePanel extends React.Component<AllProps>{
                         text={currentUser?.aboutMySelf}
                         before={<Avatar size={72} src={vkUserInfo?.photo_100} />}
                     >
-                        {vkUserInfo?.first_name} {vkUserInfo?.last_name} <Icon24Star className="star" /> {currentUser?.avgRating.toFixed(1)}
+                        <span className="profile-main-row">
+                            {vkUserInfo?.first_name} {vkUserInfo?.last_name}
+                            <Icon24Star className="star">
+                            </Icon24Star>
+                            <Caption weight="regular" level="1">{currentUser?.avgRating.toFixed(1)}</Caption>
+                        </span>
                     </RichCell>
                 </Group>
                 <Group header={<Header mode="secondary">Темы</Header>} separator="hide">
