@@ -11,7 +11,7 @@ import { Position } from '../../../store/authentication/models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import debounce from 'lodash/debounce';
-import EventsTab from './../../tabs/events.tab';
+import EventsTabs from '../../tabs/events.tabs';
 
 interface PropsFromState {
     id: string;
@@ -140,7 +140,7 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
         return (
             <Panel id={id}>
                 <MainHeaderPanel text={"Каталог"}>
-                    <EventsTab></EventsTab>
+                    <EventsTabs></EventsTabs>
                 </MainHeaderPanel>
                 <FormLayout>
                     <Input type="text" placeholder="Поиск по интересам" name="Search" onKeyDown={(event) => this.onSearch(event)}></Input>

@@ -8,6 +8,7 @@ import { fetchMineApplicationsRequest, revokeApplicationRequest } from '../../..
 import { TABS } from '../../../utils/constants/tab.constants';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
+import ApplicationsTabs from '../../tabs/applications.tabs';
 
 interface PropsFromState {
     id: string;
@@ -107,6 +108,7 @@ class MyApplicationsPanel extends React.Component<AllProps, State>  {
         return (
             <Panel id={id}>
                 <MainHeaderPanel text='Мои заявки'></MainHeaderPanel>
+                <ApplicationsTabs></ApplicationsTabs>
                 <Group>
                     <HorizontalScroll>
                         <Tabs mode="buttons">

@@ -29,7 +29,7 @@ import { ApplicationStatus } from '../../../utils/enums/application-status.enum'
 import { applyToEventRequest } from '../../../store/applications/actions';
 import debounce from 'lodash/debounce';
 import UserMarker from '../../map/user-marker';
-import EventsTab from './../../tabs/events.tab';
+import EventsTabs from '../../tabs/events.tabs';
 
 interface PropsFromState {
     id: string;
@@ -183,7 +183,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
         return (
             <Panel id={id}>
                 <MainHeaderPanel text={"Карта"}>
-                    <EventsTab></EventsTab>
+                    <EventsTabs></EventsTabs>
                 </MainHeaderPanel>
                 <FormLayout>
                     <Input type="text" placeholder="Поиск по интересам" name="Search" onKeyDown={(event) => this.onSearch(event)}></Input>

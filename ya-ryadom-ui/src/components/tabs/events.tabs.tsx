@@ -1,5 +1,5 @@
 
-import './events.tab.scss';
+import './events.tabs.scss';
 import React from 'react';
 import { Tabs, TabsItem, HorizontalScroll } from '@vkontakte/vkui';
 import { PANELS } from '../../utils/constants/panel.constants';
@@ -20,7 +20,7 @@ interface PropsFromDispatch {
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class EventsTab extends React.Component<AllProps>  {
+class EventsTabs extends React.Component<AllProps>  {
     render() {
         const { activePanel, goForwardView } = this.props;
         return (
@@ -55,5 +55,5 @@ const mapDispatchToProps: PropsFromDispatch = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(EventsTab);
+)(EventsTabs);
 

@@ -7,6 +7,7 @@ import { Application } from '../../../store/applications/models';
 import { fetchApplicationsToMeRequest } from '../../../store/applications/actions';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
+import ApplicationsTabs from '../../tabs/applications.tabs';
 
 interface PropsFromState {
     id: string;
@@ -64,10 +65,11 @@ class ApplicationsToMePanel extends React.Component<AllProps>  {
         return (
             <Panel id={id}>
                 <MainHeaderPanel text='Заявки'></MainHeaderPanel>
-                <Group header={"Новые"}>
+                <ApplicationsTabs></ApplicationsTabs>
+                <Group header={<Header mode="secondary">Новые</Header>}>
 
                 </Group>
-                <Group header={"Подтвержденные"}>
+                <Group header={<Header mode="secondary">Подтвержденные</Header>}>
                     {this.renderVisitedApplications()}
                 </Group>
             </Panel>
