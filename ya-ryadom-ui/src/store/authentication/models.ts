@@ -9,6 +9,7 @@ export interface User {
     selectedThemes: ThemeType[],
     lastLocation: Position | null,
     aboutMySelf: string;
+    avgRating: number;
     // some settings
 }
 

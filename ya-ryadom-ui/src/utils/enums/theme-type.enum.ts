@@ -1,5 +1,4 @@
-export enum ThemeType
-{
+export enum ThemeType {
     cinema = 1,
     education = 2,
     exhibition = 3,
@@ -7,5 +6,11 @@ export enum ThemeType
     sport = 5,
     concert = 6,
     relaxation = 7,
-    walks = 8
+    walks = 8,
+    personalEvents = 9,
+    theatre = 10,
+    spectacle = 11,
+    bar = 12,
+    meeting = 13,
+    charity = 14,
 }

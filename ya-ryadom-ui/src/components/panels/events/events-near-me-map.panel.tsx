@@ -10,7 +10,7 @@ import {
 } from '@vkontakte/vkui';
 import { AppState } from '../../../store/app-state';
 import { connect } from 'react-redux';
-import GoogleMapReact from 'google-map-react';
+import GoogleMapReact, { Maps } from 'google-map-react';
 import Marker from '../../map/marker';
 import MainHeaderPanel from '../headers/main.header';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
@@ -24,10 +24,12 @@ import { EventNearMe } from "../../../store/events/events-near-me/models";
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { Position } from '../../../store/authentication/models';
 
-import './events-near-me.scss';
+import './events-near-me-map.panel.scss';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { applyToEventRequest } from '../../../store/applications/actions';
-
+import debounce from 'lodash/debounce';
+import UserMarker from '../../map/user-marker';
+import EventsTabs from '../../tabs/events.tabs';
 
 interface PropsFromState {
     id: string;
@@ -39,7 +41,7 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     goForwardView: typeof goForward,
-    fetchListRequest: typeof fetchListRequest,
+    fetchList: typeof fetchListRequest,
     applyToEvent: typeof applyToEventRequest
 }
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -48,6 +50,13 @@ interface State {
     personOnMap: any;
     searchText: string;
     radius: number;
+}
+
+const createMapOptions = (maps: Maps) => {
+    return {
+        ...maps,
+        mapTypeControl: true
+    };
 }
 
 class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
@@ -74,16 +83,20 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
     }
 
     componentDidMount() {
-        const { fetchListRequest, vkUserInfo } = this.props
-        fetchListRequest({
-            "userId": 0,
-            "vkUserId": vkUserInfo.id,
-            "latitude": this.getLatitude(),
-            "longitude": this.getLongitude(),
-            "maxDistance": 2500000,
-            "searchText": '',
-        })
+        this.updateEvents();
     }
+
+    updateEvents = debounce((e: any) => {
+        const { fetchList, vkUserInfo } = this.props;
+        fetchList({
+            "userId": 0,
+            vkUserId: vkUserInfo?.id,
+            latitude: this.getLatitude(),
+            longitude: this.getLongitude(),
+            maxDistance: this.state.radius,
+            searchText: this.state.searchText,
+        })
+    }, 100);
 
     onMarkerClick(person: object) {
         this.setState({
@@ -93,27 +106,17 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
 
     onSearch(event) {
         this.setState({ searchText: event.target.value });
-        if (event.key === 'Enter') {
-            const { fetchListRequest, vkUserInfo } = this.props;            
-            fetchListRequest({
-                "userId": 0,
-                "vkUserId": vkUserInfo.id,
-                "latitude": this.getLatitude(),
-                "longitude": this.getLongitude(),
-                "maxDistance": this.state.radius,
-                "searchText": event.target.value
-            })
-        }
+        this.updateEvents();
     }
 
     getLatitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return userPosition?.lat ?? lastLocation.latitude;
+        return userPosition?.lat ?? lastLocation?.latitude;
     }
 
     getLongitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return userPosition?.long ?? lastLocation.longitude;
+        return userPosition?.long ?? lastLocation?.longitude;
     }
 
     apply(eventId: number) {
@@ -122,16 +125,8 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
     }
 
     onRadiusChanged(radius: number) {
-        const { fetchListRequest, vkUserInfo } = this.props;
         this.setState({ radius });
-        fetchListRequest({
-            "userId": 0,
-            vkUserId: vkUserInfo.id,
-            latitude: this.getLatitude(),
-            longitude: this.getLongitude(),
-            maxDistance: this.state.radius,
-            searchText: this.state.searchText,
-        })
+        this.updateEvents();
     }
 
     private renderApplicationStatus(status: ApplicationStatus) {
@@ -187,12 +182,14 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
         }
         return (
             <Panel id={id}>
-                <MainHeaderPanel text={"Карта"}></MainHeaderPanel>
+                <MainHeaderPanel text={"Карта"}>
+                    <EventsTabs></EventsTabs>
+                </MainHeaderPanel>
                 <FormLayout>
                     <Input type="text" placeholder="Поиск по интересам" name="Search" onKeyDown={(event) => this.onSearch(event)}></Input>
                     <Slider
                         min={1}
-                        max={250}
+                        max={100}
                         step={0.5}
                         value={this.state.radius}
                         onChange={radius => this.onRadiusChanged(radius)}
@@ -206,6 +203,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
                     {/* <Div> from VKUI mess it up for some reason*/}
                     <div className="map">
                         <GoogleMapReact
+
                             bootstrapURLKeys={{ key: MAP.KEY }}
                             defaultCenter={{
                                 lat: this.getLatitude(),
@@ -214,6 +212,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
                             defaultZoom={14}
                             distanceToMouse={(pt, m) => 0}
                         >
+                            <UserMarker lat={this.getLatitude()} lng={this.getLongitude()}></UserMarker>
                             {this.renderEvents()}
                         </GoogleMapReact>
                     </div>
@@ -230,12 +229,12 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
     events: events.eventsNearMe.eventsList,
     userPosition: authentication.geoData,
     lastLocation: authentication.currentUser?.lastLocation,
-    vkUserInfo: authentication.vkUserInfo
+    vkUserInfo: authentication.vkUserInfo,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
-    fetchListRequest: fetchListRequest,
+    fetchList: fetchListRequest,
     applyToEvent: applyToEventRequest
 }
 

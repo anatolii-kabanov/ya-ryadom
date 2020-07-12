@@ -14,7 +14,7 @@ import { goForward } from '../../../store/history/actions';
 import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
-import { ReactComponent as IntroImage } from '../../../assets/images/svg/hello-intro.svg';
+import { ReactComponent as IntroFinishedImage } from '../../../assets/images/svg/intro-finished.svg';
 
 interface PropsFromState {
     id: string,
@@ -49,15 +49,14 @@ class EventCreatedIntroPanel extends React.Component<AllProps, State>  {
                 <PanelHeader>
                 </PanelHeader>
                 <Div><Title level="3" weight="bold" className="title text-center">Ваше событие создано!</Title ></Div>
-                <Group>
-                    <Div className="intro-image text-center">
-                        <IntroImage></IntroImage>
-                    </Div>
+                <Group className="intro-image text-center" separator="hide">
+                    <IntroFinishedImage></IntroFinishedImage>
                 </Group>
-                <Group>
-                    <Div className="btn-container-bottom">
-                        <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Каталог событий</Button>
-                    </Div>
+                <Group className="intro-text" separator="hide">
+                    <p className="first-row-text">Поздравляем!<br/>Ваше первое событие создано.</p>
+                </Group>
+                <Group className="btn-container-bottom">
+                    <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Каталог событий</Button>
                 </Group>
             </Panel>
         )

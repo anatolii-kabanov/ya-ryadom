@@ -30,7 +30,7 @@ class MainHeaderPanel extends React.Component<AllProps>  {
                     {osname === IOS ? <Icon28ChevronBack className="nav-icon-selected" /> : <Icon24Back className="nav-icon-selected" />}
                 </PanelHeaderButton>}
             >
-                {text}
+                {this.props.children || text}
             </PanelHeader>
         )
     }

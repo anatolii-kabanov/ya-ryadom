@@ -21,7 +21,10 @@ import {
     saveUserLocationSuccess,
     saveUserAboutMyselfRequest,
     saveUserAboutMyselfError,
-    saveUserAboutMyselfSuccess
+    saveUserAboutMyselfSuccess,
+    saveUserGuideCompletedRequest,
+    saveUserGuideCompletedSuccess,
+    saveUserGuideCompletedError
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo, User } from './models';
@@ -36,6 +39,7 @@ const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/auth`;
 
 function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
     try {
+        yield put(showSpinner());
         const result = yield call(callApi, 'get', API_ENDPOINT, `/user-info/${action.payload}`);
 
         if (result.errors) {
@@ -53,6 +57,8 @@ function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
         } else {
             yield put(fetchUserInfoError('An unknown error occured.'));
         }
+    } finally {
+        yield put(hideSpinner());
     }
 }
 
@@ -214,6 +220,7 @@ function* watchSaveUserLocationRequest() {
 
 function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAboutMyselfRequest>) {
     try {
+        yield put(showSpinner());
         const vkUserId = yield select(getVkUserId);
 
         const userAboutMySelf = {
@@ -236,12 +243,43 @@ function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAbo
             yield put(saveUserAboutMyselfError('An unknown error occured.'));
         }
     } finally {
-
+        yield put(hideSpinner());
     }
 }
 
 function* watchSaveUserAboutMyselfRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF, handleSaveUserAboutMyselfRequest)
+}
+
+function* handleSaveUserGuideCompletedRequest(action: ReturnType<typeof saveUserGuideCompletedRequest>) {
+    try {
+        yield put(showSpinner());
+        const vkUserId = yield select(getVkUserId);
+
+        const user = {
+            vkUserId: vkUserId,
+        };
+
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/user-info/guide/save', user);
+
+        if (result.errors) {
+            yield put(saveUserGuideCompletedError(result.errors));
+        } else {
+            yield put(saveUserGuideCompletedSuccess());
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(saveUserGuideCompletedError(error.stack));
+        } else {
+            yield put(saveUserGuideCompletedError('An unknown error occured.'));
+        }
+    } finally {
+        yield put(hideSpinner());
+    }
+}
+
+function* watchSaveUserGuideCompletedRequest() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED, handleSaveUserGuideCompletedRequest)
 }
 
 function* authenticationSagas() {
@@ -252,7 +290,8 @@ function* authenticationSagas() {
         fork(watchFetchUserGeoRequest),
         fork(watchSaveUserThemesRequest),
         fork(watchSaveUserLocationRequest),
-        fork(watchSaveUserAboutMyselfRequest)
+        fork(watchSaveUserAboutMyselfRequest),
+        fork(watchSaveUserGuideCompletedRequest),
     ])
 }
 

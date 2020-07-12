@@ -29,6 +29,9 @@ const reducer: Reducer<AuthenticationState> = (state = initialState, action) => 
         case AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS: {
             return { ...state, currentUser: { ...state.currentUser, aboutMySelf: action.payload } }
         }
+        case AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED_SUCCESS: {
+            return { ...state, currentUser: { ...state.currentUser, guideCompleted: true } }
+        }
         default: {
             return state
         }

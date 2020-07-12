@@ -7,12 +7,12 @@ interface PillProps {
     id: ThemeType;
     text: string;
     selected: boolean;
-    onClick: (themeType: ThemeType) => void;
+    onClick?: (themeType: ThemeType) => void;
 }
 
 const PillInput: React.FC<PillProps> = ({ id, text, selected, onClick }) => {
     return (
-        <Div className={`pill-container ${selected ? 'selected' : ''}`} onClick={() => onClick(id)}>{text}</Div>
+        <Div className={`pill-container ${selected ? 'selected' : ''}`} onClick={() => onClick && onClick(id)}>{text}</Div>
     );
 }
 

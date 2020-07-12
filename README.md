@@ -10,7 +10,7 @@
  	или же пользуемся только SDK 
 	
  
-3. PostgreSQL Version 11 [PostgreSQL](https://www.postgresql.org/download/)
+3. PostgreSQL Version от 10 [PostgreSQL](https://www.postgresql.org/download/)
 
 - Устанавливаем так же PostGIS, компонент находится в дополнительном установщике Stack Builder
 

@@ -17,6 +17,8 @@ namespace YaRyadom.API.Services.Interfaces
 		Task<bool> SaveUserLocationAsync(UserLocationRequestModel model, CancellationToken cancellationToken = default);
 
 		Task<bool> SaveUserAboutMyselfAsync(UserAboutMyselfRequestModel model, CancellationToken cancellationToken = default);
-		
+
+		Task<bool> SaveUserGuideCompletedAsync(UserGuideCompletedRequestModel model, CancellationToken cancellationToken = default);
+
 	}
 }

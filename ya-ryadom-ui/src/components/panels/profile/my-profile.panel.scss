@@ -1,0 +1,9 @@
+@import "../../../assets/scss/variables.scss";
+.my-profile {
+  .star {
+    color: $primary-color;
+  }
+  .profile-main-row {
+    display: flex;
+  }
+}

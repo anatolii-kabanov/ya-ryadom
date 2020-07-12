@@ -9,7 +9,6 @@ import {
     Select
 } from '@vkontakte/vkui';
 import GoogleMapReact, { ClickEventValue } from 'google-map-react';
-import dateFormat from "dateformat";
 import Marker from '../map/marker';
 import { MAP } from '../../utils/constants/map.constants';
 import { Geo } from '../../store/authentication/models';
@@ -21,6 +20,8 @@ import { goForward } from "../../store/history/actions";
 import isEmpty from "lodash/isEmpty";
 import { MyEventCreate } from '../../store/events/events-near-me/models';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
+import { Validators } from '../../utils/validation/validators';
+import AutocompleteMap from '../inputs/autocomplete-map.input';
 
 interface PropsFromState {
     userPosition: Geo,
@@ -61,7 +62,7 @@ class EventForm extends React.Component<AllProps, EventState> {
             eventDescription: '',
             eventDate: '',
             eventTime: '',
-            selectedTheme: 0
+            selectedTheme: 0,
         };
         this.onLocationClick = this.onLocationClick.bind(this);
         this.onFillInProfile = this.onFillInProfile.bind(this)
@@ -126,28 +127,60 @@ class EventForm extends React.Component<AllProps, EventState> {
         }
     }
 
+    onLocationChanged = (location: Position) => {
+        console.log(location)
+        if (location) {
+            this.setState({
+                selectedPosition: { lng: location.longitude, lat: location.latitude }
+            });
+        }
+    }
+
     render() {
-        const { selectedPosition } = this.state;
+        const { selectedPosition, eventName, eventDescription } = this.state;
 
         return (
             <FormLayout>
-                <Input top="Название" type="text" placeholder="Введите текст" name="eventName" onChange={this.handleInputChange} />
-                <Textarea top="Описание" placeholder="Введите текст" name="eventDescription" onChange={this.handleInputChange}></Textarea>
-                <Select placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange}>
+                <Input
+                    top="Название"
+                    type="text"
+                    placeholder="Введите текст"
+                    name="eventName"
+                    onChange={this.handleInputChange}
+                // status={eventName ? 'valid' : 'error'}
+                // bottom={Validators.required(eventName)} 
+                />
+                <Textarea
+                    top="Описание"
+                    placeholder="Введите текст"
+                    name="eventDescription"
+                    onChange={this.handleInputChange}
+                // status={eventDescription ? 'valid' : 'error'}
+                // bottom={Validators.required(eventDescription)}
+                ></Textarea>
+                <Select placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
                     {this.renderThemesSelect()}
                 </Select>
-                <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} min={dateFormat(new Date(), "yyyy-mm-dd")} />
-                <Input top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} />
-                <Div style={{ height: '100vh', width: '92%', margin: '0 auto' }}>
+                <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} required />
+                <Input top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} required />
+                <AutocompleteMap type="address" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
+                <div className="map">
                     <GoogleMapReact
+                        yesIWantToUseGoogleMapApiInternals={true}
                         bootstrapURLKeys={{ key: MAP.KEY }}
-                        center={{ lat: this.getLatitude(), lng: this.getLongitude() }}
+                        center={{
+                            lat: this.state.selectedPosition.lat ?? this.getLatitude(),
+                            lng: this.state.selectedPosition.lng ?? this.getLongitude()
+                        }}
                         defaultZoom={this.state.zoom}
+                        defaultCenter={{
+                            lat: this.getLatitude(), lng: this.getLongitude()
+                        }}
                         onClick={this.onLocationClick}
                     >
-                        {selectedPosition && <Marker lat={selectedPosition?.lat} lng={selectedPosition?.lng} text={"asd"} />}
+                        {selectedPosition && <Marker lat={selectedPosition?.lat} lng={selectedPosition?.lng} />}
                     </GoogleMapReact>
-                </Div>
+                </div>
                 <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Создать</Button>
             </FormLayout>
         )

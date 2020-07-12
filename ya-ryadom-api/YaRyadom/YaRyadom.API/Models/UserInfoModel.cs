@@ -15,5 +15,7 @@ namespace YaRyadom.API.Models
 		public string VkUserAvatarUrl { get; set; }
 
 		public PositionModel LastLocation { get; set; }
+
+		public double AvgRating { get; set; }
 	}
 }

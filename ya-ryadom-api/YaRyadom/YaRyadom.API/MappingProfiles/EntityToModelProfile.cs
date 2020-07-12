@@ -19,6 +19,8 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMySelf))
 				.ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
 				.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+				.ForMember(dest => dest.AvgRating, opt => opt.MapFrom(src => src.YaRyadomReviewsAboutMe.Average(m => m.Rating)))
+				.ForMember(dest => dest.SelectedThemes, opt => opt.MapFrom(src => src.YaRyadomUserThemes.Select(m => (ThemeTypeModel)m.Type)))
 				.ForMember(dest => dest.LastLocation, opt => opt.MapFrom(src => new PositionModel() {  Latitude = src.LastLocation.Y, Longitude = src.LastLocation.X }));
 
 			CreateMap<YaRyadomEventServiceModel, YaRyadomEventModel>()

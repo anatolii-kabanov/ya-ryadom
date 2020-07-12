@@ -10,9 +10,9 @@ interface AppProps {
 
 const App: React.FC<AppProps> = ({ store }) => {
   return (
-      <Provider store={store}>
-        <RootLayout></RootLayout>
-      </Provider>
+    <Provider store={store}>
+      <RootLayout></RootLayout>
+    </Provider>
   );
 }
 

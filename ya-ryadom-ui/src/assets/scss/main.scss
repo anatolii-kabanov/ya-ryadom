@@ -32,7 +32,7 @@
   position: fixed;
   width: 100%;
   padding-left: 0px;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 }
 
 .Slider__dragger::before {
@@ -59,3 +59,28 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
   border-radius: 6px;
 }
+
+/* Google maps*/
+
+.map {
+  height: 50vh;
+  width: 100%;
+}
+
+.pac-container {
+}
+
+.pac-icon {
+  display: none;
+}
+
+.pac-item {
+  border-top: none;
+  padding: 11px 12px;
+}
+
+.pac-container:after {
+  content: none;
+}
+
+/* Google maps*/

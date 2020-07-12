@@ -5,11 +5,13 @@ import {
     fetchListSuccess,
 } from './actions'
 import { callApi } from '../../../utils/api';
+import { showSpinner, hideSpinner } from '../../ui/spinner/actions';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/events-near-me`;
 
 function* handleFetch(action) {
     try {
+        yield put(showSpinner());
         const result = yield call(callApi, 'POST', API_ENDPOINT, '', action.payload);
 
         if (result.errors) {
@@ -23,6 +25,8 @@ function* handleFetch(action) {
         } else {
             yield put(fetchListError('An unknown error occured.'));
         }
+    } finally {
+        yield put(hideSpinner());
     }
 }
 

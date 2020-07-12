@@ -1,15 +1,17 @@
 import React from "react";
 import { MAP } from "../../utils/constants/map.constants";
-import { Div, Spinner, Input } from "@vkontakte/vkui";
+import { Spinner, Input } from "@vkontakte/vkui";
 import { Position } from "../../store/authentication/models";
 
 interface AutocompleteProps {
+    loadMaps: boolean;
+    type: "(cities)" | "address"
     onLocationChanged: (location: Position) => void;
 }
 
 interface State {
     query: string;
-    googleMapsReady: boolean;    
+    googleMapsReady: boolean;
 }
 
 class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
@@ -21,20 +23,19 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
         this.autoComplete = React.createRef();
         this.state = {
             query: "",
-            googleMapsReady: false            
+            googleMapsReady: false
         };
     }
 
     componentDidMount() {
-
+        const { type } = this.props;
         this.loadGoogleMaps(() => {
             this.setState({ googleMapsReady: true });
             this.autoComplete = new window.google.maps.places.Autocomplete(
                 this.autoComplete.current,
-                { types: ["(cities)"], componentRestrictions: { country: "ru" } }
+                { types: [type], componentRestrictions: { country: "ru" } }
             );
             this.autoComplete.setFields(["address_components", "formatted_address", "geometry"]);
-            console.log(this.autoComplete);
             this.autoComplete.addListener("place_changed", () =>
                 handlePlaceSelect()
             );
@@ -57,8 +58,9 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
     }
 
     loadGoogleMaps = (callback) => {
+        const { loadMaps } = this.props;
         const existingScript = document.getElementById("googlePlacesScript");
-        if (!existingScript) {
+        if (!existingScript && loadMaps) {
             const script = document.createElement("script");
             script.src =
                 `https://maps.googleapis.com/maps/api/js?key=${MAP.KEY}&libraries=places`;
@@ -84,7 +86,7 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
         return (
             !googleMapsReady
                 ? <Spinner size="large"></Spinner>
-                : <Div className="search-places-input">
+                : <div className="search-places-input">
                     <Input
                         getRef={this.autoComplete}
                         autoComplete="on"
@@ -92,7 +94,7 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
                         placeholder="Выберите город"
                         value={query}>
                     </Input>
-                </Div>
+                </div>
         )
     }
 

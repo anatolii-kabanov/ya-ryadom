@@ -12,17 +12,18 @@ import { connect } from 'react-redux';
 import { ReactComponent as IntroImage } from '../../../assets/images/svg/hello-intro.svg';
 import { AppState } from '../../../store/app-state';
 import { goForward } from '../../../store/history/actions';
-import { saveUserInfoGuideRequest, fetchUserGeoRequest } from "../../../store/authentication/actions";
+import { fetchUserGeoRequest } from "../../../store/authentication/actions";
 import { UserInfo } from '@vkontakte/vk-bridge';
+import { User } from '../../../store/authentication/models';
 
 interface PropsFromState {
     id: string,
     vkUserInfo: UserInfo,
+    currentUser: User
 }
 
 interface PropsFromDispatch {
     goForwardView: typeof goForward,
-    saveUserInfo: typeof saveUserInfoGuideRequest,
     getGeoData: typeof fetchUserGeoRequest,
 }
 
@@ -36,16 +37,16 @@ class HelloIntroPanel extends React.Component<AllProps>  {
     }
 
     componentDidMount() {
-       
+
     }
 
     onHelloIntroCompleted() {
         const { getGeoData } = this.props;
-        getGeoData();        
+        getGeoData();
     }
 
     render() {
-        const { id, vkUserInfo } = this.props;
+        const { id, vkUserInfo, currentUser } = this.props;
         return (
             <Panel id={id} className="hello-intro-panel">
                 <PanelHeader>
@@ -57,10 +58,13 @@ class HelloIntroPanel extends React.Component<AllProps>  {
                     </Div>
                     <Div className="intro-text">
                         <p className="first-row-text">Твой будущий друг уже рядом. <br /> Несколько действий и ты в большой тусовке своего города.</p>
-                        <p className="second-row-text">Весь спектр интересов в одном приложении. <br /> Каждый найдёт себе дело по душе.</p>
-                        <Div>
-                            <Button size="xl" className="btn-primary" onClick={() => this.onHelloIntroCompleted()}>Начать</Button>
-                        </Div>
+                        {
+                            currentUser && <div><p className="second-row-text">Весь спектр интересов в одном приложении. <br /> Каждый найдёт себе дело по душе.</p>
+                                <Div>
+                                    <Button size="xl" className="btn-primary" onClick={() => this.onHelloIntroCompleted()}>Начать</Button>
+                                </Div>
+                            </div>
+                        }
                     </Div>
                 </Group>
             </Panel>
@@ -69,12 +73,12 @@ class HelloIntroPanel extends React.Component<AllProps>  {
 }
 
 const mapStateToProps = ({ authentication }: AppState) => ({
-    vkUserInfo: authentication.vkUserInfo
+    vkUserInfo: authentication.vkUserInfo,
+    currentUser: authentication.currentUser,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
-    saveUserInfo: saveUserInfoGuideRequest,
     getGeoData: fetchUserGeoRequest,
 }
 
