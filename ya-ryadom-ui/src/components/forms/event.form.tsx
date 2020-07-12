@@ -163,7 +163,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                 </Select>
                 <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} required />
                 <Input top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} required />
-                <AutocompleteMap type="address" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
+                <AutocompleteMap top="Место встречи" placeholder="Адрес" type="address" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                 <div className="map">
                     <GoogleMapReact
                         yesIWantToUseGoogleMapApiInternals={true}
