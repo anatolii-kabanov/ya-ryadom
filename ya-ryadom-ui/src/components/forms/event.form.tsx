@@ -6,7 +6,8 @@ import {
     Textarea,
     Button,
     Div,
-    Select
+    Select,
+    FormStatus
 } from '@vkontakte/vkui';
 import GoogleMapReact, { ClickEventValue } from 'google-map-react';
 import Marker from '../map/marker';
@@ -63,6 +64,7 @@ class EventForm extends React.Component<AllProps, EventState> {
             eventDate: '',
             eventTime: '',
             selectedTheme: 0,
+            errors: {}
         };
         this.onLocationClick = this.onLocationClick.bind(this);
         this.onFillInProfile = this.onFillInProfile.bind(this)
@@ -76,6 +78,8 @@ class EventForm extends React.Component<AllProps, EventState> {
     }
 
     onFillInProfile = (data) => {
+        if (!this.isValid()) return;
+
         if (isEmpty(this.state.selectedPosition)) {
             // TODO handle show error
             console.log('handle error')
@@ -105,12 +109,12 @@ class EventForm extends React.Component<AllProps, EventState> {
 
     getLatitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return userPosition?.lat ?? lastLocation.latitude;
+        return userPosition?.lat ?? lastLocation?.latitude;
     }
 
     getLongitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return userPosition?.long ?? lastLocation.longitude;
+        return userPosition?.long ?? lastLocation?.longitude;
     }
 
     renderThemesSelect() {
@@ -127,6 +131,43 @@ class EventForm extends React.Component<AllProps, EventState> {
         }
     }
 
+    isValid() {
+        let errors = {};
+        let formIsValid = true;
+        if (!this.state.eventName || this.state.eventName.length === 0) {
+            formIsValid = false;
+            errors['eventName'] = "Обязательное поле";
+        }
+
+        if (!this.state.eventDescription) {
+            formIsValid = false;
+            errors['eventDescription'] = "Обязательное поле";
+        }
+
+        if (!this.state.selectedTheme) {
+            formIsValid = false;
+            errors['selectedTheme'] = "Обязательное поле";
+        }
+
+        if (!this.state.eventDate) {
+            formIsValid = false;
+            errors['eventDate'] = "Обязательное поле";
+        }
+
+        if (!this.state.eventTime) {
+            formIsValid = false;
+            errors['eventTime'] = "Обязательное поле";
+        }
+
+        if (!this.state.selectedPosition?.lat) {
+            formIsValid = false;
+            errors['selectedPosition'] = "Обязательное поле";
+        }
+
+        this.setState({ errors: errors });
+        return formIsValid;
+    }
+
     onLocationChanged = (location: Position) => {
         console.log(location)
         if (location) {
@@ -137,7 +178,7 @@ class EventForm extends React.Component<AllProps, EventState> {
     }
 
     render() {
-        const { selectedPosition, eventName, eventDescription } = this.state;
+        const { selectedPosition, errors } = this.state;
 
         return (
             <FormLayout>
@@ -147,22 +188,21 @@ class EventForm extends React.Component<AllProps, EventState> {
                     placeholder="Введите текст"
                     name="eventName"
                     onChange={this.handleInputChange}
-                // status={eventName ? 'valid' : 'error'}
-                // bottom={Validators.required(eventName)} 
+                    status={errors.eventName ? 'error' : 'default'}
                 />
                 <Textarea
                     top="Описание"
                     placeholder="Введите текст"
                     name="eventDescription"
                     onChange={this.handleInputChange}
-                // status={eventDescription ? 'valid' : 'error'}
+                    status={errors.eventDescription ? 'error' : 'default'}
                 // bottom={Validators.required(eventDescription)}
                 ></Textarea>
-                <Select placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
+                <Select status={errors.selectedTheme ? 'error' : 'default'} placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
                     {this.renderThemesSelect()}
                 </Select>
-                <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} required />
-                <Input top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} required />
+                <Input status={errors.eventDate ? 'error' : 'default'} top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} required />
+                <Input status={errors.eventTime ? 'error' : 'default'} top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} required />
                 <AutocompleteMap top="Место встречи" placeholder="Адрес" type="address" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                 <div className="map">
                     <GoogleMapReact
@@ -178,9 +218,12 @@ class EventForm extends React.Component<AllProps, EventState> {
                         }}
                         onClick={this.onLocationClick}
                     >
-                        {selectedPosition && <Marker lat={selectedPosition?.lat} lng={selectedPosition?.lng} />}
+                        {selectedPosition?.lat && <Marker lat={selectedPosition?.lat} lng={selectedPosition?.lng} />}
                     </GoogleMapReact>
                 </div>
+                {errors.selectedPosition && <FormStatus header="Выберите место встречи" mode="error">
+                    Выберите место на карте или найдите место по адресу
+                </FormStatus>}
                 <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Создать</Button>
             </FormLayout>
         )
