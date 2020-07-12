@@ -90,7 +90,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
         const { fetchList, vkUserInfo } = this.props;
         fetchList({
             "userId": 0,
-            vkUserId: vkUserInfo.id,
+            vkUserId: vkUserInfo?.id,
             latitude: this.getLatitude(),
             longitude: this.getLongitude(),
             maxDistance: this.state.radius,

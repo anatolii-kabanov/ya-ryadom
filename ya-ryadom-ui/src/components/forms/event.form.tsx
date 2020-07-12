@@ -21,6 +21,7 @@ import isEmpty from "lodash/isEmpty";
 import { MyEventCreate } from '../../store/events/events-near-me/models';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import { Validators } from '../../utils/validation/validators';
+import AutocompleteMap from '../inputs/autocomplete-map.input';
 
 interface PropsFromState {
     userPosition: Geo,
@@ -61,7 +62,7 @@ class EventForm extends React.Component<AllProps, EventState> {
             eventDescription: '',
             eventDate: '',
             eventTime: '',
-            selectedTheme: 0
+            selectedTheme: 0,
         };
         this.onLocationClick = this.onLocationClick.bind(this);
         this.onFillInProfile = this.onFillInProfile.bind(this)
@@ -126,6 +127,15 @@ class EventForm extends React.Component<AllProps, EventState> {
         }
     }
 
+    onLocationChanged = (location: Position) => {
+        console.log(location)
+        if (location) {
+            this.setState({
+                selectedPosition: { lng: location.longitude, lat: location.latitude }
+            });
+        }
+    }
+
     render() {
         const { selectedPosition, eventName, eventDescription } = this.state;
 
@@ -153,14 +163,22 @@ class EventForm extends React.Component<AllProps, EventState> {
                 </Select>
                 <Input top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} required />
                 <Input top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} required />
+                <AutocompleteMap type="address" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                 <div className="map">
                     <GoogleMapReact
+                        yesIWantToUseGoogleMapApiInternals={true}
                         bootstrapURLKeys={{ key: MAP.KEY }}
-                        center={{ lat: this.getLatitude(), lng: this.getLongitude() }}
+                        center={{
+                            lat: this.state.selectedPosition.lat ?? this.getLatitude(),
+                            lng: this.state.selectedPosition.lng ?? this.getLongitude()
+                        }}
                         defaultZoom={this.state.zoom}
+                        defaultCenter={{
+                            lat: this.getLatitude(), lng: this.getLongitude()
+                        }}
                         onClick={this.onLocationClick}
                     >
-                        {selectedPosition && <Marker lat={selectedPosition?.lat} lng={selectedPosition?.lng}/>}
+                        {selectedPosition && <Marker lat={selectedPosition?.lat} lng={selectedPosition?.lng} />}
                     </GoogleMapReact>
                 </div>
                 <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Создать</Button>
