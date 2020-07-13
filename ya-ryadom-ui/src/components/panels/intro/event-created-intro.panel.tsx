@@ -48,7 +48,6 @@ class EventCreatedIntroPanel extends React.Component<AllProps, State>  {
             <Panel id={id} className="event-created-intro-panel">
                 <PanelHeader>
                 </PanelHeader>
-                <Div><Title level="3" weight="bold" className="title text-center">Ваше событие создано!</Title ></Div>
                 <Group className="intro-image text-center" separator="hide">
                     <IntroFinishedImage></IntroFinishedImage>
                 </Group>

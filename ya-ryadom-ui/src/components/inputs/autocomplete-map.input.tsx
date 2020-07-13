@@ -7,6 +7,8 @@ interface AutocompleteProps {
     loadMaps: boolean;
     type: "(cities)" | "address"
     onLocationChanged: (location: Position) => void;
+    placeholder?: string;
+    top?: string;
 }
 
 interface State {
@@ -71,7 +73,7 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
                 if (callback) callback();
             };
         }
-        if (existingScript && callback) callback();
+        if ((existingScript || !loadMaps) && callback) callback();
     };
 
     unloadGoogleMaps = () => {
@@ -83,15 +85,17 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
 
     render() {
         const { query, googleMapsReady } = this.state;
+        const { placeholder, top } = this.props;
         return (
             !googleMapsReady
                 ? <Spinner size="large"></Spinner>
                 : <div className="search-places-input">
                     <Input
+                        top={top}
                         getRef={this.autoComplete}
                         autoComplete="on"
                         onChange={event => this.setState({ query: event.target.value })}
-                        placeholder="Выберите город"
+                        placeholder={placeholder || "Выберите город"}
                         value={query}>
                     </Input>
                 </div>
