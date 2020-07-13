@@ -6,6 +6,7 @@ import { myEventsReducer } from './events/my-events/reducer';
 import { applicationsReducer } from './applications/reducer';
 import { reviewsReducer } from './reviews/reducer';
 import { spinnerReducer } from './ui/spinner/reducer';
+import { settingsReducer } from './ui/settings/reducer';
 
 export const createRootReducer = () =>
     combineReducers({
@@ -19,5 +20,6 @@ export const createRootReducer = () =>
         reviews: reviewsReducer,
         ui: combineReducers({
             spinner: spinnerReducer,
+            settings: settingsReducer
         }),
     });

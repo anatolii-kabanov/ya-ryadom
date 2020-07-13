@@ -34,6 +34,7 @@ import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
 import { getVkUserId, getGeoData } from './reducer';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
+import { TABS } from '../../utils/constants/tab.constants';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/auth`;
 
@@ -48,7 +49,7 @@ function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
             var user: User = result;
             yield put(fetchUserInfoSuccess(user));
             if (user.guideCompleted) {
-                yield put(reset(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL)));
+                yield put(reset(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP)));
             }
         }
     } catch (error) {

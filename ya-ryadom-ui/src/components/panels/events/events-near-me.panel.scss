@@ -1,5 +1,11 @@
 @import "../../../assets/scss/variables.scss";
 
+.events-near-me-panel {
+  .filter {
+    padding-left: 5px;
+  }
+}
+
 .card-container {
   height: 200px;
   position: fixed;

@@ -11,6 +11,7 @@ import { VkHistoryModel } from '../../store/history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { goForward } from '../../store/history/actions';
 import Icon28Add from '@vkontakte/icons/dist/28/add_square_outline';
+import { TABS } from '../../utils/constants/tab.constants';
 
 interface PropsFromState {
     activeView: string;
@@ -31,7 +32,7 @@ class MenuEpic extends React.Component<AllProps>  {
             <Epic activeStory={activeView} tabbar={
                 <Tabbar>
                     <TabbarItem
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL))}
+                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP))}
                         selected={activeView === VIEWS.EVENTS_NEAR_ME_VIEW && activePanel !== PANELS.CREATE_EVENT_PANEL}
                         data-story={VIEWS.EVENTS_NEAR_ME_VIEW}
                     ><Icon28Place className={activeView === VIEWS.EVENTS_NEAR_ME_VIEW && activePanel !== PANELS.CREATE_EVENT_PANEL ? 'nav-icon-selected' : 'nav-icon'} /></TabbarItem>

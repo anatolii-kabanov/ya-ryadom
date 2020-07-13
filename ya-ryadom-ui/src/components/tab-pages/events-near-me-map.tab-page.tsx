@@ -1,35 +1,35 @@
+import './events-near-me-map.tab-page.scss';
 import React from 'react';
 import {
-    Panel,
     Group,
-    FormLayout,
-    Input,
     Div,
     CardGrid,
-    Card, RichCell, Avatar, Button, InfoRow, Slider
+    Card,
+    RichCell,
+    Avatar,
+    Button,
+    InfoRow
 } from '@vkontakte/vkui';
-import { AppState } from '../../../store/app-state';
+import { AppState } from './../../store/app-state';
 import { connect } from 'react-redux';
 import GoogleMapReact, { Maps } from 'google-map-react';
-import Marker from '../../map/marker';
-import MainHeaderPanel from '../headers/main.header';
+import Marker from './../map/marker';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
-import { MAP } from '../../../utils/constants/map.constants';
-import { Geo } from '../../../store/authentication/models';
-import { goForward } from "../../../store/history/actions";
+import { MAP } from './../../utils/constants/map.constants';
+import { Geo } from './../../store/authentication/models';
+import { goForward } from "./../../store/history/actions";
 import {
     fetchListRequest
-} from "../../../store/events/events-near-me/actions";
-import { EventNearMe } from "../../../store/events/events-near-me/models";
+} from "../../store/events/events-near-me/actions";
+import { EventNearMe } from "../../store/events/events-near-me/models";
 import { UserInfo } from '@vkontakte/vk-bridge';
-import { Position } from '../../../store/authentication/models';
+import { Position } from '../../store/authentication/models';
 
-import './events-near-me-map.panel.scss';
-import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
-import { applyToEventRequest } from '../../../store/applications/actions';
+import { ApplicationStatus } from '../../utils/enums/application-status.enum';
+import { applyToEventRequest } from '../../store/applications/actions';
 import debounce from 'lodash/debounce';
-import UserMarker from '../../map/user-marker';
-import EventsTabs from '../../tabs/events.tabs';
+import UserMarker from '../map/user-marker';
+import { EventsFilter } from '../../store/ui/settings/state';
 
 interface PropsFromState {
     id: string;
@@ -37,6 +37,7 @@ interface PropsFromState {
     userPosition: Geo;
     vkUserInfo: UserInfo;
     lastLocation: Position;
+    filter: EventsFilter
 }
 
 interface PropsFromDispatch {
@@ -48,8 +49,6 @@ type AllProps = PropsFromState & PropsFromDispatch;
 
 interface State {
     personOnMap: any;
-    searchText: string;
-    radius: number;
 }
 
 const createMapOptions = (maps: Maps) => {
@@ -59,17 +58,14 @@ const createMapOptions = (maps: Maps) => {
     };
 }
 
-class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
+class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
 
     constructor(props) {
         super(props);
         this.state = {
             personOnMap: null,
-            searchText: "",
-            radius: 10,
         }
-        this.onMarkerClick = this.onMarkerClick.bind(this)
-        this.onSearch = this.onSearch.bind(this)
+        this.onMarkerClick = this.onMarkerClick.bind(this);
     }
 
     private renderEvents() {
@@ -87,14 +83,14 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
     }
 
     updateEvents = debounce((e: any) => {
-        const { fetchList, vkUserInfo } = this.props;
+        const { fetchList, vkUserInfo, filter } = this.props;
         fetchList({
             "userId": 0,
             vkUserId: vkUserInfo?.id,
             latitude: this.getLatitude(),
             longitude: this.getLongitude(),
-            maxDistance: this.state.radius,
-            searchText: this.state.searchText,
+            maxDistance: filter.radius,
+            searchText: filter.text,
         })
     }, 100);
 
@@ -102,11 +98,6 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
         this.setState({
             personOnMap: person
         })
-    }
-
-    onSearch(event) {
-        this.setState({ searchText: event.target.value });
-        this.updateEvents();
     }
 
     getLatitude = () => {
@@ -124,11 +115,6 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
         applyToEvent(eventId);
     }
 
-    onRadiusChanged(radius: number) {
-        this.setState({ radius });
-        this.updateEvents();
-    }
-
     private renderApplicationStatus(status: ApplicationStatus) {
         switch (status) {
             case ApplicationStatus.sent:
@@ -143,8 +129,6 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { id } = this.props;
-
         let personOnMap;
         if (this.state.personOnMap) {
             personOnMap = <Div className="card-container">
@@ -181,25 +165,8 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
             </Div>
         }
         return (
-            <Panel id={id}>
-                <MainHeaderPanel text={"Карта"}>
-                    <EventsTabs></EventsTabs>
-                </MainHeaderPanel>
-                <FormLayout>
-                    <Input type="text" placeholder="Поиск по интересам" name="Search" onKeyDown={(event) => this.onSearch(event)}></Input>
-                    <Slider
-                        min={1}
-                        max={100}
-                        step={0.5}
-                        value={this.state.radius}
-                        onChange={radius => this.onRadiusChanged(radius)}
-                        top="Радиус"
-                    />
-                    <Div>
-                        {this.state.radius}  км
-                    </Div>
-                </FormLayout>
-                <Group>
+            <Group separator="hide" className="events-near-me-map">
+                <Group separator="hide">
                     {/* <Div> from VKUI mess it up for some reason*/}
                     <div className="map">
                         <GoogleMapReact
@@ -220,16 +187,17 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
 
                 {this.state.personOnMap && personOnMap}
 
-            </Panel >
+            </Group>
         )
     }
 }
 
-const mapStateToProps = ({ events, authentication }: AppState) => ({
+const mapStateToProps = ({ events, authentication, ui }: AppState) => ({
     events: events.eventsNearMe.eventsList,
     userPosition: authentication.geoData,
     lastLocation: authentication.currentUser?.lastLocation,
     vkUserInfo: authentication.vkUserInfo,
+    filter: ui.settings.eventsFilter
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
@@ -241,4 +209,4 @@ const mapDispatchToProps: PropsFromDispatch = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(EventsNearMeMapPanel);
+)(EventsNearMeMapTabPage);

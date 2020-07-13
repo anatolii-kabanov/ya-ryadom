@@ -1,17 +1,15 @@
 import React from 'react';
-import { Panel, Group, RichCell, Button, Avatar, Div, CardGrid, Card, FormLayout, Input, InfoRow, Slider } from '@vkontakte/vkui';
-import { AppState } from '../../../store/app-state';
+import { Group, RichCell, Button, Avatar, Div, CardGrid, Card, FormLayout, Input, InfoRow, Slider, List } from '@vkontakte/vkui';
+import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
-import MainHeaderPanel from '../headers/main.header';
-import { fetchListRequest } from '../../../store/events/events-near-me/actions';
-import { EventNearMe } from '../../../store/events/events-near-me/models';
-import { Geo } from '../../../store/authentication/models';
-import { applyToEventRequest } from '../../../store/applications/actions';
-import { Position } from '../../../store/authentication/models';
+import { fetchListRequest } from '../../store/events/events-near-me/actions';
+import { EventNearMe } from '../../store/events/events-near-me/models';
+import { Geo } from '../../store/authentication/models';
+import { applyToEventRequest } from '../../store/applications/actions';
+import { Position } from '../../store/authentication/models';
 import { UserInfo } from '@vkontakte/vk-bridge';
-import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
+import { ApplicationStatus } from '../../utils/enums/application-status.enum';
 import debounce from 'lodash/debounce';
-import EventsTabs from '../../tabs/events.tabs';
 
 interface PropsFromState {
     id: string;
@@ -33,7 +31,7 @@ interface State {
     searchText: string;
 }
 
-class EventsNearMeListPanel extends React.Component<AllProps, State>  {
+class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
 
     constructor(props) {
         super(props);
@@ -136,30 +134,10 @@ class EventsNearMeListPanel extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { id } = this.props;
         return (
-            <Panel id={id}>
-                <MainHeaderPanel text={"Каталог"}>
-                    <EventsTabs></EventsTabs>
-                </MainHeaderPanel>
-                <FormLayout>
-                    <Input type="text" placeholder="Поиск по интересам" name="Search" onKeyDown={(event) => this.onSearch(event)}></Input>
-                    <Slider
-                        min={1}
-                        max={100}
-                        step={0.5}
-                        value={this.state.radius}
-                        onChange={radius => this.onRadiusChanged(radius)}
-                        top="Радиус"
-                    />
-                    <Div>
-                        {this.state.radius}  км
-                    </Div>
-                </FormLayout>
-                <Group>
-                    {this.renderEvents()}
-                </Group>
-            </Panel>
+            <Group separator="hide">
+                {this.renderEvents()}
+            </Group>
         )
     }
 }
@@ -179,4 +157,4 @@ const mapDispatchToProps: PropsFromDispatch = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(EventsNearMeListPanel);
+)(EventsNearMeListTabPage);

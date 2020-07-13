@@ -137,11 +137,17 @@ class EventForm extends React.Component<AllProps, EventState> {
         if (!this.state.eventName || this.state.eventName.length === 0) {
             formIsValid = false;
             errors['eventName'] = "Обязательное поле";
+        } else if (this.state.eventName.length > 32) {
+            formIsValid = false;
+            errors['eventName'] = "Максимум 32 символа";
         }
 
         if (!this.state.eventDescription) {
             formIsValid = false;
             errors['eventDescription'] = "Обязательное поле";
+        } else if (this.state.eventName.length > 64) {
+            formIsValid = false;
+            errors['eventDescription'] = "Максимум 64 символа";
         }
 
         if (!this.state.selectedTheme) {
@@ -189,6 +195,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                     name="eventName"
                     onChange={this.handleInputChange}
                     status={errors.eventName ? 'error' : 'default'}
+                    bottom={errors.eventName}
                 />
                 <Textarea
                     top="Описание"
@@ -196,7 +203,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                     name="eventDescription"
                     onChange={this.handleInputChange}
                     status={errors.eventDescription ? 'error' : 'default'}
-                // bottom={Validators.required(eventDescription)}
+                    bottom={errors.eventDescription}
                 ></Textarea>
                 <Select status={errors.selectedTheme ? 'error' : 'default'} placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
                     {this.renderThemesSelect()}

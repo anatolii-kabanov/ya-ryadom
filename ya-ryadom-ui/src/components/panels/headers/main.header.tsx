@@ -9,6 +9,7 @@ import { goBack } from '../../../store/history/actions';
 interface PropsFromState {
     text: string;
     firstPage: boolean;
+    leftButton?: React.Component;
 }
 
 interface PropsFromDispatch {
@@ -23,12 +24,12 @@ const osname = platform();
 class MainHeaderPanel extends React.Component<AllProps>  {
 
     render() {
-        const { text, goBack, firstPage } = this.props;
+        const { text, goBack, firstPage, leftButton } = this.props;
         return (
             <PanelHeader
-                left={!firstPage && <PanelHeaderButton onClick={() => goBack()}>
+                left={leftButton || (!firstPage && <PanelHeaderButton onClick={() => goBack()}>
                     {osname === IOS ? <Icon28ChevronBack className="nav-icon-selected" /> : <Icon24Back className="nav-icon-selected" />}
-                </PanelHeaderButton>}
+                </PanelHeaderButton>)}
             >
                 {this.props.children || text}
             </PanelHeader>
