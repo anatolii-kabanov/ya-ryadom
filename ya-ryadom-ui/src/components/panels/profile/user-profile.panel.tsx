@@ -25,6 +25,9 @@ import Icon28WriteSquareOutline from '@vkontakte/icons/dist/28/write_square_outl
 import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline';
 import { fetchUserInfoRequest } from "../../../store/authentication/actions";
 import { User } from "../../../store/authentication/models";
+import { VIEWS } from "../../../utils/constants/view.constants";
+import { PANELS } from "../../../utils/constants/panel.constants";
+import { VkHistoryModel } from "../../../store/history/models";
 
 interface PropsFromState {
     id: string;
@@ -116,7 +119,11 @@ class ProfilePanel extends React.Component<AllProps>{
                         <div><Icon28HomeOutline className="menu-icon"/>Профиль</div>
                         <div><Icon28PlaceOutline className="menu-icon"/>На карте</div>
                         <div><Icon28WriteSquareOutline className="menu-icon"/>Отзывы</div>
-                        <div><Icon28UsersOutline className="menu-icon"/>События</div>
+                        <div><Icon28UsersOutline
+                            className="menu-icon"
+                            onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_EVENTS_PANEL))}/>
+                            События
+                        </div>
                     </div>
                 </Group>
                 <Group header={

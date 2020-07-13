@@ -1,5 +1,6 @@
 export const PANELS = {
     FIND_NEAR_ME_PANEL: 'Find like-minded person near myself',
+    USER_EVENTS_PANEL: 'User events',
     MY_PROFILE_PANEL: 'Panel for my profile',
     PROFILE_PANEL: 'Panel for profile',
     CREATE_EVENT_PANEL: 'Create event panel',
