@@ -1,4 +1,6 @@
-﻿namespace YaRyadom.API.Models.Requests
+﻿using YaRyadom.API.Models.Enums;
+
+namespace YaRyadom.API.Models.Requests
 {
 	public class EventsRequestModel
 	{
@@ -22,5 +24,7 @@
 		public double MaxDistance { get; set; }
 
 		public string SearchText { get; set; }
+
+		public ThemeTypeModel? Theme { get; set; }
 	}
 }
