@@ -33,6 +33,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.VkUserAvatarUrl))
 				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.UserFullName))
 				.ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.Distance))
+				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time != null ? src.Time.Value.ToString(@"hh\:mm") : string.Empty))
 				.ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location.Y))
 				.ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location.X));
 			CreateMap<MyEventServiceModel, MyEventModel>()

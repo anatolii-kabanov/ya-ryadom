@@ -57,12 +57,14 @@ namespace YaRyadom.API.Services.Implementations
 				Title = m.Title,
 				Description = m.Description,
 				Date = m.Date,
+				Time = m.Time,
 				MaxQuantiyty = m.MaxQuantity,
 				Revoked = m.Revoked,
 				VkUserOwnerId = m.YaRyadomUserOwner.VkId,
 				Location = m.Location,
 				Distance = m.Location.Distance(userPosition),
 				VkUserAvatarUrl = m.YaRyadomUserOwner.VkUserAvatarUrl,
+				ThemeType = m.YaRyadomEventThemes.Select(mm => (ThemeTypeModel)mm.Type).FirstOrDefault(),
 				UserFullName = m.YaRyadomUserOwner.FirstName + ' ' + m.YaRyadomUserOwner.LastName,
 				ApplicationStatus = m.YaRyadomUserApplications
 					.Where(mm => mm.YaRyadomUserRequested.VkId == model.VkUserId)

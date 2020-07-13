@@ -20,5 +20,9 @@ namespace YaRyadom.API.Models
 		public string UserFullName { get; set; }
 
 		public ApplicationStatusModel ApplicationStatus { get; set; }
+
+		public ThemeTypeModel ThemeType { get; set; }
+
+		public string Time { get; set; }
 	}
 }
