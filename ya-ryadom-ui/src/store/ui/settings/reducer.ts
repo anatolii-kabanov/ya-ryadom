@@ -51,7 +51,7 @@ const reducer: Reducer<SettingsState> = (state = initialState, action) => {
                 ...state,
                 eventsFilterForm: {
                     ...state.eventsFilterForm,
-                    selectedPosition: action.payload.selectedPosition,
+                    selectedPosition: action.payload.position,
                     address: action.payload.address
                 }
             };

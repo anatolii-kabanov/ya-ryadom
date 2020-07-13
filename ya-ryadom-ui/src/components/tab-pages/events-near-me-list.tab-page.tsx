@@ -1,5 +1,5 @@
 import React from 'react';
-import { Group, RichCell, Button, Avatar, Div, CardGrid, Card, FormLayout, Input, InfoRow, Slider, List } from '@vkontakte/vkui';
+import { Group, RichCell, Button, Avatar, Div, CardGrid, Card, InfoRow } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { fetchListRequest } from '../../store/events/events-near-me/actions';
@@ -9,7 +9,6 @@ import { applyToEventRequest } from '../../store/applications/actions';
 import { Position } from '../../store/authentication/models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
-import debounce from 'lodash/debounce';
 
 interface PropsFromState {
     id: string;
@@ -27,55 +26,9 @@ interface PropsFromDispatch {
 type AllProps = PropsFromState & PropsFromDispatch;
 
 interface State {
-    radius: number;
-    searchText: string;
 }
 
 class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            radius: 10,
-            searchText: "",
-        }
-    }
-
-    componentDidMount() {
-        this.updateEvents();
-    }
-
-    onSearch(event) {
-        this.setState({ searchText: event.target.value });
-        this.updateEvents();
-    }
-
-    updateEvents = debounce((e: any) => {
-        const { fetchList, vkUserInfo } = this.props;
-        fetchList({
-            "userId": 0,
-            vkUserId: vkUserInfo?.id,
-            latitude: this.getLatitude(),
-            longitude: this.getLongitude(),
-            maxDistance: this.state.radius,
-            searchText: this.state.searchText,
-        })
-    }, 100);
-
-    onRadiusChanged(radius: number) {
-        this.setState({ radius });
-        this.updateEvents();
-    }
-
-    getLatitude = () => {
-        const { userPosition, lastLocation } = this.props;
-        return userPosition?.lat ?? lastLocation?.latitude;
-    }
-
-    getLongitude = () => {
-        const { userPosition, lastLocation } = this.props;
-        return userPosition?.long ?? lastLocation?.longitude;
-    }
 
     apply(eventId: number) {
         const { applyToEvent } = this.props;

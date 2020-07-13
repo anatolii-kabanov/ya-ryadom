@@ -26,6 +26,7 @@ import {
 } from '../../store/ui/settings/actions';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import AutocompleteMap from '../inputs/autocomplete-map.input';
+import { Position } from '../../store/authentication/models';
 
 interface PropsFromState {
     activeModal: string;
@@ -91,6 +92,11 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
         updateRadius(radius);
     }
 
+    handleLocationChange = (position: Position, address: string) => {
+        const { updateAddress } = this.props;
+        updateAddress({ position: position, address: address });
+    }
+
     render() {
         const { activeModal, filter, onClose, clearFilter } = this.props;
         return (
@@ -111,7 +117,7 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
                         <Select value={filter.selectedTheme} top="Тема" placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
                             {this.renderThemesSelect()}
                         </Select>
-                        <AutocompleteMap top="Адрес" placeholder="Выбрать адрес" type="address" loadMaps={true} onLocationChanged={console.log}></AutocompleteMap>
+                        <AutocompleteMap address={filter.address} top="Адрес" placeholder="Выбрать адрес" type="address" loadMaps={true} onLocationChanged={this.handleLocationChange}></AutocompleteMap>
                         <Slider
                             min={1}
                             max={100}

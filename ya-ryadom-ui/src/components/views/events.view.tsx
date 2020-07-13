@@ -45,18 +45,18 @@ class EventsView extends React.Component<AllProps, State>  {
     }
 
     public componentDidMount() {
-
+        this.updateEvents();
     }
 
     updateEvents = debounce((e: any) => {
         const { fetchList, vkUserInfo, filter } = this.props;
         fetchList({
-            "userId": 0,
             vkUserId: vkUserInfo?.id,
             latitude: this.getLatitude(),
             longitude: this.getLongitude(),
             maxDistance: filter.radius,
             searchText: filter.text,
+            theme: filter.selectedTheme
         })
     }, 100);
 

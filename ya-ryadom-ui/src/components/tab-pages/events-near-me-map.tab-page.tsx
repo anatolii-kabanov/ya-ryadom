@@ -79,7 +79,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }
 
     componentDidMount() {
-        this.updateEvents();
+        
     }
 
     updateEvents = debounce((e: any) => {
@@ -101,12 +101,18 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }
 
     getLatitude = () => {
-        const { userPosition, lastLocation } = this.props;
+        const { userPosition, lastLocation, filter } = this.props;
+        if (filter.selectedPosition) {
+            return filter.selectedPosition.latitude;
+        }
         return userPosition?.lat ?? lastLocation?.latitude;
     }
 
     getLongitude = () => {
-        const { userPosition, lastLocation } = this.props;
+        const { userPosition, lastLocation, filter } = this.props;
+        if (filter.selectedPosition) {
+            return filter.selectedPosition.longitude;
+        }
         return userPosition?.long ?? lastLocation?.longitude;
     }
 
@@ -172,6 +178,10 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                         <GoogleMapReact
 
                             bootstrapURLKeys={{ key: MAP.KEY }}
+                            center={{
+                                lat: this.getLatitude(),
+                                lng: this.getLongitude(),
+                            }}
                             defaultCenter={{
                                 lat: this.getLatitude(),
                                 lng: this.getLongitude(),
