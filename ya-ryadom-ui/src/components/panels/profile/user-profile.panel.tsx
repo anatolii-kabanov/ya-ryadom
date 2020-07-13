@@ -24,11 +24,12 @@ import Icon28PlaceOutline from '@vkontakte/icons/dist/28/place_outline';
 import Icon28WriteSquareOutline from '@vkontakte/icons/dist/28/write_square_outline';
 import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline';
 import { fetchUserInfoRequest } from "../../../store/authentication/actions";
+import { User } from "../../../store/authentication/models";
 
 interface PropsFromState {
     id: string;
     vkUserInfo: UserInfo;
-    // currentUser: User;
+    currentUser: User;
 }
 
 interface PropsFromDispatch {
@@ -41,10 +42,13 @@ type AllProps = PropsFromState & PropsFromDispatch;
 
 class ProfilePanel extends React.Component<AllProps>{
     state = {
-        currentUser: {
+        currentProfile: {
             lastLocation: {longitude: 0, latitude: 0},
-            selectedThemes: []
-        }
+            selectedThemes: [],
+        },
+        currentUserThemes: [],
+        currentProfileThemes: [],
+        themesInCommon: []
     }
 
     componentDidMount() {
@@ -57,41 +61,53 @@ class ProfilePanel extends React.Component<AllProps>{
             uri: `${process.env.REACT_APP_API_ENDPOINT}/auth/user-info/1`,
             sync: true
         }, (err, resp, body) => {
-                console.log(JSON.parse(body))
-                console.log(resp)
+                const response = JSON.parse(body);
+                const { currentUser } = this.props;
+
+                const currentProfileThemes = ALL_THEMES.filter(t => response.selectedThemes.indexOf(t.id) !== -1);
+                const currentUserThemes = ALL_THEMES.filter(t => currentUser.selectedThemes.indexOf(t.id) !== -1);
+
                 this.setState({
-                    currentUser: JSON.parse(body)
+                    currentProfile: response,
+                    currentProfileThemes: currentProfileThemes,
+                    currentUserThemes: currentUserThemes,
+                    themesInCommon: currentProfileThemes.filter(t => currentUserThemes.includes(t))
                 })
             }
         )
     }
 
     private renderThemes() {
-        const { currentUser } = this.state;
-        if (currentUser?.selectedThemes) {
-            const themes = ALL_THEMES.filter(t => currentUser.selectedThemes.indexOf(t.id) !== -1);
-            return themes
+        const { currentProfileThemes, currentUserThemes } = this.state;
+
+        if (currentProfileThemes) {
+            return currentProfileThemes
                 .map((item, key) => {
-                    return <PillInput key={key} id={item.id} selected={true} onClick={() => ''} text={item.name}></PillInput>
+                    if (currentUserThemes.includes(item)) {
+                        return <PillInput key={key} id={item.id} selected={true} onClick={() => ''} text={item.name}></PillInput>
+                    }
+                    else {
+                        return <PillInput key={key} id={item.id} selected={false} onClick={() => ''} text={item.name}></PillInput>
+                    }
                 });
         }
     }
 
     render() {
         const { id, vkUserInfo, goForwardView } = this.props;
-        const { currentUser } = this.state;
+        const { currentProfile, themesInCommon } = this.state;
         return (
             <Panel className="my-profile" id={id}>
-                <MainHeaderPanel text='Пр0офиль'></MainHeaderPanel>
+                <MainHeaderPanel text='Профиль'></MainHeaderPanel>
                 <Group separator="hide">
                     <RichCell
                         disabled
                         multiline
-                        text={currentUser?.aboutMySelf}
-                        before={<Avatar size={72} src={currentUser?.vkUserAvatarUrl} />}
+                        text={currentProfile?.aboutMySelf}
+                        before={<Avatar size={72} src={currentProfile?.vkUserAvatarUrl} />}
                     >
                         <span className="profile-main-row">
-                            {currentUser?.firstName} {currentUser?.lastName}
+                            {currentProfile?.firstName} {currentProfile?.lastName}
                         </span>
                     </RichCell>
                 </Group>
@@ -103,7 +119,12 @@ class ProfilePanel extends React.Component<AllProps>{
                         <div><Icon28UsersOutline className="menu-icon"/>События</div>
                     </div>
                 </Group>
-                <Group header={<Header mode="secondary">Темы</Header>} separator="hide">
+                <Group header={
+                    <Header mode="secondary">
+                        <span className="themes-text">
+                            Темы <span className="themes-orange-text">у вас {themesInCommon.length} общих</span>
+                        </span>
+                    </Header>} separator="hide">
                     <Div className="pills">
                         {this.renderThemes()}
                     </Div>
@@ -116,7 +137,7 @@ class ProfilePanel extends React.Component<AllProps>{
 const mapStateToProps = ({ events, authentication }: AppState) => ({
     myEvents: events.myEvents.eventsList,
     vkUserInfo: authentication.vkUserInfo,
-    // currentUser: authentication.currentUser,
+    currentUser: authentication.currentUser,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

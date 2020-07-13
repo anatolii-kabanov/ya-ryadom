@@ -9,3 +9,12 @@
   margin: 0 2em;
   color: $secondary-color
 }
+
+.themes-text {
+  text-transform: none !important;
+  font-weight: 400 !important;
+
+  .themes-orange-text {
+    color: $primary-color;
+  }
+}
