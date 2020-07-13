@@ -1,7 +1,7 @@
 import './events-near-me.panel.scss';
 import React from 'react';
 import {
-    Panel, IS_PLATFORM_ANDROID, FixedLayout
+    Panel, IS_PLATFORM_ANDROID, FixedLayout, Group
 } from '@vkontakte/vkui';
 import { AppState } from '../../../store/app-state';
 import { connect } from 'react-redux';
@@ -40,7 +40,9 @@ class EventsNearMePanel extends React.Component<AllProps, State>  {
                         : <Icon28Filter className="nav-icon-selected filter" onClick={openFilter}></Icon28Filter>
                 } text={"События"}>
                 </MainHeaderPanel>
-                <EventsTabs></EventsTabs>
+                <Group separator="show">
+                    <EventsTabs></EventsTabs>
+                </Group>
                 {activeTab === TABS.EVENTS_LIST && <EventsNearMeListTabPage></EventsNearMeListTabPage>}
                 {activeTab === TABS.EVENTS_MAP && <EventsNearMeMapTabPage></EventsNearMeMapTabPage>}
 

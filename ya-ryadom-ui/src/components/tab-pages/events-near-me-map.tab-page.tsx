@@ -8,7 +8,8 @@ import {
     RichCell,
     Avatar,
     Button,
-    InfoRow
+    InfoRow,
+    Header
 } from '@vkontakte/vkui';
 import { AppState } from './../../store/app-state';
 import { connect } from 'react-redux';
@@ -30,6 +31,7 @@ import { applyToEventRequest } from '../../store/applications/actions';
 import debounce from 'lodash/debounce';
 import UserMarker from '../map/user-marker';
 import { EventsFilter } from '../../store/ui/settings/state';
+import { ALL_THEMES } from '../../utils/constants/theme.constants';
 
 interface PropsFromState {
     id: string;
@@ -48,7 +50,7 @@ interface PropsFromDispatch {
 type AllProps = PropsFromState & PropsFromDispatch;
 
 interface State {
-    personOnMap: any;
+    eventOnMap: any;
 }
 
 const createMapOptions = (maps: Maps) => {
@@ -58,12 +60,14 @@ const createMapOptions = (maps: Maps) => {
     };
 }
 
+const options = { weekday: 'short', month: 'long', day: 'numeric' };
+
 class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
 
     constructor(props) {
         super(props);
         this.state = {
-            personOnMap: null,
+            eventOnMap: null,
         }
         this.onMarkerClick = this.onMarkerClick.bind(this);
     }
@@ -73,13 +77,13 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
         if (events && Object.keys(events).length !== 0) {
             return events
                 .map((item, key) => {
-                    return <Marker key={key} lat={item.latitude} lng={item.longitude} text={item.title} onClick={() => this.onMarkerClick(item)} />
+                    return <Marker selected={this.state.eventOnMap?.id === item.id} key={key} lat={item.latitude} lng={item.longitude} text={item.title} onClick={() => this.onMarkerClick(item)} />
                 });
         }
     }
 
     componentDidMount() {
-        
+
     }
 
     updateEvents = debounce((e: any) => {
@@ -94,9 +98,9 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
         })
     }, 100);
 
-    onMarkerClick(person: object) {
+    onMarkerClick(event: object) {
         this.setState({
-            personOnMap: person
+            eventOnMap: event
         })
     }
 
@@ -135,36 +139,35 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }
 
     render() {
-        let personOnMap;
-        if (this.state.personOnMap) {
-            personOnMap = <Div className="card-container">
+        let eventOnMap;
+        if (this.state.eventOnMap) {
+            eventOnMap = <Div className="card-container">
                 <CardGrid>
                     <Card size="l">
                         <div className="cell-container">
-                            <RichCell
-                                before={<Avatar size={48} src={this.state.personOnMap?.vkUserAvatarUrl} />}
-                                text={this.state.personOnMap?.title}
-                                caption={this.state.personOnMap?.description}
-                            >
-                                {this.state.personOnMap?.userFullName}
-                                <InfoRow header="Расстояние">
-                                    {this.state.personOnMap?.distance && (this.state.personOnMap?.distance / 1000).toFixed(2)} км
-                                </InfoRow>
-                            </RichCell>
+                            <Group header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === this.state.eventOnMap?.themeType)?.name}</Header>}>
+                                <RichCell
+                                    before={<Avatar size={48} src={this.state.eventOnMap?.vkUserAvatarUrl} />}
+                                    text={this.state.eventOnMap?.description}
+                                    caption={`${new Date(this.state.eventOnMap?.date).toLocaleDateString('ru-RU', options)} в ${this.state.eventOnMap?.time}`}
+                                >
+                                    <span>{this.state.eventOnMap?.userFullName} <span className="distance">{this.state.eventOnMap?.distance && (this.state.eventOnMap?.distance / 1000).toFixed(2)} км</span></span>
+                                </RichCell>
 
-                            <Icon24Dismiss
-                                className="close-cross"
-                                onClick={() => this.setState({ personOnMap: null })} />
+                                <Icon24Dismiss
+                                    className="close-cross"
+                                    onClick={() => this.setState({ eventOnMap: null })} />
 
-                            <Div className="map-card-buttons-div">
-                                {this.state.personOnMap.applicationStatus === ApplicationStatus.none
-                                    ? <Button className="button-primary" onClick={() => this.apply(this.state.personOnMap.id)}>Иду</Button>
-                                    : <Button className="button-primary" disabled={true}>{this.renderApplicationStatus(this.state.personOnMap.applicationStatus)}</Button>}
-                                <Button className="button-secondary"
-                                    href={`https://vk.com/id${this.state.personOnMap.vkUserOwnerId}`}
-                                    onClick={() => window.open("https://vk.com/id" + this.state.personOnMap.vkUserOwnerId, '_blank')}
-                                >Посмотреть профиль</Button>
-                            </Div>
+                                <Div className="map-card-buttons-div">
+                                    {this.state.eventOnMap?.applicationStatus === ApplicationStatus.none
+                                        ? <Button className="button-primary" onClick={() => this.apply(this.state.eventOnMap?.id)}>Иду</Button>
+                                        : <Button className="button-primary" disabled={true}>{this.renderApplicationStatus(this.state.eventOnMap?.applicationStatus)}</Button>}
+                                    <Button className="button-secondary"
+                                        href={`https://vk.com/id${this.state.eventOnMap?.vkUserOwnerId}`}
+                                        onClick={() => window.open("https://vk.com/id" + this.state.eventOnMap?.vkUserOwnerId, '_blank')}
+                                    >Посмотреть профиль</Button>
+                                </Div>
+                            </Group>
                         </div>
                     </Card>
                 </CardGrid>
@@ -195,7 +198,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                     </div>
                 </Group>
 
-                {this.state.personOnMap && personOnMap}
+                {this.state.eventOnMap && eventOnMap}
 
             </Group>
         )

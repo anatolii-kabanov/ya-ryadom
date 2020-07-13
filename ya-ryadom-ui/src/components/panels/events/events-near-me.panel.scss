@@ -17,9 +17,9 @@
 
 .cell-container {
   background-color: white;
-  -webkit-box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.75);
-  box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.75);
   border-radius: inherit;
 }
 
@@ -27,19 +27,23 @@
   display: flex;
   justify-content: center;
 
-
   .button-primary {
     background-color: $background-color !important;
     margin-right: 24px !important;
-    margin-left: 15% !important;
-    flex: 2
+    margin-left: 10% !important;
+    flex: 2;
+  }
+
+  .disabled {
+    background-color: #f2f4f5 !important;
+    color: #c7c7c7 !important;
   }
 
   .button-secondary {
     background-color: #f2f3f5 !important;
     color: $background-color !important;
     margin-right: 10% !important;
-    flex: 4
+    flex: 4;
   }
 }
 

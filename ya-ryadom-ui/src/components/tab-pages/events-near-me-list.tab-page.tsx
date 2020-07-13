@@ -1,5 +1,5 @@
 import React from 'react';
-import { Group, RichCell, Button, Avatar, Div, CardGrid, Card, InfoRow } from '@vkontakte/vkui';
+import { Group, RichCell, Button, Avatar, Div, CardGrid, Card, Header } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { fetchListRequest } from '../../store/events/events-near-me/actions';
@@ -9,6 +9,7 @@ import { applyToEventRequest } from '../../store/applications/actions';
 import { Position } from '../../store/authentication/models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
+import { ALL_THEMES } from '../../utils/constants/theme.constants';
 
 interface PropsFromState {
     id: string;
@@ -27,6 +28,8 @@ type AllProps = PropsFromState & PropsFromDispatch;
 
 interface State {
 }
+
+const options = { weekday: 'short', month: 'long', day: 'numeric' };
 
 class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
 
@@ -53,34 +56,25 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
         if (eventsList) {
             return eventsList
                 .map((item, key) => {
-                    return <div key={key}>
-                        <Div>
-                            <CardGrid>
-                                <Card size="l">
-                                    <div style={{ height: 180 }}>
-                                        <RichCell
-                                            before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
-                                            text={item?.title}
-                                            caption={item?.description}
-                                        >
-                                            {item?.userFullName}
-                                            <InfoRow header="Расстояние">
-                                                {item?.distance && (item?.distance / 1000).toFixed(2)} км.
-                                            </InfoRow>
-                                        </RichCell>
-                                        <Div className="map-card-buttons-div">
-                                            {item.applicationStatus === ApplicationStatus.none
-                                                ? <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
-                                                : <Button className="button-primary" disabled={true}>{this.renderApplicationStatus(item.applicationStatus)}</Button>}
-                                            <Button className="button-secondary width-50 text-center"
-                                                href={`https://vk.com/id${item?.vkUserOwnerId}`}
-                                                onClick={() => window.open("https://vk.com/id" + item?.vkUserOwnerId, '_blank')}
-                                            >Посмотреть профиль</Button>
-                                        </Div>
-                                    </div>
-                                </Card>
-                            </CardGrid>
-                        </Div>
+                    return <div key={key} style={{ height: 180 }}>
+                        <Group separator="show" header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
+                            <RichCell
+                                before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
+                                text={item?.description}
+                                caption={`${new Date(item.date).toLocaleDateString('ru-RU', options)} в ${item.time}`}
+                            >
+                                <span>{item?.userFullName} <span className="distance">{item?.distance && (item?.distance / 1000).toFixed(2)} км.</span></span>
+                            </RichCell>
+                            <Div className="map-card-buttons-div">
+                                {item.applicationStatus === ApplicationStatus.none
+                                    ? <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
+                                    : <Button className="button-primary disabled" disabled={true}>{this.renderApplicationStatus(item.applicationStatus)}</Button>}
+                                <Button className="button-secondary width-50 text-center"
+                                    href={`https://vk.com/id${item?.vkUserOwnerId}`}
+                                    onClick={() => window.open("https://vk.com/id" + item?.vkUserOwnerId, '_blank')}
+                                >Посмотреть профиль</Button>
+                            </Div>
+                        </Group>
                     </div>
                 });
         }
