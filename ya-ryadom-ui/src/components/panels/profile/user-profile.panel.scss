@@ -1,0 +1,11 @@
+@import "../../../assets/scss/variables.scss";
+.menu-icon {
+  margin-left: 25%;
+}
+
+.div-icons-menu {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 2em;
+  color: $secondary-color
+}

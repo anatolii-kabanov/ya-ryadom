@@ -1,9 +1,10 @@
 import React from 'react';
-import { View } from '@vkontakte/vkui';
+import { ScreenSpinner, View } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { PANELS } from '../../utils/constants/panel.constants';
 import MyEventCreatePanel from '../panels/my-event-create.panel';
+import ProfilePanel from "../panels/profile/user-profile.panel";
 
 interface PropsFromState {
     id: string;
@@ -27,6 +28,7 @@ class GeneralView extends React.Component<AllProps>  {
         const { id, activePanel, popout } = this.props;
         return (
             <View id={id} activePanel={activePanel} popout={popout}>
+                <ProfilePanel id={PANELS.PROFILE_PANEL}></ProfilePanel>
                 <MyEventCreatePanel id={PANELS.CREATE_EVENT_PANEL}></MyEventCreatePanel>
             </View>
         )

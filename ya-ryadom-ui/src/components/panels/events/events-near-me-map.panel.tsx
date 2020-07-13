@@ -30,6 +30,9 @@ import { applyToEventRequest } from '../../../store/applications/actions';
 import debounce from 'lodash/debounce';
 import UserMarker from '../../map/user-marker';
 import EventsTabs from '../../tabs/events.tabs';
+import { VkHistoryModel } from "../../../store/history/models";
+import { VIEWS } from "../../../utils/constants/view.constants";
+import { PANELS } from "../../../utils/constants/panel.constants";
 
 interface PropsFromState {
     id: string;
@@ -143,7 +146,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { id } = this.props;
+        const { id, goForwardView } = this.props;
 
         let personOnMap;
         if (this.state.personOnMap) {
@@ -171,8 +174,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
                                     ? <Button className="button-primary" onClick={() => this.apply(this.state.personOnMap.id)}>Иду</Button>
                                     : <Button className="button-primary" disabled={true}>{this.renderApplicationStatus(this.state.personOnMap.applicationStatus)}</Button>}
                                 <Button className="button-secondary"
-                                    href={`https://vk.com/id${this.state.personOnMap.vkUserOwnerId}`}
-                                    onClick={() => window.open("https://vk.com/id" + this.state.personOnMap.vkUserOwnerId, '_blank')}
+                                    onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
                                 >Посмотреть профиль</Button>
                             </Div>
                         </div>
