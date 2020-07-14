@@ -37,11 +37,6 @@ class MenuEpic extends React.Component<AllProps>  {
                         data-story={VIEWS.EVENTS_NEAR_ME_VIEW}
                     ><Icon28Place className={activeView === VIEWS.EVENTS_NEAR_ME_VIEW && activePanel !== PANELS.CREATE_EVENT_PANEL ? 'nav-icon-selected' : 'nav-icon'} /></TabbarItem>
                     <TabbarItem
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.REVIEWS_VIEW, PANELS.REVIEWS_PANEL))}
-                        selected={activeView === VIEWS.REVIEWS_VIEW}
-                        data-story={VIEWS.REVIEWS_VIEW}
-                    ><Icon28Review className={activeView === VIEWS.REVIEWS_VIEW ? 'nav-icon-selected' : 'nav-icon'} /></TabbarItem>
-                    <TabbarItem
                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.CREATE_EVENT_PANEL))}
                         selected={activeView === VIEWS.GENERAL_VIEW && activePanel === PANELS.CREATE_EVENT_PANEL}
                     ><Icon28Add className={activeView === VIEWS.GENERAL_VIEW && activePanel === PANELS.CREATE_EVENT_PANEL ? 'nav-icon-selected' : 'nav-icon'}></Icon28Add>
