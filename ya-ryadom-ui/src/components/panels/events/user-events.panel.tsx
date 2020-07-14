@@ -4,10 +4,20 @@ import { User } from "../../../store/authentication/models";
 import { goForward } from "../../../store/history/actions";
 import { connect } from 'react-redux';
 import MainHeaderPanel from "../headers/main.header";
-import { Panel, Tabs, TabsItem } from "@vkontakte/vkui";
+import {
+    Button,
+    Group,
+    Header,
+    Panel,
+    RichCell,
+    Tabs,
+    TabsItem
+} from "@vkontakte/vkui";
 import { AppState } from "../../../store/app-state";
 import { fetchMyEventsListRequest } from "../../../store/events/my-events/actions";
 import { fetchUserInfoRequest } from "../../../store/authentication/actions";
+
+import './user-events.panel.scss';
 
 interface PropsFromState {
     id: string;
@@ -54,6 +64,34 @@ class UserEventsPanel extends React.Component<AllProps> {
                         Сходил
                     </TabsItem>
                 </Tabs>
+                <Group>
+                    <Header mode="secondary">Кино</Header>
+                    <RichCell
+                        disabled
+                        caption={<span className="rc-caption">Описание</span>}
+
+                        bottom={
+                            <p className="rc-bottom">
+                                Место встречи <span className="rc-bottom-span">emgggggg</span></p>
+                            // for avatars of participants
+                            // <UsersStack
+                            //     photos={[
+                            //         getAvatarUrl('user_ox'),
+                            //         getAvatarUrl('user_vitalyavolyn'),
+                            //         getAvatarUrl('user_eee'),
+                            //     ]}
+                            // >73 общих друга</UsersStack>
+                        }
+                        actions={
+                            <React.Fragment>
+                                <Button className="button-primary">Иду</Button>
+                                {/*<Button mode="secondary">Скрыть</Button>*/}
+                            </React.Fragment>
+                        }
+                    >
+                        Илья Гришин
+                    </RichCell>
+                </Group>
             </Panel>
         );
     }

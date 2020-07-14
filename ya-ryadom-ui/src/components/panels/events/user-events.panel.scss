@@ -1,0 +1,21 @@
+@import "../../../assets/scss/variables.scss";
+
+.button-primary {
+  background-color: $background-color !important;
+}
+
+.rc-caption {
+  color: black;
+  font-weight: 400;
+  font-size: 1em;
+}
+
+.rc-bottom {
+  color: $secondary-color;
+  font-weight: 400;
+  font-size: 0.8em;
+}
+
+.rc-bottom-span {
+  margin-left: 2em;
+}
