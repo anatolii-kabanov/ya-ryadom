@@ -15,6 +15,14 @@
   width: calc(100% - 2 * 24px) !important;
 }
 
+.button-secondary {
+  background-color: #f2f3f5 !important;
+  color: $primary-color !important;
+  margin-left: 24px !important;
+  margin-right: 24px !important;
+  width: calc(100% - 2 * 24px) !important;
+}
+
 .nav-icon {
   color: $secondary-color;
 }

@@ -8,6 +8,7 @@ import {
     Div,
     Header,
     Caption,
+    Button,
 } from "@vkontakte/vkui";
 import { connect } from 'react-redux';
 import { AppState } from "../../../store/app-state";
@@ -44,10 +45,10 @@ class MyProfilePanel extends React.Component<AllProps>{
     private renderThemes() {
         const { currentUser } = this.props;
         if (currentUser?.selectedThemes) {
-            const themes = ALL_THEMES.filter(t => currentUser.selectedThemes.indexOf(t.id) !== -1);
+            const themes = ALL_THEMES;
             return themes
                 .map((item, key) => {
-                    return <PillInput key={key} id={item.id} selected={true} onClick={() => ''} text={item.name}></PillInput>
+                    return <PillInput key={key} id={item.id} selected={currentUser.selectedThemes.indexOf(item.id) !== -1} onClick={() => ''} text={item.name}></PillInput>
                 });
         }
     }
@@ -71,6 +72,9 @@ class MyProfilePanel extends React.Component<AllProps>{
                             <Caption weight="regular" level="1">{currentUser?.avgRating.toFixed(1)}</Caption>
                         </span>
                     </RichCell>
+                    <Button className="button-secondary text-center"
+                        onClick={console.log}
+                    >Редактировать</Button>
                 </Group>
                 <Group header={<Header mode="secondary">Темы</Header>} separator="hide">
                     <Div className="pills">
