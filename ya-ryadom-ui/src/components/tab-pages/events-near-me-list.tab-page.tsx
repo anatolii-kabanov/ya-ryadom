@@ -72,7 +72,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
                                 <Button className="button-secondary width-50 text-center"
                                     href={`https://vk.com/id${item?.vkUserOwnerId}`}
                                     onClick={() => window.open("https://vk.com/id" + item?.vkUserOwnerId, '_blank')}
-                                >Посмотреть профиль</Button>
+                                >Профиль</Button>
                             </Div>
                         </Group>
                     </div>

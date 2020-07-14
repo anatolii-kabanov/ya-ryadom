@@ -77,7 +77,14 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
         if (events && Object.keys(events).length !== 0) {
             return events
                 .map((item, key) => {
-                    return <Marker selected={this.state.eventOnMap?.id === item.id} key={key} lat={item.latitude} lng={item.longitude} text={item.title} onClick={() => this.onMarkerClick(item)} />
+                    return <Marker
+                        inActive={item.applicationStatus === ApplicationStatus.sent}
+                        selected={this.state.eventOnMap?.id === item.id}
+                        key={key}
+                        lat={item.latitude}
+                        lng={item.longitude}
+                        text={item.title}
+                        onClick={() => this.onMarkerClick(item)} />
                 });
         }
     }
@@ -165,7 +172,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                     <Button className="button-secondary"
                                         href={`https://vk.com/id${this.state.eventOnMap?.vkUserOwnerId}`}
                                         onClick={() => window.open("https://vk.com/id" + this.state.eventOnMap?.vkUserOwnerId, '_blank')}
-                                    >Посмотреть профиль</Button>
+                                    >Профиль</Button>
                                 </Div>
                             </Group>
                         </div>
