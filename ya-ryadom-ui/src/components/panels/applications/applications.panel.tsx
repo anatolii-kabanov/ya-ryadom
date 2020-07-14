@@ -89,7 +89,7 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
         return [1,2,3,4]
             .map((item, key) => {
                 return <Div key={key}>
-                        <CardGrid>
+                        <CardGrid key={key}>
                             <Div className="application-card">
                                 <Group header={<Header mode="secondary" aside={<Icon16MoreHorizontal/>}>Кино</Header>}>
                                     <div className="body">
