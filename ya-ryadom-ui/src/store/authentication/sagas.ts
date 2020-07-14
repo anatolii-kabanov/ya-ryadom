@@ -24,7 +24,13 @@ import {
     saveUserAboutMyselfSuccess,
     saveUserGuideCompletedRequest,
     saveUserGuideCompletedSuccess,
-    saveUserGuideCompletedError
+    saveUserGuideCompletedError,
+    allowNotificationsRequest,
+    allowNotificationsError,
+    allowNotificationsSuccess,
+    disableNotificationsRequest,
+    disableNotificationsError,
+    disableNotificationsSuccess
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo, User } from './models';
@@ -283,6 +289,58 @@ function* watchSaveUserGuideCompletedRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED, handleSaveUserGuideCompletedRequest)
 }
 
+function* handleAllowNotificationsRequest(action: ReturnType<typeof allowNotificationsRequest>) {
+    try {
+        yield put(showSpinner());
+
+        const result = yield vkBridge.send("VKWebAppAllowNotifications", {});
+
+        if (result.error_type) {
+            yield put(allowNotificationsError(result.errors));
+        } else {
+            yield put(allowNotificationsSuccess(result));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(allowNotificationsError(error.stack));
+        } else {
+            yield put(allowNotificationsError('An unknown error occured.'));
+        }
+    } finally {
+        yield put(hideSpinner());
+    }
+}
+
+function* watchAllowNotificationsRequest() {
+    yield takeLatest(AuthenticationTypes.ALLOW_NOTIFICATIONS, handleAllowNotificationsRequest)
+}
+
+function* handleDisableNotificationsRequest(action: ReturnType<typeof disableNotificationsRequest>) {
+    try {
+        yield put(showSpinner());
+
+        const result = yield vkBridge.send("VKWebAppDenyNotifications", {});
+
+        if (result.error_type) {
+            yield put(disableNotificationsError(result.errors));
+        } else {
+            yield put(disableNotificationsSuccess(result));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(disableNotificationsError(error.stack));
+        } else {
+            yield put(disableNotificationsError('An unknown error occured.'));
+        }
+    } finally {
+        yield put(hideSpinner());
+    }
+}
+
+function* watchDisableNotificationsRequest() {
+    yield takeLatest(AuthenticationTypes.DISABLE_NOTIFICATIONS, handleDisableNotificationsRequest)
+}
+
 function* authenticationSagas() {
     yield all([
         fork(watchFetchUserInfoRequest),
@@ -293,6 +351,8 @@ function* authenticationSagas() {
         fork(watchSaveUserLocationRequest),
         fork(watchSaveUserAboutMyselfRequest),
         fork(watchSaveUserGuideCompletedRequest),
+        fork(watchAllowNotificationsRequest),
+        fork(watchDisableNotificationsRequest),
     ])
 }
 
