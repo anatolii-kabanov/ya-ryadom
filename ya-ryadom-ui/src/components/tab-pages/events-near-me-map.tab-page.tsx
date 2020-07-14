@@ -154,6 +154,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                         <div className="cell-container">
                             <Group header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === this.state.eventOnMap?.themeType)?.name}</Header>}>
                                 <RichCell
+                                    multiline
                                     before={<Avatar size={48} src={this.state.eventOnMap?.vkUserAvatarUrl} />}
                                     text={this.state.eventOnMap?.description}
                                     caption={`${new Date(this.state.eventOnMap?.date).toLocaleDateString('ru-RU', options)} в ${this.state.eventOnMap?.time}`}
@@ -168,7 +169,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                 <Div className="map-card-buttons-div">
                                     {this.state.eventOnMap?.applicationStatus === ApplicationStatus.none
                                         ? <Button className="button-primary" onClick={() => this.apply(this.state.eventOnMap?.id)}>Иду</Button>
-                                        : <Button className="button-primary" disabled={true}>{this.renderApplicationStatus(this.state.eventOnMap?.applicationStatus)}</Button>}
+                                        : <Button className="button-primary disabled" disabled={true}>{this.renderApplicationStatus(this.state.eventOnMap?.applicationStatus)}</Button>}
                                     <Button className="button-secondary"
                                         href={`https://vk.com/id${this.state.eventOnMap?.vkUserOwnerId}`}
                                         onClick={() => window.open("https://vk.com/id" + this.state.eventOnMap?.vkUserOwnerId, '_blank')}

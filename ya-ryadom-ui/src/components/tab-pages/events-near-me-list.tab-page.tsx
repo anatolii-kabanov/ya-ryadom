@@ -59,6 +59,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
                     return <div key={key} style={{ height: 180 }}>
                         <Group separator="show" header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                             <RichCell
+                                multiline
                                 before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
                                 text={item?.description}
                                 caption={`${new Date(item.date).toLocaleDateString('ru-RU', options)} в ${item.time}`}
