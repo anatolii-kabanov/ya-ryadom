@@ -1,0 +1,55 @@
+@import "../../../assets/scss/variables";
+
+.application-card {
+  box-shadow: unset;
+  border-radius: 0;
+  margin: 0;
+
+  .Header {
+    padding: 0;
+  }
+
+  .body {
+    padding: 0 2px;
+
+    .title {
+      font-weight: bold;
+      font-size: 15px;
+      line-height: 20px;
+      letter-spacing: -0.24px;
+      color: #000;
+    }
+
+    .description {
+      font-size: 15px;
+      line-height: 20px;
+      letter-spacing: -0.24px;
+      margin-right: 140px;
+    }
+
+    .sub-info {
+      margin-top: 6px;
+      & > * {
+        font-size: 13px;
+        line-height: 16px;
+        letter-spacing: -0.078px;
+        color: $secondary-color;
+        display: inline-block;
+      }
+
+      & > .address {
+        margin-right: 40px;
+      }
+    }
+
+    .UsersStack {
+      margin-top: 22px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    & > .Button {
+      margin-top: 15px;
+    }
+  }
+}

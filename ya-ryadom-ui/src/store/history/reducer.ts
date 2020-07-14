@@ -7,7 +7,7 @@ import { AppState } from '../app-state';
 
 export const initialState: HistoryState = {
     history: [{ view: VIEWS.INTRO_VIEW, panel: PANELS.HELLO_INTRO_PANEL }],
-    currentViewPanel: { view: VIEWS.INTRO_VIEW, panel: PANELS.HELLO_INTRO_PANEL },
+    currentViewPanel: { view: VIEWS.APPLICATIONS_VIEW, panel: PANELS.APPLICATIONS_PANEL },
 }
 
 const reducer: Reducer<HistoryState> = (state = initialState, action) => {

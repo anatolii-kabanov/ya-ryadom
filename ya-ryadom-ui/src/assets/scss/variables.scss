@@ -3,4 +3,22 @@ $primary-color: #f05c44;
 $secondary-color: #99a2ad;
 $info-color: rgba(196, 209, 215, 0.38);
 
+/* Fonts */
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../fonts/SF-Pro-Display-Regular.otf");
+  font-style: normal;
+  font-stretch: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../fonts/SF-Pro-Display-Medium.otf");
+  font-style: normal;
+  font-stretch: normal;
+  font-weight: 600;
+}
+
+
 /* Light Button / Primary Background */

@@ -36,7 +36,7 @@ export class MenuPanel extends React.Component<AllProps>  {
                     </CellButton>
                 </Group>
                 <Group>
-                    <CellButton onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.MY_APPLICATIONS_PANEL))}>
+                    <CellButton onClick={() => goForwardView(new VkHistoryModel(VIEWS.APPLICATIONS_VIEW, PANELS.APPLICATIONS_PANEL))}>
                         Мои заявки
                     </CellButton>
                 </Group>
