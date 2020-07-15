@@ -92,7 +92,7 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
                 return <CardGrid key={key}>
                         {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationCreated/>}
                         {activeTab == TABS.WANT_VISIT_APPLICATIONS && <ApplicationWantVisit/>}
-                        <Separator style={{ margin: '12px -24px' }} />
+                        <Separator className="card-separator" />
                     </CardGrid>
             });
     }
