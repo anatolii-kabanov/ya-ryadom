@@ -7,7 +7,6 @@ import {
     RichCell,
     Div,
     Header,
-    Caption,
 } from "@vkontakte/vkui";
 import { connect } from 'react-redux';
 import { AppState } from "../../../store/app-state";
@@ -116,17 +115,21 @@ class ProfilePanel extends React.Component<AllProps>{
                 </Group>
                 <Group>
                     <div className="div-icons-menu">
-                        <div><Icon28HomeOutline className="menu-icon"/>Профиль VK</div>
-                        <div><Icon28FavoriteOutline
+                        <a className="a-icon"
+                           href={`https://vk.com/id1`}
+                           onClick={() => window.open("https://vk.com/id1")}
+                        ><Icon28HomeOutline className="menu-icon"
+                        />Профиль VK</a>
+                        <a className="a-icon"><Icon28FavoriteOutline
                             className="menu-icon"
                             onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_REVIEWS_PANEL))}/>
                             Отзывы
-                        </div>
-                        <div><Icon28UsersOutline
+                        </a>
+                        <a className="a-icon"><Icon28UsersOutline
                             className="menu-icon"
                             onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_EVENTS_PANEL))}/>
                             События
-                        </div>
+                        </a>
                     </div>
                 </Group>
                 <Group header={
