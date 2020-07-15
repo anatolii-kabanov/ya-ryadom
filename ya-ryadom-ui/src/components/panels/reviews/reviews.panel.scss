@@ -1,0 +1,32 @@
+@import "../../../assets/scss/variables.scss";
+
+//.rc-header {
+//  font-weight: 400 !important;
+//  position: relative;
+//  top: -1em;
+//  left: -0.5em;
+//}
+
+.rc-reviews-content {
+  color: $secondary-color;
+}
+
+.rc-reviews-caption {
+  position: relative;
+  font-weight: 500;
+  top: -0.5em;
+  font-size: 1.1em;
+  color: black;
+}
+
+.rc-reviews-bottom {
+  position: relative;
+  top: -1em;
+}
+
+.rc-reviews-stars {
+  color: $primary-color;
+  display: flex;
+  position: relative;
+  top: -1e
+}
