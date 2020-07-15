@@ -70,7 +70,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
                                 {item.applicationStatus === ApplicationStatus.none
                                     ? <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
                                     : <Button className="button-primary disabled" disabled={true}>{this.renderApplicationStatus(item.applicationStatus)}</Button>}
-                                <Button className="button-secondary width-50 text-center"
+                                <Button className="btn-secondary width-50 text-center"
                                     href={`https://vk.com/id${item?.vkUserOwnerId}`}
                                     onClick={() => window.open("https://vk.com/id" + item?.vkUserOwnerId, '_blank')}
                                 >Профиль</Button>

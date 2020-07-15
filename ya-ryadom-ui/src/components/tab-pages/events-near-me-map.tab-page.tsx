@@ -170,7 +170,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                     {this.state.eventOnMap?.applicationStatus === ApplicationStatus.none
                                         ? <Button className="button-primary" onClick={() => this.apply(this.state.eventOnMap?.id)}>Иду</Button>
                                         : <Button className="button-primary disabled" disabled={true}>{this.renderApplicationStatus(this.state.eventOnMap?.applicationStatus)}</Button>}
-                                    <Button className="button-secondary"
+                                    <Button className="btn-secondary"
                                         href={`https://vk.com/id${this.state.eventOnMap?.vkUserOwnerId}`}
                                         onClick={() => window.open("https://vk.com/id" + this.state.eventOnMap?.vkUserOwnerId, '_blank')}
                                     >Профиль</Button>

@@ -71,7 +71,7 @@ class MyProfilePanel extends React.Component<AllProps>{
                             <Caption className="rating" weight="regular" level="1">{currentUser?.avgRating.toFixed(1)}</Caption>
                         </span>
                     </RichCell>
-                    <Button className="button-secondary text-center"
+                    <Button className="btn-secondary text-center"
                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.MY_PROFILE_EDIT_PANEL))}
                     >Редактировать</Button>
                 </Group>

@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { View } from '@vkontakte/vkui';
 import { PANELS } from '../../utils/constants/panel.constants';
 import { AppState } from "../../store/app-state";
-import MyApplicationsPanel from '../panels/applications/my-applications.panel';
-import ApplicationsToMePanel from '../panels/applications/applications-to-me.panel';
+import ApplicationsPanel from '../panels/applications/applications.panel';
+import ApplicationsReviewModal from '../modals/applications-review.modal';
+import {MODALS} from "../../utils/constants/modal.constants";
 
 interface PropsFromState {
     id: string;
@@ -18,13 +19,36 @@ interface PropsFromDispatch {
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-export class ApplicationsView extends React.Component<AllProps>  {
+interface State {
+    activeModal: string | null; // VK modal use null to hide it
+}
+
+export class ApplicationsView extends React.Component<AllProps, State>  {
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeModal: null
+        };
+
+        this.openCreationReview = this.openCreationReview.bind(this);
+        this.onClose = this.onClose.bind(this);
+    }
+
+    openCreationReview() {
+        this.setState({ activeModal: MODALS.APPLICATION_REVIEW })
+    }
+
+    onClose(updateEvents?: boolean) {
+        this.setState({ activeModal: null });
+    }
+
     render() {
         const { id, activePanel, popout } = this.props;
         return (
-            <View id={id} activePanel={activePanel} popout={popout}>
-                <MyApplicationsPanel id={PANELS.MY_APPLICATIONS_PANEL}></MyApplicationsPanel>
-                <ApplicationsToMePanel id={PANELS.APPLICATIONS_TO_ME_PANEL}></ApplicationsToMePanel>
+            <View id={id} activePanel={activePanel} popout={popout} modal={
+                <ApplicationsReviewModal activeModal={this.state.activeModal} onClose={this.onClose}/>
+            }>
+                <ApplicationsPanel id={PANELS.APPLICATIONS_PANEL} openCreationReview={this.openCreationReview}></ApplicationsPanel>
             </View>
         )
     }
