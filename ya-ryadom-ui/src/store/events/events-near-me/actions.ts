@@ -7,3 +7,4 @@ export const fetchListSuccess = (payload: EventNearMe[]) => action(EventsNearMeT
 export const fetchListError = (payload: any) => action(EventsNearMeTypes.FETCH_LIST_ERROR, payload);
 
 export const setSentStatus = (payload: number) => action(EventsNearMeTypes.SET_SENT_STATUS, payload);
+export const setCurrentVkId = (payload: number) => action(EventsNearMeTypes.SET_CURRENT_VK_ID, payload)

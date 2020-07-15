@@ -3,4 +3,5 @@ export enum EventsNearMeTypes {
     FETCH_LIST_SUCCESS = '[Events near me] Fetching events near me success',
     FETCH_LIST_ERROR = '[Events near me] Fetching events near me error',
     SET_SENT_STATUS = '[Events near me] Event changed status for user to sent',
+    SET_CURRENT_VK_ID = '[Events near me] Set current VK id of different user'
 };

@@ -31,6 +31,7 @@ interface PropsFromState {
     id: string;
     vkUserInfo: UserInfo;
     currentUser: User;
+    vkUserId: number;
 }
 
 interface PropsFromDispatch {
@@ -58,9 +59,9 @@ class ProfilePanel extends React.Component<AllProps>{
     }
 
     componentWillMount() {
-        // somehow need to get user vk id
+        const { vkUserId } = this.props
         xhr({
-            uri: `${process.env.REACT_APP_API_ENDPOINT}/auth/user-info/1`,
+            uri: `${process.env.REACT_APP_API_ENDPOINT}/auth/user-info/${vkUserId}`,
             sync: true
         }, (err, resp, body) => {
                 const response = JSON.parse(body);
@@ -96,7 +97,7 @@ class ProfilePanel extends React.Component<AllProps>{
     }
 
     render() {
-        const { id, vkUserInfo, goForwardView } = this.props;
+        const { id, vkUserId, goForwardView } = this.props;
         const { currentProfile, themesInCommon } = this.state;
         return (
             <Panel className="my-profile" id={id}>
@@ -116,8 +117,8 @@ class ProfilePanel extends React.Component<AllProps>{
                 <Group>
                     <div className="div-icons-menu">
                         <a className="a-icon"
-                           href={`https://vk.com/id1`}
-                           onClick={() => window.open("https://vk.com/id1")}
+                           href={`https://vk.com/id${vkUserId}`}
+                           onClick={() => window.open(`https://vk.com/id${vkUserId}`)}
                         ><Icon28HomeOutline className="menu-icon"
                         />Профиль VK</a>
                         <a className="a-icon"><Icon28FavoriteOutline
@@ -149,6 +150,7 @@ class ProfilePanel extends React.Component<AllProps>{
 
 const mapStateToProps = ({ events, authentication }: AppState) => ({
     myEvents: events.myEvents.eventsList,
+    vkUserId: events.eventsNearMe.currentVkId,
     vkUserInfo: authentication.vkUserInfo,
     currentUser: authentication.currentUser,
 })

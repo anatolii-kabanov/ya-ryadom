@@ -18,7 +18,7 @@ import { MAP } from '../../../utils/constants/map.constants';
 import { Geo } from '../../../store/authentication/models';
 import { goForward } from "../../../store/history/actions";
 import {
-    fetchListRequest
+    fetchListRequest, setCurrentVkId
 } from "../../../store/events/events-near-me/actions";
 import { EventNearMe } from "../../../store/events/events-near-me/models";
 import { UserInfo } from '@vkontakte/vk-bridge';
@@ -45,7 +45,8 @@ interface PropsFromState {
 interface PropsFromDispatch {
     goForwardView: typeof goForward,
     fetchList: typeof fetchListRequest,
-    applyToEvent: typeof applyToEventRequest
+    applyToEvent: typeof applyToEventRequest,
+    setCurrentVkId: typeof setCurrentVkId
 }
 type AllProps = PropsFromState & PropsFromDispatch;
 
@@ -77,6 +78,7 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
 
     private renderEvents() {
         const { events } = this.props;
+        console.log(events)
         if (events && Object.keys(events).length !== 0) {
             return events
                 .map((item, key) => {
@@ -102,6 +104,8 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
     }, 100);
 
     onMarkerClick(person: object) {
+        const { setCurrentVkId } = this.props;
+        setCurrentVkId(person.vkUserOwnerId)
         this.setState({
             personOnMap: person
         })
@@ -174,7 +178,13 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
                                     ? <Button className="button-primary" onClick={() => this.apply(this.state.personOnMap.id)}>Иду</Button>
                                     : <Button className="button-primary" disabled={true}>{this.renderApplicationStatus(this.state.personOnMap.applicationStatus)}</Button>}
                                 <Button className="button-secondary"
-                                    onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
+                                        onClick={() => {
+                                            console.log('alo')
+                                            console.log(this.state.personOnMap.vkUserOwnerId)
+
+                                            goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))
+                                        }
+                                        }
                                 >Посмотреть профиль</Button>
                             </Div>
                         </div>
@@ -237,7 +247,8 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
 const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
     fetchList: fetchListRequest,
-    applyToEvent: applyToEventRequest
+    applyToEvent: applyToEventRequest,
+    setCurrentVkId: setCurrentVkId,
 }
 
 export default connect(

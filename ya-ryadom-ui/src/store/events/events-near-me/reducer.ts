@@ -6,6 +6,7 @@ import { ApplicationStatus } from '../../../utils/enums/application-status.enum'
 export const initialState: EventsNearMeState = {
     eventsList: [],
     isLoading: false,
+    currentVkId: 0
 }
 
 const reducer: Reducer<EventsNearMeState> = (state = initialState, action) => {
@@ -23,6 +24,14 @@ const reducer: Reducer<EventsNearMeState> = (state = initialState, action) => {
                     event,
                     ...state.eventsList.slice(index + 1),
                 ]
+            }
+        }
+        case EventsNearMeTypes.SET_CURRENT_VK_ID: {
+            console.log('reducer')
+            console.log(action.payload)
+            return {
+                ...state,
+                currentVkId: action.payload
             }
         }
         default: {
