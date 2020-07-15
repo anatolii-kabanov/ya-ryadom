@@ -116,21 +116,29 @@ class ProfilePanel extends React.Component<AllProps>{
                 </Group>
                 <Group>
                     <div className="div-icons-menu">
+
                         <a className="a-icon"
                            href={`https://vk.com/id${vkUserId}`}
                            onClick={() => window.open(`https://vk.com/id${vkUserId}`)}
-                        ><Icon28HomeOutline className="menu-icon"
-                        />Профиль VK</a>
-                        <a className="a-icon"><Icon28FavoriteOutline
-                            className="menu-icon"
-                            onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_REVIEWS_PANEL))}/>
+                        >
+                            <Icon28HomeOutline className="menu-icon"/>
+                            Профиль VK
+                        </a>
+
+                        <a className="a-icon"
+                           onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_REVIEWS_PANEL))}
+                        >
+                            <Icon28FavoriteOutline className="menu-icon"/>
                             Отзывы
                         </a>
-                        <a className="a-icon"><Icon28UsersOutline
-                            className="menu-icon"
-                            onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_EVENTS_PANEL))}/>
+
+                        <a className="a-icon"
+                           onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_EVENTS_PANEL))}
+                        >
+                            <Icon28UsersOutline className="menu-icon"/>
                             События
                         </a>
+
                     </div>
                 </Group>
                 <Group header={

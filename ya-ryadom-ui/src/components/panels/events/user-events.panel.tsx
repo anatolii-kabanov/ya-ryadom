@@ -97,8 +97,8 @@ class UserEventsPanel extends React.Component<AllProps> {
                     actions={
                         <React.Fragment>
                             {event.ended ?
-                                <Button mode="secondary">Скрыть</Button> :
-                                <Button className="button-primary">Завершено</Button>
+                                <Button mode="secondary" className="button-disabled">Завершено</Button> :
+                                <Button className="button-primary">Иду</Button>
                             }
                         </React.Fragment>
                     }
