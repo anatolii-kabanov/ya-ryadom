@@ -25,10 +25,13 @@ import { ApplicationStatus } from '../../../utils/enums/application-status.enum'
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { ApplicationCreated } from './application.created';
 import { ApplicationWantVisit } from './application.want_visit';
+import { ApplicationVisited } from  './application.visited';
+import {MODALS} from "../../../utils/constants/modal.constants";
 
 interface PropsFromState {
     id: string;
-    applications: Application[]
+    applications: Application[];
+    openCreationReview: () => void;
 }
 
 interface PropsFromDispatch {
@@ -64,7 +67,7 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
     constructor(props) {
         super(props);
         this.state = {
-            activeTab: TABS.CREATED_APPLICATIONS
+            activeTab: TABS.CREATED_APPLICATIONS,
         }
     }
 
@@ -84,7 +87,7 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
 
     private renderApplications() {
         const { activeTab } = this.state;
-        const { applications } = this.props;
+        const { applications, openCreationReview } = this.props;
         const status: ApplicationStatus = TabStatus[activeTab];
 
         return [1,2,3,4]
@@ -92,6 +95,7 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
                 return <CardGrid key={key}>
                         {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationCreated/>}
                         {activeTab == TABS.WANT_VISIT_APPLICATIONS && <ApplicationWantVisit/>}
+                        {activeTab == TABS.VISITED_APPLICATIONS && <ApplicationVisited openCreationReview={openCreationReview}/>}
                         <Separator className="card-separator" />
                     </CardGrid>
             });

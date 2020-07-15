@@ -133,3 +133,7 @@
     display: none;
   }
 }
+
+.Textarea textarea:focus, .Textarea textarea:active {
+  border-radius: 1px solid $primary-color!important;
+}
