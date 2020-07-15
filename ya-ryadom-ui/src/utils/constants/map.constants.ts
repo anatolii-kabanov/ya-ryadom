@@ -1,3 +1,3 @@
 export const MAP = {
-    KEY: 'AIzaSyCP9PRbvLP1gzHk-a54noxyx-b-rF5j4vg'
+    KEY: 'AIzaSyBUnW9bv1U41QyzH2lFSI_tvx52XfbdyVs'
 };

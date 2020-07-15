@@ -4,11 +4,14 @@ import { connect } from "react-redux";
 import MainHeaderPanel from "../headers/main.header";
 import Icon24Favorite from '@vkontakte/icons/dist/24/favorite';
 import Icon24FavoriteOutline from '@vkontakte/icons/dist/24/favorite_outline';
+import xhr from "xhr";
 
 import './reviews.panel.scss';
+import { AppState } from "../../../store/app-state";
 
 interface PropsFromState {
     id: string;
+    vkUserId: number;
 }
 
 interface PropsFromDispatch {
@@ -31,6 +34,10 @@ type AllProps = PropsFromState & PropsFromDispatch;
 
 class ReviewsPanel extends React.Component<AllProps> {
 
+    state = {
+        profileReviews: {}
+    }
+
     reviewStars(rateNum) {
         let stars = [];
         for(let i = 0; i < 5; i++) {
@@ -45,8 +52,21 @@ class ReviewsPanel extends React.Component<AllProps> {
         );
     };
 
+    componentWillMount() {
+        const { vkUserId } = this.props
+        xhr({
+                uri: `${process.env.REACT_APP_API_ENDPOINT}/auth/user-info/${vkUserId}`,
+                sync: true
+            }, (err, resp, body) => {
+                const profileReviews = JSON.parse(body);
+                this.setState({
+                    profileReviews
+                })
+            }
+        )
+    }
+
     render() {
-        // all reviews for specific user
         const { id } = this.props;
 
         return (
@@ -74,9 +94,9 @@ class ReviewsPanel extends React.Component<AllProps> {
     }
 }
 
-const mapStateToProps = () => {
-
-}
+const mapStateToProps = ({ events }: AppState) => ({
+    vkUserId: events.eventsNearMe.currentVkId,
+})
 
 const mapDispatchToProps: PropsFromDispatch = {
 

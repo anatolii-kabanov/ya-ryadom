@@ -27,8 +27,6 @@ const reducer: Reducer<EventsNearMeState> = (state = initialState, action) => {
             }
         }
         case EventsNearMeTypes.SET_CURRENT_VK_ID: {
-            console.log('reducer')
-            console.log(action.payload)
             return {
                 ...state,
                 currentVkId: action.payload

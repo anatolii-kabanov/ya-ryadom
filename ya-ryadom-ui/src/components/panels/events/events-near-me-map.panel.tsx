@@ -78,7 +78,6 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
 
     private renderEvents() {
         const { events } = this.props;
-        console.log(events)
         if (events && Object.keys(events).length !== 0) {
             return events
                 .map((item, key) => {
@@ -179,9 +178,6 @@ class EventsNearMeMapPanel extends React.Component<AllProps, State>  {
                                     : <Button className="button-primary" disabled={true}>{this.renderApplicationStatus(this.state.personOnMap.applicationStatus)}</Button>}
                                 <Button className="button-secondary"
                                         onClick={() => {
-                                            console.log('alo')
-                                            console.log(this.state.personOnMap.vkUserOwnerId)
-
                                             goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))
                                         }
                                         }
