@@ -7,8 +7,8 @@ import {
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
 import { UserInfo } from '@vkontakte/vk-bridge';
-import ThemesForm from '../../forms/themes.form';
-import { saveUserProfileThemes } from '../../../store/authentication/actions';
+import { saveUserProfileAboutMysel } from '../../../store/authentication/actions';
+import AboutMyselfForm from '../../forms/about-myself.form';
 
 interface PropsFromState {
     id: string,
@@ -16,12 +16,12 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    save: typeof saveUserProfileThemes
+    save: typeof saveUserProfileAboutMysel
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class MyProfileEditThemesPanel extends React.Component<AllProps>  {
+class MyProfileEditAboutMyselfPanel extends React.Component<AllProps>  {
 
     constructor(props) {
         super(props);
@@ -39,12 +39,10 @@ class MyProfileEditThemesPanel extends React.Component<AllProps>  {
     render() {
         const { id, save } = this.props;
         return (
-            <Panel id={id} className="profile-themes-panel">
+            <Panel id={id}>
                 <PanelHeader>
                 </PanelHeader>
-                <Group className="profile-group">
-                    <ThemesForm onSave={save} btnText={'Сохранить'}></ThemesForm>
-                </Group>
+                <AboutMyselfForm onSave={save} btnText={'Сохранить'}></AboutMyselfForm>
             </Panel>
         )
     }
@@ -55,10 +53,10 @@ const mapStateToProps = ({ }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    save: saveUserProfileThemes
+    save: saveUserProfileAboutMysel
 }
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(MyProfileEditThemesPanel);
+)(MyProfileEditAboutMyselfPanel);

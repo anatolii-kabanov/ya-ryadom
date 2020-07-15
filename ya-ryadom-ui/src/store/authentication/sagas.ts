@@ -32,7 +32,9 @@ import {
     disableNotificationsError,
     disableNotificationsSuccess,
     saveUserIntroThemes,
-    saveUserProfileThemes
+    saveUserProfileThemes,
+    saveUserIntroAboutMysel,
+    saveUserProfileAboutMysel
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo, User } from './models';
@@ -246,6 +248,26 @@ function* watchSaveUserLocationRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_LOCATION, handleSaveUserLocationRequest)
 }
 
+function* handleSaveUserIntroAboutMyself(action: ReturnType<typeof saveUserIntroAboutMysel>) {    
+    yield put(saveUserAboutMyselfRequest(action.payload));
+    yield take(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS);
+    yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.CREATE_EVENT_PANEL)));
+}
+
+function* watchSaveUserIntroAboutMyself() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_INTRO_ABOUT_MYSELF, handleSaveUserIntroAboutMyself)
+}
+
+function* handleSaveUserProfileAboutMyself(action: ReturnType<typeof saveUserProfileAboutMysel>) {    
+    yield put(saveUserAboutMyselfRequest(action.payload));
+    yield take(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS);
+    yield put(goBack());
+}
+
+function* watchSaveUserProfileAboutMyself() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_PROFILE_ABOUT_MYSELF, handleSaveUserProfileAboutMyself)
+}
+
 function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAboutMyselfRequest>) {
     try {
         yield put(showSpinner());
@@ -262,7 +284,6 @@ function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAbo
             yield put(saveUserAboutMyselfError(result.errors));
         } else {
             yield put(saveUserAboutMyselfSuccess(action.payload));
-            yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.CREATE_EVENT_PANEL)));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -375,7 +396,9 @@ function* authenticationSagas() {
         fork(watchAllowNotificationsRequest),
         fork(watchDisableNotificationsRequest),
         fork(watchSaveUserIntroThemes),
-        fork(watchSaveUserProfileThemes)
+        fork(watchSaveUserProfileThemes),
+        fork(watchSaveUserIntroAboutMyself),
+        fork(watchSaveUserProfileAboutMyself)
     ])
 }
 

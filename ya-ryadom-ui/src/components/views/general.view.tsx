@@ -3,7 +3,8 @@ import { View } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { PANELS } from '../../utils/constants/panel.constants';
-import MyProfileEditThemesPanel from "../panels/profile/my-profile-edit-themes.panel";
+import MyProfileEditThemesPanel from '../panels/profile/my-profile-edit-themes.panel';
+import MyProfileEditAboutMyselfPanel from '../panels/profile/my-profile-edit-about-myself.panel';
 import MyEventCreatePanel from '../panels/my-event-create.panel';
 
 interface PropsFromState {
@@ -30,6 +31,7 @@ class GeneralView extends React.Component<AllProps>  {
             <View id={id} activePanel={activePanel} popout={popout}>
                 <MyEventCreatePanel id={PANELS.CREATE_EVENT_PANEL}></MyEventCreatePanel>
                 <MyProfileEditThemesPanel id={PANELS.MY_PROFILE_EDIT_THEMES_PANEL}></MyProfileEditThemesPanel>
+                <MyProfileEditAboutMyselfPanel id={PANELS.MY_PROFILE_EDIT_ABOUT_MYSELF_PANEL}></MyProfileEditAboutMyselfPanel>
             </View>
         )
     }

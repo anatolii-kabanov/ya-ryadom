@@ -36,6 +36,9 @@ export const saveUserLocationRequest = (payload: Position) => action(Authenticat
 export const saveUserLocationSuccess = (payload: Position) => action(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS, payload);
 export const saveUserLocationError = (payload: any) => action(AuthenticationTypes.SAVE_USER_LOCATION_ERROR, payload);
 
+export const saveUserIntroAboutMysel = (payload: string) => action(AuthenticationTypes.SAVE_USER_INTRO_ABOUT_MYSELF, payload);
+export const saveUserProfileAboutMysel = (payload: string) => action(AuthenticationTypes.SAVE_USER_PROFILE_ABOUT_MYSELF, payload);
+
 export const saveUserAboutMyselfRequest = (payload: string) => action(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF, payload);
 export const saveUserAboutMyselfSuccess = (payload: string) => action(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS, payload);
 export const saveUserAboutMyselfError = (payload: any) => action(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_ERROR, payload);

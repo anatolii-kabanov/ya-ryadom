@@ -14,10 +14,11 @@ import { ThemeType } from '../../utils/enums/theme-type.enum';
 
 interface PropsFromState {
     onSave: (themes: ThemeType[]) => void;
+    btnText?: string;
 }
 
 interface PropsFromDispatch {
-    
+
 }
 
 
@@ -70,7 +71,7 @@ class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[]
     }
 
     render() {
-
+        const { btnText } = this.props;
         return (
             <Div className="themes-form">
                 <Div><Title level="3" weight="bold" className="title">Выберите темы</Title ></Div>
@@ -79,7 +80,7 @@ class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[]
                 </Div>
                 <FormLayout>
                     <Div className="btn-container-bottom">
-                        <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Продолжить</Button>
+                        <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>{btnText ?? 'Продолжить'}</Button>
                     </Div>
                 </FormLayout>
             </Div>
@@ -92,7 +93,7 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    
+
 }
 
 export default connect(

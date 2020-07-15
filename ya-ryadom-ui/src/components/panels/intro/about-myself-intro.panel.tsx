@@ -2,70 +2,32 @@ import './about-myself-intro.panel.scss';
 import React from 'react';
 import {
     Panel,
-    PanelHeader,
-    Group,
-    Div,
-    Button,
-    Title,
-    FormLayout,
-    Input,
+    PanelHeader
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
-import { saveUserAboutMyselfRequest } from '../../../store/authentication/actions';
+import { saveUserIntroAboutMysel } from '../../../store/authentication/actions';
+import AboutMyselfForm from '../../forms/about-myself.form';
 
 interface PropsFromState {
     id: string,
 }
 
 interface PropsFromDispatch {
-    saveAboutMyself: typeof saveUserAboutMyselfRequest
-}
-
-interface State {
-    aboutMyself: string;
+    saveAboutMyself: typeof saveUserIntroAboutMysel
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class AboutMyselfIntroPanel extends React.Component<AllProps, State>  {
-
-    constructor(props) {
-        super(props);
-        this.onClickNext = this.onClickNext.bind(this)
-    }
-
-    onClickNext() {
-        const { saveAboutMyself } = this.props;
-        saveAboutMyself(this.state.aboutMyself);
-    }
-
-    handleInputChange = (event) => {
-        event.preventDefault()
-        this.setState({
-            aboutMyself: event.target.value
-        })
-    }
+class AboutMyselfIntroPanel extends React.Component<AllProps>  {
 
     render() {
-        const { id } = this.props;
+        const { id, saveAboutMyself } = this.props;
         return (
             <Panel id={id} className="about-myself-intro-panel">
                 <PanelHeader>
                 </PanelHeader>
-                <Group className="about-myself-group">
-                    <Div className="themes-form">
-                        <Div><Title level="3" weight="bold" className="title text-center">Напишите о себе</Title ></Div>
-                        <FormLayout>
-                            <Input name="aboutMySelf" onChange={this.handleInputChange}></Input>
-                        </FormLayout>
-                    </Div>
-                </Group>
-                <Group>
-                    <Div className="btn-container-bottom">
-                        <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Далее</Button>
-                    </Div>
-                </Group>
+                <AboutMyselfForm onSave={saveAboutMyself}></AboutMyselfForm>
             </Panel>
         )
     }
@@ -76,7 +38,7 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    saveAboutMyself: saveUserAboutMyselfRequest
+    saveAboutMyself: saveUserIntroAboutMysel
 }
 
 export default connect(
