@@ -39,7 +39,7 @@ class ReviewsPanel extends React.Component<AllProps> {
     }
 
     reviewStars(rateNum) {
-        let stars = [];
+        let stars: any[] = [];
         for(let i = 0; i < 5; i++) {
             if (i < rateNum) {
                 stars.push(<Icon24Favorite/>);
