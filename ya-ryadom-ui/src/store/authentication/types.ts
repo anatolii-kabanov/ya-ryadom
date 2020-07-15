@@ -14,6 +14,8 @@ export enum AuthenticationTypes {
     SAVE_USER_GUIDE_COMPLETED = '[Authentication] (POST) Save user guide completed',
     SAVE_USER_GUIDE_COMPLETED_SUCCESS = '[Authentication] Save user guide completed success',
     SAVE_USER_GUIDE_COMPLETED_ERROR = '[Authentication] Save user guide completed error',
+    SAVE_USER_INTRO_THEMES = '[Authentication] Save user themes on intro',
+    SAVE_USER_PROFILE_THEMES ='[Authentication] Save user themes on profile',
     SAVE_USER_THEMES = '[Authentication] (POST) Save user themes',
     SAVE_USER_THEMES_SUCCESS = '[Authentication] Save user themes success',
     SAVE_USER_THEMES_ERROR = '[Authentication] Save user themes error',

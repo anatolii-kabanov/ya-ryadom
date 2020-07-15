@@ -81,10 +81,10 @@ class MyProfileEditPanel extends React.Component<AllProps>{
                     </Cell>
                 </Group>
                 <Group separator="show">
-                    <Cell expandable onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.MY_PROFILE_ABOUT_MYSELF_PANEL))}>О себе</Cell>
+                    <Cell expandable onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.MY_PROFILE_EDIT_ABOUT_MYSELF_PANEL))}>О себе</Cell>
                 </Group>
                 <Group separator="hide">
-                    <Cell expandable onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.MY_PROFILE_THEMES_PANEL))}>Темы</Cell>
+                    <Cell expandable onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.MY_PROFILE_EDIT_THEMES_PANEL))}>Темы</Cell>
                 </Group>
             </Panel >
         );

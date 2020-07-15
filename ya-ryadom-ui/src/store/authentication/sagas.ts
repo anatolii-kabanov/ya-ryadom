@@ -30,11 +30,13 @@ import {
     allowNotificationsSuccess,
     disableNotificationsRequest,
     disableNotificationsError,
-    disableNotificationsSuccess
+    disableNotificationsSuccess,
+    saveUserIntroThemes,
+    saveUserProfileThemes
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo, User } from './models';
-import { goForward, reset } from '../history/actions';
+import { goForward, reset, goBack } from '../history/actions';
 import { VkHistoryModel } from '../history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
@@ -159,6 +161,26 @@ function* watchSaveUserInfoRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_INFO, handleSaveUserInfoRequest)
 }
 
+function* handleSaveUserIntroThemes(action: ReturnType<typeof saveUserIntroThemes>) {    
+    yield put(saveUserThemesRequest(action.payload));
+    yield take(AuthenticationTypes.SAVE_USER_THEMES_SUCCESS);
+    yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.ABOUT_MYSELF_INTRO_PANEL)));
+}
+
+function* watchSaveUserIntroThemes() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_INTRO_THEMES, handleSaveUserIntroThemes)
+}
+
+function* handleSaveUserProfileThemes(action: ReturnType<typeof saveUserProfileThemes>) {    
+    yield put(saveUserThemesRequest(action.payload));
+    yield take(AuthenticationTypes.SAVE_USER_THEMES_SUCCESS);
+    yield put(goBack());
+}
+
+function* watchSaveUserProfileThemes() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_PROFILE_THEMES, handleSaveUserProfileThemes)
+}
+
 function* handleSaveUserThemesRequest(action: ReturnType<typeof saveUserThemesRequest>) {
     try {
         yield put(showSpinner());
@@ -174,8 +196,7 @@ function* handleSaveUserThemesRequest(action: ReturnType<typeof saveUserThemesRe
         if (result.errors) {
             yield put(saveUserThemesError(result.errors));
         } else {
-            yield put(saveUserThemesSuccess(action.payload));
-            yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.ABOUT_MYSELF_INTRO_PANEL)));
+            yield put(saveUserThemesSuccess(action.payload));            
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -353,6 +374,8 @@ function* authenticationSagas() {
         fork(watchSaveUserGuideCompletedRequest),
         fork(watchAllowNotificationsRequest),
         fork(watchDisableNotificationsRequest),
+        fork(watchSaveUserIntroThemes),
+        fork(watchSaveUserProfileThemes)
     ])
 }
 

@@ -11,14 +11,13 @@ import { connect } from 'react-redux';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import PillInput from '../inputs/pill.input';
 import { ThemeType } from '../../utils/enums/theme-type.enum';
-import { saveUserThemesRequest } from '../../store/authentication/actions';
 
 interface PropsFromState {
-
+    onSave: (themes: ThemeType[]) => void;
 }
 
 interface PropsFromDispatch {
-    save: typeof saveUserThemesRequest
+    
 }
 
 
@@ -37,8 +36,8 @@ class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[]
 
     onFillInProfile = (data) => {
         const selectedThemes = [...this.state.selectedThemes];
-        const { save } = this.props;
-        save(selectedThemes);
+        const { onSave } = this.props;
+        onSave(selectedThemes);
     }
 
     handlePillClick = (themeType: ThemeType) => {
@@ -93,7 +92,7 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    save: saveUserThemesRequest
+    
 }
 
 export default connect(
