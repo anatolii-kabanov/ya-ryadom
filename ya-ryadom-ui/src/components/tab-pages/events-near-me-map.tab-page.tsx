@@ -20,7 +20,7 @@ import { MAP } from './../../utils/constants/map.constants';
 import { Geo } from './../../store/authentication/models';
 import { goForward } from "./../../store/history/actions";
 import {
-    fetchListRequest
+    fetchListRequest, setCurrentVkId
 } from "../../store/events/events-near-me/actions";
 import { EventNearMe } from "../../store/events/events-near-me/models";
 import { UserInfo } from '@vkontakte/vk-bridge';
@@ -32,6 +32,9 @@ import debounce from 'lodash/debounce';
 import UserMarker from '../map/user-marker';
 import { EventsFilter } from '../../store/ui/settings/state';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
+import { VkHistoryModel } from "../../store/history/models";
+import { VIEWS } from "../../utils/constants/view.constants";
+import { PANELS } from "../../utils/constants/panel.constants";
 
 interface PropsFromState {
     id: string;
@@ -45,7 +48,8 @@ interface PropsFromState {
 interface PropsFromDispatch {
     goForwardView: typeof goForward,
     fetchList: typeof fetchListRequest,
-    applyToEvent: typeof applyToEventRequest
+    applyToEvent: typeof applyToEventRequest,
+    setCurrentVkId: typeof setCurrentVkId
 }
 type AllProps = PropsFromState & PropsFromDispatch;
 
@@ -106,6 +110,8 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }, 100);
 
     onMarkerClick(event: object) {
+        const { setCurrentVkId } = this.props;
+        setCurrentVkId(event.vkUserOwnerId);
         this.setState({
             eventOnMap: event
         })
@@ -146,6 +152,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }
 
     render() {
+        const { goForwardView } = this.props;
         let eventOnMap;
         if (this.state.eventOnMap) {
             eventOnMap = <Div className="card-container">
@@ -171,8 +178,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                         ? <Button className="button-primary" onClick={() => this.apply(this.state.eventOnMap?.id)}>Иду</Button>
                                         : <Button className="button-primary disabled" disabled={true}>{this.renderApplicationStatus(this.state.eventOnMap?.applicationStatus)}</Button>}
                                     <Button className="btn-secondary"
-                                        href={`https://vk.com/id${this.state.eventOnMap?.vkUserOwnerId}`}
-                                        onClick={() => window.open("https://vk.com/id" + this.state.eventOnMap?.vkUserOwnerId, '_blank')}
+                                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
                                     >Профиль</Button>
                                 </Div>
                             </Group>
@@ -224,7 +230,8 @@ const mapStateToProps = ({ events, authentication, ui }: AppState) => ({
 const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
     fetchList: fetchListRequest,
-    applyToEvent: applyToEventRequest
+    applyToEvent: applyToEventRequest,
+    setCurrentVkId: setCurrentVkId
 }
 
 export default connect(
