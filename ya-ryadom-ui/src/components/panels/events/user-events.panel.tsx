@@ -11,7 +11,8 @@ import {
     Panel,
     RichCell,
     Tabs,
-    TabsItem
+    TabsItem,
+    UsersStack
 } from "@vkontakte/vkui";
 import { AppState } from "../../../store/app-state";
 import { fetchMyEventsListRequest } from "../../../store/events/my-events/actions";
@@ -38,15 +39,82 @@ const TABS = {
     "СХОДИЛ": "Сходил"
 }
 
+
+// user vk id
+const CREATED_EVENT = {
+    participated: [
+        {
+            theme: 'Кино', name: 'Классный фильм', description: 'Пппц какой классный и сасный', address: 'Ленина 79Б', date: 'пн 14 июля в 23:45', ended: 0,
+            userAvatars: new Array(10).fill('https://sun1-95.userapi.com/gCsrYFmDPCSMzvMLr88jS8yj3qa7FB404XofVg/8_5cABjkL_0.jpg?ava=1')
+        },
+        {
+            theme: 'Кино', name: 'Классный фильм', description: 'Пппц какой классный и сасный', address: 'Ленина 79Б', date: 'пн 14 июля в 23:45', ended: 0,
+            userAvatars: new Array(10).fill('https://sun1-95.userapi.com/gCsrYFmDPCSMzvMLr88jS8yj3qa7FB404XofVg/8_5cABjkL_0.jpg?ava=1')
+        },
+        {
+            theme: 'Кино', name: 'Классный фильм', description: 'Пппц какой классный и сасный', address: 'Ленина 79Б', date: 'пн 14 июля в 23:45', ended: 1,
+            userAvatars: new Array(10).fill('https://sun1-95.userapi.com/gCsrYFmDPCSMzvMLr88jS8yj3qa7FB404XofVg/8_5cABjkL_0.jpg?ava=1')
+        },
+    ],
+    created: [
+        {
+            theme: 'Горки', name: 'Я хз', description: 'Пппц какой классный и сасный', address: 'В горах', date: 'пн 14 июля в 23:45', ended: 0,
+            userAvatars: new Array(10).fill('https://sun1-95.userapi.com/gCsrYFmDPCSMzvMLr88jS8yj3qa7FB404XofVg/8_5cABjkL_0.jpg?ava=1')
+        },
+    ],
+}
+
 class UserEventsPanel extends React.Component<AllProps> {
     state = {
         activeTab: TABS.СОЗДАЛ
     }
 
+    renderEvents(activeTab) {
+        let eventsToRender;
+        if (activeTab === TABS.СОЗДАЛ) {
+            eventsToRender = CREATED_EVENT.created;
+        } else {
+            eventsToRender = CREATED_EVENT.participated
+        }
+
+        return eventsToRender.map((event) =>
+            <Group>
+                <Header mode="secondary">{event.theme}</Header>
+                <RichCell
+                    disabled
+                    caption={<span className="rc-caption">{event.description}</span>}
+
+                    bottom={
+                        <>
+                            <p className="rc-bottom">
+                                {event.address} <span className="rc-bottom-span">{event.date}</span></p>
+
+                            <UsersStack
+                                photos={event.userAvatars}
+                            >{event.userAvatars.length} участников</UsersStack>
+                        </>
+                    }
+                    actions={
+                        <React.Fragment>
+                            {event.ended ?
+                                <Button mode="secondary">Скрыть</Button> :
+                                <Button className="button-primary">Завершено</Button>
+                            }
+                        </React.Fragment>
+                    }
+                >
+                    {event.name}
+                </RichCell>
+            </Group>
+        )
+    }
+
     render() {
         const { id } = this.props;
         const { activeTab } = this.state;
-
+        // need to get event by user id
+        // need to get all events in which user participated
+        // need to get all user participating in the event
         return (
             <Panel className="" id={id}>
                 <MainHeaderPanel text='События'></MainHeaderPanel>
@@ -64,34 +132,9 @@ class UserEventsPanel extends React.Component<AllProps> {
                         Сходил
                     </TabsItem>
                 </Tabs>
-                <Group>
-                    <Header mode="secondary">Кино</Header>
-                    <RichCell
-                        disabled
-                        caption={<span className="rc-caption">Описание</span>}
 
-                        bottom={
-                            <p className="rc-bottom">
-                                Место встречи <span className="rc-bottom-span">emgggggg</span></p>
-                            // for avatars of participants
-                            // <UsersStack
-                            //     photos={[
-                            //         getAvatarUrl('user_ox'),
-                            //         getAvatarUrl('user_vitalyavolyn'),
-                            //         getAvatarUrl('user_eee'),
-                            //     ]}
-                            // >73 общих друга</UsersStack>
-                        }
-                        actions={
-                            <React.Fragment>
-                                <Button className="button-primary">Иду</Button>
-                                {/*<Button mode="secondary">Скрыть</Button>*/}
-                            </React.Fragment>
-                        }
-                    >
-                        Илья Гришин
-                    </RichCell>
-                </Group>
+                {this.renderEvents(activeTab)}
+
             </Panel>
         );
     }

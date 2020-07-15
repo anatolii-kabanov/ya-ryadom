@@ -20,8 +20,7 @@ import xhr from "xhr";
 import PillInput from "../../inputs/pill.input";
 import { ALL_THEMES } from "../../../utils/constants/theme.constants";
 import Icon28HomeOutline from '@vkontakte/icons/dist/28/home_outline';
-import Icon28PlaceOutline from '@vkontakte/icons/dist/28/place_outline';
-import Icon28WriteSquareOutline from '@vkontakte/icons/dist/28/write_square_outline';
+import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline';
 import { fetchUserInfoRequest } from "../../../store/authentication/actions";
 import { User } from "../../../store/authentication/models";
@@ -60,6 +59,7 @@ class ProfilePanel extends React.Component<AllProps>{
     }
 
     componentWillMount() {
+        // somehow need to get user vk id
         xhr({
             uri: `${process.env.REACT_APP_API_ENDPOINT}/auth/user-info/1`,
             sync: true
@@ -116,9 +116,12 @@ class ProfilePanel extends React.Component<AllProps>{
                 </Group>
                 <Group>
                     <div className="div-icons-menu">
-                        <div><Icon28HomeOutline className="menu-icon"/>Профиль</div>
-                        <div><Icon28PlaceOutline className="menu-icon"/>На карте</div>
-                        <div><Icon28WriteSquareOutline className="menu-icon"/>Отзывы</div>
+                        <div><Icon28HomeOutline className="menu-icon"/>Профиль VK</div>
+                        <div><Icon28FavoriteOutline
+                            className="menu-icon"
+                            onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_REVIEWS_PANEL))}/>
+                            Отзывы
+                        </div>
                         <div><Icon28UsersOutline
                             className="menu-icon"
                             onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_EVENTS_PANEL))}/>

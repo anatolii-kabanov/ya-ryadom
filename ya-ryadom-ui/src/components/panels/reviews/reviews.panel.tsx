@@ -15,7 +15,7 @@ interface PropsFromDispatch {
 
 }
 
-
+// user vk id
 const REVIEWS = [
     {avatar: 'https://sun9-17.userapi.com/c855024/v855024925/4aace/v29PybHCuc0.jpg?ava=1', name: 'Aleks',
         surname: 'Zakharov', theme: 'Кино', review: 'очень круто мне понравилось но неочень но всё же круто какой длинный отзыв ого', rate: 5},
