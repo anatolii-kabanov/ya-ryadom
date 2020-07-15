@@ -23,7 +23,8 @@ import { fetchMineApplicationsRequest, revokeApplicationRequest } from '../../..
 import { TABS } from '../../../utils/constants/tab.constants';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
-import Icon16MoreHorizontal from '@vkontakte/icons/dist/16/more_horizontal';
+import { ApplicationCreated } from './application.created';
+import { ApplicationWantVisit } from './application.want_visit';
 
 interface PropsFromState {
     id: string;
@@ -88,35 +89,11 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
 
         return [1,2,3,4]
             .map((item, key) => {
-                return <Div key={key}>
-                        <CardGrid key={key}>
-                            <Div className="application-card">
-                                <Group header={<Header mode="secondary" aside={<Icon16MoreHorizontal/>}>Кино</Header>}>
-                                    <div className="body">
-                                        <div className="title">Го кинчик</div>
-                                        <div className="description">Пойду в кино с небольшой
-                                            компанией  на фильм Бладшот</div>
-
-                                        <div className="sub-info">
-                                            <div className="address">Курск, МегаГринн</div>
-                                            <div className="date">пн 14 июля в 23:34</div>
-                                        </div>
-
-                                        <UsersStack
-                                            photos={[
-                                                "https://sun9-26.userapi.com/c846321/v846321375/12a023/ke88l8pO-UY.jpg?ava=1",
-                                                "https://sun9-51.userapi.com/impg/c857220/v857220720/115511/Jr1Swq3Cm3I.jpg?size=100x0&quality=90&crop=0,0,1879,1879&sign=53d80dd10a66c5a904806290f04f4538&ava=1",
-                                                "https://sun9-30.userapi.com/impg/bs6SJz5JgAK-9rh6SCgRACwQQhSUMFpVW3kLcQ/eBQUPSEG1XQ.jpg?size=100x0&quality=90&crop=0,0,1334,1334&sign=f2ca0c0cfe07517276e8e3288b41f1da&ava=1",
-                                            ]}
-                                        >Хотят пойти с вами +3 человек</UsersStack>
-
-                                        <Button>Просмотреть</Button>
-                                    </div>
-                                </Group>
-                            </Div>
-                        </CardGrid>
-                        <Separator style={{ margin: '12px 0' }} />
-                </Div>
+                return <CardGrid key={key}>
+                        {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationCreated/>}
+                        {activeTab == TABS.WANT_VISIT_APPLICATIONS && <ApplicationWantVisit/>}
+                        <Separator style={{ margin: '12px -24px' }} />
+                    </CardGrid>
             });
     }
 

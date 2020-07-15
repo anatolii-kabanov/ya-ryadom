@@ -103,6 +103,11 @@
   background: $primary-color !important;
 }
 
+.Button--lvl-secondary {
+  background: rgba(0, 28, 61, 0.05) !important;
+  color: $primary-color!important;
+}
+
 
 /* Tabs */
 .Tabs__in, .Tabs .HorizontalScroll__in {
