@@ -48,7 +48,7 @@ class ReviewsPanel extends React.Component<AllProps> {
             }
         }
         return (
-            <div className="rc-reviews-stars">{stars}</div>
+            <div className="rc-reviews-stars">{stars} <span className="rate-label">{rateNum} из 5</span></div>
         );
     };
 
@@ -72,23 +72,25 @@ class ReviewsPanel extends React.Component<AllProps> {
         return (
             <Panel id={id}>
                 <MainHeaderPanel text="Отзывы"></MainHeaderPanel>
-                {REVIEWS.map((review) =>
-                    <Group>
-                        <RichCell
-                            disabled
-                            before={<Avatar size={56} src={review.avatar} className="rc-avatar"/>}
-                            caption={
-                                <>
-                                    <p className="rc-reviews-caption">{review.name} {review.surname}</p>
-                                    <p className="rc-reviews-bottom">{review.review}</p>
-                                    {this.reviewStars(review.rate)}
-                                </>
-                            }
-                        >
-                            <span className="rc-reviews-content">{review.theme}</span>
-                        </RichCell>
-                    </Group>
-                )}
+                {
+                    REVIEWS.map((review) =>
+                        <Group>
+                            <RichCell
+                                disabled
+                                before={<Avatar size={56} src={review.avatar} className="rc-avatar"/>}
+                                caption={
+                                    <>
+                                        <p className="rc-reviews-caption">{review.name} {review.surname}</p>
+                                        <div className="rc-reviews-bottom">{review.review}</div>
+                                        {this.reviewStars(review.rate)}
+                                    </>
+                                }
+                            >
+                                <span className="rc-reviews-content">{review.theme}</span>
+                            </RichCell>
+                        </Group>
+                    )
+                }
             </Panel>
         );
     }

@@ -1,14 +1,9 @@
 @import "../../../assets/scss/variables.scss";
 
-//.rc-header {
-//  font-weight: 400 !important;
-//  position: relative;
-//  top: -1em;
-//  left: -0.5em;
-//}
-
 .rc-reviews-content {
   color: $secondary-color;
+  text-transform: uppercase;
+  font-size: 0.8em;
 }
 
 .rc-reviews-caption {
@@ -22,11 +17,25 @@
 .rc-reviews-bottom {
   position: relative;
   top: -1em;
+  white-space: pre-wrap;      /* CSS3 */
+  white-space: -moz-pre-wrap; /* Firefox */
+  white-space: -pre-wrap;     /* Opera <7 */
+  white-space: -o-pre-wrap;   /* Opera 7 */
+  word-wrap: break-word;      /* IE */
 }
 
 .rc-reviews-stars {
   color: $primary-color;
   display: flex;
   position: relative;
-  top: -1e
+  top: -1.1em;
+}
+
+.rate-label {
+  color: $secondary-color;
+  font-size: 1.1em;
+  position: relative;
+  top: 0.35em;
+  left: 0.5em;
+  font-weight: 400;
 }
