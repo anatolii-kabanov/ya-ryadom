@@ -19,11 +19,13 @@ import { fetchMyEventsListRequest } from "../../../store/events/my-events/action
 import { fetchUserInfoRequest } from "../../../store/authentication/actions";
 
 import './user-events.panel.scss';
+import xhr from "xhr";
 
 interface PropsFromState {
     id: string;
     vkUserInfo: UserInfo;
     currentUser: User;
+    vkUserId: number;
 }
 
 interface PropsFromDispatch {
@@ -66,7 +68,22 @@ const CREATED_EVENT = {
 
 class UserEventsPanel extends React.Component<AllProps> {
     state = {
-        activeTab: TABS.СОЗДАЛ
+        activeTab: TABS.СОЗДАЛ,
+        profileEvents: {}
+    }
+
+    componentWillMount() {
+        // const { vkUserId } = this.props
+        // xhr({
+        //         uri: `${process.env.REACT_APP_API_ENDPOINT}/auth/user-info/${vkUserId}`,
+        //         sync: true
+        //     }, (err, resp, body) => {
+        //         const profileEvents = JSON.parse(body);
+        //         this.setState({
+        //             profileEvents
+        //         })
+        //     }
+        // )
     }
 
     renderEvents(activeTab) {
@@ -143,6 +160,7 @@ class UserEventsPanel extends React.Component<AllProps> {
 const mapStateToProps = ({ events, authentication }: AppState) => ({
     myEvents: events.myEvents.eventsList,
     vkUserInfo: authentication.vkUserInfo,
+    vkUserId: events.eventsNearMe.currentVkId,
     currentUser: authentication.currentUser,
 })
 
