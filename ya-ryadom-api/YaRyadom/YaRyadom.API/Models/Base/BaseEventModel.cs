@@ -12,8 +12,6 @@ namespace YaRyadom.API.Models.Base
 
 		public DateTimeOffset? Date { get; set; }
 
-		public TimeSpan? Time { get; set; }
-
 		/// <summary>
 		/// X
 		/// </summary>

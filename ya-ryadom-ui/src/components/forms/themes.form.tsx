@@ -11,14 +11,14 @@ import { connect } from 'react-redux';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import PillInput from '../inputs/pill.input';
 import { ThemeType } from '../../utils/enums/theme-type.enum';
-import { saveUserThemesRequest } from '../../store/authentication/actions';
 
 interface PropsFromState {
-
+    onSave: (themes: ThemeType[]) => void;
+    btnText?: string;
 }
 
 interface PropsFromDispatch {
-    save: typeof saveUserThemesRequest
+
 }
 
 
@@ -37,8 +37,8 @@ class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[]
 
     onFillInProfile = (data) => {
         const selectedThemes = [...this.state.selectedThemes];
-        const { save } = this.props;
-        save(selectedThemes);
+        const { onSave } = this.props;
+        onSave(selectedThemes);
     }
 
     handlePillClick = (themeType: ThemeType) => {
@@ -71,7 +71,7 @@ class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[]
     }
 
     render() {
-
+        const { btnText } = this.props;
         return (
             <Div className="themes-form">
                 <Div><Title level="3" weight="bold" className="title">Выберите темы</Title ></Div>
@@ -80,7 +80,7 @@ class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[]
                 </Div>
                 <FormLayout>
                     <Div className="btn-container-bottom">
-                        <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Продолжить</Button>
+                        <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>{btnText ?? 'Продолжить'}</Button>
                     </Div>
                 </FormLayout>
             </Div>
@@ -93,7 +93,7 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    save: saveUserThemesRequest
+
 }
 
 export default connect(

@@ -1,0 +1,37 @@
+#modal-APPLICATION_REVIEW {
+  .ModalCard__title {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    letter-spacing: 0.38px;
+    color: #000;
+    margin: 55px 16px 0 16px!important;
+    width: calc(100% - 2 * 16px) !important;
+    padding: 0;
+  }
+
+  .ModalCard__caption {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    letter-spacing: -0.154px;
+    color: #6D7885;
+    padding: 0;
+
+    margin: 6px 16px 0 16px!important;
+    width: calc(100% - 2 * 16px) !important;
+  }
+
+  .rating  .Icon, .rating  .Icon svg {
+    width: 44px!important;
+    height: 44px!important;
+  }
+
+  .btn-primary {
+    margin: 0 12px 20px 12px!important;
+    width: calc(100% - 2 * 12px) !important;
+  }
+}

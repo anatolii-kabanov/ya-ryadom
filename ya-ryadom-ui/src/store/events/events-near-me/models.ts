@@ -5,6 +5,7 @@ export interface EventNearMe {
     longitude: number,
     latitude: number,
     date: Date,
+    time: string;
     title: string,
     description: string,
     maxQuantiyty: number,
@@ -14,7 +15,8 @@ export interface EventNearMe {
     userFullName: string,
     distance: number,
     id: number,
-    applicationStatus: ApplicationStatus
+    applicationStatus: ApplicationStatus,
+    themeType: ThemeType
 }
 
 export interface MyEvent {

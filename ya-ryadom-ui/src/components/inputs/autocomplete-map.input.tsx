@@ -6,9 +6,10 @@ import { Position } from "../../store/authentication/models";
 interface AutocompleteProps {
     loadMaps: boolean;
     type: "(cities)" | "address"
-    onLocationChanged: (location: Position) => void;
+    onLocationChanged: (location: Position, address: string) => void;
     placeholder?: string;
     top?: string;
+    address?: string;
 }
 
 interface State {
@@ -24,7 +25,7 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
         super(props)
         this.autoComplete = React.createRef();
         this.state = {
-            query: "",
+            query: props.address,
             googleMapsReady: false
         };
     }
@@ -50,7 +51,7 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
                 onLocationChanged({
                     latitude: addressObject.geometry.location.lat(),
                     longitude: addressObject.geometry.location.lng()
-                });
+                }, query);
             }
         });
     }

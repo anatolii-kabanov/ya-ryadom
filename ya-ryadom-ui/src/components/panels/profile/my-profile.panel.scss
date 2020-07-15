@@ -2,8 +2,12 @@
 .my-profile {
   .star {
     color: $primary-color;
+    padding-left: 10px;
   }
   .profile-main-row {
     display: flex;
+  }
+  .rating {
+    color: #818c99;
   }
 }

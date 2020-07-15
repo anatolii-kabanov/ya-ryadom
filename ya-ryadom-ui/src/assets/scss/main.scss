@@ -15,6 +15,14 @@
   width: calc(100% - 2 * 24px) !important;
 }
 
+.btn-secondary {
+  background-color: #f2f3f5 !important;
+  color: $primary-color !important;
+  margin-left: 24px !important;
+  margin-right: 24px !important;
+  width: calc(100% - 2 * 24px) !important;
+}
+
 .nav-icon {
   color: $secondary-color;
 }
@@ -25,6 +33,10 @@
 
 .text-center {
   text-align: center;
+}
+
+.text-primary {
+  color: $primary-color !important;
 }
 
 .btn-container-bottom {
@@ -84,3 +96,38 @@
 }
 
 /* Google maps*/
+
+.tab-selected::after {
+  background: $primary-color !important;
+}
+
+/* Tabs */
+.Tabs__in,
+.Tabs .HorizontalScroll__in {
+  justify-content: space-between;
+}
+
+.Tabs--default .TabsItem--selected::after {
+  background: $primary-color !important;
+}
+
+/* Panel Header */
+.PanelHeader {
+  .PanelHeader__content span {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #000;
+  }
+
+  .PanelHeader__separator {
+    display: none;
+  }
+}
+
+.Textarea textarea:focus,
+.Textarea textarea:active {
+  border-radius: 1px solid $primary-color !important;
+}

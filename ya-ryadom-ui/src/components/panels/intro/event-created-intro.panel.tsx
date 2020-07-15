@@ -15,6 +15,7 @@ import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
 import { ReactComponent as IntroFinishedImage } from '../../../assets/images/svg/intro-finished.svg';
+import { TABS } from '../../../utils/constants/tab.constants';
 
 interface PropsFromState {
     id: string,
@@ -39,7 +40,7 @@ class EventCreatedIntroPanel extends React.Component<AllProps, State>  {
 
     onClickNext = () => {
         const { goForward } = this.props;
-        goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL));
+        goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP));
     }
 
     render() {

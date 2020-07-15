@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Root, ScreenSpinner } from '@vkontakte/vkui';
+import { Root, ScreenSpinner, Snackbar } from '@vkontakte/vkui';
 import { AppState } from '../store/app-state';
 import { connect } from 'react-redux';
 import { VIEWS } from '../utils/constants/view.constants';
@@ -7,7 +7,7 @@ import { fetchVkUserInfoRequest } from '../store/authentication/actions';
 import IntroView from "./views/intro.view";
 import MyProfileView from './views/my-profile.view';
 import EventsView from './views/events.view';
-import MainEpic from './epics/manu.epic';
+import MainEpic from './epics/menu.epic';
 import ReviewsView from './views/reviews.view';
 import ApplicationsView from './views/applications.view';
 import GeneralView from './views/general.view';

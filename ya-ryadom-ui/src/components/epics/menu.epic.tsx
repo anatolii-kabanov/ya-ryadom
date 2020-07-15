@@ -11,6 +11,7 @@ import { VkHistoryModel } from '../../store/history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { goForward } from '../../store/history/actions';
 import Icon28Add from '@vkontakte/icons/dist/28/add_square_outline';
+import { TABS } from '../../utils/constants/tab.constants';
 
 interface PropsFromState {
     activeView: string;
@@ -31,22 +32,17 @@ class MenuEpic extends React.Component<AllProps>  {
             <Epic activeStory={activeView} tabbar={
                 <Tabbar>
                     <TabbarItem
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL))}
+                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP))}
                         selected={activeView === VIEWS.EVENTS_NEAR_ME_VIEW && activePanel !== PANELS.CREATE_EVENT_PANEL}
                         data-story={VIEWS.EVENTS_NEAR_ME_VIEW}
                     ><Icon28Place className={activeView === VIEWS.EVENTS_NEAR_ME_VIEW && activePanel !== PANELS.CREATE_EVENT_PANEL ? 'nav-icon-selected' : 'nav-icon'} /></TabbarItem>
-                    <TabbarItem
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.REVIEWS_VIEW, PANELS.REVIEWS_PANEL))}
-                        selected={activeView === VIEWS.REVIEWS_VIEW}
-                        data-story={VIEWS.REVIEWS_VIEW}
-                    ><Icon28Review className={activeView === VIEWS.REVIEWS_VIEW ? 'nav-icon-selected' : 'nav-icon'} /></TabbarItem>
                     <TabbarItem
                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.CREATE_EVENT_PANEL))}
                         selected={activeView === VIEWS.GENERAL_VIEW && activePanel === PANELS.CREATE_EVENT_PANEL}
                     ><Icon28Add className={activeView === VIEWS.GENERAL_VIEW && activePanel === PANELS.CREATE_EVENT_PANEL ? 'nav-icon-selected' : 'nav-icon'}></Icon28Add>
                     </TabbarItem>
                     <TabbarItem
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.APPLICATIONS_VIEW, PANELS.APPLICATIONS_TO_ME_PANEL))}
+                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.APPLICATIONS_VIEW, PANELS.APPLICATIONS_PANEL))}
                         selected={activeView === VIEWS.APPLICATIONS_VIEW}
                         data-story={VIEWS.APPLICATIONS_VIEW}
                     ><Icon28Catalog className={activeView === VIEWS.APPLICATIONS_VIEW ? 'nav-icon-selected' : 'nav-icon'} /></TabbarItem>

@@ -1,0 +1,9 @@
+@import "../../../assets/scss/variables.scss";
+.my-profile {
+  .switcher {
+    .Switch__self:checked+.Switch__pseudo {
+      border-color: $primary-color;
+      background: $primary-color;
+    }
+  }
+}

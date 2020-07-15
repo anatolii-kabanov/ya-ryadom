@@ -8,9 +8,10 @@ import { connect } from 'react-redux';
 import { VkHistoryModel } from '../../store/history/models';
 import { goForward } from '../../store/history/actions';
 import { VIEWS } from '../../utils/constants/view.constants';
+import { TABS } from '../../utils/constants/tab.constants';
 
 interface PropsFromState {
-    activePanel: string;
+    activeTab: string;
 }
 
 interface PropsFromDispatch {
@@ -22,19 +23,21 @@ type AllProps = PropsFromState & PropsFromDispatch;
 
 class EventsTabs extends React.Component<AllProps>  {
     render() {
-        const { activePanel, goForwardView } = this.props;
+        const { activeTab, goForwardView } = this.props;
         return (
             <Tabs>
-                <HorizontalScroll>                    
+                <HorizontalScroll>
                     <TabsItem
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL))}
-                        selected={activePanel === PANELS.EVENTS_NEAR_ME_MAP_PANEL}
+                        className={activeTab === TABS.EVENTS_MAP ? "tab-selected" : ''}
+                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP))}
+                        selected={activeTab === TABS.EVENTS_MAP}
                     >
                         Карта
                     </TabsItem>
                     <TabsItem
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_LIST_PANEL))}
-                        selected={activePanel === PANELS.EVENTS_NEAR_ME_LIST_PANEL}
+                        className={activeTab === TABS.EVENTS_LIST ? "tab-selected" : ''}
+                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_LIST))}
+                        selected={activeTab === TABS.EVENTS_LIST}
                     >
                         Список
                     </TabsItem>
@@ -45,7 +48,7 @@ class EventsTabs extends React.Component<AllProps>  {
 }
 
 const mapStateToProps = ({ history }: AppState) => ({
-    activePanel: history.currentViewPanel.panel,
+    activeTab: history.currentViewPanel.tab,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

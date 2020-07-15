@@ -24,16 +24,27 @@ import {
     saveUserAboutMyselfSuccess,
     saveUserGuideCompletedRequest,
     saveUserGuideCompletedSuccess,
-    saveUserGuideCompletedError
+    saveUserGuideCompletedError,
+    allowNotificationsRequest,
+    allowNotificationsError,
+    allowNotificationsSuccess,
+    disableNotificationsRequest,
+    disableNotificationsError,
+    disableNotificationsSuccess,
+    saveUserIntroThemes,
+    saveUserProfileThemes,
+    saveUserIntroAboutMysel,
+    saveUserProfileAboutMysel
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo, User } from './models';
-import { goForward, reset } from '../history/actions';
+import { goForward, reset, goBack } from '../history/actions';
 import { VkHistoryModel } from '../history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
 import { getVkUserId, getGeoData } from './reducer';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
+import { TABS } from '../../utils/constants/tab.constants';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/auth`;
 
@@ -48,7 +59,7 @@ function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
             var user: User = result;
             yield put(fetchUserInfoSuccess(user));
             if (user.guideCompleted) {
-                yield put(reset(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_MAP_PANEL)));
+                yield put(reset(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP)));
             }
         }
     } catch (error) {
@@ -152,6 +163,26 @@ function* watchSaveUserInfoRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_INFO, handleSaveUserInfoRequest)
 }
 
+function* handleSaveUserIntroThemes(action: ReturnType<typeof saveUserIntroThemes>) {    
+    yield put(saveUserThemesRequest(action.payload));
+    yield take(AuthenticationTypes.SAVE_USER_THEMES_SUCCESS);
+    yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.ABOUT_MYSELF_INTRO_PANEL)));
+}
+
+function* watchSaveUserIntroThemes() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_INTRO_THEMES, handleSaveUserIntroThemes)
+}
+
+function* handleSaveUserProfileThemes(action: ReturnType<typeof saveUserProfileThemes>) {    
+    yield put(saveUserThemesRequest(action.payload));
+    yield take(AuthenticationTypes.SAVE_USER_THEMES_SUCCESS);
+    yield put(goBack());
+}
+
+function* watchSaveUserProfileThemes() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_PROFILE_THEMES, handleSaveUserProfileThemes)
+}
+
 function* handleSaveUserThemesRequest(action: ReturnType<typeof saveUserThemesRequest>) {
     try {
         yield put(showSpinner());
@@ -167,8 +198,7 @@ function* handleSaveUserThemesRequest(action: ReturnType<typeof saveUserThemesRe
         if (result.errors) {
             yield put(saveUserThemesError(result.errors));
         } else {
-            yield put(saveUserThemesSuccess(action.payload));
-            yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.ABOUT_MYSELF_INTRO_PANEL)));
+            yield put(saveUserThemesSuccess(action.payload));            
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -218,6 +248,26 @@ function* watchSaveUserLocationRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_LOCATION, handleSaveUserLocationRequest)
 }
 
+function* handleSaveUserIntroAboutMyself(action: ReturnType<typeof saveUserIntroAboutMysel>) {    
+    yield put(saveUserAboutMyselfRequest(action.payload));
+    yield take(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS);
+    yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.CREATE_EVENT_PANEL)));
+}
+
+function* watchSaveUserIntroAboutMyself() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_INTRO_ABOUT_MYSELF, handleSaveUserIntroAboutMyself)
+}
+
+function* handleSaveUserProfileAboutMyself(action: ReturnType<typeof saveUserProfileAboutMysel>) {    
+    yield put(saveUserAboutMyselfRequest(action.payload));
+    yield take(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS);
+    yield put(goBack());
+}
+
+function* watchSaveUserProfileAboutMyself() {
+    yield takeLatest(AuthenticationTypes.SAVE_USER_PROFILE_ABOUT_MYSELF, handleSaveUserProfileAboutMyself)
+}
+
 function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAboutMyselfRequest>) {
     try {
         yield put(showSpinner());
@@ -234,7 +284,6 @@ function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAbo
             yield put(saveUserAboutMyselfError(result.errors));
         } else {
             yield put(saveUserAboutMyselfSuccess(action.payload));
-            yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.CREATE_EVENT_PANEL)));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -282,6 +331,58 @@ function* watchSaveUserGuideCompletedRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED, handleSaveUserGuideCompletedRequest)
 }
 
+function* handleAllowNotificationsRequest(action: ReturnType<typeof allowNotificationsRequest>) {
+    try {
+        yield put(showSpinner());
+
+        const result = yield vkBridge.send("VKWebAppAllowNotifications", {});
+
+        if (result.error_type) {
+            yield put(allowNotificationsError(result.errors));
+        } else {
+            yield put(allowNotificationsSuccess(result));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(allowNotificationsError(error.stack));
+        } else {
+            yield put(allowNotificationsError('An unknown error occured.'));
+        }
+    } finally {
+        yield put(hideSpinner());
+    }
+}
+
+function* watchAllowNotificationsRequest() {
+    yield takeLatest(AuthenticationTypes.ALLOW_NOTIFICATIONS, handleAllowNotificationsRequest)
+}
+
+function* handleDisableNotificationsRequest(action: ReturnType<typeof disableNotificationsRequest>) {
+    try {
+        yield put(showSpinner());
+
+        const result = yield vkBridge.send("VKWebAppDenyNotifications", {});
+
+        if (result.error_type) {
+            yield put(disableNotificationsError(result.errors));
+        } else {
+            yield put(disableNotificationsSuccess(result));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(disableNotificationsError(error.stack));
+        } else {
+            yield put(disableNotificationsError('An unknown error occured.'));
+        }
+    } finally {
+        yield put(hideSpinner());
+    }
+}
+
+function* watchDisableNotificationsRequest() {
+    yield takeLatest(AuthenticationTypes.DISABLE_NOTIFICATIONS, handleDisableNotificationsRequest)
+}
+
 function* authenticationSagas() {
     yield all([
         fork(watchFetchUserInfoRequest),
@@ -292,6 +393,12 @@ function* authenticationSagas() {
         fork(watchSaveUserLocationRequest),
         fork(watchSaveUserAboutMyselfRequest),
         fork(watchSaveUserGuideCompletedRequest),
+        fork(watchAllowNotificationsRequest),
+        fork(watchDisableNotificationsRequest),
+        fork(watchSaveUserIntroThemes),
+        fork(watchSaveUserProfileThemes),
+        fork(watchSaveUserIntroAboutMyself),
+        fork(watchSaveUserProfileAboutMyself)
     ])
 }
 

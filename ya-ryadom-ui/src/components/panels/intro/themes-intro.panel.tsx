@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import ThemesForm from '../../forms/themes.form';
+import { saveUserIntroThemes } from '../../../store/authentication/actions';
 
 interface PropsFromState {
     id: string,
@@ -16,7 +17,7 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-   
+    save: typeof saveUserIntroThemes
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -29,22 +30,22 @@ class ThemesIntroPanel extends React.Component<AllProps>  {
     }
 
     componentDidMount() {
-        
+
     }
 
     onIntroCompleted() {
-       
+
     }
 
     render() {
-        const { id } = this.props;
+        const { id, save } = this.props;
         return (
             <Panel id={id} className="profile-intro-panel">
                 <PanelHeader>
                     Я рядом
                 </PanelHeader>
                 <Group className="profile-group">
-                    <ThemesForm></ThemesForm>
+                    <ThemesForm onSave={save}></ThemesForm>
                 </Group>
             </Panel>
         )
@@ -52,11 +53,11 @@ class ThemesIntroPanel extends React.Component<AllProps>  {
 }
 
 const mapStateToProps = ({ authentication }: AppState) => ({
-    
+
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-
+    save: saveUserIntroThemes
 }
 
 export default connect(
