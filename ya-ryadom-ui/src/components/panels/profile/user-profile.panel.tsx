@@ -42,15 +42,33 @@ interface PropsFromDispatch {
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class ProfilePanel extends React.Component<AllProps>{
-    state = {
-        currentProfile: {
-            lastLocation: {longitude: 0, latitude: 0},
-            selectedThemes: [],
-        },
-        currentUserThemes: [],
-        currentProfileThemes: [],
-        themesInCommon: []
+interface State {
+    currentProfile: {
+        [key: string]: any,
+        lastLocation: {longitude: 0, latitude: 0},
+        selectedThemes: [],
+    },
+    currentUserThemes: any[],
+    currentProfileThemes: any[],
+    themesInCommon: any[]
+}
+
+class ProfilePanel extends React.Component<AllProps, State>{
+
+    /**
+     *
+     */
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentProfile: {
+                lastLocation: {longitude: 0, latitude: 0},
+                selectedThemes: [],
+            },
+            currentUserThemes: [],
+            currentProfileThemes: [],
+            themesInCommon: []
+        }
     }
 
     componentDidMount() {
@@ -85,7 +103,7 @@ class ProfilePanel extends React.Component<AllProps>{
 
         if (currentProfileThemes) {
             return currentProfileThemes
-                .map((item, key) => {
+                .map((item: any, key) => {
                     if (currentUserThemes.includes(item)) {
                         return <PillInput key={key} id={item.id} selected={true} onClick={() => ''} text={item.name}></PillInput>
                     }

@@ -109,7 +109,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
         })
     }, 100);
 
-    onMarkerClick(event: object) {
+    onMarkerClick(event: any) {
         const { setCurrentVkId } = this.props;
         setCurrentVkId(event.vkUserOwnerId);
         this.setState({
