@@ -20,6 +20,7 @@ import { fetchUserInfoRequest } from "../../../store/authentication/actions";
 
 import './user-events.panel.scss';
 import xhr from "xhr";
+import { ALL_THEMES } from "../../../utils/constants/theme.constants";
 
 interface PropsFromState {
     id: string;
@@ -41,6 +42,7 @@ const TABS = {
     "СХОДИЛ": "Сходил"
 }
 
+const TO_LOCAL_DATE_OPTIONS = { weekday: 'short', month: 'long', day: 'numeric' };
 
 // user vk id
 const CREATED_EVENT = {
@@ -69,34 +71,49 @@ const CREATED_EVENT = {
 class UserEventsPanel extends React.Component<AllProps> {
     state = {
         activeTab: TABS.СОЗДАЛ,
-        profileEvents: {}
+        createdEvents: [],
+        participatedEvents: {}
     }
 
     componentWillMount() {
-        // const { vkUserId } = this.props
-        // xhr({
-        //         uri: `${process.env.REACT_APP_API_ENDPOINT}/auth/user-info/${vkUserId}`,
-        //         sync: true
-        //     }, (err, resp, body) => {
-        //         const profileEvents = JSON.parse(body);
-        //         this.setState({
-        //             profileEvents
-        //         })
-        //     }
-        // )
+        const { vkUserId } = this.props
+        let createdEvents, participatedEvents;
+
+        xhr({
+                uri: `${process.env.REACT_APP_API_ENDPOINT}/my-events/${vkUserId}`,
+                sync: true
+            }, (err, resp, body) => {
+                createdEvents = JSON.parse(body);
+            }
+        )
+
+        xhr({
+                uri: `${process.env.REACT_APP_API_ENDPOINT}/my-events/participation/${vkUserId}`,
+                sync: true
+            }, (err, resp, body) => {
+                participatedEvents = JSON.parse(body);
+            }
+        )
+
+        this.setState({
+            createdEvents,
+            participatedEvents
+        })
     }
 
     renderEvents(activeTab) {
+        const { createdEvents, participatedEvents } = this.state;
+
         let eventsToRender;
         if (activeTab === TABS.СОЗДАЛ) {
-            eventsToRender = CREATED_EVENT.created;
+            eventsToRender = createdEvents;
         } else {
-            eventsToRender = CREATED_EVENT.participated
+            eventsToRender = participatedEvents;
         }
 
         return eventsToRender.map((event) =>
             <Group>
-                <Header mode="secondary">{event.theme}</Header>
+                <Header mode="secondary">{ALL_THEMES.filter(theme => theme.id === event.themeType)[0].name}</Header>
                 <RichCell
                     disabled
                     caption={<span className="rc-caption">{event.description}</span>}
@@ -104,11 +121,14 @@ class UserEventsPanel extends React.Component<AllProps> {
                     bottom={
                         <>
                             <p className="rc-bottom">
-                                {event.address} <span className="rc-bottom-span">{event.date}</span></p>
-
+                                Адрес
+                                <span className="rc-bottom-span">
+                                    {new Date(event.date).toLocaleDateString('ru-RU', TO_LOCAL_DATE_OPTIONS)} в {event.time}
+                                </span>
+                            </p>
                             <UsersStack
-                                photos={event.userAvatars}
-                            >{event.userAvatars.length} участников</UsersStack>
+                                photos={event.participants.map(({vkUserAvatarUrl}) => vkUserAvatarUrl)}
+                            >{event.participants.length} участников</UsersStack>
                         </>
                     }
                     actions={
@@ -120,7 +140,7 @@ class UserEventsPanel extends React.Component<AllProps> {
                         </React.Fragment>
                     }
                 >
-                    {event.name}
+                    {event.title}
                 </RichCell>
             </Group>
         )
