@@ -5,15 +5,7 @@ import {
     Group,
     Tabs,
     TabsItem,
-    Div,
-    CardGrid,
-    Card,
-    Button,
-    HorizontalScroll,
-    Header,
-    UsersStack,
-    Separator,
-    RichCell, Avatar
+    HorizontalScroll
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
@@ -22,11 +14,9 @@ import { Application } from '../../../store/applications/models';
 import { fetchMineApplicationsRequest, revokeApplicationRequest } from '../../../store/applications/actions';
 import { TABS } from '../../../utils/constants/tab.constants';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
-import { ALL_THEMES } from '../../../utils/constants/theme.constants';
-import { ApplicationCreated } from './application.created';
 import MineApplicationsTab from './mine-applications.tab';
 import { ApplicationVisited } from './application.visited';
-import { MODALS } from "../../../utils/constants/modal.constants";
+import ApplicationsToMyEventsTab from './applications-to-my-events.tab';
 
 interface PropsFromState {
     id: string;
@@ -91,7 +81,7 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
         const status: ApplicationStatus = TabStatus[activeTab];
 
         return <Group>
-            {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationCreated />}
+            {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationsToMyEventsTab />}
             {activeTab == TABS.WANT_VISIT_APPLICATIONS && <MineApplicationsTab />}
             {activeTab == TABS.VISITED_APPLICATIONS && <ApplicationVisited openCreationReview={openCreationReview} />}
         </Group>
