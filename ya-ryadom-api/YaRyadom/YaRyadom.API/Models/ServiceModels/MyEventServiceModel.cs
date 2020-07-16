@@ -1,6 +1,7 @@
 ﻿using NetTopologySuite.Geometries;
 using System;
 using YaRyadom.API.Models.Base;
+using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models.ServiceModels
 {
@@ -30,5 +31,7 @@ namespace YaRyadom.API.Models.ServiceModels
 		public ApplicantModel[] Participants { get; set; }
 
 		public bool Ended { get; set; }
+
+		public ThemeTypeModel ThemeType { get; set; }
 	}
 }

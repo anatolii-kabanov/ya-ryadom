@@ -35,6 +35,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.VkUserAvatarUrl))
 				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.UserFullName))
 				.ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.Distance))
+				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.ThemeType))
 				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time != null ? src.Time.Value.ToString(@"hh\:mm") : string.Empty))
 				.ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location.Y))
 				.ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location.X));
@@ -47,6 +48,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Ended, opt => opt.MapFrom(src => src.Date == null || src.Date < DateTime.UtcNow.Date))// Should be replaced with DB property
 				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time))
 				.ForMember(dest => dest.MaxQuantity, opt => opt.MapFrom(src => src.MaxQuantity))
+				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.YaRyadomEventThemes.Select(m => (ThemeTypeModel)m.Type).FirstOrDefault()))
 				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => src.Revoked))
 				.ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
 				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.YaRyadomUserApplications.Where(m => m.Status == ApplicationStatus.Confirmed)));
@@ -65,6 +67,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.MaxQuantiyty, opt => opt.MapFrom(src => src.MaxQuantity))
 				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => src.Revoked))
 				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Participants))
+				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.ThemeType))
 				.ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location.Y))
 				.ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location.X));
 

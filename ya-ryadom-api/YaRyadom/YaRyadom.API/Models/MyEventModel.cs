@@ -1,4 +1,5 @@
 ﻿using YaRyadom.API.Models.Base;
+using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models
 {
@@ -18,5 +19,7 @@ namespace YaRyadom.API.Models
 		public ApplicantModel[] Participants { get; set; }
 
 		public bool Ended { get; set; }
+
+		public ThemeTypeModel ThemeType { get; set; }
 	}
 }
