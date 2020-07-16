@@ -7,10 +7,11 @@ import {
     saveMyEventError,
     saveMyEventSuccess,
     saveMyEventIntroRequest,
+    saveMyEventGeneralRequest,
 } from './actions'
 import { callApi } from '../../../utils/api';
 import { getVkUserId } from '../../authentication/reducer';
-import { goForward } from '../../history/actions';
+import { goForward, goBack } from '../../history/actions';
 import { VkHistoryModel } from '../../history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
@@ -83,11 +84,22 @@ function* watchSaveEventIntroRequest() {
     yield takeLatest(MyEventsTypes.SAVE_MY_EVENT_INTRO, handleSaveEventIntroRequest)
 }
 
+function* handleSaveEventGeneralRequest(action: ReturnType<typeof saveMyEventGeneralRequest>) {
+    yield put(saveMyEventRequest(action.payload));
+    yield take(MyEventsTypes.SAVE_MY_EVENT_SUCCESS);
+    yield put(goBack());
+}
+
+function* watchSaveEventGeneralRequest() {
+    yield takeLatest(MyEventsTypes.SAVE_MY_EVENT_GENERAL, handleSaveEventGeneralRequest)
+}
+
 function* myEventsSagas() {
     yield all([
         fork(watchMyEventsFetchRequest),
         fork(watchSaveEventRequest),
         fork(watchSaveEventIntroRequest),
+        fork(watchSaveEventGeneralRequest)
     ])
 }
 

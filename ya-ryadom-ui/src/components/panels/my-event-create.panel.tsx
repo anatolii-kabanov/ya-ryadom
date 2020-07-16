@@ -4,14 +4,14 @@ import EventForm from '../forms/event.form';
 import { connect } from 'react-redux';
 import { AppState } from '../../store/app-state';
 import MainHeaderPanel from "./headers/main.header";
-import { saveMyEventRequest } from '../../store/events/my-events/actions';
+import { saveMyEventGeneralRequest } from '../../store/events/my-events/actions';
 
 interface PropsFromState {
     id: string;
 }
 
 interface PropsFromDispatch {
-    saveEvent: typeof saveMyEventRequest
+    saveEvent: typeof saveMyEventGeneralRequest
 }
 
 
@@ -31,12 +31,12 @@ class MyEventCreatePanel extends React.Component<AllProps>  {
     }
 }
 
-const mapStateToProps = ({ authentication }: AppState) => ({
+const mapStateToProps = ({ }: AppState) => ({
 
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    saveEvent: saveMyEventRequest
+    saveEvent: saveMyEventGeneralRequest
 }
 
 export default connect(

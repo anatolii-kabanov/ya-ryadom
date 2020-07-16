@@ -9,6 +9,7 @@ import { AppState } from '../../../store/app-state';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { saveUserProfileAboutMysel } from '../../../store/authentication/actions';
 import AboutMyselfForm from '../../forms/about-myself.form';
+import MainHeaderPanel from "../headers/main.header";
 
 interface PropsFromState {
     id: string,
@@ -40,8 +41,7 @@ class MyProfileEditAboutMyselfPanel extends React.Component<AllProps>  {
         const { id, save } = this.props;
         return (
             <Panel id={id}>
-                <PanelHeader>
-                </PanelHeader>
+                <MainHeaderPanel />
                 <AboutMyselfForm onSave={save} btnText={'Сохранить'}></AboutMyselfForm>
             </Panel>
         )

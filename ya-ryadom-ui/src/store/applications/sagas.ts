@@ -16,7 +16,7 @@ function* handleFetchEventApplicantsRequest(action: ReturnType<typeof fetchEvent
         if (result.errors) {
             yield put(fetchEventApplicantsError(result.errors));
         } else {
-            yield put(fetchEventApplicantsSuccess(result));
+            yield put(fetchEventApplicantsSuccess({ eventId: action.payload, applications: result }));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {

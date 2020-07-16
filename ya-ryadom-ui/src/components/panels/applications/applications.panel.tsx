@@ -5,11 +5,11 @@ import {
     Group,
     Tabs,
     TabsItem,
-    HorizontalScroll
+    HorizontalScroll,
+    PanelHeader
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
-import MainHeaderPanel from "./../headers/main.header";
 import { Application } from '../../../store/applications/models';
 import { fetchMineApplicationsRequest, revokeApplicationRequest } from '../../../store/applications/actions';
 import { TABS } from '../../../utils/constants/tab.constants';
@@ -91,7 +91,7 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
         const { id } = this.props;
         return (
             <Panel id={id} className="applications-panel">
-                <MainHeaderPanel text='Заявки' />
+                <PanelHeader>Заявки</PanelHeader>
                 <Group>
                     <Tabs>
                         <HorizontalScroll>

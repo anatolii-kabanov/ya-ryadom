@@ -8,5 +8,6 @@ export const fetchMyEventsListError = (payload: any) => action(MyEventsTypes.FET
 
 export const saveMyEventRequest = (payload: MyEventCreate) => action(MyEventsTypes.SAVE_MY_EVENT, payload);
 export const saveMyEventIntroRequest = (payload: MyEventCreate) => action(MyEventsTypes.SAVE_MY_EVENT_INTRO, payload)
+export const saveMyEventGeneralRequest = (payload: MyEventCreate) => action(MyEventsTypes.SAVE_MY_EVENT_GENERAL, payload)
 export const saveMyEventSuccess = (payload: any) => action(MyEventsTypes.SAVE_MY_EVENT_SUCCESS, payload);
 export const saveMyEventError = (payload: any) => action(MyEventsTypes.SAVE_MY_EVENT_ERROR, payload);

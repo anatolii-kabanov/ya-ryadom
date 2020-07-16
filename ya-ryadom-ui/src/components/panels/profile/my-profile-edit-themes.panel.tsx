@@ -9,6 +9,7 @@ import { AppState } from '../../../store/app-state';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import ThemesForm from '../../forms/themes.form';
 import { saveUserProfileThemes } from '../../../store/authentication/actions';
+import MainHeaderPanel from "../headers/main.header";
 
 interface PropsFromState {
     id: string,
@@ -40,8 +41,7 @@ class MyProfileEditThemesPanel extends React.Component<AllProps>  {
         const { id, save } = this.props;
         return (
             <Panel id={id} className="profile-themes-panel">
-                <PanelHeader>
-                </PanelHeader>
+                <MainHeaderPanel />
                 <Group className="profile-group">
                     <ThemesForm onSave={save} btnText={'Сохранить'}></ThemesForm>
                 </Group>

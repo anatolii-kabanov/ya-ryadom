@@ -6,7 +6,8 @@ import {
     UsersStack,
     RichCell,
     Avatar,
-    Div
+    Div,
+    Spinner
 } from '@vkontakte/vkui';
 
 import Icon16MoreHorizontal from '@vkontakte/icons/dist/16/more_horizontal';
@@ -17,19 +18,23 @@ import { fetchMyEventsListRequest } from '../../../store/events/my-events/action
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { dateOptions } from '../../../utils/constants/event-date-options.constant';
+import { EventsApplications } from '../../../store/applications/models';
+import { fetchEventApplicantsRequest } from '../../../store/applications/actions';
 
 interface PropsFromState {
-    myEvents: MyEvent[]
+    myEvents: MyEvent[],
+    eventsApplications: EventsApplications
 }
 
 interface PropsFromDispatch {
-    fetchMyEvents: typeof fetchMyEventsListRequest
+    fetchMyEvents: typeof fetchMyEventsListRequest,
+    fetchEventApplicants: typeof fetchEventApplicantsRequest
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
 interface State {
-    seeUsers: boolean;
+    [key: number]: boolean;
 }
 
 export class ApplicationsToMyEventsTab extends React.Component<AllProps, State>  {
@@ -37,8 +42,10 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
     constructor(props) {
         super(props);
         this.state = {
-            seeUsers: false,
+
         }
+
+        this.showUsers = this.showUsers.bind(this);
     }
 
     componentDidMount() {
@@ -46,15 +53,41 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
         fetchMyEvents();
     }
 
-    showUsers() {
-        this.setState({
-            seeUsers: true
-        });
+    showUsers(eventId: number) {
+        const { eventsApplications, fetchEventApplicants } = this.props;
+        const applications = eventsApplications[eventId];
+        if (!applications || applications.length === 0) {
+            fetchEventApplicants(eventId);
+        }
+        this.setState({ [eventId]: true });
     }
 
-    private renderApplications() {
-        const { seeUsers } = this.state;
-        const { myEvents } = this.props;
+    private renderApplications(id: number) {
+        const { eventsApplications } = this.props;
+        const applications = eventsApplications[id];
+        if (applications) {
+            return applications
+                .map((item, key) => {
+                    return <RichCell
+                        key={key}
+                        disabled
+                        before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
+                        caption={`${new Date(item.sentDate).toLocaleDateString('ru-RU', { month: 'long', day: 'numeric', hour12: false })}`}
+                        actions={
+                            <span className="application-btns">
+                                <Button className="btn-primary">Принять</Button>
+                                <Button className="btn-secondary">Отклонить</Button>
+                            </span>
+                        }
+                    >
+                        {item.userFullName}
+                    </RichCell>
+                });
+        }
+    }
+
+    private renderMyEvents() {
+        const { myEvents, eventsApplications } = this.props;
         const showUsers = this.showUsers;
         if (myEvents) {
             return myEvents
@@ -77,22 +110,14 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
                                 photos={photos}
                             >Хотят пойти с вами {newApplicants > 0 ? '+' : ''}{newApplicants} человек</UsersStack>
 
-                            {!seeUsers && newApplicants > 0 && <Button className="btn-primary show-applicants-btn" onClick={showUsers.bind(this)}>Просмотреть</Button>}
+                            {!this.state[item.id] && newApplicants > 0 && <Button className="btn-primary show-applicants-btn" onClick={() => showUsers(item.id)}>Просмотреть</Button>}
 
-                            {seeUsers && <div className="users-list">
-                                <RichCell
-                                    disabled
-                                    before={<Avatar size={48} src="https://sun9-26.userapi.com/c846321/v846321375/12a023/ke88l8pO-UY.jpg?ava=1" />}
-                                    caption="Сегодня 18:00"
-                                    actions={
-                                        <span className="application-btns">
-                                            <Button className="btn-primary">Принять</Button>
-                                            <Button className="btn-secondary">Отклонить</Button>
-                                        </span>
-                                    }
-                                >
-                                    Кирилл Ижока
-                                </RichCell>
+                            {this.state[item.id] && <div className="users-list">
+                                {
+                                    !eventsApplications[item.id]
+                                        ? <Spinner size="small"></Spinner>
+                                        : this.renderApplications(item.id)
+                                }
                             </div>}
 
                         </Div>
@@ -104,17 +129,19 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
 
     render() {
         return (
-            this.renderApplications()
+            this.renderMyEvents()
         )
     }
 }
 
-const mapStateToProps = ({ events }: AppState) => ({
-    myEvents: events.myEvents.eventsList
+const mapStateToProps = ({ events, applications }: AppState) => ({
+    myEvents: events.myEvents.eventsList,
+    eventsApplications: applications.eventsApplicants
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    fetchMyEvents: fetchMyEventsListRequest
+    fetchMyEvents: fetchMyEventsListRequest,
+    fetchEventApplicants: fetchEventApplicantsRequest
 }
 
 export default connect(

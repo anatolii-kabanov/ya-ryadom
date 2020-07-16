@@ -9,11 +9,10 @@ import {
     Header,
     Caption,
     Button,
+    PanelHeader,
 } from "@vkontakte/vkui";
 import { connect } from 'react-redux';
 import { AppState } from "../../../store/app-state";
-
-import MainHeaderPanel from "../headers/main.header";
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { goForward } from "../../../store/history/actions";
 import { User } from "../../../store/authentication/models";
@@ -56,7 +55,7 @@ class MyProfilePanel extends React.Component<AllProps>{
         const { id, vkUserInfo, goForwardView, currentUser } = this.props;
         return (
             <Panel className="my-profile" id={id}>
-                <MainHeaderPanel text='Мой профиль'></MainHeaderPanel>
+                <PanelHeader>Мой профиль</PanelHeader>
                 <Group separator="hide">
                     <RichCell
                         disabled
