@@ -8,6 +8,7 @@ import xhr from "xhr";
 
 import './reviews.panel.scss';
 import { AppState } from "../../../store/app-state";
+import { ALL_THEMES } from "../../../utils/constants/theme.constants";
 
 interface PropsFromState {
     id: string;
@@ -17,18 +18,6 @@ interface PropsFromState {
 interface PropsFromDispatch {
 
 }
-
-// user vk id
-const REVIEWS = [
-    {avatar: 'https://sun9-17.userapi.com/c855024/v855024925/4aace/v29PybHCuc0.jpg?ava=1', name: 'Aleks',
-        surname: 'Zakharov', theme: 'Кино', review: 'очень круто мне понравилось но неочень но всё же круто какой длинный отзыв ого', rate: 5},
-    {avatar: 'https://sun1-29.userapi.com/c836333/v836333001/31193/dNxZpRF-z_M.jpg?ava=1', name: 'Pavel',
-        surname: 'Durov', theme: 'Пиво', review: 'очень круто мне понравилось но неочень но всё же круто какой длинный отзыв ого', rate: 4},
-    {avatar: 'https://sun9-17.userapi.com/c855024/v855024925/4aace/v29PybHCuc0.jpg?ava=1', name: 'Aleks',
-        surname: 'Zakharov', theme: 'Встреча', review: 'очень круто мне понравилось но неочень но всё же круто какой длинный отзыв ого', rate: 3},
-    {avatar: 'https://sun1-29.userapi.com/c836333/v836333001/31193/dNxZpRF-z_M.jpg?ava=1', name: 'Pavel',
-        surname: 'Durov', theme: 'Лавочка', review: 'очень круто мне понравилось но неочень но всё же круто какой длинный отзыв ого', rate: 2},
-]
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
@@ -68,25 +57,26 @@ class ReviewsPanel extends React.Component<AllProps> {
 
     render() {
         const { id } = this.props;
+        const { profileReviews } = this.state;
 
         return (
             <Panel id={id}>
                 <MainHeaderPanel text="Отзывы"></MainHeaderPanel>
                 {
-                    REVIEWS.map((review) =>
-                        <Group>
+                    profileReviews.map((review) =>
+                        <Group id={review.id}>
                             <RichCell
                                 disabled
-                                before={<Avatar size={56} src={review.avatar} className="rc-avatar"/>}
+                                before={<Avatar size={56} src={review.vkUserAvatarUrl} className="rc-avatar"/>}
                                 caption={
                                     <>
-                                        <p className="rc-reviews-caption">{review.name} {review.surname}</p>
-                                        <div className="rc-reviews-bottom">{review.review}</div>
-                                        {this.reviewStars(review.rate)}
+                                        <p className="rc-reviews-caption">{review.userFullName}</p>
+                                        <div className="rc-reviews-bottom">{review.text}</div>
+                                        {this.reviewStars(review.rating)}
                                     </>
                                 }
                             >
-                                <span className="rc-reviews-content">{review.theme}</span>
+                                <span className="rc-reviews-content">{ALL_THEMES.filter(theme => theme.id === review.themeType)[0].name}</span>
                             </RichCell>
                         </Group>
                     )
