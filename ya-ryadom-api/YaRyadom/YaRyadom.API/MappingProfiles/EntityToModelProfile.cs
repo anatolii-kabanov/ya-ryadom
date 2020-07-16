@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System;
 using System.Linq;
 using YaRyadom.API.Models;
 using YaRyadom.API.Models.Enums;
@@ -43,6 +44,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
 				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
 				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
+				.ForMember(dest => dest.Ended, opt => opt.MapFrom(src => src.Date == null || src.Date < DateTime.UtcNow.Date))// Should be replaced with DB property
 				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time))
 				.ForMember(dest => dest.MaxQuantity, opt => opt.MapFrom(src => src.MaxQuantity))
 				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => src.Revoked))

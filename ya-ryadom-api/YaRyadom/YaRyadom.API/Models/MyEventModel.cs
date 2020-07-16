@@ -16,5 +16,7 @@ namespace YaRyadom.API.Models
 		public string Time { get; set; }
 
 		public ApplicantModel[] Participants { get; set; }
+
+		public bool Ended { get; set; }
 	}
 }

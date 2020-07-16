@@ -28,5 +28,7 @@ namespace YaRyadom.API.Models.ServiceModels
 		public bool Revoked { get; set; }
 
 		public ApplicantModel[] Participants { get; set; }
+
+		public bool Ended { get; set; }
 	}
 }
