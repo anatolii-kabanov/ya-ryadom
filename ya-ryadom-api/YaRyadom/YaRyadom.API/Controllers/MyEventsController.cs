@@ -24,6 +24,16 @@ namespace YaRyadom.API.Controllers
 		}
 
 		[AllowAnonymous]
+		[HttpGet("participation/{vkUserId}")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> GetAllPaticipationEvents(long vkUserId, CancellationToken cancellationToken = default)
+		{
+			var result = await _myEventsService.GetAllPaticipationEvents(vkUserId, cancellationToken).ConfigureAwait(false);
+			return Ok(result);
+		}
+
+		[AllowAnonymous]
 		[HttpGet("{vkUserId}")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]

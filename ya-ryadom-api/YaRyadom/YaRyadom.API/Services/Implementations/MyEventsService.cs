@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YaRyadom.API.Models;
-using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Models.ServiceModels;
 using YaRyadom.API.Services.Interfaces;
 using YaRyadom.Domain.DbContexts;
@@ -74,7 +73,23 @@ namespace YaRyadom.API.Services.Implementations
 			return resultEvents;
 		}
 
+		public async Task<MyEventModel[]> GetAllPaticipationEvents(long vkId, CancellationToken cancellationToken = default)
+		{
+			var events = await _mapper
+			  .ProjectTo<MyEventServiceModel>(
+				  TableNoTracking
+				  .Where(m =>
+						m.YaRyadomUserApplications.Any(mm => mm.YaRyadomUserRequested.VkId == vkId && mm.Status == ApplicationStatus.Confirmed)
+					)
+			  )
+				.ToArrayAsync(cancellationToken)
+				.ConfigureAwait(false);
 
+			var resultEvents = events
+				.Select(_mapper.Map<MyEventModel>)
+				.ToArray();
 
+			return resultEvents;
+		}
 	}
 }
