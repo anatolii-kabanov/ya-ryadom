@@ -23,8 +23,12 @@ namespace YaRyadom.API.Models.ServiceModels
 
 		public string Description { get; set; }
 
-		public int MaxQuantiyty { get; set; }
+		public int MaxQuantity { get; set; }
 
 		public bool Revoked { get; set; }
+
+		public ApplicantModel[] Participants { get; set; }
+
+		public bool Ended { get; set; }
 	}
 }

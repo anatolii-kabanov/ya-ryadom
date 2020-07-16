@@ -12,5 +12,11 @@ namespace YaRyadom.API.Models
 		public int MaxQuantiyty { get; set; }
 
 		public bool Revoked { get; set; }
+
+		public string Time { get; set; }
+
+		public ApplicantModel[] Participants { get; set; }
+
+		public bool Ended { get; set; }
 	}
 }

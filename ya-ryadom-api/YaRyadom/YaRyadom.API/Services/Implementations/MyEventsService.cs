@@ -51,27 +51,19 @@ namespace YaRyadom.API.Services.Implementations
 
 		public async Task<bool> RevokeAsync(int eventId, CancellationToken cancellationToken = default)
 		{
-			var yaVDeleEvent = await Entities.FirstOrDefaultAsync(m => m.Id == eventId, cancellationToken);
+			var yaRyadomEvent = await Entities.FirstOrDefaultAsync(m => m.Id == eventId, cancellationToken);
 
-			yaVDeleEvent.Revoked = true;
+			yaRyadomEvent.Revoked = true;
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
 		public async Task<MyEventModel[]> GetAllMyEvents(long vkId, CancellationToken cancellationToken = default)
 		{
-			var events = await TableNoTracking
-				.Where(m => m.YaRyadomUserOwner.VkId == vkId)
-				.Select(m => new MyEventServiceModel
-				{
-					Id = m.Id,
-					Title = m.Title,
-					Description = m.Description,
-					Date = m.Date,
-					MaxQuantiyty = m.MaxQuantity,
-					Revoked = m.Revoked,
-					Location = m.Location,
-				})
+			var events = await _mapper
+			  .ProjectTo<MyEventServiceModel>(
+				  TableNoTracking.Where(m => m.YaRyadomUserOwner.VkId == vkId)
+			  )
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
 
