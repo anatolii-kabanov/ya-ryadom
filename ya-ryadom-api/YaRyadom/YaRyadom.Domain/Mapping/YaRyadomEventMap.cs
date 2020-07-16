@@ -24,7 +24,7 @@ namespace YaRyadom.Domain.Mapping
 			builder.Property(m => m.SearchVector).HasColumnName("search_vector");
 			builder.HasIndex(p => p.SearchVector).HasMethod("GIN");
 
-			builder.HasOne(m => m.YaRyadomUserOwner).WithMany(a => a.OwnYaVDeleEvents).HasForeignKey(s => s.YaRyadomUserOwnerId);
+			builder.HasOne(m => m.YaRyadomUserOwner).WithMany(a => a.OwnYaRyadomEvents).HasForeignKey(s => s.YaRyadomUserOwnerId);
 		}
 	}
 }

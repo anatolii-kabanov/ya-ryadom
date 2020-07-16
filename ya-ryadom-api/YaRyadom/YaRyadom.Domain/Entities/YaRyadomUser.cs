@@ -8,7 +8,7 @@ namespace YaRyadom.Domain.Entities
 	{
 		#region Navigation fields
 
-		private ICollection<YaRyadomEvent> _ownYaVDeleEvents;
+		private ICollection<YaRyadomEvent> _ownYaRyadomEvents;
 
 		private ICollection<YaRyadomUserTheme> _yaRyadomUserThemes;
 
@@ -36,10 +36,10 @@ namespace YaRyadom.Domain.Entities
 
 		#region Navigation properties
 
-		public ICollection<YaRyadomEvent> OwnYaVDeleEvents
+		public ICollection<YaRyadomEvent> OwnYaRyadomEvents
 		{
-			get => _ownYaVDeleEvents ?? new List<YaRyadomEvent>();
-			set => _ownYaVDeleEvents = value;
+			get => _ownYaRyadomEvents ?? new List<YaRyadomEvent>();
+			set => _ownYaRyadomEvents = value;
 		}
 
 		public ICollection<YaRyadomUserTheme> YaRyadomUserThemes

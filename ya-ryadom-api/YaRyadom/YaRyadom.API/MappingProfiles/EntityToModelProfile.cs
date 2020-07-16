@@ -4,6 +4,7 @@ using YaRyadom.API.Models;
 using YaRyadom.API.Models.Enums;
 using YaRyadom.API.Models.ServiceModels;
 using YaRyadom.Domain.Entities;
+using YaRyadom.Domain.Entities.Enums;
 
 namespace YaRyadom.API.MappingProfiles
 {
@@ -36,14 +37,32 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time != null ? src.Time.Value.ToString(@"hh\:mm") : string.Empty))
 				.ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location.Y))
 				.ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location.X));
+
+			CreateMap<YaRyadomEvent, MyEventServiceModel>()
+				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
+				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time))
+				.ForMember(dest => dest.MaxQuantity, opt => opt.MapFrom(src => src.MaxQuantity))
+				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => src.Revoked))
+				.ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
+				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.YaRyadomUserApplications.Where(m => m.Status == ApplicationStatus.Confirmed)));
+
+			CreateMap<YaRyadomUserApplication, ApplicantModel>()
+				.ForMember(dest => dest.VkUserId, opt => opt.MapFrom(src => src.YaRyadomUserRequested.VkId))
+				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.YaRyadomUserRequested.VkUserAvatarUrl));
+
 			CreateMap<MyEventServiceModel, MyEventModel>()
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
 				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
 				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
+				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time != null ? src.Time.Value.ToString(@"hh\:mm") : string.Empty))
 				.ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.Distance))
-				.ForMember(dest => dest.MaxQuantiyty, opt => opt.MapFrom(src => src.MaxQuantiyty))
+				.ForMember(dest => dest.MaxQuantiyty, opt => opt.MapFrom(src => src.MaxQuantity))
 				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => src.Revoked))
+				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Participants))
 				.ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location.Y))
 				.ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location.X));
 
