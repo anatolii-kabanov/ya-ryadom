@@ -11,6 +11,10 @@ import { UserInfo } from '@vkontakte/vk-bridge';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import { dateOptions } from '../../utils/constants/event-date-options.constant';
+import { goForward } from "./../../store/history/actions";
+import { VkHistoryModel } from '../../store/history/models';
+import { VIEWS } from '../../utils/constants/view.constants';
+import { PANELS } from '../../utils/constants/panel.constants';
 
 interface PropsFromState {
     id: string;
@@ -22,7 +26,8 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     fetchList: typeof fetchListRequest,
-    applyToEvent: typeof applyToEventRequest
+    applyToEvent: typeof applyToEventRequest,
+    goForward: typeof goForward
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -51,7 +56,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
     }
 
     private renderEvents() {
-        const { eventsList } = this.props;
+        const { eventsList, goForward } = this.props;
         if (eventsList) {
             return eventsList
                 .map((item, key) => {
@@ -70,8 +75,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
                                     ? <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
                                     : <Button className="button-primary disabled" disabled={true}>{this.renderApplicationStatus(item.applicationStatus)}</Button>}
                                 <Button className="btn-secondary width-50 text-center"
-                                    href={`https://vk.com/id${item?.vkUserOwnerId}`}
-                                    onClick={() => window.open("https://vk.com/id" + item?.vkUserOwnerId, '_blank')}
+                                    onClick={() => goForward(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
                                 >Профиль</Button>
                             </Div>
                         </Group>
@@ -98,7 +102,8 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
 
 const mapDispatchToProps: PropsFromDispatch = {
     fetchList: fetchListRequest,
-    applyToEvent: applyToEventRequest
+    applyToEvent: applyToEventRequest,
+    goForward: goForward
 }
 
 export default connect(

@@ -8,7 +8,6 @@ import {
     RichCell,
     Avatar,
     Button,
-    InfoRow,
     Header
 } from '@vkontakte/vkui';
 import { AppState } from './../../store/app-state';

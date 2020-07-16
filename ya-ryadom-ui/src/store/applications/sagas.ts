@@ -5,6 +5,7 @@ import { callApi } from '../../utils/api';
 import { ApplicationRequest } from './models';
 import { getVkUserId } from '../authentication/reducer';
 import { setSentStatus } from '../events/events-near-me/actions';
+import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/applicatioins`;
 
@@ -174,6 +175,7 @@ function* watchRejectApplicantRequest() {
 
 function* handleRevokeApplicationRequest(action: ReturnType<typeof revokeApplicationRequest>) {
     try {
+        yield put(showSpinner());
         const result = yield call(callApi, 'post', API_ENDPOINT, '/revoke', action.payload);
 
         if (result.errors) {
@@ -188,7 +190,7 @@ function* handleRevokeApplicationRequest(action: ReturnType<typeof revokeApplica
             yield put(revokeApplicationError('An unknown error occured.'));
         }
     } finally {
-
+        yield put(hideSpinner());
     }
 }
 

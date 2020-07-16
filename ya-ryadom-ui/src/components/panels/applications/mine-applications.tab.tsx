@@ -12,12 +12,14 @@ import { connect } from 'react-redux';
 import { Application } from '../../../store/applications/models';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { dateOptions } from '../../../utils/constants/event-date-options.constant';
+import { revokeApplicationRequest } from '../../../store/applications/actions';
 
 interface PropsFromState {
     applications: Application[];
 }
 
 interface PropsFromDispatch {
+    revoke: typeof revokeApplicationRequest
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -28,7 +30,7 @@ interface State {
 export class MineApplicationsTab extends React.Component<AllProps, State>  {
 
     private renderApplications() {
-        const { applications } = this.props;
+        const { applications, revoke } = this.props;
         if (applications) {
             return applications
                 .map((item, key) => {
@@ -41,7 +43,7 @@ export class MineApplicationsTab extends React.Component<AllProps, State>  {
                             actions={
                                 <span className="application-btns">
                                     <Button className="btn-primary">Написать</Button>
-                                    <Button className="btn-secondary">Отменить</Button>
+                                    <Button className="btn-secondary" onClick={() => revoke(item.id)}>Отменить</Button>
                                 </span>
                             }
                         >
@@ -67,7 +69,7 @@ const mapStateToProps = ({ applications }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-
+    revoke: revokeApplicationRequest
 }
 
 export default connect(
