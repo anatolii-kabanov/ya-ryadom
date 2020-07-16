@@ -16,7 +16,9 @@ namespace YaRyadom.API.Models
 
 		public DateTimeOffset SentDate { get; set; }
 
-		public string EventDate { get; set; }
+		public DateTimeOffset? EventDate { get; set; }
+
+		public string EventTime{ get; set; }
 
 		public ApplicationStatusModel Status { get; set; }
 
