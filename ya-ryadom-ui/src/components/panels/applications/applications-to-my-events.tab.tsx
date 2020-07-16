@@ -53,7 +53,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
         fetchMyEvents();
     }
 
-    showUsers(eventId: number) {
+    showUsers(eventId: number) { // compare ids to request if needed
         const { eventsApplications, fetchEventApplicants } = this.props;
         const applications = eventsApplications[eventId];
         if (!applications || applications.length === 0) {
