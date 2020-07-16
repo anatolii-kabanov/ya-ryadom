@@ -1,8 +1,7 @@
 import React from 'react';
 import Icon28Place from '@vkontakte/icons/dist/28/place';
 import Icon28User from '@vkontakte/icons/dist/28/user_circle_outline';
-import Icon28Catalog from '@vkontakte/icons/dist/28/newsfeed_outline';
-import Icon28Review from '@vkontakte/icons/dist/28/article_outline';
+import Icon28Users from '@vkontakte/icons/dist/28/users_outline';
 import { Epic, TabbarItem, Tabbar } from '@vkontakte/vkui';
 import { PANELS } from '../../utils/constants/panel.constants';
 import { AppState } from '../../store/app-state';
@@ -45,7 +44,7 @@ class MenuEpic extends React.Component<AllProps>  {
                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.APPLICATIONS_VIEW, PANELS.APPLICATIONS_PANEL))}
                         selected={activeView === VIEWS.APPLICATIONS_VIEW}
                         data-story={VIEWS.APPLICATIONS_VIEW}
-                    ><Icon28Catalog className={activeView === VIEWS.APPLICATIONS_VIEW ? 'nav-icon-selected' : 'nav-icon'} /></TabbarItem>
+                    ><Icon28Users className={activeView === VIEWS.APPLICATIONS_VIEW ? 'nav-icon-selected' : 'nav-icon'} /></TabbarItem>
                     <TabbarItem
                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_PROFILE_VIEW, PANELS.MY_PROFILE_PANEL))}
                         selected={activeView === VIEWS.MY_PROFILE_VIEW}
