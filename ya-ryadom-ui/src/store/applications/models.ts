@@ -18,7 +18,8 @@ export interface Application {
     userFullName: string;
     vkUserAvatarUrl: string;
     sentDate: Date;
-    eventDate: string;
+    eventDate: Date;
+    eventTime: string;
     text: string;
     status: ApplicationStatus;
     distance: number;

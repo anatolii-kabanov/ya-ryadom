@@ -10,6 +10,7 @@ import { Position } from '../../store/authentication/models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
+import { dateOptions } from '../../utils/constants/event-date-options.constant';
 
 interface PropsFromState {
     id: string;
@@ -28,8 +29,6 @@ type AllProps = PropsFromState & PropsFromDispatch;
 
 interface State {
 }
-
-const options = { weekday: 'short', month: 'long', day: 'numeric' };
 
 class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
 
@@ -62,7 +61,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
                                 multiline
                                 before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
                                 text={item?.description}
-                                caption={`${new Date(item.date).toLocaleDateString('ru-RU', options)} в ${item.time}`}
+                                caption={`${new Date(item.date).toLocaleDateString('ru-RU', dateOptions)} в ${item.time}`}
                             >
                                 <span>{item?.userFullName} <span className="distance">{item?.distance && (item?.distance / 1000).toFixed(2)} км.</span></span>
                             </RichCell>

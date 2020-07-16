@@ -9,6 +9,7 @@
     width: auto !important;
     background-color: $background-color !important;
     margin-right: 8px !important;
+    margin-left: auto !important;
   }
 
   .btn-secondary {
@@ -16,21 +17,27 @@
     margin-left: 0px !important;
     width: auto !important;
   }
+  .application-btns {
+    display: flex;
+    margin-top: 17px;
+  }
 }
 
 .application-card {
-  box-shadow: unset;
-  border-radius: 0;
-  margin: -20px 12px 0 12px;
-  padding-bottom: 0;
-
-  .Header {
-    padding: 0;
+  margin: 0 12px;
+  .applicants {
+    margin-top: 22px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .show-applicants-btn {
+    margin-top: 15px;
+  }
+  .head {
+    font-weight: 700;
   }
 
   .body {
-    padding: 0 2px;
-
     .title {
       font-weight: bold;
       font-size: 15px;
@@ -60,65 +67,9 @@
         margin-right: 40px;
       }
     }
-
-    .UsersStack {
-      margin-top: 22px;
-      padding-left: 0;
-      padding-right: 0;
-    }
-
-    & > .Button {
-      margin-top: 15px;
-    }
   }
 
   .users-list {
     margin: 25px -12px 0 -12px;
-  }
-
-  // card want visit
-
-  &.want-visit {
-    .RichCell {
-      padding-left: 0;
-      padding-right: 0;
-
-      .RichCell__children {
-        .head {
-          font-weight: bold;
-          font-size: 15px;
-          line-height: 20px;
-          letter-spacing: -0.24px;
-          color: #000;
-
-          .distance {
-            font-size: 13px;
-            line-height: 16px;
-            letter-spacing: -0.078px;
-            color: #818c99;
-            margin-left: 11px;
-          }
-        }
-
-        .description {
-          font-size: 15px;
-          line-height: 20px;
-          letter-spacing: -0.24px;
-          color: #000;
-          margin-right: 30px;
-        }
-      }
-
-      .RichCell__caption {
-        font-size: 13px;
-        line-height: 16px;
-        letter-spacing: -0.078px;
-        color: #818c99;
-      }
-
-      .RichCell__bottom {
-        margin-top: 17px;
-      }
-    }
   }
 }

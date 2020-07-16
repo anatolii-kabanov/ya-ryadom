@@ -24,7 +24,7 @@ type AllProps = PropsFromState & PropsFromDispatch;
 class ReviewsPanel extends React.Component<AllProps> {
 
     state = {
-        profileReviews: {}
+        profileReviews: []
     }
 
     reviewStars(rateNum) {
@@ -63,7 +63,7 @@ class ReviewsPanel extends React.Component<AllProps> {
             <Panel id={id}>
                 <MainHeaderPanel text="Отзывы"></MainHeaderPanel>
                 {
-                    profileReviews.map((review) =>
+                    profileReviews.map((review: any) =>
                         <Group id={review.id}>
                             <RichCell
                                 disabled

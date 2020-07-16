@@ -35,6 +35,7 @@ import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import { VkHistoryModel } from "../../store/history/models";
 import { VIEWS } from "../../utils/constants/view.constants";
 import { PANELS } from "../../utils/constants/panel.constants";
+import { dateOptions } from '../../utils/constants/event-date-options.constant';
 
 interface PropsFromState {
     id: string;
@@ -63,8 +64,6 @@ const createMapOptions = (maps: Maps) => {
         mapTypeControl: true
     };
 }
-
-const options = { weekday: 'short', month: 'long', day: 'numeric' };
 
 class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
 
@@ -164,7 +163,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                     multiline
                                     before={<Avatar size={48} src={this.state.eventOnMap?.vkUserAvatarUrl} />}
                                     text={this.state.eventOnMap?.description}
-                                    caption={`${new Date(this.state.eventOnMap?.date).toLocaleDateString('ru-RU', options)} в ${this.state.eventOnMap?.time}`}
+                                    caption={`${new Date(this.state.eventOnMap?.date).toLocaleDateString('ru-RU', dateOptions)} в ${this.state.eventOnMap?.time}`}
                                 >
                                     <span>{this.state.eventOnMap?.userFullName} <span className="distance">{this.state.eventOnMap?.distance && (this.state.eventOnMap?.distance / 1000).toFixed(2)} км</span></span>
                                 </RichCell>

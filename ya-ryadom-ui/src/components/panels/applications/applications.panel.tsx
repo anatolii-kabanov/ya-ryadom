@@ -24,7 +24,7 @@ import { TABS } from '../../../utils/constants/tab.constants';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { ApplicationCreated } from './application.created';
-import { ApplicationWantVisit } from './application.want_visit';
+import MineApplicationsTab from './mine-applications.tab';
 import { ApplicationVisited } from './application.visited';
 import { MODALS } from "../../../utils/constants/modal.constants";
 
@@ -90,15 +90,11 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
         const { applications, openCreationReview } = this.props;
         const status: ApplicationStatus = TabStatus[activeTab];
 
-        return [1, 2, 3, 4]
-            .map((item, key) => {
-                return <Group key={key} separator="show">
-                    {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationCreated />}
-                    {activeTab == TABS.WANT_VISIT_APPLICATIONS && <ApplicationWantVisit />}
-                    {activeTab == TABS.VISITED_APPLICATIONS && <ApplicationVisited openCreationReview={openCreationReview} />}
-
-                </Group>
-            });
+        return <Group>
+            {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationCreated />}
+            {activeTab == TABS.WANT_VISIT_APPLICATIONS && <MineApplicationsTab />}
+            {activeTab == TABS.VISITED_APPLICATIONS && <ApplicationVisited openCreationReview={openCreationReview} />}
+        </Group>
     }
 
     render() {
@@ -130,10 +126,7 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
                         </HorizontalScroll>
                     </Tabs>
                 </Group>
-
-                <Group>
-                    {this.renderApplications()}
-                </Group>
+                {this.renderApplications()}
             </Panel>
         )
     }
