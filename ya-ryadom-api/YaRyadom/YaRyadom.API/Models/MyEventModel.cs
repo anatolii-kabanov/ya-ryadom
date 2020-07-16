@@ -10,7 +10,7 @@ namespace YaRyadom.API.Models
 		/// </summary>
 		public double Distance { get; set; }
 
-		public int MaxQuantiyty { get; set; }
+		public int MaxQuantity { get; set; }
 
 		public bool Revoked { get; set; }
 

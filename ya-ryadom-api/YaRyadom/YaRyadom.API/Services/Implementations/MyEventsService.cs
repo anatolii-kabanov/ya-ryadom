@@ -91,5 +91,22 @@ namespace YaRyadom.API.Services.Implementations
 
 			return resultEvents;
 		}
+
+		public async Task<MyEventModel[]> GetAllMyEventsWithApplications(long vkId, CancellationToken cancellationToken = default)
+		{
+			var events = await _mapper
+			  .ProjectTo<MyEventWithApplicationsServiceModel>(
+				  TableNoTracking
+				  .Where(m => m.YaRyadomUserOwner.VkId == vkId)
+			  )
+				.ToArrayAsync(cancellationToken)
+				.ConfigureAwait(false);
+
+			var resultEvents = events
+				.Select(_mapper.Map<MyEventModel>)
+				.ToArray();
+
+			return resultEvents;
+		}
 	}
 }

@@ -44,6 +44,16 @@ namespace YaRyadom.API.Controllers
 		}
 
 		[AllowAnonymous]
+		[HttpGet("with-applications/{vkUserId}")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> GetMyEventsWithApplications(long vkUserId, CancellationToken cancellationToken = default)
+		{
+			var result = await _myEventsService.GetAllMyEventsWithApplications(vkUserId, cancellationToken).ConfigureAwait(false);
+			return Ok(result);
+		}
+
+		[AllowAnonymous]
 		[HttpPost("create")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]

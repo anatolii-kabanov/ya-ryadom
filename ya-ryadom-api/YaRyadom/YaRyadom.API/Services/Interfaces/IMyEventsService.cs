@@ -9,6 +9,8 @@ namespace YaRyadom.API.Services.Interfaces
 	{
 		Task<MyEventModel[]> GetAllMyEvents(long vkId, CancellationToken cancellationToken = default);
 
+		Task<MyEventModel[]> GetAllMyEventsWithApplications(long vkId, CancellationToken cancellationToken = default);
+
 		Task<MyEventModel[]> GetAllPaticipationEvents(long vkId, CancellationToken cancellationToken = default);
 
 		Task<bool> AddAsync(EventFormModel model, CancellationToken cancellationToken = default);

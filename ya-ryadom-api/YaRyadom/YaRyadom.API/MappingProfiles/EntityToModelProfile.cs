@@ -53,7 +53,21 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
 				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.YaRyadomUserApplications.Where(m => m.Status == ApplicationStatus.Confirmed)));
 
+			CreateMap<YaRyadomEvent, MyEventWithApplicationsServiceModel>()
+				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
+				.ForMember(dest => dest.Ended, opt => opt.MapFrom(src => src.Date == null || src.Date < DateTime.UtcNow.Date))// Should be replaced with DB property
+				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time))
+				.ForMember(dest => dest.MaxQuantity, opt => opt.MapFrom(src => src.MaxQuantity))
+				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.YaRyadomEventThemes.Select(m => (ThemeTypeModel)m.Type).FirstOrDefault()))
+				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => src.Revoked))
+				.ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
+				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.YaRyadomUserApplications));
+
 			CreateMap<YaRyadomUserApplication, ApplicantModel>()
+				.ForMember(dest => dest.ApplicationStatus, opt => opt.MapFrom(src => (ApplicationStatusModel)src.Status))
 				.ForMember(dest => dest.VkUserId, opt => opt.MapFrom(src => src.YaRyadomUserRequested.VkId))
 				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.YaRyadomUserRequested.VkUserAvatarUrl));
 
@@ -64,7 +78,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
 				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time != null ? src.Time.Value.ToString(@"hh\:mm") : string.Empty))
 				.ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.Distance))
-				.ForMember(dest => dest.MaxQuantiyty, opt => opt.MapFrom(src => src.MaxQuantity))
+				.ForMember(dest => dest.MaxQuantity, opt => opt.MapFrom(src => src.MaxQuantity))
 				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => src.Revoked))
 				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Participants))
 				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.ThemeType))
