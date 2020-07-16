@@ -21,7 +21,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
 				.ForMember(dest => dest.AvgRating, opt => opt.MapFrom(src => src.YaRyadomReviewsAboutMe.Average(m => m.Rating)))
 				.ForMember(dest => dest.SelectedThemes, opt => opt.MapFrom(src => src.YaRyadomUserThemes.Select(m => (ThemeTypeModel)m.Type)))
-				.ForMember(dest => dest.LastLocation, opt => opt.MapFrom(src => new PositionModel() {  Latitude = src.LastLocation.Y, Longitude = src.LastLocation.X }));
+				.ForMember(dest => dest.LastLocation, opt => opt.MapFrom(src => new PositionModel() { Latitude = src.LastLocation.Y, Longitude = src.LastLocation.X }));
 
 			CreateMap<YaRyadomEventServiceModel, YaRyadomEventModel>()
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
@@ -51,15 +51,22 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 				.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
 				.ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
+				.ForMember(dest => dest.EventId, opt => opt.MapFrom(src => src.YaRyadomEventId))
 				.ForMember(dest => dest.EventTitle, opt => opt.MapFrom(src => src.YaRyadomEvent.Title))
-				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.YaRyadomUserToReview.FirstName + ' ' + src.YaRyadomUserToReview.LastName));
+				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.YaRyadomEvent.YaRyadomEventThemes.Select(m => (ThemeTypeModel)m.Type).FirstOrDefault()))
+				.ForMember(dest => dest.EventTitle, opt => opt.MapFrom(src => src.YaRyadomEvent.Title))
+				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.YaRyadomUserToReview.FirstName + ' ' + src.YaRyadomUserToReview.LastName))
+				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.YaRyadomUserToReview.VkUserAvatarUrl)); 
 
 			CreateMap<YaRyadomReview, UserReviewAboutMeModel>()
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 				.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
 				.ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
+				.ForMember(dest => dest.EventId, opt => opt.MapFrom(src => src.YaRyadomEventId))
 				.ForMember(dest => dest.EventTitle, opt => opt.MapFrom(src => src.YaRyadomEvent.Title))
-				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.YaRyadomUserReviewer.FirstName + ' ' + src.YaRyadomUserReviewer.LastName));
+				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.YaRyadomEvent.YaRyadomEventThemes.Select(m => (ThemeTypeModel)m.Type).FirstOrDefault()))
+				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.YaRyadomUserReviewer.FirstName + ' ' + src.YaRyadomUserReviewer.LastName))
+				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.YaRyadomUserReviewer.VkUserAvatarUrl));
 
 			CreateMap<YaRyadomUserApplication, ApplicationModel>()
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

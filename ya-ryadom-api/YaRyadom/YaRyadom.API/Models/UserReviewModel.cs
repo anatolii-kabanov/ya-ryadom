@@ -1,4 +1,5 @@
 ﻿using YaRyadom.API.Models.Base;
+using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models
 {
@@ -10,6 +11,12 @@ namespace YaRyadom.API.Models
 
 		public string EventTitle { get; set; }
 
+		public ThemeTypeModel ThemeType { get; set; }
+
 		public string UserFullName { get; set; }
+
+		public int EventId { get; set; }
+
+		public string VkUserAvatarUrl { get; set; }
 	}
 }
