@@ -55,7 +55,7 @@ class ReviewsPanel extends React.Component<AllProps> {
     componentWillMount() {
         const { vkUserId } = this.props
         xhr({
-                uri: `${process.env.REACT_APP_API_ENDPOINT}/auth/user-info/${vkUserId}`,
+                uri: `${process.env.REACT_APP_API_ENDPOINT}/reviews/about-me/${vkUserId}`,
                 sync: true
             }, (err, resp, body) => {
                 const profileReviews = JSON.parse(body);
