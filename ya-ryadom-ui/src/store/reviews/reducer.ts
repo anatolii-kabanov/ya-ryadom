@@ -1,9 +1,11 @@
 import { Reducer } from 'redux';
 import { ReviewsState } from './state';
 import { ReviewsTypes } from './types';
+import { AppState } from '../app-state';
 
 export const initialState: ReviewsState = {
-    eventsReviews: {}
+    eventsReviews: {},
+    selectedUserToReview: null
 }
 
 const reducer: Reducer<ReviewsState> = (state = initialState, action) => {
@@ -16,6 +18,11 @@ const reducer: Reducer<ReviewsState> = (state = initialState, action) => {
                 }
             }
         }
+        case ReviewsTypes.SET_USER_TO_REVIEW: {
+            return {
+                ...state, selectedUserToReview: action.payload
+            }
+        }
         default: {
             return state
         }
@@ -23,3 +30,5 @@ const reducer: Reducer<ReviewsState> = (state = initialState, action) => {
 };
 
 export { reducer as reviewsReducer };
+
+export const getSelectedUserToReview = (state: AppState) => state.reviews.selectedUserToReview;

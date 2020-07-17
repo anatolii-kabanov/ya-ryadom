@@ -12,13 +12,18 @@ import { Application } from '../../../store/applications/models';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { dateOptions } from '../../../utils/constants/event-date-options.constant';
+import { MODALS } from '../../../utils/constants/modal.constants';
+import { setActiveModal } from '../../../store/history/actions';
+import { setUserToReview } from '../../../store/reviews/actions';
+import { SelectedUserToReview } from '../../../store/reviews/models';
 
 interface PropsFromState {
     applications: Application[];
-    openCreationReview: () => void;
 }
 
 interface PropsFromDispatch {
+    setActiveModal: typeof setActiveModal,
+    setUserToReview: typeof setUserToReview
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -27,17 +32,22 @@ interface State {
 }
 
 export class ApplicationsVisitedTab extends React.Component<AllProps, State>  {
-    /**
-     *
-     */
+
     constructor(props) {
         super(props);
         this.state = {
         }
+        this.openReviewModal = this.openReviewModal.bind(this);
+    }
+
+    private openReviewModal(userToReview: SelectedUserToReview) {
+        const { setActiveModal, setUserToReview } = this.props;
+        setUserToReview(userToReview);
+        setActiveModal(MODALS.APPLICATION_REVIEW);
     }
 
     private renderVisitedEvents() {
-        const { applications, openCreationReview } = this.props;
+        const { applications } = this.props;
         if (applications) {
             return applications
                 .filter((a) => a.status === ApplicationStatus.visited)
@@ -48,7 +58,7 @@ export class ApplicationsVisitedTab extends React.Component<AllProps, State>  {
                             multiline
                             before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
                             caption={`${new Date(item.eventDate).toLocaleDateString('ru-RU', dateOptions)} в ${item.eventTime}`}
-                            actions={<span className="application-btns"><Button className="btn-primary" onClick={openCreationReview}>Оставить отзыв</Button></span>}
+                            actions={<span className="application-btns"><Button className="btn-primary" onClick={() => this.openReviewModal({ eventId: item.eventId, vkUserId: item.vkUserId })}>Оставить отзыв</Button></span>}
                         >
                             <div className="head">{item.userFullName} <span className="distance">{(item?.distance / 1000).toFixed(2)}км</span></div>
                             <div className="description">{item.text}</div>
@@ -71,7 +81,8 @@ const mapStateToProps = ({ applications }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-
+    setActiveModal: setActiveModal,
+    setUserToReview: setUserToReview
 }
 
 export default connect(

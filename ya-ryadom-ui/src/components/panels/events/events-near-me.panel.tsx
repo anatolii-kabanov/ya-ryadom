@@ -24,7 +24,7 @@ interface PropsFromDispatch {
 type AllProps = PropsFromState & PropsFromDispatch;
 
 interface State {
-    activeModal: string | null; // VK modal use null to hide it
+    
 }
 
 class EventsNearMePanel extends React.Component<AllProps, State>  {

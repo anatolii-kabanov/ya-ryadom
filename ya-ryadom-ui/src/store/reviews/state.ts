@@ -1,5 +1,6 @@
-import { EventsReviews } from "./models";
+import { EventsReviews, SelectedUserToReview } from "./models";
 
 export interface ReviewsState {
-   eventsReviews: EventsReviews
+   eventsReviews: EventsReviews,
+   selectedUserToReview: SelectedUserToReview | null
 }

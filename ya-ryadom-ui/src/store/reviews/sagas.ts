@@ -6,12 +6,15 @@ import {
     fetchEventReviewsSuccess,
     addReviewRequest,
     addReviewError,
-    addReviewSuccess
+    addReviewSuccess,
+    setUserToReview
 } from './actions'
 import { callApi } from '../../utils/api';
-import { ReviewsRequest, SaveReviewRequest } from './models';
+import { SaveReviewRequest, SelectedUserToReview } from './models';
 import { getVkUserId } from '../authentication/reducer';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
+import { setActiveModal } from '../history/actions';
+import { getSelectedUserToReview } from './reducer';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/reviews`;
 
@@ -40,13 +43,23 @@ function* watchFetchEventReviewsRequest() {
 function* handleAddReviewRequest(action: ReturnType<typeof addReviewRequest>) {
     try {
         yield put(showSpinner());
-        const model: SaveReviewRequest = {} as any;
+        const vkUserId = yield select(getVkUserId);
+        const user: SelectedUserToReview = yield select(getSelectedUserToReview);
+        const model: SaveReviewRequest = {
+            rating: action.payload.rating,
+            text: action.payload.text,
+            vkOwnerUserId: vkUserId,
+            vkUserId: user.vkUserId,
+            eventId: user.eventId
+        };
         const result = yield call(callApi, 'post', API_ENDPOINT, '/add', model);
 
         if (result.errors) {
             yield put(addReviewError(result.errors));
         } else {
             yield put(addReviewSuccess(result));
+            yield put(setActiveModal(null));
+            yield put(setUserToReview(null));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {

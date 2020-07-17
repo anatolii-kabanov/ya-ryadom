@@ -20,7 +20,6 @@ import ApplicationsToMyEventsTab from './applications-to-my-events.tab';
 interface PropsFromState {
     id: string;
     applications: Application[];
-    openCreationReview: () => void;
 }
 
 interface PropsFromDispatch {
@@ -62,12 +61,11 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
 
     private renderApplications() {
         const { activeTab } = this.state;
-        const { openCreationReview } = this.props;
 
         return <Group>
             {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationsToMyEventsTab />}
             {activeTab == TABS.WANT_VISIT_APPLICATIONS && <MineApplicationsTab />}
-            {activeTab == TABS.VISITED_APPLICATIONS && <ApplicationsVisitedTab openCreationReview={openCreationReview} />}
+            {activeTab == TABS.VISITED_APPLICATIONS && <ApplicationsVisitedTab />}
         </Group>
     }
 

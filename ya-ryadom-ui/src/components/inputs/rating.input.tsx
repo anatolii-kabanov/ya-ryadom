@@ -26,7 +26,6 @@ class RatingInput extends React.PureComponent<RatingProps, State> {
     onStarClicked(rating: number) {
         const { onRatingSelected, totalStars } = this.props;
         onRatingSelected && totalStars && onRatingSelected(rating);
-        console.log(rating);
         this.setState({ selectedStar: rating });
     }
 

@@ -8,6 +8,7 @@ import { AppState } from '../app-state';
 export const initialState: HistoryState = {
     history: [{ view: VIEWS.INTRO_VIEW, panel: PANELS.HELLO_INTRO_PANEL }],
     currentViewPanel: { view: VIEWS.INTRO_VIEW, panel: PANELS.HELLO_INTRO_PANEL },
+    currentModal: null,
 }
 
 const reducer: Reducer<HistoryState> = (state = initialState, action) => {
@@ -23,6 +24,9 @@ const reducer: Reducer<HistoryState> = (state = initialState, action) => {
         }
         case HistoryTypes.RESET_VIEW_PANEL: {
             return { ...state, history: [action.payload], currentViewPanel: action.payload }
+        }
+        case HistoryTypes.SET_ACTIVE_MODAL: {
+            return { ...state, currentModal: action.payload }
         }
         default: {
             return state

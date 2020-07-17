@@ -15,6 +15,16 @@ export interface Review {
     date: Date;
 }
 
+export interface SelectedUserToReview {
+    eventId: number;
+    vkUserId: number;
+}
+
+export interface ReviewModel {
+    text: string;
+    rating: number;
+}
+
 export interface SaveReviewRequest {
     vkOwnerUserId: number;
     text: string;
