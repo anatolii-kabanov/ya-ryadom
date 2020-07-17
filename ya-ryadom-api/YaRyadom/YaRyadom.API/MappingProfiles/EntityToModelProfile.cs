@@ -67,6 +67,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.YaRyadomUserApplications));
 
 			CreateMap<YaRyadomUserApplication, ApplicantModel>()
+				.ForMember(dest => dest.ApplicationId, opt => opt.MapFrom(src => src.Id))
 				.ForMember(dest => dest.ApplicationStatus, opt => opt.MapFrom(src => (ApplicationStatusModel)src.Status))
 				.ForMember(dest => dest.VkUserId, opt => opt.MapFrom(src => src.YaRyadomUserRequested.VkId))
 				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.YaRyadomUserRequested.VkUserAvatarUrl));

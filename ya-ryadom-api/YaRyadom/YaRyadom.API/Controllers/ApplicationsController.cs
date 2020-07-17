@@ -56,9 +56,9 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("approve")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> ApproveApplication([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken = default)
+		public async Task<IActionResult> ApproveApplication([FromBody] int applicationId, CancellationToken cancellationToken = default)
 		{
-			await _applicationsService.ApproveAsync(model, cancellationToken).ConfigureAwait(false);
+			await _applicationsService.ApproveAsync(applicationId, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
 		}
 
@@ -66,9 +66,9 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("reject")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> RejectApplication([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken = default)
+		public async Task<IActionResult> RejectApplication([FromBody] int applicationId, CancellationToken cancellationToken = default)
 		{
-			await _applicationsService.RejectAsync(model, cancellationToken).ConfigureAwait(false);
+			await _applicationsService.RejectAsync(applicationId, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
 		}
 

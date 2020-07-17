@@ -34,11 +34,11 @@ namespace YaRyadom.API.Services.Implementations
 			return applications;
 		}
 
-		public async Task<bool> ApproveAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
+		public async Task<bool> ApproveAsync(int applicationId, CancellationToken cancellationToken = default)
 		{
 			var application = await _dbContext
 				.YaRyadomUserApplications
-				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
+				.Where(m => m.Id == applicationId)
 				.FirstOrDefaultAsync(cancellationToken);
 
 			application.Status = ApplicationStatus.Confirmed;
@@ -46,11 +46,11 @@ namespace YaRyadom.API.Services.Implementations
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
-		public async Task<bool> RejectAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
+		public async Task<bool> RejectAsync(int applicationId, CancellationToken cancellationToken = default)
 		{
 			var application = await _dbContext
 				.YaRyadomUserApplications
-				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
+				.Where(m => m.Id == applicationId)
 				.FirstOrDefaultAsync(cancellationToken);
 
 			application.Status = ApplicationStatus.Rejected;
