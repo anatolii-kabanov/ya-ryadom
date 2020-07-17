@@ -16,6 +16,7 @@ import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
 import { goForward } from '../../../store/history/actions';
+import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 
 interface PropsFromState {
     applications: Application[];
@@ -37,6 +38,7 @@ export class MineApplicationsTab extends React.Component<AllProps, State>  {
         const { applications, revoke, goForward } = this.props;
         if (applications) {
             return applications
+                .filter((a) => a.status === ApplicationStatus.sent || a.status === ApplicationStatus.confirmed)
                 .map((item, key) => {
                     return <Group className="application-card" separator="show" key={key} header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                         <RichCell

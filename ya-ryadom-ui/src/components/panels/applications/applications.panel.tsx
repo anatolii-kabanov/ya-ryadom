@@ -13,9 +13,8 @@ import { AppState } from '../../../store/app-state';
 import { Application } from '../../../store/applications/models';
 import { fetchMineApplicationsRequest, revokeApplicationRequest } from '../../../store/applications/actions';
 import { TABS } from '../../../utils/constants/tab.constants';
-import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import MineApplicationsTab from './mine-applications.tab';
-import { ApplicationVisited } from './application.visited';
+import ApplicationsVisitedTab from './applications-visited.tab';
 import ApplicationsToMyEventsTab from './applications-to-my-events.tab';
 
 interface PropsFromState {
@@ -34,20 +33,6 @@ type AllProps = PropsFromState & PropsFromDispatch;
 interface State {
     activeTab: string;
 }
-
-const TabStatus = {
-    [TABS.APPLICATIONS_I_WILL_GO]: ApplicationStatus.confirmed,
-    [TABS.APPLICATIONS_REJECTED]: ApplicationStatus.rejected,
-    [TABS.SENT_APPLICATIONS]: ApplicationStatus.sent,
-    [TABS.VISITED_APPLICATIONS]: ApplicationStatus.visited,
-}
-
-const RevokeOnly = [
-    ApplicationStatus.sent,
-    ApplicationStatus.confirmed,
-]
-
-const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 class ApplicationsPanel extends React.Component<AllProps, State>  {
 
@@ -77,13 +62,12 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
 
     private renderApplications() {
         const { activeTab } = this.state;
-        const { applications, openCreationReview } = this.props;
-        const status: ApplicationStatus = TabStatus[activeTab];
+        const { openCreationReview } = this.props;
 
         return <Group>
             {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationsToMyEventsTab />}
             {activeTab == TABS.WANT_VISIT_APPLICATIONS && <MineApplicationsTab />}
-            {activeTab == TABS.VISITED_APPLICATIONS && <ApplicationVisited openCreationReview={openCreationReview} />}
+            {activeTab == TABS.VISITED_APPLICATIONS && <ApplicationsVisitedTab openCreationReview={openCreationReview} />}
         </Group>
     }
 
