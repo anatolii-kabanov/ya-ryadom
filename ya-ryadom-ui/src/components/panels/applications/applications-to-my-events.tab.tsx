@@ -19,7 +19,7 @@ import { ApplicationStatus } from '../../../utils/enums/application-status.enum'
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { dateOptions } from '../../../utils/constants/event-date-options.constant';
 import { EventsApplications } from '../../../store/applications/models';
-import { fetchEventApplicantsRequest } from '../../../store/applications/actions';
+import { fetchEventApplicantsRequest, confirmApplicantRequest, rejectApplicantRequest } from '../../../store/applications/actions';
 
 interface PropsFromState {
     myEvents: MyEvent[],
@@ -28,7 +28,9 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     fetchMyEvents: typeof fetchMyEventsListRequest,
-    fetchEventApplicants: typeof fetchEventApplicantsRequest
+    fetchEventApplicants: typeof fetchEventApplicantsRequest,
+    confirm: typeof confirmApplicantRequest,
+    reject: typeof rejectApplicantRequest,
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -63,7 +65,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
     }
 
     private renderApplications(id: number) {
-        const { eventsApplications } = this.props;
+        const { eventsApplications, confirm, reject } = this.props;
         const applications = eventsApplications[id];
         if (applications) {
             return applications
@@ -75,8 +77,8 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
                         caption={`${new Date(item.sentDate).toLocaleDateString('ru-RU', { month: 'long', day: 'numeric', hour12: false })}`}
                         actions={
                             <span className="application-btns">
-                                <Button className="btn-primary">Принять</Button>
-                                <Button className="btn-secondary">Отклонить</Button>
+                                <Button className="btn-primary" onClick={() => confirm({ applicationId: item.id, eventId: id })}>Принять</Button>
+                                <Button className="btn-secondary" onClick={() => reject({ applicationId: item.id, eventId: id })}>Отклонить</Button>
                             </span>
                         }
                     >
@@ -141,7 +143,9 @@ const mapStateToProps = ({ events, applications }: AppState) => ({
 
 const mapDispatchToProps: PropsFromDispatch = {
     fetchMyEvents: fetchMyEventsListRequest,
-    fetchEventApplicants: fetchEventApplicantsRequest
+    fetchEventApplicants: fetchEventApplicantsRequest,
+    confirm: confirmApplicantRequest,
+    reject: rejectApplicantRequest,
 }
 
 export default connect(

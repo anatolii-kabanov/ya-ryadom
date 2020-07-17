@@ -28,11 +28,33 @@ const reducer: Reducer<ApplicationsState> = (state = initialState, action) => {
                 ...state, applicationsToMe: action.payload
             }
         }
-        case ApplicationsTypes.REVOKE_APPLICATION_SUCCESS: {           
+        case ApplicationsTypes.REVOKE_APPLICATION_SUCCESS: {
             return {
                 ...state, mineApplications: [
                     ...state.mineApplications.filter(m => m.id !== action.payload)
                 ]
+            }
+        }
+        case ApplicationsTypes.CONFIRM_APPLICANT_SUCCESS: {
+            return {
+                ...state,
+                eventsApplicants: {
+                    ...state.eventsApplicants,
+                    [action.payload.eventId]: [
+                        ...state.eventsApplicants[action.payload.eventId].filter(m => m.id !== action.payload.applicationId)
+                    ]
+                }
+            }
+        }
+        case ApplicationsTypes.REJECT_APPLICANT_SUCCESS: {
+            return {
+                ...state,
+                eventsApplicants: {
+                    ...state.eventsApplicants,
+                    [action.payload.eventId]: [
+                        ...state.eventsApplicants[action.payload.eventId].filter(m => m.id !== action.payload.applicationId)
+                    ]
+                }
             }
         }
         default: {

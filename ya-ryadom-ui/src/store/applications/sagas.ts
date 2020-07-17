@@ -6,6 +6,8 @@ import { ApplicationRequest } from './models';
 import { getVkUserId } from '../authentication/reducer';
 import { setSentStatus } from '../events/events-near-me/actions';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
+import { updateParticipantStatus } from '../events/my-events/actions';
+import { ApplicationStatus } from '../../utils/enums/application-status.enum';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/applicatioins`;
 
@@ -113,19 +115,15 @@ function* watchApplyToEventRequest() {
 
 function* handleConfirmApplicantRequest(action: ReturnType<typeof confirmApplicantRequest>) {
     try {
-        const vkUserId = yield select(getVkUserId);
+        yield put(showSpinner());
 
-        const application: ApplicationRequest = {
-            vkUserId: vkUserId,
-            eventId: action.payload,
-        };
-
-        const result = yield call(callApi, 'post', API_ENDPOINT, '/confirm', application);
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/approve', action.payload.applicationId);
 
         if (result.errors) {
             yield put(confirmApplicantError(result.errors));
         } else {
             yield put(confirmApplicantSuccess(action.payload));
+            yield put(updateParticipantStatus({ ...action.payload, status: ApplicationStatus.confirmed }));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -134,7 +132,7 @@ function* handleConfirmApplicantRequest(action: ReturnType<typeof confirmApplica
             yield put(confirmApplicantError('An unknown error occured.'));
         }
     } finally {
-
+        yield put(hideSpinner());
     }
 }
 
@@ -144,19 +142,15 @@ function* watchConfirmApplicantRequest() {
 
 function* handleRejectApplicantRequest(action: ReturnType<typeof rejectApplicantRequest>) {
     try {
-        const vkUserId = yield select(getVkUserId);
+        yield put(showSpinner());
 
-        const application: ApplicationRequest = {
-            vkUserId: vkUserId,
-            eventId: action.payload,
-        };
-
-        const result = yield call(callApi, 'post', API_ENDPOINT, '/reject', application);
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/reject', action.payload.applicationId);
 
         if (result.errors) {
             yield put(rejectApplicantError(result.errors));
         } else {
             yield put(rejectApplicantSuccess(action.payload));
+            yield put(updateParticipantStatus({ ...action.payload, status: ApplicationStatus.confirmed }));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -165,7 +159,7 @@ function* handleRejectApplicantRequest(action: ReturnType<typeof rejectApplicant
             yield put(rejectApplicantError('An unknown error occured.'));
         }
     } finally {
-
+        yield put(hideSpinner());
     }
 }
 

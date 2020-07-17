@@ -45,7 +45,7 @@ class EventsView extends React.Component<AllProps, State>  {
     }
 
     public componentDidMount() {
-        this.updateEvents();
+        this.updateEvents({});
     }
 
     updateEvents = debounce((e: any) => {
@@ -81,7 +81,7 @@ class EventsView extends React.Component<AllProps, State>  {
     }
 
     onClose(updateEvents?: boolean) {
-        updateEvents && this.updateEvents();
+        updateEvents && this.updateEvents({});
         this.setState({ activeModal: null });
     }
 

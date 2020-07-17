@@ -19,6 +19,7 @@ export interface MyEvent {
 }
 
 export interface Applicant {
+    applicationId: number;
     vkUserId: number;
     vkUserAvatarUrl: string;
     applicationStatus: ApplicationStatus;

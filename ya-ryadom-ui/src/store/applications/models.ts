@@ -11,6 +11,15 @@ export interface EventApplications {
     applications: Application[]
 }
 
+export interface EventApplicationRequest {
+    eventId: number;
+    applicationId: number;
+}
+
+export interface EventApplicationUpdateStatus extends EventApplicationRequest {
+    status: ApplicationStatus
+}
+
 export interface Application {
     id: number;
     userId: number;

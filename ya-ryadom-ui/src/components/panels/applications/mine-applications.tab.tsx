@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Group,
-    Div,
     Text,
     Button,
     Header,
@@ -13,13 +12,18 @@ import { Application } from '../../../store/applications/models';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { dateOptions } from '../../../utils/constants/event-date-options.constant';
 import { revokeApplicationRequest } from '../../../store/applications/actions';
+import { VkHistoryModel } from '../../../store/history/models';
+import { VIEWS } from '../../../utils/constants/view.constants';
+import { PANELS } from '../../../utils/constants/panel.constants';
+import { goForward } from '../../../store/history/actions';
 
 interface PropsFromState {
     applications: Application[];
 }
 
 interface PropsFromDispatch {
-    revoke: typeof revokeApplicationRequest
+    revoke: typeof revokeApplicationRequest,
+    goForward: typeof goForward
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -30,7 +34,7 @@ interface State {
 export class MineApplicationsTab extends React.Component<AllProps, State>  {
 
     private renderApplications() {
-        const { applications, revoke } = this.props;
+        const { applications, revoke, goForward } = this.props;
         if (applications) {
             return applications
                 .map((item, key) => {
@@ -42,7 +46,7 @@ export class MineApplicationsTab extends React.Component<AllProps, State>  {
                             caption={`${new Date(item.eventDate).toLocaleDateString('ru-RU', dateOptions)} в ${item.eventTime}`}
                             actions={
                                 <span className="application-btns">
-                                    <Button className="btn-primary">Написать</Button>
+                                    <Button className="btn-primary" onClick={() => goForward(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}>Профиль</Button>
                                     <Button className="btn-secondary" onClick={() => revoke(item.id)}>Отменить</Button>
                                 </span>
                             }
@@ -69,7 +73,8 @@ const mapStateToProps = ({ applications }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    revoke: revokeApplicationRequest
+    revoke: revokeApplicationRequest,
+    goForward: goForward
 }
 
 export default connect(

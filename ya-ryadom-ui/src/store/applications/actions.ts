@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 import { ApplicationsTypes } from "./types";
-import { EventApplications } from './models';
+import { EventApplications, EventApplicationRequest } from './models';
 
 export const fetchEventApplicantsRequest = (payload: number) => action(ApplicationsTypes.FETCH_EVENT_APPLICANTS, payload);
 export const fetchEventApplicantsSuccess = (payload: EventApplications) => action(ApplicationsTypes.FETCH_EVENT_APPLICANTS_SUCCESS, payload);
@@ -18,12 +18,12 @@ export const applyToEventRequest = (payload: number) => action(ApplicationsTypes
 export const applyToEventSuccess = (payload: any) => action(ApplicationsTypes.APPLY_TO_EVENT_SUCCESS, payload);
 export const applyToEventError = (payload: any) => action(ApplicationsTypes.APPLY_TO_EVENT_ERROR, payload);
 
-export const confirmApplicantRequest = (payload: any) => action(ApplicationsTypes.CONFIRM_APPLICANT, payload);
-export const confirmApplicantSuccess = (payload: any) => action(ApplicationsTypes.CONFIRM_APPLICANT_SUCCESS, payload);
+export const confirmApplicantRequest = (payload: EventApplicationRequest) => action(ApplicationsTypes.CONFIRM_APPLICANT, payload);
+export const confirmApplicantSuccess = (payload: EventApplicationRequest) => action(ApplicationsTypes.CONFIRM_APPLICANT_SUCCESS, payload);
 export const confirmApplicantError = (payload: any) => action(ApplicationsTypes.CONFIRM_APPLICANT_ERROR, payload);
 
-export const rejectApplicantRequest = (payload: any) => action(ApplicationsTypes.REJECT_APPLICANT, payload);
-export const rejectApplicantSuccess = (payload: any) => action(ApplicationsTypes.REJECT_APPLICANT_SUCCESS, payload);
+export const rejectApplicantRequest = (payload: EventApplicationRequest) => action(ApplicationsTypes.REJECT_APPLICANT, payload);
+export const rejectApplicantSuccess = (payload: EventApplicationRequest) => action(ApplicationsTypes.REJECT_APPLICANT_SUCCESS, payload);
 export const rejectApplicantError = (payload: any) => action(ApplicationsTypes.REJECT_APPLICANT_ERROR, payload);
 
 export const revokeApplicationRequest = (payload: number) => action(ApplicationsTypes.REVOKE_APPLICATION, payload);
