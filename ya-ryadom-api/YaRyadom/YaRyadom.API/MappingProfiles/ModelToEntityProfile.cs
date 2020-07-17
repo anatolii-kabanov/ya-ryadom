@@ -68,6 +68,7 @@ namespace YaRyadom.API.MappingProfiles
 
 			CreateMap<UserReviewRequestModel, YaRyadomReview>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
+				.ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTimeOffset.Now.ToOffset(-TimeSpan.FromMinutes(src.TimeZoneMinutes))))
 				.ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
 				.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
 				.ForMember(dest => dest.YaRyadomEventId, opt => opt.MapFrom(src => src.EventId));
