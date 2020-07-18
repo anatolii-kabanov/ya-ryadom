@@ -137,9 +137,9 @@ class EventForm extends React.Component<AllProps, EventState> {
         if (!this.state.eventName || this.state.eventName.length === 0) {
             formIsValid = false;
             errors['eventName'] = "Обязательное поле";
-        } else if (this.state.eventName.length > 32) {
+        } else if (this.state.eventName.length > 20) {
             formIsValid = false;
-            errors['eventName'] = "Максимум 32 символа";
+            errors['eventName'] = "Максимум 20 символа";
         }
 
         if (!this.state.eventDescription) {
@@ -158,6 +158,12 @@ class EventForm extends React.Component<AllProps, EventState> {
         if (!this.state.eventDate) {
             formIsValid = false;
             errors['eventDate'] = "Обязательное поле";
+        } else {
+            const currentDate = new Date();
+            const selectedDate = new Date(this.state.eventDate);
+            if (selectedDate < currentDate) {
+                errors['eventDate'] = "Нельзя выбрать прошедшие даты";
+            }
         }
 
         if (!this.state.eventTime) {
@@ -189,6 +195,7 @@ class EventForm extends React.Component<AllProps, EventState> {
         return (
             <FormLayout>
                 <Input
+                    maxLength={20}
                     top="Название"
                     type="text"
                     placeholder="Введите текст"
@@ -198,6 +205,8 @@ class EventForm extends React.Component<AllProps, EventState> {
                     bottom={errors.eventName}
                 />
                 <Textarea
+                    minLength={1}
+                    maxLength={64}
                     top="Описание"
                     placeholder="Введите текст"
                     name="eventDescription"
@@ -208,7 +217,13 @@ class EventForm extends React.Component<AllProps, EventState> {
                 <Select status={errors.selectedTheme ? 'error' : 'default'} placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
                     {this.renderThemesSelect()}
                 </Select>
-                <Input status={errors.eventDate ? 'error' : 'default'} top="Дата встречи" type="date" name="eventDate" onChange={this.handleInputChange} required />
+                <Input
+                    min={new Date().toISOString().split('T')[0]}
+                    status={errors.eventDate ? 'error' : 'default'}
+                    top="Дата встречи"
+                    type="date"
+                    name="eventDate"
+                    onChange={this.handleInputChange} required />
                 <Input status={errors.eventTime ? 'error' : 'default'} top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} required />
                 <AutocompleteMap top="Место встречи" placeholder="Адрес" type="address" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                 <div className="map">

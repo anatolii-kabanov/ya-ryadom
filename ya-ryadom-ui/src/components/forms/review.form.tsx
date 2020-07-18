@@ -98,6 +98,8 @@ class ReviewForm extends React.Component<AllProps, State> {
                     {errors.rating}
                 </FormStatus>}
                 <Textarea
+                    minLength={1}
+                    maxLength={64}
                     top="Комментарий"
                     placeholder="Введите текст"
                     onChange={this.handleInputChange}
