@@ -49,7 +49,6 @@ class MyProfileEditPanel extends React.Component<AllProps>{
 
     onNotificationClick(event: any) {
         const { allowNotifications, disableNotifications } = this.props;
-        //event.preventDefault();
         if (event.target.checked) {
             allowNotifications();
         } else {
@@ -74,7 +73,7 @@ class MyProfileEditPanel extends React.Component<AllProps>{
                     </RichCell>
                 </Group>
                 <Group separator="show">
-                    <Cell asideContent={<Switch name="enableNotifications" className="switcher" onClick={this.onNotificationClick} />}>
+                    <Cell asideContent={<Switch checked={currentUser.notificationsEnabled} name="enableNotifications" className="switcher" onClick={this.onNotificationClick} />}>
                         Уведомления
                     </Cell>
                     <Cell description="Уведомления о событиях">

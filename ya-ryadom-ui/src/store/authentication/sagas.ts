@@ -163,7 +163,7 @@ function* watchSaveUserInfoRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_INFO, handleSaveUserInfoRequest)
 }
 
-function* handleSaveUserIntroThemes(action: ReturnType<typeof saveUserIntroThemes>) {    
+function* handleSaveUserIntroThemes(action: ReturnType<typeof saveUserIntroThemes>) {
     yield put(saveUserThemesRequest(action.payload));
     yield take(AuthenticationTypes.SAVE_USER_THEMES_SUCCESS);
     yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.ABOUT_MYSELF_INTRO_PANEL)));
@@ -173,7 +173,7 @@ function* watchSaveUserIntroThemes() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_INTRO_THEMES, handleSaveUserIntroThemes)
 }
 
-function* handleSaveUserProfileThemes(action: ReturnType<typeof saveUserProfileThemes>) {    
+function* handleSaveUserProfileThemes(action: ReturnType<typeof saveUserProfileThemes>) {
     yield put(saveUserThemesRequest(action.payload));
     yield take(AuthenticationTypes.SAVE_USER_THEMES_SUCCESS);
     yield put(goBack());
@@ -198,7 +198,7 @@ function* handleSaveUserThemesRequest(action: ReturnType<typeof saveUserThemesRe
         if (result.errors) {
             yield put(saveUserThemesError(result.errors));
         } else {
-            yield put(saveUserThemesSuccess(action.payload));            
+            yield put(saveUserThemesSuccess(action.payload));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -248,7 +248,7 @@ function* watchSaveUserLocationRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_LOCATION, handleSaveUserLocationRequest)
 }
 
-function* handleSaveUserIntroAboutMyself(action: ReturnType<typeof saveUserIntroAboutMysel>) {    
+function* handleSaveUserIntroAboutMyself(action: ReturnType<typeof saveUserIntroAboutMysel>) {
     yield put(saveUserAboutMyselfRequest(action.payload));
     yield take(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS);
     yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.CREATE_EVENT_PANEL)));
@@ -258,7 +258,7 @@ function* watchSaveUserIntroAboutMyself() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_INTRO_ABOUT_MYSELF, handleSaveUserIntroAboutMyself)
 }
 
-function* handleSaveUserProfileAboutMyself(action: ReturnType<typeof saveUserProfileAboutMysel>) {    
+function* handleSaveUserProfileAboutMyself(action: ReturnType<typeof saveUserProfileAboutMysel>) {
     yield put(saveUserAboutMyselfRequest(action.payload));
     yield take(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS);
     yield put(goBack());
@@ -336,11 +336,19 @@ function* handleAllowNotificationsRequest(action: ReturnType<typeof allowNotific
         yield put(showSpinner());
 
         const result = yield vkBridge.send("VKWebAppAllowNotifications", {});
-
-        if (result.error_type) {
-            yield put(allowNotificationsError(result.errors));
+        let notificationSaved = false;
+        if (result) {
+            const vkUserId = yield select(getVkUserId);
+            const model = {
+                vkUserId: vkUserId,
+                notificationsEnabled: true,
+            };
+            notificationSaved = yield call(callApi, 'post', API_ENDPOINT, '/user-info/notifications/save', model);
+        }
+        if (!result || !notificationSaved || result.error_type) {
+            yield put(allowNotificationsError(result?.errors));
         } else {
-            yield put(allowNotificationsSuccess(result));
+            yield put(allowNotificationsSuccess());
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -362,11 +370,19 @@ function* handleDisableNotificationsRequest(action: ReturnType<typeof disableNot
         yield put(showSpinner());
 
         const result = yield vkBridge.send("VKWebAppDenyNotifications", {});
-
-        if (result.error_type) {
+        let notificationSaved = false;
+        if (result) {
+            const vkUserId = yield select(getVkUserId);
+            const model = {
+                vkUserId: vkUserId,
+                notificationsEnabled: false,
+            };
+            notificationSaved = yield call(callApi, 'post', API_ENDPOINT, '/user-info/notifications/save', model);
+        }
+        if (!result || !notificationSaved || result.error_type) {
             yield put(disableNotificationsError(result.errors));
         } else {
-            yield put(disableNotificationsSuccess(result));
+            yield put(disableNotificationsSuccess());
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {

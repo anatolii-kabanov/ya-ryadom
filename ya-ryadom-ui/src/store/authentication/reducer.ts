@@ -32,6 +32,12 @@ const reducer: Reducer<AuthenticationState> = (state = initialState, action) => 
         case AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED_SUCCESS: {
             return { ...state, currentUser: { ...state.currentUser, guideCompleted: true } }
         }
+        case AuthenticationTypes.ALLOW_NOTIFICATIONS_SUCCESS: {
+            return { ...state, currentUser: { ...state.currentUser, notificationsEnabled: true } }
+        }
+        case AuthenticationTypes.DISABLE_NOTIFICATIONS_SUCCESS: {
+            return { ...state, currentUser: { ...state.currentUser, notificationsEnabled: false } }
+        }
         default: {
             return state
         }

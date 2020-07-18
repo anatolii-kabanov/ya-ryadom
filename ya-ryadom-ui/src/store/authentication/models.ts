@@ -10,6 +10,8 @@ export interface User {
     lastLocation: Position | null,
     aboutMySelf: string;
     avgRating: number;
+    notificationsEnabled: boolean;
+    address: string;
     // some settings
 }
 
