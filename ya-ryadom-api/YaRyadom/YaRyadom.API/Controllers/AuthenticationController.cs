@@ -6,7 +6,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using YaRyadom.API.Models;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
 
@@ -82,6 +81,16 @@ namespace YaRyadom.API.Controllers
 		public async Task<IActionResult> SaveGuide([FromBody] UserGuideCompletedRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserGuideCompletedAsync(model, cancellationToken).ConfigureAwait(false);
+			return Ok(true);
+		}
+
+		[AllowAnonymous]
+		[HttpPost("user-info/notifications/save")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> SaveNotifications([FromBody] UserNotificationsRequestModel model, CancellationToken cancellationToken = default)
+		{
+			await _authenticationService.SaveUserNotificationsAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
 		}
 	}

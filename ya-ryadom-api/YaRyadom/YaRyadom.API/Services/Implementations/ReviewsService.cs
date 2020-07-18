@@ -27,12 +27,14 @@ namespace YaRyadom.API.Services.Implementations
 
 			var users = await _dbContext
 				.YaRyadomUsers
+				.AsNoTracking()
 				.Where(m => m.VkId == model.VkOwnerUserId || m.VkId == model.VkUserId)
+				.Select(m => new { m.VkId, m.Id })
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
 
-			yaRyadomReview.YaRyadomUserReviewer = users.FirstOrDefault(m => m.VkId == model.VkOwnerUserId);
-			yaRyadomReview.YaRyadomUserToReview = users.FirstOrDefault(m => m.VkId == model.VkUserId);
+			yaRyadomReview.YaRyadomUserReviewerId = users.Where(m => m.VkId == model.VkOwnerUserId).Select(m => m.Id).FirstOrDefault();
+			yaRyadomReview.YaRyadomUserToReviewId = users.Where(m => m.VkId == model.VkUserId).Select(m => m.Id).FirstOrDefault();
 
 			Entities.Add(yaRyadomReview);
 

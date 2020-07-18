@@ -34,7 +34,11 @@ namespace YaRyadom.Domain.Entities
 
 		public bool Revoked { get; set; }
 
+		public string Address { get; set; }
+
 		public int YaRyadomUserOwnerId { get; set; }
+
+		public bool Ended { get; set; }
 
 		public NpgsqlTsVector SearchVector { get; set; }
 

@@ -7,5 +7,7 @@ namespace YaRyadom.API.Models.Base
 		public long VkUserId { get; set; }		
 
 		public ThemeTypeModel[] SelectedThemes { get; set; }
+
+		public bool NotificationsEnabled { get; set; }
 	}
 }

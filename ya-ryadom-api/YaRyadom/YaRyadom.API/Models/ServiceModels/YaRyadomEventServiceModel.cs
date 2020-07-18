@@ -37,5 +37,7 @@ namespace YaRyadom.API.Models.ServiceModels
 		public ApplicationStatusModel ApplicationStatus { get; set;}
 
 		public ThemeTypeModel ThemeType { get; set; }
+
+		public bool Ended { get; set; }
 	}
 }

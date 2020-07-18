@@ -34,6 +34,10 @@ namespace YaRyadom.Domain.Entities
 
 		public Point LastLocation { get; set; }
 
+		public bool NotificationsEnabled { get; set; }
+
+		public string Address { get; set; }
+
 		#region Navigation properties
 
 		public ICollection<YaRyadomEvent> OwnYaRyadomEvents

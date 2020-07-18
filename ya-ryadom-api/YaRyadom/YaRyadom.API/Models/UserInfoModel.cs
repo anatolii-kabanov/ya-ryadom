@@ -17,5 +17,7 @@ namespace YaRyadom.API.Models
 		public PositionModel LastLocation { get; set; }
 
 		public double AvgRating { get; set; }
+
+		public string Address { get; set; }
 	}
 }

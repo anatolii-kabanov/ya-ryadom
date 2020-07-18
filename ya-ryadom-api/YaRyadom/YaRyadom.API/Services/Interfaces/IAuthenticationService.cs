@@ -20,5 +20,6 @@ namespace YaRyadom.API.Services.Interfaces
 
 		Task<bool> SaveUserGuideCompletedAsync(UserGuideCompletedRequestModel model, CancellationToken cancellationToken = default);
 
+		Task<bool> SaveUserNotificationsAsync(UserNotificationsRequestModel model, CancellationToken cancellationToken = default);
 	}
 }

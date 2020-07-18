@@ -20,6 +20,12 @@ namespace YaRyadom.Domain.Mapping
 			builder.Property(m => m.VkId).HasColumnName("vk_id");
 			builder.Property(m => m.LastLocation).HasColumnName("last_location");
 			builder.HasIndex(m => m.VkId).IsUnique();
+			builder
+				.Property(m => m.NotificationsEnabled)
+				.HasColumnName("notifications_enabled")
+				.IsRequired()
+				.HasDefaultValue(false);
+			builder.Property(m => m.Address).HasMaxLength(255).HasColumnName("address");
 		}
 	}
 }

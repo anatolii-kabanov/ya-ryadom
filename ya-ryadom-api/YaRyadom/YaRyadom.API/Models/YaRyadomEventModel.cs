@@ -24,5 +24,7 @@ namespace YaRyadom.API.Models
 		public ThemeTypeModel ThemeType { get; set; }
 
 		public string Time { get; set; }
+
+		public bool Ended { get; set; }
 	}
 }

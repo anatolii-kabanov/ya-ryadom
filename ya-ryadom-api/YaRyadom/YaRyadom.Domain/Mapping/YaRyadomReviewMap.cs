@@ -19,9 +19,21 @@ namespace YaRyadom.Domain.Mapping
 			builder.Property(m => m.YaRyadomUserReviewerId).HasColumnName("ya_ryadom_user_reviewer_id");
 			builder.Property(m => m.YaRyadomUserToReviewId).HasColumnName("ya_ryadom_user_to_review_id");
 
-			builder.HasOne(m => m.YaRyadomEvent).WithMany(a => a.YaRyadomReviews).HasForeignKey(s => s.YaRyadomEventId);
-			builder.HasOne(m => m.YaRyadomUserReviewer).WithMany(a => a.YaRyadomReviewsMine).HasForeignKey(s => s.YaRyadomUserReviewerId);
-			builder.HasOne(m => m.YaRyadomUserToReview).WithMany(a => a.YaRyadomReviewsAboutMe).HasForeignKey(s => s.YaRyadomUserToReviewId);
+			builder
+				.HasOne(m => m.YaRyadomEvent)
+				.WithMany(a => a.YaRyadomReviews)
+				.HasForeignKey(s => s.YaRyadomEventId)
+				.HasConstraintName("FK_ya_ryadom_event_id");
+			builder
+				.HasOne(m => m.YaRyadomUserReviewer)
+				.WithMany(a => a.YaRyadomReviewsMine)
+				.HasForeignKey(s => s.YaRyadomUserReviewerId)
+				.HasConstraintName("FK_ya_ryadom_user_reviewer_id");
+			builder
+				.HasOne(m => m.YaRyadomUserToReview)
+				.WithMany(a => a.YaRyadomReviewsAboutMe)
+				.HasForeignKey(s => s.YaRyadomUserToReviewId)
+				.HasConstraintName("FK_ya_ryadom_user_to_review_id");
 		}
 	}
 }

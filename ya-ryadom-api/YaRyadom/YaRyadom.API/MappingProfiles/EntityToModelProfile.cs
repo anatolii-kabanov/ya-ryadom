@@ -21,6 +21,8 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMySelf))
 				.ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
 				.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+				.ForMember(dest => dest.NotificationsEnabled, opt => opt.MapFrom(src => src.NotificationsEnabled))
+				.ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
 				.ForMember(dest => dest.AvgRating, opt => opt.MapFrom(src => src.YaRyadomReviewsAboutMe.Average(m => m.Rating)))
 				.ForMember(dest => dest.SelectedThemes, opt => opt.MapFrom(src => src.YaRyadomUserThemes.Select(m => (ThemeTypeModel)m.Type)))
 				.ForMember(dest => dest.LastLocation, opt => opt.MapFrom(src => new PositionModel() { Latitude = src.LastLocation.Y, Longitude = src.LastLocation.X }));
@@ -36,6 +38,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.UserFullName))
 				.ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.Distance))
 				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.ThemeType))
+				.ForMember(dest => dest.Ended, opt => opt.MapFrom(src => src.Ended))
 				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time != null ? src.Time.Value.ToString(@"hh\:mm") : string.Empty))
 				.ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location.Y))
 				.ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location.X));
@@ -45,7 +48,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
 				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
 				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
-				.ForMember(dest => dest.Ended, opt => opt.MapFrom(src => src.Date == null || src.Date < DateTime.UtcNow.Date))// Should be replaced with DB property
+				.ForMember(dest => dest.Ended, opt => opt.MapFrom(src => src.Ended))
 				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time))
 				.ForMember(dest => dest.MaxQuantity, opt => opt.MapFrom(src => src.MaxQuantity))
 				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.YaRyadomEventThemes.Select(m => (ThemeTypeModel)m.Type).FirstOrDefault()))
@@ -58,7 +61,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
 				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
 				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
-				.ForMember(dest => dest.Ended, opt => opt.MapFrom(src => src.Date == null || src.Date < DateTime.UtcNow.Date))// Should be replaced with DB property
+				.ForMember(dest => dest.Ended, opt => opt.MapFrom(src => src.Ended))
 				.ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time))
 				.ForMember(dest => dest.MaxQuantity, opt => opt.MapFrom(src => src.MaxQuantity))
 				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.YaRyadomEventThemes.Select(m => (ThemeTypeModel)m.Type).FirstOrDefault()))

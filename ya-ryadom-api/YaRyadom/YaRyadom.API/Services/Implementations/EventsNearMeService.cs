@@ -35,7 +35,10 @@ namespace YaRyadom.API.Services.Implementations
 			var userPosition = _geometryFactory.CreatePoint(new Coordinate(model.Longitude, model.Latitude));
 
 			model.MaxDistance *= 1000;
-			Expression<Func<YaRyadomEvent, bool>> whereExpression = m => m.Location.Distance(userPosition) <= model.MaxDistance;
+			Expression<Func<YaRyadomEvent, bool>> whereExpression = m =>
+				m.YaRyadomUserOwner.VkId != model.VkUserId
+				&& !m.Ended
+				&& m.Location.Distance(userPosition) <= model.MaxDistance;
 			if (!string.IsNullOrWhiteSpace(model.SearchText))
 			{
 				Expression<Func<YaRyadomEvent, bool>> whereTextExpression = m => m.SearchVector.Matches(EF.Functions.ToTsQuery("russian", model.SearchText));
