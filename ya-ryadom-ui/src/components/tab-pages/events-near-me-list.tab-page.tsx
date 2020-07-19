@@ -1,5 +1,5 @@
 import React from 'react';
-import { Group, RichCell, Button, Avatar, Div, CardGrid, Card, Header } from '@vkontakte/vkui';
+import { Group, RichCell, Button, Avatar, Div, Header } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { fetchListRequest } from '../../store/events/events-near-me/actions';
@@ -11,7 +11,7 @@ import { UserInfo } from '@vkontakte/vk-bridge';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import { dateOptions } from '../../utils/constants/event-date-options.constant';
-import { goForward } from "./../../store/history/actions";
+import { goForward, openUserProfile } from "./../../store/history/actions";
 import { VkHistoryModel } from '../../store/history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
@@ -28,7 +28,7 @@ interface PropsFromState {
 interface PropsFromDispatch {
     fetchList: typeof fetchListRequest,
     applyToEvent: typeof applyToEventRequest,
-    goForward: typeof goForward
+    openUserProfile: typeof openUserProfile
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -57,7 +57,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
     }
 
     private renderEvents() {
-        const { eventsList, goForward } = this.props;
+        const { eventsList, openUserProfile } = this.props;
         if (eventsList) {
             return eventsList
                 .map((item, key) => {
@@ -66,7 +66,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
                             <RichCell
                                 disabled
                                 multiline
-                                before={<Avatar onClick={() => goForward(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))} size={48} src={item.vkUserAvatarUrl} />}
+                                before={<Avatar onClick={() => openUserProfile(item.vkUserOwnerId)} size={48} src={item.vkUserAvatarUrl} />}
                                 text={item?.description}
                                 caption={`${new Date(item.date).toLocaleDateString('ru-RU', dateOptions)} в ${item.time}`}
                             >
@@ -77,7 +77,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
                                     ? <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
                                     : <Button className="button-primary btn-status disabled" disabled={true}>{this.renderApplicationStatus(item.applicationStatus)}</Button>}
                                 <Button className="btn-secondary width-50 text-center"
-                                    onClick={() => goForward(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
+                                    onClick={() => openUserProfile(item.vkUserOwnerId)}
                                 >Профиль</Button>
                             </Div>
                         </Group>
@@ -106,7 +106,7 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
 const mapDispatchToProps: PropsFromDispatch = {
     fetchList: fetchListRequest,
     applyToEvent: applyToEventRequest,
-    goForward: goForward
+    openUserProfile: openUserProfile
 }
 
 export default connect(

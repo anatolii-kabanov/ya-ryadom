@@ -21,6 +21,7 @@ import { dateOptions } from '../../../utils/constants/event-date-options.constan
 import { EventsApplications } from '../../../store/applications/models';
 import { fetchEventApplicantsRequest, confirmApplicantRequest, rejectApplicantRequest } from '../../../store/applications/actions';
 import EmptyText from '../../general/empty-text';
+import { openUserProfile } from '../../../store/history/actions';
 
 interface PropsFromState {
     myEvents: MyEvent[],
@@ -32,6 +33,7 @@ interface PropsFromDispatch {
     fetchEventApplicants: typeof fetchEventApplicantsRequest,
     confirm: typeof confirmApplicantRequest,
     reject: typeof rejectApplicantRequest,
+    openUserProfile: typeof openUserProfile
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -66,7 +68,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
     }
 
     private renderApplications(id: number) {
-        const { eventsApplications, confirm, reject } = this.props;
+        const { eventsApplications, confirm, reject, openUserProfile } = this.props;
         const applications = eventsApplications[id];
         if (applications) {
             return applications
@@ -74,7 +76,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
                     return <RichCell
                         key={key}
                         disabled
-                        before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
+                        before={<Avatar size={48} src={item.vkUserAvatarUrl} onClick={() => openUserProfile(item.vkUserId)} />}
                         caption={`${new Date(item.sentDate).toLocaleDateString('ru-RU', { month: 'long', day: 'numeric', hour12: false })}`}
                         actions={
                             <span className="application-btns">
@@ -133,7 +135,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
     render() {
         const { myEvents } = this.props;
         return (
-            myEvents?.length > 0 ? this.renderMyEvents() : <EmptyText/>
+            myEvents?.length > 0 ? this.renderMyEvents() : <EmptyText />
         )
     }
 }
@@ -148,6 +150,7 @@ const mapDispatchToProps: PropsFromDispatch = {
     fetchEventApplicants: fetchEventApplicantsRequest,
     confirm: confirmApplicantRequest,
     reject: rejectApplicantRequest,
+    openUserProfile: openUserProfile
 }
 
 export default connect(

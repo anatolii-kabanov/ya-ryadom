@@ -13,7 +13,7 @@ import { ApplicationStatus } from '../../../utils/enums/application-status.enum'
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { dateOptions } from '../../../utils/constants/event-date-options.constant';
 import { MODALS } from '../../../utils/constants/modal.constants';
-import { setActiveModal } from '../../../store/history/actions';
+import { setActiveModal, openUserProfile } from '../../../store/history/actions';
 import { setUserToReview } from '../../../store/reviews/actions';
 import { SelectedUserToReview } from '../../../store/reviews/models';
 import EmptyText from '../../general/empty-text';
@@ -24,7 +24,8 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     setActiveModal: typeof setActiveModal,
-    setUserToReview: typeof setUserToReview
+    setUserToReview: typeof setUserToReview,
+    openUserProfile: typeof openUserProfile
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -48,7 +49,7 @@ export class ApplicationsVisitedTab extends React.Component<AllProps, State>  {
     }
 
     private renderVisitedEvents() {
-        const { applications } = this.props;
+        const { applications, openUserProfile } = this.props;
         if (applications) {
             return applications
                 .filter((a) => a.status === ApplicationStatus.visited)
@@ -57,7 +58,7 @@ export class ApplicationsVisitedTab extends React.Component<AllProps, State>  {
                         <RichCell
                             disabled
                             multiline
-                            before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
+                            before={<Avatar size={48} src={item.vkUserAvatarUrl} onClick={() => openUserProfile(item.vkUserId)} />}
                             caption={`${new Date(item.eventDate).toLocaleDateString('ru-RU', dateOptions)} в ${item.eventTime}`}
                             actions={<span className="application-btns"><Button className="btn-primary" onClick={() => this.openReviewModal({ eventId: item.eventId, vkUserId: item.vkUserId, applicationId: item.id })}>Оставить отзыв</Button></span>}
                         >
@@ -83,7 +84,8 @@ const mapStateToProps = ({ applications }: AppState) => ({
 
 const mapDispatchToProps: PropsFromDispatch = {
     setActiveModal: setActiveModal,
-    setUserToReview: setUserToReview
+    setUserToReview: setUserToReview,
+    openUserProfile: openUserProfile
 }
 
 export default connect(

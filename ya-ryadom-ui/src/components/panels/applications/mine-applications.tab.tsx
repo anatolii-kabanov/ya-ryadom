@@ -12,10 +12,7 @@ import { Application } from '../../../store/applications/models';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { dateOptions } from '../../../utils/constants/event-date-options.constant';
 import { revokeApplicationRequest } from '../../../store/applications/actions';
-import { VkHistoryModel } from '../../../store/history/models';
-import { VIEWS } from '../../../utils/constants/view.constants';
-import { PANELS } from '../../../utils/constants/panel.constants';
-import { goForward } from '../../../store/history/actions';
+import { openUserProfile } from '../../../store/history/actions';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import EmptyText from '../../general/empty-text';
 
@@ -25,7 +22,7 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     revoke: typeof revokeApplicationRequest,
-    goForward: typeof goForward
+    openUserProfile: typeof openUserProfile
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -36,7 +33,7 @@ interface State {
 export class MineApplicationsTab extends React.Component<AllProps, State>  {
 
     private renderApplications() {
-        const { applications, revoke, goForward } = this.props;
+        const { applications, revoke, openUserProfile } = this.props;
         if (applications) {
             return applications
                 .filter((a) => a.status === ApplicationStatus.sent || a.status === ApplicationStatus.confirmed)
@@ -45,11 +42,11 @@ export class MineApplicationsTab extends React.Component<AllProps, State>  {
                         <RichCell
                             disabled
                             multiline
-                            before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
+                            before={<Avatar size={48} src={item.vkUserAvatarUrl} onClick={() => openUserProfile(item.vkUserId)}  />}
                             caption={`${new Date(item.eventDate).toLocaleDateString('ru-RU', dateOptions)} в ${item.eventTime}`}
                             actions={
                                 <span className="application-btns">
-                                    <Button className="btn-primary" onClick={() => goForward(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}>Профиль</Button>
+                                    <Button className="btn-primary" onClick={() => openUserProfile(item.vkUserId)}>Профиль</Button>
                                     <Button className="btn-secondary" onClick={() => revoke(item.id)}>Отменить</Button>
                                 </span>
                             }
@@ -76,7 +73,7 @@ const mapStateToProps = ({ applications }: AppState) => ({
 
 const mapDispatchToProps: PropsFromDispatch = {
     revoke: revokeApplicationRequest,
-    goForward: goForward
+    openUserProfile: openUserProfile
 }
 
 export default connect(

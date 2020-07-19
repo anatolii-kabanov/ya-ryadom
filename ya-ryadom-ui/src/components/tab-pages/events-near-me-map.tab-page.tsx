@@ -17,7 +17,7 @@ import Marker from './../map/marker';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
 import { MAP } from './../../utils/constants/map.constants';
 import { Geo } from './../../store/authentication/models';
-import { goForward } from "./../../store/history/actions";
+import { goForward, openUserProfile } from "./../../store/history/actions";
 import {
     fetchListRequest, setCurrentVkId
 } from "../../store/events/events-near-me/actions";
@@ -49,7 +49,8 @@ interface PropsFromDispatch {
     goForwardView: typeof goForward,
     fetchList: typeof fetchListRequest,
     applyToEvent: typeof applyToEventRequest,
-    setCurrentVkId: typeof setCurrentVkId
+    setCurrentVkId: typeof setCurrentVkId,
+    openUserProfile: typeof openUserProfile
 }
 type AllProps = PropsFromState & PropsFromDispatch;
 
@@ -176,7 +177,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                     disabled
                                     multiline
                                     before={<Avatar
-                                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
+                                        onClick={() => openUserProfile(selectedEvent?.vkUserOwnerId || 0)}
                                         size={48} src={selectedEvent?.vkUserAvatarUrl} />}
                                     text={selectedEvent?.description}
                                     caption={`${new Date(selectedEvent?.date).toLocaleDateString('ru-RU', dateOptions)} в ${selectedEvent?.time}`}
@@ -193,7 +194,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                         ? <Button className="button-primary" onClick={() => this.apply(selectedEvent?.id || 0)}>Иду</Button>
                                         : <Button className="button-primary btn-status disabled" disabled={true}>{this.renderApplicationStatus(selectedEvent?.applicationStatus)}</Button>}
                                     <Button className="btn-secondary"
-                                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
+                                        onClick={() => openUserProfile(selectedEvent?.vkUserOwnerId || 0)}
                                     >Профиль</Button>
                                 </Div>
                             </Group>
@@ -245,6 +246,7 @@ const mapDispatchToProps: PropsFromDispatch = {
     fetchList: fetchListRequest,
     applyToEvent: applyToEventRequest,
     setCurrentVkId: setCurrentVkId,
+    openUserProfile: openUserProfile
 }
 
 export default connect(
