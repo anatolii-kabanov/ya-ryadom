@@ -29,3 +29,5 @@ export const rejectApplicantError = (payload: any) => action(ApplicationsTypes.R
 export const revokeApplicationRequest = (payload: number) => action(ApplicationsTypes.REVOKE_APPLICATION, payload);
 export const revokeApplicationSuccess = (payload: number) => action(ApplicationsTypes.REVOKE_APPLICATION_SUCCESS, payload);
 export const revokeApplicationError = (payload: any) => action(ApplicationsTypes.REVOKE_APPLICATION_ERROR, payload);
+
+export const removeApplication = (payload: number) => action(ApplicationsTypes.REMOVE_APPLICATION, payload);

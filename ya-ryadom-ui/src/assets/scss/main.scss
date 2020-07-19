@@ -23,6 +23,10 @@
   width: calc(100% - 2 * 24px) !important;
 }
 
+.btn-status {
+  white-space: nowrap;
+}
+
 .nav-icon {
   color: $secondary-color;
 }

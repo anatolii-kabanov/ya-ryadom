@@ -20,4 +20,5 @@ export enum ApplicationsTypes {
     REVOKE_APPLICATION = '[ApplicationsTypes] (POST) Revoke application to event',
     REVOKE_APPLICATION_SUCCESS = '[ApplicationsTypes] Revoke application to event success',
     REVOKE_APPLICATION_ERROR = '[ApplicationsTypes] Revoke application to event error',
+    REMOVE_APPLICATION = '[ApplicationsTypes] Remove application to event',
 };

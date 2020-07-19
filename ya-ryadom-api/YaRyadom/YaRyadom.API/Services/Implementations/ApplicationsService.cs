@@ -81,7 +81,9 @@ namespace YaRyadom.API.Services.Implementations
 				.FirstOrDefaultAsync(cancellationToken)
 				.ConfigureAwait(false);
 
-			application.Revoked = true;
+			// Move status back
+			application.Status = ApplicationStatus.None;
+			//application.Revoked = true;
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
@@ -102,7 +104,7 @@ namespace YaRyadom.API.Services.Implementations
 		{
 			var applications = await _mapper
 				.ProjectTo<MineApplicationModel>(
-					TableNoTracking.Where(m => m.YaRyadomUserRequested.VkId == vkUserId && !m.Revoked)
+					TableNoTracking.Where(m => m.YaRyadomUserRequested.VkId == vkUserId && !m.Revoked && !m.YaRyadomEvent.YaRyadomReviews.Any(mm => mm.YaRyadomUserReviewer.VkId != vkUserId))
 				)
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);

@@ -58,7 +58,7 @@ export class ApplicationsVisitedTab extends React.Component<AllProps, State>  {
                             multiline
                             before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
                             caption={`${new Date(item.eventDate).toLocaleDateString('ru-RU', dateOptions)} в ${item.eventTime}`}
-                            actions={<span className="application-btns"><Button className="btn-primary" onClick={() => this.openReviewModal({ eventId: item.eventId, vkUserId: item.vkUserId })}>Оставить отзыв</Button></span>}
+                            actions={<span className="application-btns"><Button className="btn-primary" onClick={() => this.openReviewModal({ eventId: item.eventId, vkUserId: item.vkUserId, applicationId: item.id })}>Оставить отзыв</Button></span>}
                         >
                             <div className="head">{item.userFullName} <span className="distance">{(item?.distance / 1000).toFixed(2)}км</span></div>
                             <div className="description">{item.text}</div>

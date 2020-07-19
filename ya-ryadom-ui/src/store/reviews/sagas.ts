@@ -15,6 +15,7 @@ import { getVkUserId } from '../authentication/reducer';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 import { setActiveModal } from '../history/actions';
 import { getSelectedUserToReview } from './reducer';
+import { removeApplication } from '../applications/actions';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/reviews`;
 
@@ -58,6 +59,7 @@ function* handleAddReviewRequest(action: ReturnType<typeof addReviewRequest>) {
             yield put(addReviewError(result.errors));
         } else {
             yield put(addReviewSuccess(result));
+            yield put(removeApplication(user.applicationId));
             yield put(setActiveModal(null));
             yield put(setUserToReview(null));
         }

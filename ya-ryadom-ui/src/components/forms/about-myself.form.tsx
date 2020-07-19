@@ -56,7 +56,7 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
                     <Div className="themes-form">
                         <Div><Title level="3" weight="bold" className="title text-center">Напишите о себе</Title ></Div>
                         <FormLayout>
-                            <Input name="aboutMyself" onChange={this.handleInputChange}></Input>
+                            <Input maxLength={64} name="aboutMyself" onChange={this.handleInputChange}></Input>
                         </FormLayout>
                     </Div>
                 </Group>

@@ -139,7 +139,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     private renderApplicationStatus(status: ApplicationStatus) {
         switch (status) {
             case ApplicationStatus.sent:
-                return 'Отправлено';
+                return 'В ожидании';
             case ApplicationStatus.confirmed:
                 return 'Подтверждено';
             case ApplicationStatus.rejected:
@@ -150,21 +150,25 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { goForwardView } = this.props;
+        const { goForwardView, events } = this.props;
         let eventOnMap;
-        if (this.state.eventOnMap) {
+        let selectedEvent = events.find((e) => e.id === this.state.eventOnMap?.id)
+        if (selectedEvent) {
             eventOnMap = <Div className="card-container">
                 <CardGrid>
                     <Card size="l">
                         <div className="cell-container">
-                            <Group header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === this.state.eventOnMap?.themeType)?.name}</Header>}>
+                            <Group header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === selectedEvent?.themeType)?.name}</Header>}>
                                 <RichCell
+                                    disabled
                                     multiline
-                                    before={<Avatar size={48} src={this.state.eventOnMap?.vkUserAvatarUrl} />}
-                                    text={this.state.eventOnMap?.description}
-                                    caption={`${new Date(this.state.eventOnMap?.date).toLocaleDateString('ru-RU', dateOptions)} в ${this.state.eventOnMap?.time}`}
+                                    before={<Avatar
+                                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
+                                        size={48} src={selectedEvent?.vkUserAvatarUrl} />}
+                                    text={selectedEvent?.description}
+                                    caption={`${new Date(selectedEvent?.date).toLocaleDateString('ru-RU', dateOptions)} в ${selectedEvent?.time}`}
                                 >
-                                    <span>{this.state.eventOnMap?.userFullName} <span className="distance">{this.state.eventOnMap?.distance && (this.state.eventOnMap?.distance / 1000).toFixed(2)} км</span></span>
+                                    <span>{selectedEvent?.userFullName} <span className="distance">{selectedEvent?.distance && (selectedEvent?.distance / 1000).toFixed(2)} км</span></span>
                                 </RichCell>
 
                                 <Icon24Dismiss
@@ -172,9 +176,9 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                     onClick={() => this.setState({ eventOnMap: null })} />
 
                                 <Div className="map-card-buttons-div">
-                                    {this.state.eventOnMap?.applicationStatus === ApplicationStatus.none
-                                        ? <Button className="button-primary" onClick={() => this.apply(this.state.eventOnMap?.id)}>Иду</Button>
-                                        : <Button className="button-primary disabled" disabled={true}>{this.renderApplicationStatus(this.state.eventOnMap?.applicationStatus)}</Button>}
+                                    {selectedEvent?.applicationStatus === ApplicationStatus.none
+                                        ? <Button className="button-primary" onClick={() => this.apply(selectedEvent?.id || 0)}>Иду</Button>
+                                        : <Button className="button-primary btn-status disabled" disabled={true}>{this.renderApplicationStatus(selectedEvent?.applicationStatus)}</Button>}
                                     <Button className="btn-secondary"
                                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
                                     >Профиль</Button>
@@ -209,9 +213,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                         </GoogleMapReact>
                     </div>
                 </Group>
-
-                {this.state.eventOnMap && eventOnMap}
-
+                {selectedEvent && eventOnMap}
             </Group>
         )
     }

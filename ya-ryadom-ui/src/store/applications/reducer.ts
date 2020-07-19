@@ -57,6 +57,12 @@ const reducer: Reducer<ApplicationsState> = (state = initialState, action) => {
                 }
             }
         }
+        case ApplicationsTypes.REMOVE_APPLICATION: {
+            return {
+                ...state,
+                mineApplications: [...state.mineApplications.filter((m) => m.id !== action.payload)]
+            }
+        }
         default: {
             return state
         }
