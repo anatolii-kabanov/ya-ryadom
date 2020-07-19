@@ -44,30 +44,6 @@ const TABS = {
 
 const TO_LOCAL_DATE_OPTIONS = { weekday: 'short', month: 'long', day: 'numeric' };
 
-// user vk id
-const CREATED_EVENT = {
-    participated: [
-        {
-            theme: 'Кино', name: 'Классный фильм', description: 'Пппц какой классный и сасный', address: 'Ленина 79Б', date: 'пн 14 июля в 23:45', ended: 0,
-            userAvatars: new Array(10).fill('https://sun1-95.userapi.com/gCsrYFmDPCSMzvMLr88jS8yj3qa7FB404XofVg/8_5cABjkL_0.jpg?ava=1')
-        },
-        {
-            theme: 'Кино', name: 'Классный фильм', description: 'Пппц какой классный и сасный', address: 'Ленина 79Б', date: 'пн 14 июля в 23:45', ended: 0,
-            userAvatars: new Array(10).fill('https://sun1-95.userapi.com/gCsrYFmDPCSMzvMLr88jS8yj3qa7FB404XofVg/8_5cABjkL_0.jpg?ava=1')
-        },
-        {
-            theme: 'Кино', name: 'Классный фильм', description: 'Пппц какой классный и сасный', address: 'Ленина 79Б', date: 'пн 14 июля в 23:45', ended: 1,
-            userAvatars: new Array(10).fill('https://sun1-95.userapi.com/gCsrYFmDPCSMzvMLr88jS8yj3qa7FB404XofVg/8_5cABjkL_0.jpg?ava=1')
-        },
-    ],
-    created: [
-        {
-            theme: 'Горки', name: 'Я хз', description: 'Пппц какой классный и сасный', address: 'В горах', date: 'пн 14 июля в 23:45', ended: 0,
-            userAvatars: new Array(10).fill('https://sun1-95.userapi.com/gCsrYFmDPCSMzvMLr88jS8yj3qa7FB404XofVg/8_5cABjkL_0.jpg?ava=1')
-        },
-    ],
-}
-
 class UserEventsPanel extends React.Component<AllProps> {
     state = {
         activeTab: TABS.СОЗДАЛ,
