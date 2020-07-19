@@ -28,7 +28,12 @@ class RootLayout extends React.Component<AllProps>  {
 
     componentDidMount() {
         const { getVkUserInfo } = this.props;
-        getVkUserInfo();
+
+        if (window.location.hash) {
+            getVkUserInfo(true);
+        } else {
+            getVkUserInfo(false)
+        }
     }
 
     renderLayout() {
@@ -67,7 +72,7 @@ const mapStateToProps = ({ history, ui }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    getVkUserInfo: fetchVkUserInfoRequest
+    getVkUserInfo: fetchVkUserInfoRequest,
 }
 
 export default connect(

@@ -96,6 +96,11 @@ function* handleFetchVkUserInfo(action: ReturnType<typeof fetchVkUserInfoRequest
             yield take(saveUserInfoRequest);
             // Request our user info
             yield put(fetchUserInfoRequest(vkUserInfo.id));
+
+            // if app has been opened by sharable event link
+            if (action.payload) {
+                goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP))
+            }
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {

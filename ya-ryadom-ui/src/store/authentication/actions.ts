@@ -9,7 +9,7 @@ export const fetchUserInfoRequest = (payload: number) => action(AuthenticationTy
 export const fetchUserInfoSuccess = (payload: User) => action(AuthenticationTypes.FETCH_USER_INFO_SUCCESS, payload);
 export const fetchUserInfoError = (payload: any) => action(AuthenticationTypes.FETCH_USER_INFO_ERROR, payload);
 
-export const fetchVkUserInfoRequest = () => action(AuthenticationTypes.FETCH_VK_USER_INFO);
+export const fetchVkUserInfoRequest = (payload: Boolean) => action(AuthenticationTypes.FETCH_VK_USER_INFO, payload);
 export const fetchVkUserInfoSuccess = (payload: UserInfo) => action(AuthenticationTypes.FETCH_VK_USER_INFO_SUCCESS, payload);
 export const fetchVkUserInfoError = (payload: any) => action(AuthenticationTypes.FETCH_VK_USER_INFO_ERROR, payload);
 
