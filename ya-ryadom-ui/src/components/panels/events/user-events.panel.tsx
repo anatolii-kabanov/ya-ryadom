@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import MainHeaderPanel from "../headers/main.header";
 import {
     Button,
+    Div,
     Group,
     Header,
     Panel,
@@ -87,39 +88,48 @@ class UserEventsPanel extends React.Component<AllProps> {
             eventsToRender = participatedEvents;
         }
 
-        return eventsToRender.map((event) =>
-            <Group>
-                <Header mode="secondary">{ALL_THEMES.filter(theme => theme.id === event.themeType)[0].name}</Header>
-                <RichCell
-                    disabled
-                    caption={<span className="rc-caption">{event.description}</span>}
+        if (eventsToRender.length === 0) {
+            return <Div className="no-events-div">Событий пока нет</Div>;
+        } else {
+            return eventsToRender.map((event) =>
+                <Group>
+                    <Header
+                        mode="secondary">{ALL_THEMES.filter(theme => theme.id === event.themeType)[0].name}</Header>
+                    <RichCell
+                        disabled
+                        caption={<span
+                            className="rc-caption">{event.description}</span>}
 
-                    bottom={
-                        <>
-                            <p className="rc-bottom">
-                                Адрес
-                                <span className="rc-bottom-span">
+                        bottom={
+                            <>
+                                <p className="rc-bottom">
+                                    Адрес
+                                    <span className="rc-bottom-span">
                                     {new Date(event.date).toLocaleDateString('ru-RU', TO_LOCAL_DATE_OPTIONS)} в {event.time}
                                 </span>
-                            </p>
-                            <UsersStack
-                                photos={event.participants.map(({vkUserAvatarUrl}) => vkUserAvatarUrl)}
-                            >{event.participants.length} участников</UsersStack>
-                        </>
-                    }
-                    actions={
-                        <React.Fragment>
-                            {event.ended ?
-                                <Button mode="secondary" className="button-disabled">Завершено</Button> :
-                                <Button className="button-primary">Иду</Button>
-                            }
-                        </React.Fragment>
-                    }
-                >
-                    {event.title}
-                </RichCell>
-            </Group>
-        )
+                                </p>
+                                <UsersStack
+                                    photos={event.participants.map(({vkUserAvatarUrl}) => vkUserAvatarUrl)}
+                                >{event.participants.length} участников</UsersStack>
+                            </>
+                        }
+                        actions={
+                            <React.Fragment>
+                                {
+                                    event.ended ?
+                                        <Button mode="secondary"
+                                                className="button-disabled">Завершено</Button> :
+                                        <Button
+                                            className="button-primary">Иду</Button>
+                                }
+                            </React.Fragment>
+                        }
+                    >
+                        {event.title}
+                    </RichCell>
+                </Group>
+            );
+        }
     }
 
     render() {
