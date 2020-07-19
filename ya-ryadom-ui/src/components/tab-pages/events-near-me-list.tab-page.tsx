@@ -60,7 +60,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
         if (eventsList) {
             return eventsList
                 .map((item, key) => {
-                    return <div key={key} style={{ height: 180 }}>
+                    return <div key={key}>
                         <Group separator="show" header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                             <RichCell
                                 disabled
