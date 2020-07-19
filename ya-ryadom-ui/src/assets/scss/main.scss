@@ -131,3 +131,8 @@
 .Textarea textarea:active {
   border-radius: 1px solid $primary-color !important;
 }
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}

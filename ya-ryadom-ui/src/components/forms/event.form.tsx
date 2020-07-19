@@ -5,9 +5,8 @@ import {
     Input,
     Textarea,
     Button,
-    Div,
     Select,
-    FormStatus
+    FormStatus,
 } from '@vkontakte/vkui';
 import GoogleMapReact, { ClickEventValue } from 'google-map-react';
 import Marker from '../map/marker';
@@ -21,7 +20,6 @@ import { goForward } from "../../store/history/actions";
 import isEmpty from "lodash/isEmpty";
 import { MyEventCreate } from '../../store/events/events-near-me/models';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
-import { Validators } from '../../utils/validation/validators';
 import AutocompleteMap from '../inputs/autocomplete-map.input';
 
 interface PropsFromState {
@@ -50,6 +48,11 @@ interface EventState {
     eventTime: string,
     selectedTheme: number,
     [key: string]: any
+}
+
+const maxValues = {
+    maxDescription: 84,
+    maxTitle: 20
 }
 
 class EventForm extends React.Component<AllProps, EventState> {
@@ -137,17 +140,17 @@ class EventForm extends React.Component<AllProps, EventState> {
         if (!this.state.eventName || this.state.eventName.length === 0) {
             formIsValid = false;
             errors['eventName'] = "Обязательное поле";
-        } else if (this.state.eventName.length > 20) {
+        } else if (this.state.eventName.length > maxValues.maxTitle) {
             formIsValid = false;
-            errors['eventName'] = "Максимум 20 символа";
+            errors['eventName'] = `Максимум ${maxValues.maxTitle} символа`;
         }
 
         if (!this.state.eventDescription) {
             formIsValid = false;
             errors['eventDescription'] = "Обязательное поле";
-        } else if (this.state.eventName.length > 84) {
+        } else if (this.state.eventName.length > maxValues.maxDescription) {
             formIsValid = false;
-            errors['eventDescription'] = "Максимум 84 символа";
+            errors['eventDescription'] = `Максимум ${maxValues.maxDescription} символа`;
         }
 
         if (!this.state.selectedTheme) {
@@ -190,13 +193,13 @@ class EventForm extends React.Component<AllProps, EventState> {
     }
 
     render() {
-        const { selectedPosition, errors } = this.state;
+        const { selectedPosition, errors, eventDescription, eventName } = this.state;
 
         return (
             <FormLayout>
                 <Input
-                    maxLength={20}
-                    top="Название"
+                    maxLength={maxValues.maxTitle}
+                    top={<span className="flex-between">Название <span>{maxValues.maxTitle - eventName.length}</span></span>} 
                     type="text"
                     placeholder="Введите текст"
                     name="eventName"
@@ -204,10 +207,10 @@ class EventForm extends React.Component<AllProps, EventState> {
                     status={errors.eventName ? 'error' : 'default'}
                     bottom={errors.eventName}
                 />
-                <Textarea
+                <Textarea                    
                     minLength={1}
-                    maxLength={84}
-                    top="Описание"
+                    maxLength={maxValues.maxDescription}
+                    top={<span className="flex-between">Описание <span>{maxValues.maxDescription - eventDescription.length}</span></span>}                    
                     placeholder="Введите текст"
                     name="eventDescription"
                     onChange={this.handleInputChange}
