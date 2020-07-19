@@ -16,6 +16,7 @@ import { MODALS } from '../../../utils/constants/modal.constants';
 import { setActiveModal } from '../../../store/history/actions';
 import { setUserToReview } from '../../../store/reviews/actions';
 import { SelectedUserToReview } from '../../../store/reviews/models';
+import EmptyText from '../../general/empty-text';
 
 interface PropsFromState {
     applications: Application[];
@@ -68,10 +69,10 @@ export class ApplicationsVisitedTab extends React.Component<AllProps, State>  {
         }
     }
 
-
     render() {
+        const { applications } = this.props;
         return (
-            this.renderVisitedEvents()
+            applications?.length > 0 ? this.renderVisitedEvents() : <EmptyText />
         )
     }
 }
