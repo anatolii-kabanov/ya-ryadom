@@ -1,5 +1,5 @@
 import React from "react";
-import { Group, Panel, RichCell, Avatar } from "@vkontakte/vkui";
+import { Group, Panel, RichCell, Avatar, Div } from "@vkontakte/vkui";
 import { connect } from "react-redux";
 import MainHeaderPanel from "../headers/main.header";
 import Icon24Favorite from '@vkontakte/icons/dist/24/favorite';
@@ -63,6 +63,8 @@ class ReviewsPanel extends React.Component<AllProps> {
             <Panel id={id}>
                 <MainHeaderPanel text="Отзывы"></MainHeaderPanel>
                 {
+                    profileReviews.length === 0 ?
+                        <Div className="no-reviews-div">Отзывов пока нет</Div> :
                     profileReviews.map((review: any) =>
                         <Group id={review.id}>
                             <RichCell
