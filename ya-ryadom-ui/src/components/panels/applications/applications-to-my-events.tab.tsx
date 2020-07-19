@@ -20,6 +20,7 @@ import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { dateOptions } from '../../../utils/constants/event-date-options.constant';
 import { EventsApplications } from '../../../store/applications/models';
 import { fetchEventApplicantsRequest, confirmApplicantRequest, rejectApplicantRequest } from '../../../store/applications/actions';
+import EmptyText from '../../general/empty-text';
 
 interface PropsFromState {
     myEvents: MyEvent[],
@@ -130,8 +131,9 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
 
 
     render() {
+        const { myEvents } = this.props;
         return (
-            this.renderMyEvents()
+            myEvents?.length > 0 ? this.renderMyEvents() : <EmptyText/>
         )
     }
 }

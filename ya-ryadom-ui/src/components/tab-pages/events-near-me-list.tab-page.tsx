@@ -15,6 +15,7 @@ import { goForward } from "./../../store/history/actions";
 import { VkHistoryModel } from '../../store/history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
+import EmptyText from '../general/empty-text';
 
 interface PropsFromState {
     id: string;
@@ -86,9 +87,10 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
     }
 
     render() {
+        const { eventsList } = this.props;
         return (
             <Group separator="hide">
-                {this.renderEvents()}
+                {eventsList?.length > 0 ? this.renderEvents() : <EmptyText text="События не найдены"/>}
             </Group>
         )
     }

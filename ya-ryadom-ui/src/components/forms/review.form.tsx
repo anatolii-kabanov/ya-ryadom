@@ -28,6 +28,11 @@ interface State {
     errors: any;
 }
 
+
+const maxValues = {
+    maxText: 84,
+}
+
 class ReviewForm extends React.Component<AllProps, State> {
 
     /**
@@ -75,9 +80,9 @@ class ReviewForm extends React.Component<AllProps, State> {
         if (!this.state.text || this.state.text.length === 0) {
             formIsValid = false;
             errors['text'] = "Напишите как все прошло";
-        } else if (this.state.text.length > 84) {
+        } else if (this.state.text.length > maxValues.maxText) {
             formIsValid = false;
-            errors['text'] = "Максимум 84 символа";
+            errors['text'] = `Максимум ${maxValues.maxText} символа`;
         }
 
         if (!this.state.rating || this.state.rating === 0) {
@@ -90,7 +95,7 @@ class ReviewForm extends React.Component<AllProps, State> {
     }
 
     render() {
-        const { errors } = this.state;
+        const { errors, text } = this.state;
         return (
             <FormLayout>
                 <RatingInput totalStars={5} onRatingSelected={this.handleRatingSelected}></RatingInput>
@@ -99,8 +104,8 @@ class ReviewForm extends React.Component<AllProps, State> {
                 </FormStatus>}
                 <Textarea
                     minLength={1}
-                    maxLength={84}
-                    top="Комментарий"
+                    maxLength={maxValues.maxText}
+                    top={<span className="flex-between">Комментарий <span>{maxValues.maxText - text.length}</span></span>}   
                     placeholder="Введите текст"
                     onChange={this.handleInputChange}
                     status={errors?.text ? 'error' : 'default'}

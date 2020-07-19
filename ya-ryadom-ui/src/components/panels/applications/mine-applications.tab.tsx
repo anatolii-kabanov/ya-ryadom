@@ -17,6 +17,7 @@ import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
 import { goForward } from '../../../store/history/actions';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
+import EmptyText from '../../general/empty-text';
 
 interface PropsFromState {
     applications: Application[];
@@ -62,10 +63,9 @@ export class MineApplicationsTab extends React.Component<AllProps, State>  {
     }
 
     render() {
+        const { applications } = this.props;
         return (
-            <div>
-                {this.renderApplications()}
-            </div>
+            applications?.length > 0 ? this.renderApplications() : <EmptyText />
         )
     }
 }

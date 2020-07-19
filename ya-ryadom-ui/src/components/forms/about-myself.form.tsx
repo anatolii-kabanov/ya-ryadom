@@ -29,6 +29,11 @@ interface State {
     errors: any | null;
 }
 
+
+const maxValues = {
+    maxAboutMyself: 84,
+}
+
 class AboutMyselfForm extends React.Component<AllProps, State>  {
 
     constructor(props) {
@@ -82,6 +87,7 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
                                 maxLength={64}
                                 placeholder="Введите текст"
                                 name="aboutMyself"
+                                top={<span className="flex-between">О себе<span>{maxValues.maxAboutMyself - aboutMyself.length}</span></span>} 
                                 value={aboutMyself}
                                 onChange={this.handleInputChange}
                                 status={errors?.aboutMyself ? 'error' : 'default'}
