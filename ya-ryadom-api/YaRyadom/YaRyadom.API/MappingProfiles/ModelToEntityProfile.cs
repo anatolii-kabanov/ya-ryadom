@@ -54,7 +54,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.YaRyadomEventId, opt => opt.MapFrom(src => src.EventId))
 				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => false))
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => ApplicationStatus.Sent))
-				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromMinutes(src.TimeZoneMinutes))));
+				.ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTimeOffset.UtcNow.ToOffset(-TimeSpan.FromMinutes(src.TimeZoneMinutes))));
 
 			CreateMap<UserLocationRequestModel, YaRyadomUser>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())

@@ -60,16 +60,27 @@ namespace YaRyadom.API.Services.Implementations
 
 		public async Task<bool> ApplyAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
 		{
-			var application = _mapper.Map<YaRyadomUserApplication>(model);
+			var application = await Query
+				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
+				.FirstOrDefaultAsync(cancellationToken);
 
-			var yaRyadomUser = await _dbContext
-				.YaRyadomUsers
-				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
-				.ConfigureAwait(false);
+			if(application != null)
+			{
+				application.Status = ApplicationStatus.Sent;
+				application.Date = DateTimeOffset.UtcNow.ToOffset(-TimeSpan.FromMinutes(model.TimeZoneMinutes));
+			} else
+			{
+				application = _mapper.Map<YaRyadomUserApplication>(model);
 
-			application.YaRyadomUserRequested = yaRyadomUser;
+				var yaRyadomUser = await _dbContext
+					.YaRyadomUsers
+					.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
+					.ConfigureAwait(false);
 
-			Entities.Add(application);
+				application.YaRyadomUserRequested = yaRyadomUser;
+
+				Entities.Add(application);
+			}			
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
