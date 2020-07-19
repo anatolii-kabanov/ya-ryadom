@@ -160,8 +160,11 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                         <div className="cell-container">
                             <Group header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === selectedEvent?.themeType)?.name}</Header>}>
                                 <RichCell
+                                    disabled
                                     multiline
-                                    before={<Avatar size={48} src={selectedEvent?.vkUserAvatarUrl} />}
+                                    before={<Avatar
+                                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
+                                        size={48} src={selectedEvent?.vkUserAvatarUrl} />}
                                     text={selectedEvent?.description}
                                     caption={`${new Date(selectedEvent?.date).toLocaleDateString('ru-RU', dateOptions)} в ${selectedEvent?.time}`}
                                 >
@@ -175,7 +178,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                 <Div className="map-card-buttons-div">
                                     {selectedEvent?.applicationStatus === ApplicationStatus.none
                                         ? <Button className="button-primary" onClick={() => this.apply(selectedEvent?.id || 0)}>Иду</Button>
-                                        : <Button className="button-primary disabled" disabled={true}>{this.renderApplicationStatus(selectedEvent?.applicationStatus)}</Button>}
+                                        : <Button className="button-primary btn-status disabled" disabled={true}>{this.renderApplicationStatus(selectedEvent?.applicationStatus)}</Button>}
                                     <Button className="btn-secondary"
                                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
                                     >Профиль</Button>

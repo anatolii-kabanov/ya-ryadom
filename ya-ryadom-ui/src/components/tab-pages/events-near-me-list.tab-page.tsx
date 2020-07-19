@@ -63,8 +63,9 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
                     return <div key={key} style={{ height: 180 }}>
                         <Group separator="show" header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                             <RichCell
+                                disabled
                                 multiline
-                                before={<Avatar size={48} src={item.vkUserAvatarUrl} />}
+                                before={<Avatar onClick={() => goForward(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))} size={48} src={item.vkUserAvatarUrl} />}
                                 text={item?.description}
                                 caption={`${new Date(item.date).toLocaleDateString('ru-RU', dateOptions)} в ${item.time}`}
                             >
@@ -73,7 +74,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
                             <Div className="map-card-buttons-div">
                                 {item.applicationStatus === ApplicationStatus.none
                                     ? <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
-                                    : <Button className="button-primary disabled" disabled={true}>{this.renderApplicationStatus(item.applicationStatus)}</Button>}
+                                    : <Button className="button-primary btn-status disabled" disabled={true}>{this.renderApplicationStatus(item.applicationStatus)}</Button>}
                                 <Button className="btn-secondary width-50 text-center"
                                     onClick={() => goForward(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL))}
                                 >Профиль</Button>
