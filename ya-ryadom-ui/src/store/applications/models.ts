@@ -34,6 +34,7 @@ export interface Application {
     distance: number;
     eventId: number;
     themeType: ThemeType;
+    
 }
 
 export interface EventsApplications {

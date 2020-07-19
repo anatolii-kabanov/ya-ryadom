@@ -18,6 +18,7 @@ export interface Review {
 export interface SelectedUserToReview {
     eventId: number;
     vkUserId: number;
+    applicationId: number;
 }
 
 export interface ReviewModel {
