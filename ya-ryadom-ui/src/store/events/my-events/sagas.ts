@@ -25,7 +25,7 @@ function* handleMyEventsFetch() {
     try {
         yield put(showSpinner());
         const vkUserId = yield select(getVkUserId);
-        const result = yield call(callApi, 'get', API_ENDPOINT, `/${vkUserId}`);
+        const result = yield call(callApi, 'get', API_ENDPOINT, `/with-applications/${vkUserId}`);
 
         if (result.errors) {
             yield put(fetchMyEventsListError(result.errors));
