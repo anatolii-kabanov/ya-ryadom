@@ -45,7 +45,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
     private renderApplicationStatus(status: ApplicationStatus) {
         switch (status) {
             case ApplicationStatus.sent:
-                return 'Отправлено';
+                return 'В ожидании';
             case ApplicationStatus.confirmed:
                 return 'Подтверждено';
             case ApplicationStatus.rejected:
