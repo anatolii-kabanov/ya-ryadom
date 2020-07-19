@@ -81,7 +81,9 @@ namespace YaRyadom.API.Services.Implementations
 				.FirstOrDefaultAsync(cancellationToken)
 				.ConfigureAwait(false);
 
-			application.Revoked = true;
+			// Move status back
+			application.Status = ApplicationStatus.None;
+			//application.Revoked = true;
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
