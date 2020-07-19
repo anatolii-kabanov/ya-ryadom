@@ -63,8 +63,8 @@ class ReviewForm extends React.Component<AllProps, State> {
     }
 
     onSubmitClicked() {
-        const { onSave } = this.props;
         if (!this.isValid()) return;
+        const { onSave } = this.props;
         const { text, rating } = this.state;
         onSave({ text, rating });
     }
@@ -75,9 +75,9 @@ class ReviewForm extends React.Component<AllProps, State> {
         if (!this.state.text || this.state.text.length === 0) {
             formIsValid = false;
             errors['text'] = "Напишите как все прошло";
-        } else if (this.state.text.length > 64) {
+        } else if (this.state.text.length > 84) {
             formIsValid = false;
-            errors['text'] = "Максимум 64 символа";
+            errors['text'] = "Максимум 84 символа";
         }
 
         if (!this.state.rating || this.state.rating === 0) {
@@ -99,7 +99,7 @@ class ReviewForm extends React.Component<AllProps, State> {
                 </FormStatus>}
                 <Textarea
                     minLength={1}
-                    maxLength={64}
+                    maxLength={84}
                     top="Комментарий"
                     placeholder="Введите текст"
                     onChange={this.handleInputChange}

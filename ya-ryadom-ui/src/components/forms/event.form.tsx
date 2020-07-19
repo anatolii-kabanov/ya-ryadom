@@ -145,9 +145,9 @@ class EventForm extends React.Component<AllProps, EventState> {
         if (!this.state.eventDescription) {
             formIsValid = false;
             errors['eventDescription'] = "Обязательное поле";
-        } else if (this.state.eventName.length > 64) {
+        } else if (this.state.eventName.length > 84) {
             formIsValid = false;
-            errors['eventDescription'] = "Максимум 64 символа";
+            errors['eventDescription'] = "Максимум 84 символа";
         }
 
         if (!this.state.selectedTheme) {
@@ -206,7 +206,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                 />
                 <Textarea
                     minLength={1}
-                    maxLength={64}
+                    maxLength={84}
                     top="Описание"
                     placeholder="Введите текст"
                     name="eventDescription"

@@ -4,7 +4,8 @@ import {
     FormLayout,
     Button,
     Title,
-    Div
+    Div,
+    FormStatus
 } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
@@ -15,6 +16,7 @@ import { ThemeType } from '../../utils/enums/theme-type.enum';
 interface PropsFromState {
     onSave: (themes: ThemeType[]) => void;
     btnText?: string;
+    selectedThemes: ThemeType[],
 }
 
 interface PropsFromDispatch {
@@ -24,21 +26,40 @@ interface PropsFromDispatch {
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[] }>  {
+interface State {
+    selectedThemes: ThemeType[],
+    errors: any | null;
+}
+
+class ThemesForm extends React.Component<AllProps, State>  {
 
     constructor(props) {
         super(props);
         this.onFillInProfile = this.onFillInProfile.bind(this);
         this.handlePillClick = this.handlePillClick.bind(this);
         this.state = {
-            selectedThemes: []
+            selectedThemes: [...props.selectedThemes],
+            errors: null
         };
     }
 
     onFillInProfile = (data) => {
+        if (!this.isValid()) return;
         const selectedThemes = [...this.state.selectedThemes];
         const { onSave } = this.props;
         onSave(selectedThemes);
+    }
+
+    isValid() {
+        let errors = {};
+        let formIsValid = true;
+        if (!this.state.selectedThemes || this.state.selectedThemes.length === 0) {
+            formIsValid = false;
+            errors['selectedThemes'] = "Выберите хотя бы одну тему";
+        }
+
+        this.setState({ errors: errors });
+        return formIsValid;
     }
 
     handlePillClick = (themeType: ThemeType) => {
@@ -72,12 +93,16 @@ class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[]
 
     render() {
         const { btnText } = this.props;
+        const { errors } = this.state;
         return (
             <Div className="themes-form">
                 <Div><Title level="3" weight="bold" className="title">Выберите темы</Title ></Div>
                 <Div className="pills">
                     {this.renderThemePills()}
                 </Div>
+                {errors?.selectedThemes && <FormStatus mode="error">
+                    {errors?.selectedThemes}
+                </FormStatus>}
                 <FormLayout>
                     <Div className="btn-container-bottom">
                         <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>{btnText ?? 'Продолжить'}</Button>
@@ -89,7 +114,7 @@ class ThemesForm extends React.Component<AllProps, { selectedThemes: ThemeType[]
 }
 
 const mapStateToProps = ({ authentication }: AppState) => ({
-
+    selectedThemes: authentication.currentUser?.selectedThemes
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

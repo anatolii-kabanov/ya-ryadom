@@ -6,7 +6,8 @@ import {
     Title,
     Div,
     Group,
-    Input
+    Input,
+    Textarea
 } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
@@ -14,6 +15,7 @@ import { connect } from 'react-redux';
 interface PropsFromState {
     onSave: (text: string) => void;
     btnText?: string;
+    aboutMySelf: string;
 }
 
 interface PropsFromDispatch {
@@ -24,6 +26,7 @@ type AllProps = PropsFromState & PropsFromDispatch;
 
 interface State {
     aboutMyself: string;
+    errors: any | null;
 }
 
 class AboutMyselfForm extends React.Component<AllProps, State>  {
@@ -31,7 +34,8 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
     constructor(props) {
         super(props);
         this.state = {
-            aboutMyself: ''
+            aboutMyself: props.aboutMySelf,
+            errors: null
         }
         this.onClickNext = this.onClickNext.bind(this);
     }
@@ -44,19 +48,45 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
     }
 
     onClickNext = () => {
+        if (!this.isValid()) return;
         const { onSave } = this.props;
         onSave(this.state.aboutMyself);
     }
 
+    isValid() {
+        let errors = {};
+        let formIsValid = true;
+        if (!this.state.aboutMyself || this.state.aboutMyself.length === 0) {
+            formIsValid = false;
+            errors['aboutMyself'] = "Напишите о себе";
+        } else if (this.state.aboutMyself.length > 64) {
+            formIsValid = false;
+            errors['aboutMyself'] = "Максимум 64 символа";
+        }
+
+        this.setState({ errors: errors });
+        return formIsValid;
+    }
+
     render() {
         const { btnText } = this.props;
+        const { errors, aboutMyself } = this.state;
         return (
             <Group>
                 <Group className="about-myself-group">
                     <Div className="themes-form">
                         <Div><Title level="3" weight="bold" className="title text-center">Напишите о себе</Title ></Div>
                         <FormLayout>
-                            <Input maxLength={64} name="aboutMyself" onChange={this.handleInputChange}></Input>
+                            <Textarea
+                                minLength={1}
+                                maxLength={64}
+                                placeholder="Введите текст"
+                                name="aboutMyself"
+                                value={aboutMyself}
+                                onChange={this.handleInputChange}
+                                status={errors?.aboutMyself ? 'error' : 'default'}
+                                bottom={errors?.aboutMyself}
+                            ></Textarea>
                         </FormLayout>
                     </Div>
                 </Group>
@@ -71,7 +101,7 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
 }
 
 const mapStateToProps = ({ authentication }: AppState) => ({
-
+    aboutMySelf: authentication.currentUser?.aboutMySelf
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
