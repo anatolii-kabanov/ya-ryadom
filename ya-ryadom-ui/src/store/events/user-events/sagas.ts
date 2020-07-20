@@ -21,7 +21,7 @@ function* handleUserCreatedEventsFetch(action: ReturnType<typeof fetchUserCreate
         if (result.errors) {
             yield put(fetchUserCreatedEventsListError(result.errors));
         } else {
-            yield put(fetchUserCreatedEventsListSuccess(result));
+            yield put(fetchUserCreatedEventsListSuccess({ vkUserId: action.payload, events: result }));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -46,7 +46,7 @@ function* handleUserVisitedEventsFetch(action: ReturnType<typeof fetchUserVisite
         if (result.errors) {
             yield put(fetchUserVisitedEventsListError(result.errors));
         } else {
-            yield put(fetchUserVisitedEventsListSuccess(result));
+            yield put(fetchUserVisitedEventsListSuccess({ vkUserId: action.payload, events: result }));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {

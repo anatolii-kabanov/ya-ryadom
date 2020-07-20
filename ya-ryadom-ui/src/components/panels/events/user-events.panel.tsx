@@ -51,13 +51,13 @@ class UserEventsPanel extends React.Component<AllProps> {
 
     componentWillMount() {
         const { vkUserId, fetchCreatedEvents, fetchVisitedEvents } = this.props;
-        const { activeTab } = this.state;
+
         // can user some check here or in the action, not to send too much queries
-        if (activeTab === TABS.СОЗДАЛ) {
-            fetchCreatedEvents(vkUserId);
-        } else {
-            fetchVisitedEvents(vkUserId);
-        }
+
+        fetchCreatedEvents(vkUserId);
+
+        fetchVisitedEvents(vkUserId);
+
     }
 
     renderEvents(activeTab) {
@@ -70,7 +70,7 @@ class UserEventsPanel extends React.Component<AllProps> {
             eventsToRender = userVisitedEvents[vkUserId];
         }
 
-        if (eventsToRender.length === 0) {
+        if (!eventsToRender || eventsToRender.length === 0) {
             return <EmptyText text="Событий пока нет" />;
         } else {
             return eventsToRender.map((event) =>
