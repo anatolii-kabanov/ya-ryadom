@@ -21,6 +21,8 @@ import { dateOptions } from "../../../utils/constants/event-date-options.constan
 import EmptyText from "../../general/empty-text";
 import { UserEvents, UserEvent } from "../../../store/events/user-events/models";
 import { fetchUserCreatedEventsListRequest, fetchUserVisitedEventsListRequest } from "../../../store/events/user-events/actions";
+import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
+import { ApplicationStatusString } from '../../../utils/constants/application-status-string.constant';
 
 interface PropsFromState {
     id: string;
@@ -61,7 +63,7 @@ class UserEventsPanel extends React.Component<AllProps> {
     }
 
     renderEvents(activeTab) {
-        const { userCreatedEvents, userVisitedEvents, vkUserId } = this.props;
+        const { userCreatedEvents, userVisitedEvents, vkUserId, vkUserInfo } = this.props;
 
         let eventsToRender: UserEvent[];
         if (activeTab === TABS.СОЗДАЛ) {
@@ -73,8 +75,9 @@ class UserEventsPanel extends React.Component<AllProps> {
         if (!eventsToRender || eventsToRender.length === 0) {
             return <EmptyText text="Событий пока нет" />;
         } else {
-            return eventsToRender.map((event) =>
-                <Group>
+            return eventsToRender.map((event, key) => {
+                const userApplication = event.participants.find((m) => m.vkUserId === vkUserInfo.id);
+                return <Group key={key}>
                     <Header
                         mode="secondary">{ALL_THEMES.filter(theme => theme.id === event.themeType)[0].name}</Header>
                     <RichCell
@@ -101,16 +104,17 @@ class UserEventsPanel extends React.Component<AllProps> {
                                     event.ended ?
                                         <Button mode="secondary"
                                             className="button-disabled">Завершено</Button> :
-                                        <Button
-                                            className="button-primary">Иду</Button>
+                                        !userApplication || userApplication?.applicationStatus === ApplicationStatus.none
+                                            ? <Button className="button-primary" onClick={() => ''}>Иду</Button>
+                                            : <Button className="button-primary btn-status disabled" disabled={true}>{ApplicationStatusString[userApplication.applicationStatus]}</Button>
                                 }
                             </React.Fragment>
                         }
                     >
                         {event.title}
                     </RichCell>
-                </Group>
-            );
+                </Group >
+            });
         }
     }
 
