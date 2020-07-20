@@ -122,8 +122,6 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }, 100);
 
     onMarkerClick(event: any) {
-        const { setCurrentVkId } = this.props;
-        setCurrentVkId(event.vkUserOwnerId);
         this.setState({
             eventOnMap: event
         })
@@ -164,7 +162,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { goForwardView, events } = this.props;
+        const { goForwardView, events, openUserProfile } = this.props;
         let eventOnMap;
         let selectedEvent = events.find((e) => e.id === this.state.eventOnMap?.id)
         if (selectedEvent) {

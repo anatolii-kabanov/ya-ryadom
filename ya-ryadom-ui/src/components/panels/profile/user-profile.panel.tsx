@@ -7,6 +7,7 @@ import {
     RichCell,
     Div,
     Header,
+    Caption,
 } from "@vkontakte/vkui";
 import { connect } from 'react-redux';
 import { AppState } from "../../../store/app-state";
@@ -26,6 +27,7 @@ import { User } from "../../../store/authentication/models";
 import { VIEWS } from "../../../utils/constants/view.constants";
 import { PANELS } from "../../../utils/constants/panel.constants";
 import { VkHistoryModel } from "../../../store/history/models";
+import Icon24Star from '@vkontakte/icons/dist/24/favorite';
 
 interface PropsFromState {
     id: string;
@@ -129,6 +131,9 @@ class ProfilePanel extends React.Component<AllProps, State>{
                     >
                         <span className="profile-main-row">
                             {currentProfile?.firstName} {currentProfile?.lastName}
+                            <Icon24Star className="star" width={18} height={18}>
+                            </Icon24Star>
+                            <Caption className="rating" weight="regular" level="1">{currentProfile?.avgRating.toFixed(1)}</Caption>
                         </span>
                     </RichCell>
                 </Group>

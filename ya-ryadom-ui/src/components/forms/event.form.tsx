@@ -199,7 +199,7 @@ class EventForm extends React.Component<AllProps, EventState> {
             <FormLayout>
                 <Input
                     maxLength={maxValues.maxTitle}
-                    top={<span className="flex-between">Название <span>{maxValues.maxTitle - eventName.length}</span></span>} 
+                    top={<span className="flex-between">Название <span>{maxValues.maxTitle - eventName.length}</span></span>}
                     type="text"
                     placeholder="Введите текст"
                     name="eventName"
@@ -207,10 +207,10 @@ class EventForm extends React.Component<AllProps, EventState> {
                     status={errors.eventName ? 'error' : 'default'}
                     bottom={errors.eventName}
                 />
-                <Textarea                    
+                <Textarea
                     minLength={1}
                     maxLength={maxValues.maxDescription}
-                    top={<span className="flex-between">Описание <span>{maxValues.maxDescription - eventDescription.length}</span></span>}                    
+                    top={<span className="flex-between">Описание <span>{maxValues.maxDescription - eventDescription.length}</span></span>}
                     placeholder="Введите текст"
                     name="eventDescription"
                     onChange={this.handleInputChange}
@@ -226,6 +226,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                     top="Дата встречи"
                     type="date"
                     name="eventDate"
+                    bottom={errors.eventDate}
                     onChange={this.handleInputChange} required />
                 <Input status={errors.eventTime ? 'error' : 'default'} top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} required />
                 <AutocompleteMap top="Место встречи" placeholder="Адрес" type="address" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
