@@ -1,3 +1,4 @@
+import './user-events.panel.scss';
 import React from "react";
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { User } from "../../../store/authentication/models";
@@ -6,7 +7,6 @@ import { connect } from 'react-redux';
 import MainHeaderPanel from "../headers/main.header";
 import {
     Button,
-    Div,
     Group,
     Header,
     Panel,
@@ -16,28 +16,25 @@ import {
     UsersStack
 } from "@vkontakte/vkui";
 import { AppState } from "../../../store/app-state";
-import { fetchMyEventsListRequest } from "../../../store/events/my-events/actions";
-import { fetchUserInfoRequest } from "../../../store/authentication/actions";
-
-import './user-events.panel.scss';
-import xhr from "xhr";
 import { ALL_THEMES } from "../../../utils/constants/theme.constants";
-import { MyEvent } from "../../../store/events/my-events/models";
 import { dateOptions } from "../../../utils/constants/event-date-options.constant";
 import EmptyText from "../../general/empty-text";
+import { UserEvents, UserEvent } from "../../../store/events/user-events/models";
+import { fetchUserCreatedEventsListRequest, fetchUserVisitedEventsListRequest } from "../../../store/events/user-events/actions";
 
 interface PropsFromState {
     id: string;
     vkUserInfo: UserInfo;
     currentUser: User;
     vkUserId: number;
-    myEvents: MyEvent[];
+    userCreatedEvents: UserEvents;
+    userVisitedEvents: UserEvents;
 }
 
 interface PropsFromDispatch {
-    fetchMyEventsListRequest: typeof fetchMyEventsListRequest;
+    fetchCreatedEvents: typeof fetchUserCreatedEventsListRequest;
+    fetchVisitedEvents: typeof fetchUserVisitedEventsListRequest;
     goForwardView: typeof goForward;
-    fetchUserInfoRequest: typeof fetchUserInfoRequest;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -50,44 +47,27 @@ const TABS = {
 class UserEventsPanel extends React.Component<AllProps> {
     state = {
         activeTab: TABS.СОЗДАЛ,
-        createdEvents: [],
-        participatedEvents: {}
     }
 
     componentWillMount() {
-        const { vkUserId } = this.props
-        let createdEvents, participatedEvents;
-
-        xhr({
-            uri: `${process.env.REACT_APP_API_ENDPOINT}/my-events/${vkUserId}`,
-            sync: true
-        }, (err, resp, body) => {
-            createdEvents = JSON.parse(body);
+        const { vkUserId, fetchCreatedEvents, fetchVisitedEvents } = this.props;
+        const { activeTab } = this.state;
+        // can user some check here or in the action, not to send too much queries
+        if (activeTab === TABS.СОЗДАЛ) {
+            fetchCreatedEvents(vkUserId);
+        } else {
+            fetchVisitedEvents(vkUserId);
         }
-        )
-
-        xhr({
-            uri: `${process.env.REACT_APP_API_ENDPOINT}/my-events/participation/${vkUserId}`,
-            sync: true
-        }, (err, resp, body) => {
-            participatedEvents = JSON.parse(body);
-        }
-        )
-
-        this.setState({
-            createdEvents,
-            participatedEvents
-        })
     }
 
     renderEvents(activeTab) {
-        const { createdEvents, participatedEvents } = this.state;
+        const { userCreatedEvents, userVisitedEvents, vkUserId } = this.props;
 
-        let eventsToRender;
+        let eventsToRender: UserEvent[];
         if (activeTab === TABS.СОЗДАЛ) {
-            eventsToRender = createdEvents;
+            eventsToRender = userCreatedEvents[vkUserId];
         } else {
-            eventsToRender = participatedEvents;
+            eventsToRender = userVisitedEvents[vkUserId];
         }
 
         if (eventsToRender.length === 0) {
@@ -166,16 +146,17 @@ class UserEventsPanel extends React.Component<AllProps> {
 }
 
 const mapStateToProps = ({ events, authentication }: AppState) => ({
-    myEvents: events.myEvents.eventsList,
+    userCreatedEvents: events.userEvents.userCreatedEvents,
+    userVisitedEvents: events.userEvents.userVisitedEvents,
     vkUserInfo: authentication.vkUserInfo,
     vkUserId: events.eventsNearMe.currentVkId,
     currentUser: authentication.currentUser,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    fetchMyEventsListRequest: fetchMyEventsListRequest,
+    fetchCreatedEvents: fetchUserCreatedEventsListRequest,
+    fetchVisitedEvents: fetchUserVisitedEventsListRequest,
     goForwardView: goForward,
-    fetchUserInfoRequest: fetchUserInfoRequest
 }
 
 export default connect(

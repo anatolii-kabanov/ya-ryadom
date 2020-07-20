@@ -16,7 +16,7 @@ const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/user-events`;
 function* handleUserCreatedEventsFetch(action: ReturnType<typeof fetchUserCreatedEventsListRequest>) {
     try {
         yield put(showSpinner());
-        const result = yield call(callApi, 'get', API_ENDPOINT, `/with-applications/${action.payload}`);
+        const result = yield call(callApi, 'get', API_ENDPOINT, `/created/${action.payload}`);
 
         if (result.errors) {
             yield put(fetchUserCreatedEventsListError(result.errors));
