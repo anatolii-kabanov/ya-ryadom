@@ -97,6 +97,15 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
         const showUsers = this.showUsers;
         if (myEvents) {
             return myEvents
+                .sort((a, b) => {
+                    if (a.ended && !b.ended) {
+                        return 1;
+                    }
+                    if (!a.ended && b.ended) {
+                        return -1;
+                    }
+                    return (a.id > b.id) ? 1 : -1;
+                })
                 .map((item, key) => {
                     const photos = item.participants.filter((p) => p.applicationStatus === ApplicationStatus.sent).map((p) => p.vkUserAvatarUrl);
                     const confirmed = item.participants.filter((p) => p.applicationStatus === ApplicationStatus.confirmed);

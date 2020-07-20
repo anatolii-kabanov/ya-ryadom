@@ -9,6 +9,7 @@ import xhr from "xhr";
 import './reviews.panel.scss';
 import { AppState } from "../../../store/app-state";
 import { ALL_THEMES } from "../../../utils/constants/theme.constants";
+import EmptyText from "../../general/empty-text";
 
 interface PropsFromState {
     id: string;
@@ -29,11 +30,11 @@ class ReviewsPanel extends React.Component<AllProps> {
 
     reviewStars(rateNum) {
         let stars: any[] = [];
-        for(let i = 0; i < 5; i++) {
+        for (let i = 0; i < 5; i++) {
             if (i < rateNum) {
-                stars.push(<Icon24Favorite/>);
+                stars.push(<Icon24Favorite />);
             } else {
-                stars.push(<Icon24FavoriteOutline/>)
+                stars.push(<Icon24FavoriteOutline />)
             }
         }
         return (
@@ -44,14 +45,14 @@ class ReviewsPanel extends React.Component<AllProps> {
     componentWillMount() {
         const { vkUserId } = this.props
         xhr({
-                uri: `${process.env.REACT_APP_API_ENDPOINT}/reviews/about-me/${vkUserId}`,
-                sync: true
-            }, (err, resp, body) => {
-                const profileReviews = JSON.parse(body);
-                this.setState({
-                    profileReviews
-                })
-            }
+            uri: `${process.env.REACT_APP_API_ENDPOINT}/reviews/about-me/${vkUserId}`,
+            sync: true
+        }, (err, resp, body) => {
+            const profileReviews = JSON.parse(body);
+            this.setState({
+                profileReviews
+            })
+        }
         )
     }
 
@@ -64,24 +65,24 @@ class ReviewsPanel extends React.Component<AllProps> {
                 <MainHeaderPanel text="Отзывы"></MainHeaderPanel>
                 {
                     profileReviews.length === 0 ?
-                        <Div className="no-reviews-div">Отзывов пока нет</Div> :
-                    profileReviews.map((review: any) =>
-                        <Group id={review.id}>
-                            <RichCell
-                                disabled
-                                before={<Avatar size={56} src={review.vkUserAvatarUrl} className="rc-avatar"/>}
-                                caption={
-                                    <>
-                                        <p className="rc-reviews-caption">{review.userFullName}</p>
-                                        <div className="rc-reviews-bottom">{review.text}</div>
-                                        {this.reviewStars(review.rating)}
-                                    </>
-                                }
-                            >
-                                <span className="rc-reviews-content">{ALL_THEMES.filter(theme => theme.id === review.themeType)[0].name}</span>
-                            </RichCell>
-                        </Group>
-                    )
+                        <EmptyText text="Отзывов пока нет" /> :
+                        profileReviews.map((review: any) =>
+                            <Group id={review.id}>
+                                <RichCell
+                                    disabled
+                                    before={<Avatar size={56} src={review.vkUserAvatarUrl} className="rc-avatar" />}
+                                    caption={
+                                        <>
+                                            <p className="rc-reviews-caption">{review.userFullName}</p>
+                                            <div className="rc-reviews-bottom">{review.text}</div>
+                                            {this.reviewStars(review.rating)}
+                                        </>
+                                    }
+                                >
+                                    <span className="rc-reviews-content">{ALL_THEMES.filter(theme => theme.id === review.themeType)[0].name}</span>
+                                </RichCell>
+                            </Group>
+                        )
                 }
             </Panel>
         );

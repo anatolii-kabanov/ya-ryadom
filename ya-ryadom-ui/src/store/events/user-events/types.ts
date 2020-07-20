@@ -6,4 +6,6 @@ export enum UserEventsTypes {
     FETCH_VISITED_EVENTS = '[User Events] (GET) Fetching user visited events',
     FETCH_VISITED_EVENTS_SUCCESS = '[User Events] Fetching user visited events success',
     FETCH_VISITED_EVENTS_ERROR = '[User Events] Fetching user visited events error',
+
+    SET_SENT_STATUS = '[User Events] Created event changed status for user to sent',
 };

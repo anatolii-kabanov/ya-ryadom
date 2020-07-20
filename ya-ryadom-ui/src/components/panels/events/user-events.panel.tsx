@@ -23,6 +23,7 @@ import { UserEvents, UserEvent } from "../../../store/events/user-events/models"
 import { fetchUserCreatedEventsListRequest, fetchUserVisitedEventsListRequest } from "../../../store/events/user-events/actions";
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { ApplicationStatusString } from '../../../utils/constants/application-status-string.constant';
+import { applyToEventFromUserEvents } from '../../../store/applications/actions';
 
 interface PropsFromState {
     id: string;
@@ -37,6 +38,7 @@ interface PropsFromDispatch {
     fetchCreatedEvents: typeof fetchUserCreatedEventsListRequest;
     fetchVisitedEvents: typeof fetchUserVisitedEventsListRequest;
     goForwardView: typeof goForward;
+    applyToEvent: typeof applyToEventFromUserEvents;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -63,7 +65,7 @@ class UserEventsPanel extends React.Component<AllProps> {
     }
 
     renderEvents(activeTab) {
-        const { userCreatedEvents, userVisitedEvents, vkUserId, vkUserInfo } = this.props;
+        const { userCreatedEvents, userVisitedEvents, vkUserId, vkUserInfo, applyToEvent } = this.props;
 
         let eventsToRender: UserEvent[];
         if (activeTab === TABS.СОЗДАЛ) {
@@ -95,7 +97,7 @@ class UserEventsPanel extends React.Component<AllProps> {
                                 </p>
                                 <UsersStack
                                     photos={event.participants.map(({ vkUserAvatarUrl }) => vkUserAvatarUrl)}
-                                >{event.participants.length} участников</UsersStack>
+                                >{event.participants.length} желающих</UsersStack>
                             </>
                         }
                         actions={
@@ -105,7 +107,7 @@ class UserEventsPanel extends React.Component<AllProps> {
                                         <Button mode="secondary"
                                             className="button-disabled">Завершено</Button> :
                                         !userApplication || userApplication?.applicationStatus === ApplicationStatus.none
-                                            ? <Button className="button-primary" onClick={() => ''}>Иду</Button>
+                                            ? <Button className="button-primary" onClick={() => applyToEvent({ vkUserId: vkUserId, eventId: event.id })}>Иду</Button>
                                             : <Button className="button-primary btn-status disabled" disabled={true}>{ApplicationStatusString[userApplication.applicationStatus]}</Button>
                                 }
                             </React.Fragment>
@@ -161,6 +163,7 @@ const mapDispatchToProps: PropsFromDispatch = {
     fetchCreatedEvents: fetchUserCreatedEventsListRequest,
     fetchVisitedEvents: fetchUserVisitedEventsListRequest,
     goForwardView: goForward,
+    applyToEvent: applyToEventFromUserEvents
 }
 
 export default connect(

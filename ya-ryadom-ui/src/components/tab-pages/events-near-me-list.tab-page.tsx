@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchListRequest } from '../../store/events/events-near-me/actions';
 import { EventNearMe } from '../../store/events/events-near-me/models';
 import { Geo } from '../../store/authentication/models';
-import { applyToEventRequest } from '../../store/applications/actions';
+import { applyToEventFromEvents } from '../../store/applications/actions';
 import { Position } from '../../store/authentication/models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
@@ -28,7 +28,7 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     fetchList: typeof fetchListRequest,
-    applyToEvent: typeof applyToEventRequest,
+    applyToEvent: typeof applyToEventFromEvents,
     openUserProfile: typeof openUserProfile
 }
 
@@ -93,7 +93,7 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
 
 const mapDispatchToProps: PropsFromDispatch = {
     fetchList: fetchListRequest,
-    applyToEvent: applyToEventRequest,
+    applyToEvent: applyToEventFromEvents,
     openUserProfile: openUserProfile
 }
 

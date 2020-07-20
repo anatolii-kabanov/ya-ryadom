@@ -1,10 +1,11 @@
-import { all, call, fork, put, takeEvery, takeLatest, select } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery, takeLatest, select, take } from 'redux-saga/effects';
 import { ApplicationsTypes } from './types';
-import { fetchEventApplicantsRequest, fetchEventApplicantsError, fetchEventApplicantsSuccess, applyToEventRequest, applyToEventError, applyToEventSuccess, confirmApplicantRequest, confirmApplicantError, confirmApplicantSuccess, rejectApplicantRequest, rejectApplicantError, rejectApplicantSuccess, revokeApplicationRequest, revokeApplicationError, revokeApplicationSuccess, fetchMineApplicationsRequest, fetchMineApplicationsError, fetchMineApplicationsSuccess, fetchApplicationsToMeRequest, fetchApplicationsToMeError, fetchApplicationsToMeSuccess } from './actions'
+import { fetchEventApplicantsRequest, fetchEventApplicantsError, fetchEventApplicantsSuccess, applyToEventRequest, applyToEventError, applyToEventSuccess, confirmApplicantRequest, confirmApplicantError, confirmApplicantSuccess, rejectApplicantRequest, rejectApplicantError, rejectApplicantSuccess, revokeApplicationRequest, revokeApplicationError, revokeApplicationSuccess, fetchMineApplicationsRequest, fetchMineApplicationsError, fetchMineApplicationsSuccess, fetchApplicationsToMeRequest, fetchApplicationsToMeError, fetchApplicationsToMeSuccess, applyToEventFromUserEvents, applyToEventFromEvents } from './actions'
 import { callApi } from '../../utils/api';
 import { ApplicationRequest } from './models';
 import { getVkUserId } from '../authentication/reducer';
 import { setSentStatus } from '../events/events-near-me/actions';
+import { setSentStatus as setSentStatusFromUserEvents, fetchUserCreatedEventsListRequest } from '../events/user-events/actions';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 import { updateParticipantStatus } from '../events/my-events/actions';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
@@ -81,8 +82,31 @@ function* watchFetchApplicationsToMeRequest() {
     yield takeEvery(ApplicationsTypes.FETCH_APPLICATIONS_TO_ME, handleFetchApplicationsToMeRequest)
 }
 
+function* handleApplyToEventFromUserEvents(action: ReturnType<typeof applyToEventFromUserEvents>) {
+    yield put(applyToEventRequest(action.payload.eventId));
+    yield take(ApplicationsTypes.APPLY_TO_EVENT_SUCCESS);
+    yield put(fetchUserCreatedEventsListRequest(action.payload.vkUserId));
+    // need to return application id from server
+    // yield put(setSentStatusFromUserEvents(action.payload));
+}
+
+function* watchApplyToEventFromUserEvents() {
+    yield takeLatest(ApplicationsTypes.APPLY_TO_EVENT_FROM_USERS_EVENTS, handleApplyToEventFromUserEvents)
+}
+
+function* handleApplyToEventFromEvents(action: ReturnType<typeof applyToEventFromEvents>) {
+    yield put(applyToEventRequest(action.payload));
+    yield take(ApplicationsTypes.APPLY_TO_EVENT_SUCCESS);
+    yield put(setSentStatus(action.payload));
+}
+
+function* watchApplyToEventFromEvents() {
+    yield takeLatest(ApplicationsTypes.APPLY_TO_EVENT_FROM_EVENTS, handleApplyToEventFromEvents)
+}
+
 function* handleApplyToEventRequest(action: ReturnType<typeof applyToEventRequest>) {
     try {
+        yield put(showSpinner());
         const vkUserId = yield select(getVkUserId);
 
         const applyToEvent: ApplicationRequest = {
@@ -96,7 +120,6 @@ function* handleApplyToEventRequest(action: ReturnType<typeof applyToEventReques
             yield put(applyToEventError(result.errors));
         } else {
             yield put(applyToEventSuccess(action.payload));
-            yield put(setSentStatus(action.payload));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -105,7 +128,7 @@ function* handleApplyToEventRequest(action: ReturnType<typeof applyToEventReques
             yield put(applyToEventError('An unknown error occured.'));
         }
     } finally {
-
+        yield put(hideSpinner());
     }
 }
 
@@ -201,6 +224,8 @@ function* applicationsSagas() {
         fork(watchRevokeApplicationRequest),
         fork(watchFetchMineApplicationsRequest),
         fork(watchFetchApplicationsToMeRequest),
+        fork(watchApplyToEventFromUserEvents),
+        fork(watchApplyToEventFromEvents),
     ])
 }
 
