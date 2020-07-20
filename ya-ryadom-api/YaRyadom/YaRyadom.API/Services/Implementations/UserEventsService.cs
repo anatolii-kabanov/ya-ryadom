@@ -45,7 +45,7 @@ namespace YaRyadom.API.Services.Implementations
 				  TableNoTracking
 				  .Where(m =>
 						m.YaRyadomUserOwner.VkId != vkId
-						&& m.YaRyadomUserApplications.Any(mm => mm.YaRyadomUserRequested.VkId == vkId && mm.Status == ApplicationStatus.Confirmed)
+						&& m.YaRyadomUserApplications.Any(mm => mm.YaRyadomUserRequested.VkId == vkId && mm.Status == ApplicationStatus.Visited)
 					)
 			  )
 			.ToArrayAsync(cancellationToken)
