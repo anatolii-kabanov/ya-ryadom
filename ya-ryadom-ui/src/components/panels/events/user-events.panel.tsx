@@ -22,12 +22,16 @@ import { fetchUserInfoRequest } from "../../../store/authentication/actions";
 import './user-events.panel.scss';
 import xhr from "xhr";
 import { ALL_THEMES } from "../../../utils/constants/theme.constants";
+import { MyEvent } from "../../../store/events/my-events/models";
+import { dateOptions } from "../../../utils/constants/event-date-options.constant";
+import EmptyText from "../../general/empty-text";
 
 interface PropsFromState {
     id: string;
     vkUserInfo: UserInfo;
     currentUser: User;
     vkUserId: number;
+    myEvents: MyEvent[];
 }
 
 interface PropsFromDispatch {
@@ -42,8 +46,6 @@ const TABS = {
     "СОЗДАЛ": "Создал",
     "СХОДИЛ": "Сходил"
 }
-
-const TO_LOCAL_DATE_OPTIONS = { weekday: 'short', month: 'long', day: 'numeric' };
 
 class UserEventsPanel extends React.Component<AllProps> {
     state = {
@@ -89,7 +91,7 @@ class UserEventsPanel extends React.Component<AllProps> {
         }
 
         if (eventsToRender.length === 0) {
-            return <Div className="no-events-div">Событий пока нет</Div>;
+            return <EmptyText text="Событий пока нет"/>;
         } else {
             return eventsToRender.map((event) =>
                 <Group>
@@ -105,7 +107,7 @@ class UserEventsPanel extends React.Component<AllProps> {
                                 <p className="rc-bottom">
                                     Адрес
                                     <span className="rc-bottom-span">
-                                    {new Date(event.date).toLocaleDateString('ru-RU', TO_LOCAL_DATE_OPTIONS)} в {event.time}
+                                    {new Date(event.date).toLocaleDateString('ru-RU', dateOptions)} в {event.time}
                                 </span>
                                 </p>
                                 <UsersStack
