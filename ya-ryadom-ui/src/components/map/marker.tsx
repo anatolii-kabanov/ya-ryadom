@@ -16,6 +16,7 @@ const statusColor = {
     [ApplicationStatus.sent]: '#706C6C',
     [ApplicationStatus.none]: '#F05C44',
     [ApplicationStatus.rejected]: '#F05C44',
+    [ApplicationStatus.visited]: '#F05C44',
 }
 
 const Marker: React.FC<AllProps> = ({ lat, lng, onClick, selected, status }) => {
