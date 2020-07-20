@@ -7,6 +7,7 @@ import { applicationsReducer } from './applications/reducer';
 import { reviewsReducer } from './reviews/reducer';
 import { spinnerReducer } from './ui/spinner/reducer';
 import { settingsReducer } from './ui/settings/reducer';
+import { userEventsReducer } from './events/user-events/reducer';
 
 export const createRootReducer = () =>
     combineReducers({
@@ -15,6 +16,7 @@ export const createRootReducer = () =>
         events: combineReducers({
             eventsNearMe: eventsNearMeReducer,
             myEvents: myEventsReducer,
+            userEvents: userEventsReducer
         }),
         applications: applicationsReducer,
         reviews: reviewsReducer,

@@ -59,19 +59,19 @@ class UserEventsPanel extends React.Component<AllProps> {
         let createdEvents, participatedEvents;
 
         xhr({
-                uri: `${process.env.REACT_APP_API_ENDPOINT}/my-events/${vkUserId}`,
-                sync: true
-            }, (err, resp, body) => {
-                createdEvents = JSON.parse(body);
-            }
+            uri: `${process.env.REACT_APP_API_ENDPOINT}/my-events/${vkUserId}`,
+            sync: true
+        }, (err, resp, body) => {
+            createdEvents = JSON.parse(body);
+        }
         )
 
         xhr({
-                uri: `${process.env.REACT_APP_API_ENDPOINT}/my-events/participation/${vkUserId}`,
-                sync: true
-            }, (err, resp, body) => {
-                participatedEvents = JSON.parse(body);
-            }
+            uri: `${process.env.REACT_APP_API_ENDPOINT}/my-events/participation/${vkUserId}`,
+            sync: true
+        }, (err, resp, body) => {
+            participatedEvents = JSON.parse(body);
+        }
         )
 
         this.setState({
@@ -91,7 +91,7 @@ class UserEventsPanel extends React.Component<AllProps> {
         }
 
         if (eventsToRender.length === 0) {
-            return <EmptyText text="Событий пока нет"/>;
+            return <EmptyText text="Событий пока нет" />;
         } else {
             return eventsToRender.map((event) =>
                 <Group>
@@ -107,11 +107,11 @@ class UserEventsPanel extends React.Component<AllProps> {
                                 <p className="rc-bottom">
                                     Адрес
                                     <span className="rc-bottom-span">
-                                    {new Date(event.date).toLocaleDateString('ru-RU', dateOptions)} в {event.time}
-                                </span>
+                                        {new Date(event.date).toLocaleDateString('ru-RU', dateOptions)} в {event.time}
+                                    </span>
                                 </p>
                                 <UsersStack
-                                    photos={event.participants.map(({vkUserAvatarUrl}) => vkUserAvatarUrl)}
+                                    photos={event.participants.map(({ vkUserAvatarUrl }) => vkUserAvatarUrl)}
                                 >{event.participants.length} участников</UsersStack>
                             </>
                         }
@@ -120,7 +120,7 @@ class UserEventsPanel extends React.Component<AllProps> {
                                 {
                                     event.ended ?
                                         <Button mode="secondary"
-                                                className="button-disabled">Завершено</Button> :
+                                            className="button-disabled">Завершено</Button> :
                                         <Button
                                             className="button-primary">Иду</Button>
                                 }
@@ -145,13 +145,13 @@ class UserEventsPanel extends React.Component<AllProps> {
                 <MainHeaderPanel text='События'></MainHeaderPanel>
                 <Tabs>
                     <TabsItem
-                        selected={ activeTab === TABS.СОЗДАЛ }
+                        selected={activeTab === TABS.СОЗДАЛ}
                         onClick={() => this.setState({ activeTab: TABS.СОЗДАЛ })}
                     >
                         Создал
                     </TabsItem>
                     <TabsItem
-                        selected={ activeTab === TABS.СХОДИЛ }
+                        selected={activeTab === TABS.СХОДИЛ}
                         onClick={() => this.setState({ activeTab: TABS.СХОДИЛ })}
                     >
                         Сходил
