@@ -1,3 +1,4 @@
+import './user-events.panel.scss';
 import React from "react";
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { User } from "../../../store/authentication/models";
@@ -6,7 +7,6 @@ import { connect } from 'react-redux';
 import MainHeaderPanel from "../headers/main.header";
 import {
     Button,
-    Div,
     Group,
     Header,
     Panel,
@@ -16,24 +16,27 @@ import {
     UsersStack
 } from "@vkontakte/vkui";
 import { AppState } from "../../../store/app-state";
-import { fetchMyEventsListRequest } from "../../../store/events/my-events/actions";
-import { fetchUserInfoRequest } from "../../../store/authentication/actions";
-
-import './user-events.panel.scss';
-import xhr from "xhr";
 import { ALL_THEMES } from "../../../utils/constants/theme.constants";
+import { dateOptions } from "../../../utils/constants/event-date-options.constant";
+import EmptyText from "../../general/empty-text";
+import { UserEvents, UserEvent } from "../../../store/events/user-events/models";
+import { fetchUserCreatedEventsListRequest, fetchUserVisitedEventsListRequest } from "../../../store/events/user-events/actions";
+import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
+import { ApplicationStatusString } from '../../../utils/constants/application-status-string.constant';
 
 interface PropsFromState {
     id: string;
     vkUserInfo: UserInfo;
     currentUser: User;
     vkUserId: number;
+    userCreatedEvents: UserEvents;
+    userVisitedEvents: UserEvents;
 }
 
 interface PropsFromDispatch {
-    fetchMyEventsListRequest: typeof fetchMyEventsListRequest;
+    fetchCreatedEvents: typeof fetchUserCreatedEventsListRequest;
+    fetchVisitedEvents: typeof fetchUserVisitedEventsListRequest;
     goForwardView: typeof goForward;
-    fetchUserInfoRequest: typeof fetchUserInfoRequest;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -43,56 +46,38 @@ const TABS = {
     "СХОДИЛ": "Сходил"
 }
 
-const TO_LOCAL_DATE_OPTIONS = { weekday: 'short', month: 'long', day: 'numeric' };
-
 class UserEventsPanel extends React.Component<AllProps> {
     state = {
         activeTab: TABS.СОЗДАЛ,
-        createdEvents: [],
-        participatedEvents: {}
     }
 
     componentWillMount() {
-        const { vkUserId } = this.props
-        let createdEvents, participatedEvents;
+        const { vkUserId, fetchCreatedEvents, fetchVisitedEvents } = this.props;
 
-        xhr({
-                uri: `${process.env.REACT_APP_API_ENDPOINT}/my-events/${vkUserId}`,
-                sync: true
-            }, (err, resp, body) => {
-                createdEvents = JSON.parse(body);
-            }
-        )
+        // can user some check here or in the action, not to send too much queries
 
-        xhr({
-                uri: `${process.env.REACT_APP_API_ENDPOINT}/my-events/participation/${vkUserId}`,
-                sync: true
-            }, (err, resp, body) => {
-                participatedEvents = JSON.parse(body);
-            }
-        )
+        fetchCreatedEvents(vkUserId);
 
-        this.setState({
-            createdEvents,
-            participatedEvents
-        })
+        fetchVisitedEvents(vkUserId);
+
     }
 
     renderEvents(activeTab) {
-        const { createdEvents, participatedEvents } = this.state;
+        const { userCreatedEvents, userVisitedEvents, vkUserId, vkUserInfo } = this.props;
 
-        let eventsToRender;
+        let eventsToRender: UserEvent[];
         if (activeTab === TABS.СОЗДАЛ) {
-            eventsToRender = createdEvents;
+            eventsToRender = userCreatedEvents[vkUserId];
         } else {
-            eventsToRender = participatedEvents;
+            eventsToRender = userVisitedEvents[vkUserId];
         }
 
-        if (eventsToRender.length === 0) {
-            return <Div className="no-events-div">Событий пока нет</Div>;
+        if (!eventsToRender || eventsToRender.length === 0) {
+            return <EmptyText text="Событий пока нет" />;
         } else {
-            return eventsToRender.map((event) =>
-                <Group>
+            return eventsToRender.map((event, key) => {
+                const userApplication = event.participants.find((m) => m.vkUserId === vkUserInfo.id);
+                return <Group key={key}>
                     <Header
                         mode="secondary">{ALL_THEMES.filter(theme => theme.id === event.themeType)[0].name}</Header>
                     <RichCell
@@ -105,11 +90,11 @@ class UserEventsPanel extends React.Component<AllProps> {
                                 <p className="rc-bottom">
                                     Адрес
                                     <span className="rc-bottom-span">
-                                    {new Date(event.date).toLocaleDateString('ru-RU', TO_LOCAL_DATE_OPTIONS)} в {event.time}
-                                </span>
+                                        {new Date(event.date).toLocaleDateString('ru-RU', dateOptions)} в {event.time}
+                                    </span>
                                 </p>
                                 <UsersStack
-                                    photos={event.participants.map(({vkUserAvatarUrl}) => vkUserAvatarUrl)}
+                                    photos={event.participants.map(({ vkUserAvatarUrl }) => vkUserAvatarUrl)}
                                 >{event.participants.length} участников</UsersStack>
                             </>
                         }
@@ -118,17 +103,18 @@ class UserEventsPanel extends React.Component<AllProps> {
                                 {
                                     event.ended ?
                                         <Button mode="secondary"
-                                                className="button-disabled">Завершено</Button> :
-                                        <Button
-                                            className="button-primary">Иду</Button>
+                                            className="button-disabled">Завершено</Button> :
+                                        !userApplication || userApplication?.applicationStatus === ApplicationStatus.none
+                                            ? <Button className="button-primary" onClick={() => ''}>Иду</Button>
+                                            : <Button className="button-primary btn-status disabled" disabled={true}>{ApplicationStatusString[userApplication.applicationStatus]}</Button>
                                 }
                             </React.Fragment>
                         }
                     >
                         {event.title}
                     </RichCell>
-                </Group>
-            );
+                </Group >
+            });
         }
     }
 
@@ -143,13 +129,13 @@ class UserEventsPanel extends React.Component<AllProps> {
                 <MainHeaderPanel text='События'></MainHeaderPanel>
                 <Tabs>
                     <TabsItem
-                        selected={ activeTab === TABS.СОЗДАЛ }
+                        selected={activeTab === TABS.СОЗДАЛ}
                         onClick={() => this.setState({ activeTab: TABS.СОЗДАЛ })}
                     >
                         Создал
                     </TabsItem>
                     <TabsItem
-                        selected={ activeTab === TABS.СХОДИЛ }
+                        selected={activeTab === TABS.СХОДИЛ}
                         onClick={() => this.setState({ activeTab: TABS.СХОДИЛ })}
                     >
                         Сходил
@@ -164,16 +150,17 @@ class UserEventsPanel extends React.Component<AllProps> {
 }
 
 const mapStateToProps = ({ events, authentication }: AppState) => ({
-    myEvents: events.myEvents.eventsList,
+    userCreatedEvents: events.userEvents.userCreatedEvents,
+    userVisitedEvents: events.userEvents.userVisitedEvents,
     vkUserInfo: authentication.vkUserInfo,
     vkUserId: events.eventsNearMe.currentVkId,
     currentUser: authentication.currentUser,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    fetchMyEventsListRequest: fetchMyEventsListRequest,
+    fetchCreatedEvents: fetchUserCreatedEventsListRequest,
+    fetchVisitedEvents: fetchUserVisitedEventsListRequest,
     goForwardView: goForward,
-    fetchUserInfoRequest: fetchUserInfoRequest
 }
 
 export default connect(

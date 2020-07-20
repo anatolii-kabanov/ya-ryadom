@@ -99,6 +99,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
             return myEvents
                 .map((item, key) => {
                     const photos = item.participants.filter((p) => p.applicationStatus === ApplicationStatus.sent).map((p) => p.vkUserAvatarUrl);
+                    const confirmed = item.participants.filter((p) => p.applicationStatus === ApplicationStatus.confirmed);
                     const newApplicants = photos.length;
                     return <Group key={key} separator="show" className="application-card" header={
                         <Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openBase(item.id)}/>}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
@@ -114,9 +115,9 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
                             <UsersStack
                                 className="applicants"
                                 photos={photos}
-                            >Хотят пойти с вами {newApplicants > 0 ? '+' : ''}{newApplicants} человек</UsersStack>
+                            >Подтвержденные {confirmed.length} и новые {newApplicants > 0 ? '+' : ''}{newApplicants}</UsersStack>
 
-                            {!this.state[item.id] && newApplicants > 0 && <Button className="btn-primary show-applicants-btn" onClick={() => showUsers(item.id)}>Просмотреть</Button>}
+                            {!this.state[item.id] && newApplicants > 0 && <Button className="btn-primary show-applicants-btn" onClick={() => showUsers(item.id)}>Новые</Button>}
 
                             {this.state[item.id] && <div className="users-list">
                                 {

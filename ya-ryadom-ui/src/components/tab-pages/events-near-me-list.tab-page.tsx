@@ -16,6 +16,7 @@ import { VkHistoryModel } from '../../store/history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
 import EmptyText from '../general/empty-text';
+import { ApplicationStatusString } from '../../utils/constants/application-status-string.constant';
 
 interface PropsFromState {
     id: string;
@@ -43,19 +44,6 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
         applyToEvent(eventId);
     }
 
-    private renderApplicationStatus(status: ApplicationStatus) {
-        switch (status) {
-            case ApplicationStatus.sent:
-                return 'В ожидании';
-            case ApplicationStatus.confirmed:
-                return 'Подтверждено';
-            case ApplicationStatus.rejected:
-                return 'Отклонено';
-            default:
-                return '';
-        }
-    }
-
     private renderEvents() {
         const { eventsList, openUserProfile } = this.props;
         if (eventsList) {
@@ -75,7 +63,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
                             <Div className="map-card-buttons-div">
                                 {item.applicationStatus === ApplicationStatus.none
                                     ? <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
-                                    : <Button className="button-primary btn-status disabled" disabled={true}>{this.renderApplicationStatus(item.applicationStatus)}</Button>}
+                                    : <Button className="button-primary btn-status disabled" disabled={true}>{ApplicationStatusString[item.applicationStatus]}</Button>}
                                 <Button className="btn-secondary width-50 text-center"
                                     onClick={() => openUserProfile(item.vkUserOwnerId)}
                                 >Профиль</Button>
@@ -90,7 +78,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
         const { eventsList } = this.props;
         return (
             <Group separator="hide">
-                {eventsList?.length > 0 ? this.renderEvents() : <EmptyText text="События не найдены"/>}
+                {eventsList?.length > 0 ? this.renderEvents() : <EmptyText text="События не найдены" />}
             </Group>
         )
     }

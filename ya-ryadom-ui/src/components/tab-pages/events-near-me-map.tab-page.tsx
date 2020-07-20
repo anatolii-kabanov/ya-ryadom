@@ -35,6 +35,7 @@ import { VkHistoryModel } from "../../store/history/models";
 import { VIEWS } from "../../utils/constants/view.constants";
 import { PANELS } from "../../utils/constants/panel.constants";
 import { dateOptions } from '../../utils/constants/event-date-options.constant';
+import { ApplicationStatusString } from '../../utils/constants/application-status-string.constant';
 
 interface PropsFromState {
     id: string;
@@ -81,7 +82,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
             return events
                 .map((item, key) => {
                     return <Marker
-                        inActive={item.applicationStatus === ApplicationStatus.sent}
+                        status={item.applicationStatus}
                         selected={this.state.eventOnMap?.id === item.id}
                         key={key}
                         lat={item.latitude}
@@ -148,21 +149,8 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
         applyToEvent(eventId);
     }
 
-    private renderApplicationStatus(status: ApplicationStatus) {
-        switch (status) {
-            case ApplicationStatus.sent:
-                return 'В ожидании';
-            case ApplicationStatus.confirmed:
-                return 'Подтверждено';
-            case ApplicationStatus.rejected:
-                return 'Отклонено';
-            default:
-                return '';
-        }
-    }
-
     render() {
-        const { goForwardView, events, openUserProfile } = this.props;
+        const { events, openUserProfile } = this.props;
         let eventOnMap;
         let selectedEvent = events.find((e) => e.id === this.state.eventOnMap?.id)
         if (selectedEvent) {
@@ -190,7 +178,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                 <Div className="map-card-buttons-div">
                                     {selectedEvent?.applicationStatus === ApplicationStatus.none
                                         ? <Button className="button-primary" onClick={() => this.apply(selectedEvent?.id || 0)}>Иду</Button>
-                                        : <Button className="button-primary btn-status disabled" disabled={true}>{this.renderApplicationStatus(selectedEvent?.applicationStatus)}</Button>}
+                                        : <Button className="button-primary btn-status disabled" disabled={true}>{ApplicationStatusString[selectedEvent?.applicationStatus]}</Button>}
                                     <Button className="btn-secondary"
                                         onClick={() => openUserProfile(selectedEvent?.vkUserOwnerId || 0)}
                                     >Профиль</Button>
