@@ -163,8 +163,11 @@ class EventForm extends React.Component<AllProps, EventState> {
             errors['eventDate'] = "Обязательное поле";
         } else {
             const currentDate = new Date();
+            const min = -currentDate.getTimezoneOffset();
+            currentDate.setHours(0,min,0,0);
             const selectedDate = new Date(this.state.eventDate);
             if (selectedDate < currentDate) {
+                formIsValid = false;
                 errors['eventDate'] = "Нельзя выбрать прошедшие даты";
             }
         }
