@@ -81,7 +81,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
             return events
                 .map((item, key) => {
                     return <Marker
-                        inActive={item.applicationStatus === ApplicationStatus.sent}
+                        status={item.applicationStatus}
                         selected={this.state.eventOnMap?.id === item.id}
                         key={key}
                         lat={item.latitude}
