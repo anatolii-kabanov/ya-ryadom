@@ -20,6 +20,7 @@ import ApplicationsToMyEventsTab from './applications-to-my-events.tab';
 interface PropsFromState {
     id: string;
     applications: Application[];
+    openBase: () => void;
 }
 
 interface PropsFromDispatch {
@@ -61,9 +62,10 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
 
     private renderApplications() {
         const { activeTab } = this.state;
+        const { openBase } = this.props;
 
         return <Group>
-            {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationsToMyEventsTab />}
+            {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationsToMyEventsTab openBase={openBase} />}
             {activeTab == TABS.WANT_VISIT_APPLICATIONS && <MineApplicationsTab />}
             {activeTab == TABS.VISITED_APPLICATIONS && <ApplicationsVisitedTab />}
         </Group>

@@ -28,7 +28,6 @@ interface State {
 }
 
 class EventsNearMePanel extends React.Component<AllProps, State>  {
-
     render() {
         const { id, activeTab, openFilter } = this.props;
 

@@ -25,7 +25,8 @@ import { openUserProfile } from '../../../store/history/actions';
 
 interface PropsFromState {
     myEvents: MyEvent[],
-    eventsApplications: EventsApplications
+    eventsApplications: EventsApplications,
+    openBase: (eventId: Number) => void,
 }
 
 interface PropsFromDispatch {
@@ -33,7 +34,7 @@ interface PropsFromDispatch {
     fetchEventApplicants: typeof fetchEventApplicantsRequest,
     confirm: typeof confirmApplicantRequest,
     reject: typeof rejectApplicantRequest,
-    openUserProfile: typeof openUserProfile
+    openUserProfile: typeof openUserProfile,
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -92,7 +93,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
     }
 
     private renderMyEvents() {
-        const { myEvents, eventsApplications } = this.props;
+        const { myEvents, eventsApplications, openBase } = this.props;
         const showUsers = this.showUsers;
         if (myEvents) {
             return myEvents
@@ -100,7 +101,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
                     const photos = item.participants.filter((p) => p.applicationStatus === ApplicationStatus.sent).map((p) => p.vkUserAvatarUrl);
                     const newApplicants = photos.length;
                     return <Group key={key} separator="show" className="application-card" header={
-                        <Header mode="secondary" aside={<Icon16MoreHorizontal />}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
+                        <Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openBase(item.id)}/>}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                         <Div className="body">
                             <div className="title">{item.title}</div>
                             <div className="description">{item.description}</div>
@@ -150,7 +151,7 @@ const mapDispatchToProps: PropsFromDispatch = {
     fetchEventApplicants: fetchEventApplicantsRequest,
     confirm: confirmApplicantRequest,
     reject: rejectApplicantRequest,
-    openUserProfile: openUserProfile
+    openUserProfile: openUserProfile,
 }
 
 export default connect(
