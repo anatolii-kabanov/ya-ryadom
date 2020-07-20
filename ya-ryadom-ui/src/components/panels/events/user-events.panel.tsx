@@ -97,7 +97,7 @@ class UserEventsPanel extends React.Component<AllProps> {
                                 </p>
                                 <UsersStack
                                     photos={event.participants.map(({ vkUserAvatarUrl }) => vkUserAvatarUrl)}
-                                >{event.participants.length} участников</UsersStack>
+                                >{event.participants.length} желающих</UsersStack>
                             </>
                         }
                         actions={

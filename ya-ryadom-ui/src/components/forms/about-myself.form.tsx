@@ -39,7 +39,7 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
     constructor(props) {
         super(props);
         this.state = {
-            aboutMyself: props.aboutMySelf,
+            aboutMyself: props.aboutMySelf ?? "",
             errors: null
         }
         this.onClickNext = this.onClickNext.bind(this);
