@@ -1,6 +1,7 @@
 import { action } from 'typesafe-actions';
 import { ApplicationsTypes } from "./types";
 import { EventApplications, EventApplicationRequest } from './models';
+import { ApplyToEvent } from '../events/user-events/models';
 
 export const fetchEventApplicantsRequest = (payload: number) => action(ApplicationsTypes.FETCH_EVENT_APPLICANTS, payload);
 export const fetchEventApplicantsSuccess = (payload: EventApplications) => action(ApplicationsTypes.FETCH_EVENT_APPLICANTS_SUCCESS, payload);
@@ -14,6 +15,8 @@ export const fetchApplicationsToMeRequest = () => action(ApplicationsTypes.FETCH
 export const fetchApplicationsToMeSuccess = (payload: any) => action(ApplicationsTypes.FETCH_APPLICATIONS_TO_ME_SUCCESS, payload);
 export const fetchApplicationsToMeError = (payload: any) => action(ApplicationsTypes.FETCH_APPLICATIONS_TO_ME_ERROR, payload);
 
+export const applyToEventFromEvents = (payload: number) => action(ApplicationsTypes.APPLY_TO_EVENT_FROM_EVENTS, payload);
+export const applyToEventFromUserEvents = (payload: ApplyToEvent) => action(ApplicationsTypes.APPLY_TO_EVENT_FROM_USERS_EVENTS, payload);
 export const applyToEventRequest = (payload: number) => action(ApplicationsTypes.APPLY_TO_EVENT, payload);
 export const applyToEventSuccess = (payload: any) => action(ApplicationsTypes.APPLY_TO_EVENT_SUCCESS, payload);
 export const applyToEventError = (payload: any) => action(ApplicationsTypes.APPLY_TO_EVENT_ERROR, payload);

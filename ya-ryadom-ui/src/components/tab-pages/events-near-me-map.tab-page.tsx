@@ -26,7 +26,7 @@ import { UserInfo } from '@vkontakte/vk-bridge';
 import { Position } from '../../store/authentication/models';
 
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
-import { applyToEventRequest } from '../../store/applications/actions';
+import { applyToEventFromEvents } from '../../store/applications/actions';
 import debounce from 'lodash/debounce';
 import UserMarker from '../map/user-marker';
 import { EventsFilter } from '../../store/ui/settings/state';
@@ -49,7 +49,7 @@ interface PropsFromState {
 interface PropsFromDispatch {
     goForwardView: typeof goForward,
     fetchList: typeof fetchListRequest,
-    applyToEvent: typeof applyToEventRequest,
+    applyToEvent: typeof applyToEventFromEvents,
     setCurrentVkId: typeof setCurrentVkId,
     openUserProfile: typeof openUserProfile
 }
@@ -230,7 +230,7 @@ const mapStateToProps = ({ events, authentication, ui }: AppState) => ({
 const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
     fetchList: fetchListRequest,
-    applyToEvent: applyToEventRequest,
+    applyToEvent: applyToEventFromEvents,
     setCurrentVkId: setCurrentVkId,
     openUserProfile: openUserProfile
 }

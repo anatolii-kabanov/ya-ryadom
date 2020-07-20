@@ -8,6 +8,8 @@ export enum ApplicationsTypes {
     FETCH_APPLICATIONS_TO_ME = '[ApplicationsTypes] (GET) Fetch applications to me',
     FETCH_APPLICATIONS_TO_ME_SUCCESS = '[ApplicationsTypes] Fetch applications to me success',
     FETCH_APPLICATIONS_TO_ME_ERROR = '[ApplicationsTypes] Fetch applications to me error',
+    APPLY_TO_EVENT_FROM_USERS_EVENTS = '[ApplicationsTypes] Apply to event from users created events',
+    APPLY_TO_EVENT_FROM_EVENTS = '[ApplicationsTypes] Apply to event from events page',
     APPLY_TO_EVENT = '[ApplicationsTypes] (POST) Apply to event',
     APPLY_TO_EVENT_SUCCESS = '[ApplicationsTypes] Apply to event success',
     APPLY_TO_EVENT_ERROR = '[ApplicationsTypes] Apply to event error',

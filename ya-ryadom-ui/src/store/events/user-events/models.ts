@@ -10,6 +10,11 @@ export interface UserEventsResponse {
     events: UserEvent[];
 }
 
+export interface ApplyToEvent {
+    vkUserId: number;
+    eventId: number;
+}
+
 export interface UserEvent {
     distance: number,
     longitude: number,
