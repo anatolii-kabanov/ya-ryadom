@@ -9,6 +9,8 @@ using YaRyadom.API.Services.Interfaces;
 
 namespace YaRyadom.API.Controllers
 {
+	[Route("api/v{v:apiVersion}/user-events")]
+	[ApiController]
 	public class UserEventsController : ControllerBase
 	{
 		private readonly IUserEventsService _userEventsService;
