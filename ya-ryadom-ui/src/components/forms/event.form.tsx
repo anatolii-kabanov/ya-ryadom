@@ -79,6 +79,9 @@ class EventForm extends React.Component<AllProps, EventState> {
 
     onLocationClick = (clickEventValue: ClickEventValue) => {
         this.setState({ ...this.state, selectedPosition: { lat: clickEventValue.lat, lng: clickEventValue.lng } });
+        this.setState({
+            errors: { ...this.state.errors, selectedPosition: undefined }
+        });
     }
 
     onFillInProfile = (data) => {
@@ -210,10 +213,12 @@ class EventForm extends React.Component<AllProps, EventState> {
     }
 
     onLocationChanged = (location: Position) => {
-        console.log(location)
         if (location) {
             this.setState({
                 selectedPosition: { lng: location.longitude, lat: location.latitude }
+            });
+            this.setState({
+                errors: { ...this.state.errors, selectedPosition: undefined }
             });
         }
     }

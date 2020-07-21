@@ -10,6 +10,7 @@ import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import RatingInput from '../inputs/rating.input';
 import { ReviewModel } from '../../store/reviews/models';
+import { Validators } from '../../utils/validation/validators';
 
 interface PropsFromState {
     onSave: (userReview: ReviewModel) => void;
@@ -46,7 +47,7 @@ class ReviewForm extends React.Component<AllProps, State> {
         this.state = {
             text: '',
             rating: 0,
-            errors: null
+            errors: {}
         }
     }
 
@@ -55,15 +56,28 @@ class ReviewForm extends React.Component<AllProps, State> {
     }
 
     handleInputChange = (event) => {
-        event.preventDefault()
+        event.preventDefault();
+        const { value, name } = event.target;
         this.setState({
             text: event.target.value
-        })
+        });
+        this.setState({
+            errors: {
+                ...this.state.errors,
+                [name]: Validators.required(value) || Validators.maxLength(value, maxValues.maxText)
+            }
+        });
     }
 
     handleRatingSelected = (rating: number) => {
         this.setState({
             rating: rating
+        });
+        this.setState({
+            errors: {
+                ...this.state.errors,
+                rating: undefined
+            }
         });
     }
 
@@ -105,7 +119,7 @@ class ReviewForm extends React.Component<AllProps, State> {
                 <Textarea
                     minLength={1}
                     maxLength={maxValues.maxText}
-                    top={<span className="flex-between">Комментарий <span>{maxValues.maxText - text.length}</span></span>}   
+                    top={<span className="flex-between">Комментарий <span>{maxValues.maxText - text.length}</span></span>}
                     placeholder="Введите текст"
                     onChange={this.handleInputChange}
                     status={errors?.text ? 'error' : 'default'}

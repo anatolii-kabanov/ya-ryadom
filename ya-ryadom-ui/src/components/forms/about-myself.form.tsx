@@ -11,6 +11,7 @@ import {
 } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
+import { Validators } from '../../utils/validation/validators';
 
 interface PropsFromState {
     onSave: (text: string) => void;
@@ -40,16 +41,22 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
         super(props);
         this.state = {
             aboutMyself: props.aboutMySelf ?? "",
-            errors: null
+            errors: {}
         }
         this.onClickNext = this.onClickNext.bind(this);
     }
 
     handleInputChange = (event) => {
-        event.preventDefault()
+        event.preventDefault();
+        const { value } = event.target;
         this.setState({
-            aboutMyself: event.target.value
+            aboutMyself: value
         })
+        this.setState({
+            errors: { 
+                ...this.state.errors, 
+                aboutMyself: Validators.required(value) || Validators.maxLength(value, maxValues.maxAboutMyself) }
+        });
     }
 
     onClickNext = () => {
@@ -87,7 +94,7 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
                                 maxLength={64}
                                 placeholder="Введите текст"
                                 name="aboutMyself"
-                                top={<span className="flex-between">О себе<span>{maxValues.maxAboutMyself - aboutMyself.length}</span></span>} 
+                                top={<span className="flex-between">О себе<span>{maxValues.maxAboutMyself - aboutMyself.length}</span></span>}
                                 value={aboutMyself}
                                 onChange={this.handleInputChange}
                                 status={errors?.aboutMyself ? 'error' : 'default'}

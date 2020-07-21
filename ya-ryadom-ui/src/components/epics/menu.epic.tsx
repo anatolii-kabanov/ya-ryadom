@@ -11,24 +11,25 @@ import { VIEWS } from '../../utils/constants/view.constants';
 import { goForward } from '../../store/history/actions';
 import Icon28Add from '@vkontakte/icons/dist/28/add_square_outline';
 import { TABS } from '../../utils/constants/tab.constants';
+import { ROOTS } from '../../utils/constants/root.constants';
 
 interface PropsFromState {
     activeView: string;
     activePanel: string;
+    activeStory: string;
 }
 
 interface PropsFromDispatch {
     goForwardView: typeof goForward,
 }
 
-
 type AllProps = PropsFromState & PropsFromDispatch;
 
 class MenuEpic extends React.Component<AllProps>  {
     render() {
-        const { activeView, activePanel, goForwardView } = this.props;
+        const { activeView, activePanel, activeStory, goForwardView } = this.props;
         return (
-            <Epic activeStory={activeView} tabbar={
+            <Epic activeStory={activeStory} tabbar={
                 <Tabbar>
                     <TabbarItem
                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP))}

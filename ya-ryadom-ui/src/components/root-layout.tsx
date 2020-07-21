@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Root, ScreenSpinner, Snackbar } from '@vkontakte/vkui';
+import { Root, ScreenSpinner } from '@vkontakte/vkui';
 import { AppState } from '../store/app-state';
 import { connect } from 'react-redux';
 import { VIEWS } from '../utils/constants/view.constants';
@@ -11,10 +11,13 @@ import MainEpic from './epics/menu.epic';
 import ReviewsView from './views/reviews.view';
 import ApplicationsView from './views/applications.view';
 import GeneralView from './views/general.view';
+import { ROOTS } from '../utils/constants/root.constants';
+import { User } from '../store/authentication/models';
 
 interface PropsFromState {
     activeView: string;
     spinnerVisible: boolean;
+    currentUser: User;
 }
 
 interface PropsFromDispatch {
@@ -48,27 +51,33 @@ class RootLayout extends React.Component<AllProps>  {
                     <GeneralView id={VIEWS.GENERAL_VIEW}></GeneralView>
                 </Root>;
             default:
-                return <MainEpic>
-                    <ApplicationsView id={VIEWS.APPLICATIONS_VIEW} popout={spinnerVisible && <ScreenSpinner />}></ApplicationsView>
-                    <ReviewsView id={VIEWS.REVIEWS_VIEW} popout={spinnerVisible && <ScreenSpinner />}></ReviewsView>
-                    <MyProfileView id={VIEWS.MY_PROFILE_VIEW} popout={spinnerVisible && <ScreenSpinner />}></MyProfileView>
-                    <EventsView id={VIEWS.EVENTS_NEAR_ME_VIEW} popout={spinnerVisible && <ScreenSpinner />}></EventsView>
+                return <MainEpic activeStory={ROOTS.MAIN_ROOT}>
+                    <Root id={ROOTS.MAIN_ROOT} activeView={activeView} popout={spinnerVisible && <ScreenSpinner />}>
+                        <ApplicationsView id={VIEWS.APPLICATIONS_VIEW}></ApplicationsView>
+                        <ReviewsView id={VIEWS.REVIEWS_VIEW}></ReviewsView>
+                        <MyProfileView id={VIEWS.MY_PROFILE_VIEW}></MyProfileView>
+                        <EventsView id={VIEWS.EVENTS_NEAR_ME_VIEW}></EventsView>
+                    </Root>
                 </MainEpic>;
         }
     }
 
     render() {
+        const { currentUser } = this.props;
         return (
-            <div>
-                {this.renderLayout()}
-            </div>
+            !currentUser
+                ? <ScreenSpinner />
+                : <div>
+                    {this.renderLayout()}
+                </div>
         )
     }
 }
 
-const mapStateToProps = ({ history, ui }: AppState) => ({
+const mapStateToProps = ({ history, ui, authentication }: AppState) => ({
     activeView: history.currentViewPanel.view,
     spinnerVisible: ui.spinner.spinnerVisible,
+    currentUser: authentication.currentUser
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
