@@ -25,7 +25,7 @@ interface PropsFromDispatch {
 type AllProps = PropsFromState & PropsFromDispatch;
 
 interface State {
-    
+
 }
 
 export class ApplicationsView extends React.Component<AllProps, State>  {
@@ -36,12 +36,13 @@ export class ApplicationsView extends React.Component<AllProps, State>  {
 
     shareEvent = (eventId) => {
         //TODO need to make const
-        vkBridge.send('VKWebAppShare', {'link': `https://vk.com/app7508849#${eventId}`})
+        vkBridge.send('VKWebAppShare', { 'link': `https://vk.com/app7508849#${eventId}` })
     }
 
     openBase = (eventId) => {
         console.log(eventId)
-        this.setState({ popout:
+        this.setState({
+            popout:
                 <ActionSheet onClose={() => this.setState({ popout: null })}>
                     {/*<ActionSheetItem autoclose>*/}
                     {/*    Редактировать событие*/}
@@ -62,8 +63,8 @@ export class ApplicationsView extends React.Component<AllProps, State>  {
         const { id, activePanel, popout } = this.props;
         //TODO Fix spinner popout
         return (
-            <View id={id} activePanel={activePanel} popout={this.state.popout} modal={
-                <ApplicationsReviewModal/>
+            <View id={id} activePanel={activePanel} popout={popout ?? this.state.popout} modal={
+                <ApplicationsReviewModal />
             }>
                 <ApplicationsPanel id={PANELS.APPLICATIONS_PANEL} openBase={this.openBase}></ApplicationsPanel>
             </View>
