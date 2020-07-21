@@ -21,6 +21,7 @@ import isEmpty from "lodash/isEmpty";
 import { MyEventCreate } from '../../store/events/events-near-me/models';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import AutocompleteMap from '../inputs/autocomplete-map.input';
+import { Validators } from '../../utils/validation/validators';
 
 interface PropsFromState {
     userPosition: Geo,
@@ -104,9 +105,31 @@ class EventForm extends React.Component<AllProps, EventState> {
     }
 
     handleInputChange = event => {
-        event.preventDefault()
+        event.preventDefault();
+        const { name, value } = event.target;
         this.setState({
-            [event.target.name]: event.target.value
+            [name]: value
+        });
+        let validators;
+        switch (name) {
+            case 'eventName':
+                validators = Validators.required(value) || Validators.maxLength(value, maxValues.maxTitle);
+                break;
+            case 'eventDescription':
+                validators = Validators.required(value) || Validators.maxLength(value, maxValues.maxDescription);
+                break;
+            case 'selectedTheme':
+                validators = Validators.required(value);
+                break;
+            case 'eventDate':
+                validators = Validators.required(value) || Validators.minDate(new Date(value), new Date());
+                break;
+            case 'eventTime':
+                validators = Validators.required(value);
+                break;
+        }
+        this.setState({
+            errors: { ...this.state.errors, [name]: validators }
         })
     }
 
@@ -164,7 +187,7 @@ class EventForm extends React.Component<AllProps, EventState> {
         } else {
             const currentDate = new Date();
             const min = -currentDate.getTimezoneOffset();
-            currentDate.setHours(0,min,0,0);
+            currentDate.setHours(0, min, 0, 0);
             const selectedDate = new Date(this.state.eventDate);
             if (selectedDate < currentDate) {
                 formIsValid = false;
