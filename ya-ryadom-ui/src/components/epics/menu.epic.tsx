@@ -37,10 +37,10 @@ class MenuEpic extends React.Component<AllProps>  {
                         data-story={VIEWS.EVENTS_NEAR_ME_VIEW}
                     ><Icon28Place className={activeView === VIEWS.EVENTS_NEAR_ME_VIEW && activePanel !== PANELS.CREATE_EVENT_PANEL ? 'nav-icon-selected' : 'nav-icon'} /></TabbarItem>
                     <TabbarItem
-                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.CREATE_EVENT_PANEL))}
-                        selected={activeView === VIEWS.GENERAL_VIEW && activePanel === PANELS.CREATE_EVENT_PANEL}
-                    ><Icon28Add className={activeView === VIEWS.GENERAL_VIEW && activePanel === PANELS.CREATE_EVENT_PANEL ? 'nav-icon-selected' : 'nav-icon'}></Icon28Add>
-                    </TabbarItem>
+                        onClick={() => goForwardView(new VkHistoryModel(VIEWS.MY_EVENT_CREATE_VIEW, PANELS.CREATE_EVENT_PANEL))}
+                        selected={activeView === VIEWS.MY_EVENT_CREATE_VIEW && activePanel === PANELS.CREATE_EVENT_PANEL}
+                        data-story={VIEWS.MY_EVENT_CREATE_VIEW}
+                    ><Icon28Add className={activeView === VIEWS.MY_EVENT_CREATE_VIEW && activePanel === PANELS.CREATE_EVENT_PANEL ? 'nav-icon-selected' : 'nav-icon'} /></TabbarItem>
                     <TabbarItem
                         onClick={() => goForwardView(new VkHistoryModel(VIEWS.APPLICATIONS_VIEW, PANELS.APPLICATIONS_PANEL))}
                         selected={activeView === VIEWS.APPLICATIONS_VIEW}

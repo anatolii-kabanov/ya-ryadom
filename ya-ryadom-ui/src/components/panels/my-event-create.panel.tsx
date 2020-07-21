@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel, Group } from '@vkontakte/vkui';
+import { Panel, Group, PanelHeader } from '@vkontakte/vkui';
 import EventForm from '../forms/event.form';
 import { connect } from 'react-redux';
 import { AppState } from '../../store/app-state';
@@ -22,7 +22,7 @@ class MyEventCreatePanel extends React.Component<AllProps>  {
         const { id, saveEvent } = this.props;
         return (
             <Panel id={id}>
-                <MainHeaderPanel text='Создание события'></MainHeaderPanel>
+                <PanelHeader>Создание события</PanelHeader>
                 <Group>
                     <EventForm onSave={saveEvent}></EventForm>
                 </Group>

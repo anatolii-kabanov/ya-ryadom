@@ -34,7 +34,6 @@ class GeneralView extends React.Component<AllProps>  {
             <View id={id} activePanel={activePanel} popout={popout}>
                 <ProfilePanel id={PANELS.PROFILE_PANEL}></ProfilePanel>
                 <ReviewsPanel id={PANELS.USER_REVIEWS_PANEL}></ReviewsPanel>
-                <MyEventCreatePanel id={PANELS.CREATE_EVENT_PANEL}></MyEventCreatePanel>
                 <MyProfileEditThemesPanel id={PANELS.MY_PROFILE_EDIT_THEMES_PANEL}></MyProfileEditThemesPanel>
                 <MyProfileEditAboutMyselfPanel id={PANELS.MY_PROFILE_EDIT_ABOUT_MYSELF_PANEL}></MyProfileEditAboutMyselfPanel>
                 <UserEventsPanel id={PANELS.USER_EVENTS_PANEL}></UserEventsPanel>

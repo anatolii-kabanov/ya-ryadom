@@ -13,6 +13,9 @@ import ApplicationsView from './views/applications.view';
 import GeneralView from './views/general.view';
 import { ROOTS } from '../utils/constants/root.constants';
 import { User } from '../store/authentication/models';
+import MyEventCreateView from "./views/my-events-create.view";
+import { PANELS } from "../utils/constants/panel.constants";
+import MyEventCreatePanel from "./panels/my-event-create.panel";
 
 interface PropsFromState {
     activeView: string;
@@ -57,6 +60,7 @@ class RootLayout extends React.Component<AllProps>  {
                         <ReviewsView id={VIEWS.REVIEWS_VIEW}></ReviewsView>
                         <MyProfileView id={VIEWS.MY_PROFILE_VIEW}></MyProfileView>
                         <EventsView id={VIEWS.EVENTS_NEAR_ME_VIEW}></EventsView>
+                        <MyEventCreateView id={VIEWS.MY_EVENT_CREATE_VIEW}></MyEventCreateView>
                     </Root>
                 </MainEpic>;
         }
