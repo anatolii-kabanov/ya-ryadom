@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using YaRyadom.API.Filters;
 using YaRyadom.API.Helpers;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
@@ -13,6 +14,7 @@ namespace YaRyadom.API.Controllers
 {
 	[Route("api/v{v:apiVersion}/reviews")]
 	[ApiController]
+	[TypeFilter(typeof(VkQueryParametersValidationFilter))]
 	public class ReviewsController : ControllerBase
 	{
 		private readonly IReviewsService _reviewsService;

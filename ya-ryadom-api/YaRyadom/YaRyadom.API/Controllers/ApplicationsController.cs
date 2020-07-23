@@ -5,6 +5,7 @@ using System;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
+using YaRyadom.API.Filters;
 using YaRyadom.API.Helpers;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
@@ -13,6 +14,7 @@ namespace YaRyadom.API.Controllers
 {
 	[Route("api/v{v:apiVersion}/applicatioins")]
 	[ApiController]
+	[TypeFilter(typeof(VkQueryParametersValidationFilter))]
 	public class ApplicationsController : ControllerBase
 	{
 		private readonly IApplicationsService _applicationsService;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using YaRyadom.API.Filters;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
 
@@ -12,6 +13,7 @@ namespace YaRyadom.API.Controllers
 {
 	[Route("api/v{v:apiVersion}/events-near-me")]
 	[ApiController]
+	[TypeFilter(typeof(VkQueryParametersValidationFilter))]
 	public class EventsNearMeController : ControllerBase
 	{
 		private readonly IEventsNearMeService _eventsNearMeService;

@@ -8,9 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using NetTopologySuite;
+using YaRyadom.API.Filters;
 using YaRyadom.API.MappingProfiles;
 using YaRyadom.API.Services.Implementations;
 using YaRyadom.API.Services.Interfaces;
+using YaRyadom.API.Settings;
 using YaRyadom.Domain.DbContexts;
 
 namespace YaRyadom.API
@@ -29,6 +31,12 @@ namespace YaRyadom.API
 		{
 			services.AddCors();
 			services.AddControllers().AddNewtonsoftJson();
+
+			// configure strongly typed settings objects
+			var appSettingsSection = Configuration.GetSection("AppSettings");
+			services.Configure<AppSettings>(appSettingsSection);
+
+			services.AddScoped<VkQueryParametersValidationFilter>();
 
 			services.AddDbContext<YaRyadomDbContext>();
 

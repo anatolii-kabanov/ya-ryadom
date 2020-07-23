@@ -5,6 +5,7 @@ using System;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
+using YaRyadom.API.Filters;
 using YaRyadom.API.Helpers;
 using YaRyadom.API.Models;
 using YaRyadom.API.Models.Requests;
@@ -14,6 +15,7 @@ namespace YaRyadom.API.Controllers
 {
 	[Route("api/v{v:apiVersion}/my-events")]
 	[ApiController]
+	[TypeFilter(typeof(VkQueryParametersValidationFilter))]
 	public class MyEventsController : ControllerBase
 	{
 		private readonly IMyEventsService _myEventsService;

@@ -6,13 +6,16 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using YaRyadom.API.Filters;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
+using YaRyadom.API.Settings;
 
 namespace YaRyadom.API.Controllers
 {
 	[Route("api/v{v:apiVersion}/auth")]
 	[ApiController]
+	[TypeFilter(typeof(VkQueryParametersValidationFilter))]
 	public class AuthenticationController : ControllerBase
 	{
 		private readonly IMapper _mapper;

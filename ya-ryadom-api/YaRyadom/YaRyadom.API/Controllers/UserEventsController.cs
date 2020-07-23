@@ -5,12 +5,14 @@ using System;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
+using YaRyadom.API.Filters;
 using YaRyadom.API.Services.Interfaces;
 
 namespace YaRyadom.API.Controllers
 {
 	[Route("api/v{v:apiVersion}/user-events")]
 	[ApiController]
+	[TypeFilter(typeof(VkQueryParametersValidationFilter))]
 	public class UserEventsController : ControllerBase
 	{
 		private readonly IUserEventsService _userEventsService;
