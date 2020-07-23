@@ -6,6 +6,7 @@ export async function callApi(
         headers: {
             'Content-Type': contentType ? contentType : 'application/json',
             'X-TimeZone-Offset': (new Date()).getTimezoneOffset().toString(),
+            'X-Vk-Parameters': window.location.href,
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         },
