@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
-using System.Text;
 using System.Web;
 using YaRyadom.API.Helpers;
 using YaRyadom.API.Settings;
@@ -27,7 +26,6 @@ namespace YaRyadom.API.Filters
 				var queryParameters = HttpUtility.ParseQueryString(uri.Query);
 				var orderedKeys = queryParameters.AllKeys.Where(p => p.StartsWith("vk_")).OrderBy(p => p.StartsWith("vk_"));
 				var orderedQuery = HttpUtility.ParseQueryString(string.Empty);
-				var stringBuilder = new StringBuilder();
 				foreach (var key in orderedKeys)
 				{
 					orderedQuery[key] = queryParameters[key];

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers.Text;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -11,8 +10,8 @@ namespace YaRyadom.API.Helpers
 		{
 			secret = secret ?? "";
 			var encoding = new UTF8Encoding();
-			byte[] keyByte = encoding.GetBytes(secret);
-			byte[] messageBytes = encoding.GetBytes(message);
+			var keyByte = encoding.GetBytes(secret);
+			var messageBytes = encoding.GetBytes(message);
 			using (var hmacsha256 = new HMACSHA256(keyByte))
 			{
 				byte[] hashmessage = hmacsha256.ComputeHash(messageBytes);
