@@ -40,7 +40,6 @@ export class ApplicationsView extends React.Component<AllProps, State>  {
     }
 
     openBase = (eventId) => {
-        console.log(eventId)
         this.setState({
             popout:
                 <ActionSheet onClose={() => this.setState({ popout: null })}>
