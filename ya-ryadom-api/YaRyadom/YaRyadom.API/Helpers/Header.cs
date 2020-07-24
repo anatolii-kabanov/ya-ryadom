@@ -5,5 +5,7 @@
 		public static string TimeZone => "X-TimeZone-Offset";
 
 		public static string VkParameters => "X-Vk-Parameters";
+
+		public static string VkReferers => "Referer";
 	}
 }

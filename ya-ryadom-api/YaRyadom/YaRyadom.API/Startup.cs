@@ -1,6 +1,8 @@
+using AspNetCoreRateLimit;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -32,9 +34,25 @@ namespace YaRyadom.API
 			services.AddCors();
 			services.AddControllers().AddNewtonsoftJson();
 
+			services.AddOptions();
+
 			// configure strongly typed settings objects
 			var appSettingsSection = Configuration.GetSection("AppSettings");
 			services.Configure<AppSettings>(appSettingsSection);
+
+			services.AddMemoryCache();
+			services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+			// inject counter and rules stores
+			services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+			services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+
+			services.AddMvc(option => option.EnableEndpointRouting = false);
+			// https://github.com/aspnet/Hosting/issues/793
+			// the IHttpContextAccessor service is not registered by default.
+			// the clientId/clientIp resolvers use it.
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+			// configure the resolvers
+			services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
 			services.AddScoped<VkQueryParametersValidationFilter>();
 
@@ -89,6 +107,19 @@ namespace YaRyadom.API
 				app.UseDeveloperExceptionPage();
 			}
 
+			// global cors policy
+			// perhaps should be removed if will not required
+			app.UseCors(x => x
+				 .AllowAnyOrigin()
+				 .AllowAnyMethod()
+				 .AllowAnyHeader());
+
+			#region UseIpRateLimiting with UseMvc Should be here
+			app.UseIpRateLimiting();
+
+			app.UseMvc();
+			#endregion
+
 			// Enable middleware to serve generated Swagger as a JSON endpoint.
 			app.UseSwagger();
 
@@ -100,12 +131,7 @@ namespace YaRyadom.API
 				c.RoutePrefix = string.Empty;
 			});
 
-			// global cors policy
-			// perhaps should be removed if will not required
-			app.UseCors(x => x
-				 .AllowAnyOrigin()
-				 .AllowAnyMethod()
-				 .AllowAnyHeader());
+		
 
 			app.UseRouting();
 
@@ -120,6 +146,7 @@ namespace YaRyadom.API
 			{
 				endpoints.MapControllers();
 			});
+
 		}
 	}
 }
