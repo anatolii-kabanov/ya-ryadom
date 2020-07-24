@@ -73,7 +73,9 @@ export class ApplicationsVisitedTab extends React.Component<AllProps, State>  {
     render() {
         const { applications } = this.props;
         return (
-            applications?.length > 0 ? this.renderVisitedEvents() : <EmptyText />
+            applications?.filter((a) => a.status === ApplicationStatus.visited).length > 0
+                ? this.renderVisitedEvents()
+                : <EmptyText />
         )
     }
 }

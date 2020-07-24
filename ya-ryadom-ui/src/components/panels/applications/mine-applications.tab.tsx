@@ -42,7 +42,7 @@ export class MineApplicationsTab extends React.Component<AllProps, State>  {
                         <RichCell
                             disabled
                             multiline
-                            before={<Avatar size={48} src={item.vkUserAvatarUrl} onClick={() => openUserProfile(item.vkUserId)}  />}
+                            before={<Avatar size={48} src={item.vkUserAvatarUrl} onClick={() => openUserProfile(item.vkUserId)} />}
                             caption={`${new Date(item.eventDate).toLocaleDateString('ru-RU', dateOptions)} в ${item.eventTime}`}
                             actions={
                                 <span className="application-btns">
@@ -62,7 +62,9 @@ export class MineApplicationsTab extends React.Component<AllProps, State>  {
     render() {
         const { applications } = this.props;
         return (
-            applications?.length > 0 ? this.renderApplications() : <EmptyText />
+            applications?.filter((a) => a.status === ApplicationStatus.sent || a.status === ApplicationStatus.confirmed).length > 0
+                ? this.renderApplications()
+                : <EmptyText />
         )
     }
 }
