@@ -27,11 +27,11 @@ export interface ReviewModel {
 }
 
 export interface SaveReviewRequest {
-    vkOwnerUserId: number;
+    vkUserId: number;
     text: string;
     rating: number;
     eventId: number;
-    vkUserId: number;
+    vkUserToReviewId: number;
 }
 
 export interface EventsReviews {

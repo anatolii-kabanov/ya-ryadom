@@ -49,8 +49,8 @@ function* handleAddReviewRequest(action: ReturnType<typeof addReviewRequest>) {
         const model: SaveReviewRequest = {
             rating: action.payload.rating,
             text: action.payload.text,
-            vkOwnerUserId: vkUserId,
-            vkUserId: user.vkUserId,
+            vkUserId: vkUserId,
+            vkUserToReviewId: user.vkUserId,
             eventId: user.eventId
         };
         const result = yield call(callApi, 'post', API_ENDPOINT, '/add', model);
