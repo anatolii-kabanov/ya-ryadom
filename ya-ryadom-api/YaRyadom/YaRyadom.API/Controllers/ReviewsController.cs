@@ -49,6 +49,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("add")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
 		public async Task<IActionResult> Add([FromBody] UserReviewRequestModel model, CancellationToken cancellationToken = default)
 		{
 			if (double.TryParse(Request.Headers[Header.TimeZone], out var minutes))

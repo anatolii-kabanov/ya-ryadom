@@ -79,6 +79,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("apply")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
 		public async Task<IActionResult> Apply([FromBody] ApplicationRequestModel model, CancellationToken cancellationToken = default)
 		{
 			if (double.TryParse(Request.Headers[Header.TimeZone], out var minutes))

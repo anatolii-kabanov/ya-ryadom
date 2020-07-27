@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using YaRyadom.API.Models.Base;
 
 namespace YaRyadom.API.Models.Requests
 {
-	public class ApplicationRequestModel
+	public class ApplicationRequestModel : BaseVkUserRequestModel
 	{
 		public int EventId { get; set; }
-
-		public long VkUserId { get; set; }
 
 		public int UserId { get; set; }
 
