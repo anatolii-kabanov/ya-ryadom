@@ -139,8 +139,12 @@ function* watchApplyToEventRequest() {
 function* handleConfirmApplicantRequest(action: ReturnType<typeof confirmApplicantRequest>) {
     try {
         yield put(showSpinner());
-
-        const result = yield call(callApi, 'post', API_ENDPOINT, '/approve', action.payload.applicationId);
+        const vkUserId = yield select(getVkUserId);
+        const model = {
+            vkUserId,
+            applicationId: action.payload.applicationId
+        }
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/approve', model);
 
         if (result.errors) {
             yield put(confirmApplicantError(result.errors));
@@ -166,8 +170,12 @@ function* watchConfirmApplicantRequest() {
 function* handleRejectApplicantRequest(action: ReturnType<typeof rejectApplicantRequest>) {
     try {
         yield put(showSpinner());
-
-        const result = yield call(callApi, 'post', API_ENDPOINT, '/reject', action.payload.applicationId);
+        const vkUserId = yield select(getVkUserId);
+        const model = {
+            vkUserId,
+            applicationId: action.payload.applicationId
+        }
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/reject', model);
 
         if (result.errors) {
             yield put(rejectApplicantError(result.errors));
@@ -193,7 +201,12 @@ function* watchRejectApplicantRequest() {
 function* handleRevokeApplicationRequest(action: ReturnType<typeof revokeApplicationRequest>) {
     try {
         yield put(showSpinner());
-        const result = yield call(callApi, 'post', API_ENDPOINT, '/revoke', action.payload);
+        const vkUserId = yield select(getVkUserId);
+        const model = {
+            vkUserId,
+            applicationId: action.payload
+        }
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/revoke', model);
 
         if (result.errors) {
             yield put(revokeApplicationError(result.errors));
