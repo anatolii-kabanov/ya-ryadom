@@ -20,7 +20,6 @@ namespace YaRyadom.API.Filters
 				var uri = new Uri(vkUrl);
 				var queryParameters = HttpUtility.ParseQueryString(uri.Query);
 				var vkUserIdString = queryParameters["vk_user_id"];
-				var body = actionExecutingContext.HttpContext.Request.Body;
 				var isValidId = long.TryParse(vkUserIdString, out var vkUserId);
 				if (string.IsNullOrWhiteSpace(vkUserIdString) || !isValidId)
 				{
