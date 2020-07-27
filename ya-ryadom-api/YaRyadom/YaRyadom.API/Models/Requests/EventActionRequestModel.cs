@@ -2,10 +2,8 @@
 
 namespace YaRyadom.API.Models.Requests
 {
-	public class ApplicationRequestModel : BaseVkUserRequestModel
+	public class EventActionRequestModel : BaseVkUserRequestModel
 	{
 		public int EventId { get; set; }
-
-		public double TimeZoneMinutes { get; set; }
 	}
 }

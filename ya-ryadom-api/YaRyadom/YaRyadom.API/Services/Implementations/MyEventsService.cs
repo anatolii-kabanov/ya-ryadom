@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YaRyadom.API.Models;
+using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Models.ServiceModels;
 using YaRyadom.API.Services.Interfaces;
 using YaRyadom.Domain.DbContexts;
@@ -48,9 +49,11 @@ namespace YaRyadom.API.Services.Implementations
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
-		public async Task<bool> RevokeAsync(int eventId, CancellationToken cancellationToken = default)
+		public async Task<bool> RevokeAsync(EventActionRequestModel model, CancellationToken cancellationToken = default)
 		{
-			var yaRyadomEvent = await Entities.FirstOrDefaultAsync(m => m.Id == eventId, cancellationToken);
+			var yaRyadomEvent = await Entities.FirstOrDefaultAsync(
+				m => m.Id == model.EventId && m.YaRyadomUserOwner.VkId == model.VkUserId,
+				cancellationToken);
 
 			yaRyadomEvent.Revoked = true;
 

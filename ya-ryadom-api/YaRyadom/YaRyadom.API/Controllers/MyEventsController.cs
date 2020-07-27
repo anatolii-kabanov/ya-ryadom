@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using YaRyadom.API.Filters;
 using YaRyadom.API.Helpers;
 using YaRyadom.API.Models;
+using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
 
 namespace YaRyadom.API.Controllers
@@ -73,9 +74,10 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("revoke/{id}")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> Revoke(int id, CancellationToken cancellationToken = default)
+		[VkUserIdFilter]
+		public async Task<IActionResult> Revoke([FromBody] EventActionRequestModel model, CancellationToken cancellationToken = default)
 		{
-			await _myEventsService.RevokeAsync(id, cancellationToken).ConfigureAwait(false);
+			await _myEventsService.RevokeAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
 		}
 

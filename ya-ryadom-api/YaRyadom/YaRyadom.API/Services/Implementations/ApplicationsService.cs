@@ -34,11 +34,11 @@ namespace YaRyadom.API.Services.Implementations
 			return applications;
 		}
 
-		public async Task<bool> ApproveAsync(int applicationId, CancellationToken cancellationToken = default)
+		public async Task<bool> ApproveAsync(ApplicationActionRequestModel model, CancellationToken cancellationToken = default)
 		{
 			var application = await _dbContext
 				.YaRyadomUserApplications
-				.Where(m => m.Id == applicationId)
+				.Where(m => m.Id == model.ApplicationId && m.YaRyadomEvent.YaRyadomUserOwner.VkId == model.VkUserId)
 				.FirstOrDefaultAsync(cancellationToken);
 
 			application.Status = ApplicationStatus.Confirmed;
@@ -46,11 +46,11 @@ namespace YaRyadom.API.Services.Implementations
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
-		public async Task<bool> RejectAsync(int applicationId, CancellationToken cancellationToken = default)
+		public async Task<bool> RejectAsync(ApplicationActionRequestModel model, CancellationToken cancellationToken = default)
 		{
 			var application = await _dbContext
 				.YaRyadomUserApplications
-				.Where(m => m.Id == applicationId)
+				.Where(m => m.Id == model.ApplicationId && m.YaRyadomEvent.YaRyadomUserOwner.VkId == model.VkUserId)
 				.FirstOrDefaultAsync(cancellationToken);
 
 			application.Status = ApplicationStatus.Rejected;
@@ -64,11 +64,12 @@ namespace YaRyadom.API.Services.Implementations
 				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
 				.FirstOrDefaultAsync(cancellationToken);
 
-			if(application != null)
+			if (application != null)
 			{
 				application.Status = ApplicationStatus.Sent;
 				application.Date = DateTimeOffset.UtcNow.ToOffset(-TimeSpan.FromMinutes(model.TimeZoneMinutes));
-			} else
+			}
+			else
 			{
 				application = _mapper.Map<YaRyadomUserApplication>(model);
 
@@ -80,15 +81,15 @@ namespace YaRyadom.API.Services.Implementations
 				application.YaRyadomUserRequested = yaRyadomUser;
 
 				Entities.Add(application);
-			}			
+			}
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
-		public async Task<bool> RevokeAsync(int applicationId, CancellationToken cancellationToken = default)
+		public async Task<bool> RevokeAsync(ApplicationActionRequestModel model, CancellationToken cancellationToken = default)
 		{
 			var application = await Query
-				.Where(m => m.Id == applicationId)
+				.Where(m => m.Id == model.ApplicationId && m.YaRyadomUserRequested.VkId == model.VkUserId)
 				.FirstOrDefaultAsync(cancellationToken)
 				.ConfigureAwait(false);
 
