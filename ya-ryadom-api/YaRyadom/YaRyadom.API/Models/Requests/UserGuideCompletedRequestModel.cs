@@ -1,7 +1,8 @@
-﻿namespace YaRyadom.API.Models.Requests
+﻿using YaRyadom.API.Models.Base;
+
+namespace YaRyadom.API.Models.Requests
 {
-	public class UserGuideCompletedRequestModel
+	public class UserGuideCompletedRequestModel : BaseVkUserRequestModel
 	{
-		public long VkUserId { get; set; }
 	}
 }

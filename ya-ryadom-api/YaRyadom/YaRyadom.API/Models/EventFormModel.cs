@@ -1,9 +1,9 @@
-﻿using System;
+﻿using YaRyadom.API.Models.Base;
 using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models
 {
-	public class EventFormModel
+	public class EventFormModel : BaseVkUserRequestModel
 	{
 		/// <summary>
 		/// X
@@ -22,8 +22,6 @@ namespace YaRyadom.API.Models
 		public string Title { get; set; }
 
 		public string Description { get; set; }
-
-		public long VkUserId { get; set; }
 
 		public int UserId { get; set; }
 

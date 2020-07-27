@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using YaRyadom.API.Filters;
 using YaRyadom.API.Helpers;
 using YaRyadom.API.Models;
-using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
 
 namespace YaRyadom.API.Controllers
@@ -59,6 +58,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("create")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
 		public async Task<IActionResult> Create([FromBody] EventFormModel model, CancellationToken cancellationToken = default)
 		{
 			if (double.TryParse(Request.Headers[Header.TimeZone], out var minutes))

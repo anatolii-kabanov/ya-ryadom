@@ -1,9 +1,9 @@
-﻿namespace YaRyadom.API.Models.Requests
-{
-	public class UserNotificationsRequestModel
-	{
-		public long VkUserId { get; set; }
+﻿using YaRyadom.API.Models.Base;
 
+namespace YaRyadom.API.Models.Requests
+{
+	public class UserNotificationsRequestModel : BaseVkUserRequestModel
+	{
 		public bool NotificationsEnabled { get; set; }
 	}
 }

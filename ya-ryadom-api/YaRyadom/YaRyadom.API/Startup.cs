@@ -35,7 +35,7 @@ namespace YaRyadom.API
 			services.AddControllers().AddNewtonsoftJson();
 
 			services.AddOptions();
-
+			
 			// configure strongly typed settings objects
 			var appSettingsSection = Configuration.GetSection("AppSettings");
 			services.Configure<AppSettings>(appSettingsSection);
@@ -55,6 +55,7 @@ namespace YaRyadom.API
 			services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
 			services.AddScoped<VkQueryParametersValidationFilter>();
+			services.AddScoped<VkUserIdFilter>();
 
 			services.AddDbContext<YaRyadomDbContext>();
 

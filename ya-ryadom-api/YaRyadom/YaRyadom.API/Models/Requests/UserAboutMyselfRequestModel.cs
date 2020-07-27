@@ -1,9 +1,9 @@
-﻿namespace YaRyadom.API.Models.Requests
-{
-	public class UserAboutMyselfRequestModel
-	{
-		public long VkUserId { get; set; }
+﻿using YaRyadom.API.Models.Base;
 
+namespace YaRyadom.API.Models.Requests
+{
+	public class UserAboutMyselfRequestModel : BaseVkUserRequestModel
+	{
 		public string AboutMyself { get; set; }
 	}
 }

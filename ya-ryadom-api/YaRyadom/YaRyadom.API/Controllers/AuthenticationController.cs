@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using YaRyadom.API.Filters;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
-using YaRyadom.API.Settings;
 
 namespace YaRyadom.API.Controllers
 {
@@ -41,6 +40,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("user-info/save")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
 		public async Task<IActionResult> Save([FromBody] UserInfoSaveRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserInfoAsync(model, cancellationToken).ConfigureAwait(false);
@@ -51,6 +51,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("user-info/themes/save")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
 		public async Task<IActionResult> SaveThemes([FromBody] UserThemesRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserThemesAsync(model, cancellationToken).ConfigureAwait(false);
@@ -61,6 +62,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("user-info/location/save")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
 		public async Task<IActionResult> SaveLocation([FromBody] UserLocationRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserLocationAsync(model, cancellationToken).ConfigureAwait(false);
@@ -71,6 +73,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("user-info/about-myself/save")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
 		public async Task<IActionResult> SaveAboutMyself([FromBody] UserAboutMyselfRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserAboutMyselfAsync(model, cancellationToken).ConfigureAwait(false);
@@ -81,6 +84,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("user-info/guide/save")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
 		public async Task<IActionResult> SaveGuide([FromBody] UserGuideCompletedRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserGuideCompletedAsync(model, cancellationToken).ConfigureAwait(false);
@@ -91,6 +95,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost("user-info/notifications/save")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
 		public async Task<IActionResult> SaveNotifications([FromBody] UserNotificationsRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _authenticationService.SaveUserNotificationsAsync(model, cancellationToken).ConfigureAwait(false);
