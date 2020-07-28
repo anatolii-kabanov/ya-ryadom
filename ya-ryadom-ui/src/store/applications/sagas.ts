@@ -181,7 +181,7 @@ function* handleRejectApplicantRequest(action: ReturnType<typeof rejectApplicant
             yield put(rejectApplicantError(result.errors));
         } else {
             yield put(rejectApplicantSuccess(action.payload));
-            yield put(updateParticipantStatus({ ...action.payload, status: ApplicationStatus.confirmed }));
+            yield put(updateParticipantStatus({ ...action.payload, status: ApplicationStatus.rejected }));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
