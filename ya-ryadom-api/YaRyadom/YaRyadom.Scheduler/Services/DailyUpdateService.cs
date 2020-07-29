@@ -45,11 +45,11 @@ namespace YaRyadom.Scheduler.Services
 				{
 					if (0 == _usingResource)
 					{
-						_dailyTimer.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60));
+						_dailyTimer.Change(TimeSpan.FromSeconds(120), TimeSpan.FromSeconds(120));
 					}
 				}
 
-			}, null, TimeSpan.Zero, TimeSpan.FromSeconds(60));
+			}, null, TimeSpan.Zero, TimeSpan.FromSeconds(120));
 		}
 
 		protected override async Task OnStop(CancellationToken cancellationToken)
