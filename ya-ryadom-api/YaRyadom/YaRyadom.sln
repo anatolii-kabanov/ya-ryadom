@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YaRyadom.API", "YaRyadom.AP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YaRyadom.Domain", "YaRyadom.Domain\YaRyadom.Domain.csproj", "{F4BB9A98-7912-46B1-873B-3659DAB76C6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YaRyadom.Daemon", "YaRyadom.Daemon\YaRyadom.Daemon.csproj", "{E131F6DA-3F19-4A3D-8F57-50413E744A24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YaRyadom.Daemon", "YaRyadom.Daemon\YaRyadom.Daemon.csproj", "{E131F6DA-3F19-4A3D-8F57-50413E744A24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YaRyadom.Scheduler", "YaRyadom.Scheduler\YaRyadom.Scheduler.csproj", "{2DA0D34F-F4B1-458C-8D3E-6CBB997B2576}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YaRyadom.Scheduler", "YaRyadom.Scheduler\YaRyadom.Scheduler.csproj", "{2DA0D34F-F4B1-458C-8D3E-6CBB997B2576}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YaRyadom.Vk", "YaRyadom.Vk\YaRyadom.Vk.csproj", "{E6BAC9B3-AFC6-415E-82D7-77DF4A371B64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{2DA0D34F-F4B1-458C-8D3E-6CBB997B2576}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DA0D34F-F4B1-458C-8D3E-6CBB997B2576}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DA0D34F-F4B1-458C-8D3E-6CBB997B2576}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6BAC9B3-AFC6-415E-82D7-77DF4A371B64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6BAC9B3-AFC6-415E-82D7-77DF4A371B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6BAC9B3-AFC6-415E-82D7-77DF4A371B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6BAC9B3-AFC6-415E-82D7-77DF4A371B64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
