@@ -30,6 +30,14 @@ namespace YaRyadom.API.Services.Implementations
 				.ConfigureAwait(false);
 		}
 
+		public async Task<MyProfileModel> GetMyInfoByVkIdAsync(long vkId, CancellationToken cancellationToken = default)
+		{
+			return await _mapper
+				.ProjectTo<MyProfileModel>(TableNoTracking.Where(m => m.VkId == vkId))
+				.FirstOrDefaultAsync(cancellationToken)
+				.ConfigureAwait(false);
+		}
+
 		public async Task<bool> SaveUserInfoAsync(UserInfoSaveRequestModel model, CancellationToken cancellationToken = default)
 		{
 			var yaRyadomUser = await Entities

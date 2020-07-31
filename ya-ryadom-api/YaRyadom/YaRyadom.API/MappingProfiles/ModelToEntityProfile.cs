@@ -13,16 +13,6 @@ namespace YaRyadom.API.MappingProfiles
 	{
 		public ModelToEntityProfile(GeometryFactory geometryFactory)
 		{
-			CreateMap<UserInfoModel, YaRyadomUser>()
-				.ForMember(dest => dest.Id, opt => opt.Ignore())
-				.ForMember(dest => dest.GuideCompleted, opt => opt.MapFrom(src => src.GuideCompleted))
-				.ForMember(dest => dest.VkId, opt => opt.MapFrom(src => src.VkUserId))
-				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.VkUserAvatarUrl))
-				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMySelf))
-				.ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
-				.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
-				.ForMember(dest => dest.LastLocation, opt => opt.MapFrom(src => geometryFactory.CreatePoint(new Coordinate(src.LastLocation.Longitude, src.LastLocation.Latitude))));
-
 			CreateMap<UserInfoSaveRequestModel, YaRyadomUser>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.VkId, opt => opt.MapFrom(src => src.VkUserId))

@@ -10,6 +10,8 @@ namespace YaRyadom.API.Services.Interfaces
 	{
 		Task<UserInfoModel> GetUserByVkIdAsync(long vkId, CancellationToken cancellationToken = default);
 
+		Task<MyProfileModel> GetMyInfoByVkIdAsync(long vkId, CancellationToken cancellationToken = default);
+
 		Task<bool> SaveUserInfoAsync(UserInfoSaveRequestModel model, CancellationToken cancellationToken = default);
 
 		Task<bool> SaveUserThemesAsync(UserThemesRequestModel model, CancellationToken cancellationToken = default);

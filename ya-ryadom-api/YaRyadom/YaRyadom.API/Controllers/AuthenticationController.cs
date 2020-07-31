@@ -37,6 +37,17 @@ namespace YaRyadom.API.Controllers
 		}
 
 		[AllowAnonymous]
+		[HttpPost("my-info")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[VkUserIdFilter]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<IActionResult> GetMyInfoByVkId([FromBody] MyInfoRequestModel model, CancellationToken cancellationToken = default)
+		{
+			var userInfoModel = await _authenticationService.GetMyInfoByVkIdAsync(model.VkUserId, cancellationToken).ConfigureAwait(false);
+			return Ok(userInfoModel);
+		}
+
+		[AllowAnonymous]
 		[HttpPost("user-info/save")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
