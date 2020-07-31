@@ -37,7 +37,6 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    fetchMyEventsListRequest: typeof fetchMyEventsListRequest;
     goForwardView: typeof goForward;
     fetchUserInfoRequest: typeof fetchUserInfoRequest;
 }
@@ -71,11 +70,6 @@ class ProfilePanel extends React.Component<AllProps, State>{
             currentProfileThemes: [],
             themesInCommon: []
         }
-    }
-
-    componentDidMount() {
-        const { fetchMyEventsListRequest } = this.props;
-        fetchMyEventsListRequest();
     }
 
     componentWillMount() {
@@ -187,7 +181,6 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    fetchMyEventsListRequest: fetchMyEventsListRequest,
     goForwardView: goForward,
     fetchUserInfoRequest: fetchUserInfoRequest
 }
