@@ -1,7 +1,6 @@
 import './user-events.panel.scss';
 import React from "react";
 import { UserInfo } from "@vkontakte/vk-bridge";
-import { User } from "../../../store/authentication/models";
 import { goForward } from "../../../store/history/actions";
 import { connect } from 'react-redux';
 import MainHeaderPanel from "../headers/main.header";
@@ -28,7 +27,6 @@ import { applyToEventFromUserEvents } from '../../../store/applications/actions'
 interface PropsFromState {
     id: string;
     vkUserInfo: UserInfo;
-    currentUser: User;
     vkUserId: number;
     userCreatedEvents: UserEvents;
     userVisitedEvents: UserEvents;
@@ -156,7 +154,6 @@ const mapStateToProps = ({ events, authentication }: AppState) => ({
     userVisitedEvents: events.userEvents.userVisitedEvents,
     vkUserInfo: authentication.vkUserInfo,
     vkUserId: events.eventsNearMe.currentVkId,
-    currentUser: authentication.currentUser,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

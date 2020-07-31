@@ -14,7 +14,7 @@ import { AppState } from "../../../store/app-state";
 import MainHeaderPanel from "../headers/main.header";
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { goForward } from "../../../store/history/actions";
-import { User } from "../../../store/authentication/models";
+import { CurrentUser } from "../../../store/authentication/models";
 import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
@@ -23,7 +23,7 @@ import { allowNotificationsRequest, disableNotificationsRequest } from '../../..
 interface PropsFromState {
     id: string;
     vkUserInfo: UserInfo;
-    currentUser: User;
+    currentUser: CurrentUser;
 }
 
 interface PropsFromDispatch {

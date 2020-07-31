@@ -67,7 +67,7 @@ class ReviewsPanel extends React.Component<AllProps> {
                     profileReviews.length === 0 ?
                         <EmptyText text="Отзывов пока нет" /> :
                         profileReviews.map((review: any) =>
-                            <Group id={review.id}>
+                            <Group key={review.id} id={review.id}>
                                 <RichCell
                                     disabled
                                     before={<Avatar size={56} src={review.vkUserAvatarUrl} className="rc-avatar" />}

@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import { AppState } from "../../../store/app-state";
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { goForward } from "../../../store/history/actions";
-import { User } from "../../../store/authentication/models";
+import { CurrentUser } from "../../../store/authentication/models";
 import PillInput from "../../inputs/pill.input";
 import { ALL_THEMES } from "../../../utils/constants/theme.constants";
 import Icon24Star from '@vkontakte/icons/dist/24/favorite';
@@ -26,7 +26,7 @@ import { PANELS } from '../../../utils/constants/panel.constants';
 interface PropsFromState {
     id: string;
     vkUserInfo: UserInfo;
-    currentUser: User;
+    currentUser: CurrentUser;
 }
 
 interface PropsFromDispatch {

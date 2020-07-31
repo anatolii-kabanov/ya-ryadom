@@ -1,8 +1,8 @@
-import { User, Geo } from "./models";
+import { CurrentUser, Geo } from "./models";
 import { UserInfo } from "@vkontakte/vk-bridge";
 
 export interface AuthenticationState {
-    currentUser: User | null;
+    currentUser: CurrentUser | null;
     vkUserInfo: UserInfo | null;
     geoData: Geo | null;
 }

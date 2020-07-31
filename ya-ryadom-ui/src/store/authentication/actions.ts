@@ -1,12 +1,12 @@
 import { action } from 'typesafe-actions';
 import { AuthenticationTypes } from "./types";
-import { User, UserBaseInfo } from './models';
+import { CurrentUser, UserBaseInfo } from './models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ThemeType } from '../../utils/enums/theme-type.enum';
 import { Position } from './models';
 
 export const fetchUserInfoRequest = (payload: number) => action(AuthenticationTypes.FETCH_USER_INFO, payload);
-export const fetchUserInfoSuccess = (payload: User) => action(AuthenticationTypes.FETCH_USER_INFO_SUCCESS, payload);
+export const fetchUserInfoSuccess = (payload: CurrentUser) => action(AuthenticationTypes.FETCH_USER_INFO_SUCCESS, payload);
 export const fetchUserInfoError = (payload: any) => action(AuthenticationTypes.FETCH_USER_INFO_ERROR, payload);
 
 export const fetchVkUserInfoRequest = (payload: Boolean) => action(AuthenticationTypes.FETCH_VK_USER_INFO, payload);

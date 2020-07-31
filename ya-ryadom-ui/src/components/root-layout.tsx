@@ -12,7 +12,7 @@ import ReviewsView from './views/reviews.view';
 import ApplicationsView from './views/applications.view';
 import GeneralView from './views/general.view';
 import { ROOTS } from '../utils/constants/root.constants';
-import { User } from '../store/authentication/models';
+import { CurrentUser } from '../store/authentication/models';
 import MyEventCreateView from "./views/my-events-create.view";
 import { PANELS } from "../utils/constants/panel.constants";
 import MyEventCreatePanel from "./panels/my-event-create.panel";
@@ -20,7 +20,7 @@ import MyEventCreatePanel from "./panels/my-event-create.panel";
 interface PropsFromState {
     activeView: string;
     spinnerVisible: boolean;
-    currentUser: User;
+    currentUser: CurrentUser;
 }
 
 interface PropsFromDispatch {

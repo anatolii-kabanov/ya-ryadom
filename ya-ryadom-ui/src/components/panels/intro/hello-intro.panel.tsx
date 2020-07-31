@@ -14,12 +14,12 @@ import { AppState } from '../../../store/app-state';
 import { goForward } from '../../../store/history/actions';
 import { fetchUserGeoRequest } from "../../../store/authentication/actions";
 import { UserInfo } from '@vkontakte/vk-bridge';
-import { User } from '../../../store/authentication/models';
+import { CurrentUser } from '../../../store/authentication/models';
 
 interface PropsFromState {
     id: string,
     vkUserInfo: UserInfo,
-    currentUser: User
+    currentUser: CurrentUser
 }
 
 interface PropsFromDispatch {

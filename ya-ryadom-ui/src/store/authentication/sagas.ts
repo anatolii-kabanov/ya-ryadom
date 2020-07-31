@@ -37,7 +37,7 @@ import {
     saveUserProfileAboutMysel
 } from './actions'
 import { callApi } from '../../utils/api';
-import { Geo, User } from './models';
+import { Geo, CurrentUser } from './models';
 import { goForward, reset, goBack } from '../history/actions';
 import { VkHistoryModel } from '../history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
@@ -51,12 +51,15 @@ const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/auth`;
 function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
     try {
         yield put(showSpinner());
-        const result = yield call(callApi, 'get', API_ENDPOINT, `/user-info/${action.payload}`);
+        const model = {
+            vkUserId: action.payload,
+        };
+        const result = yield call(callApi, 'post', API_ENDPOINT, `/my-info`, model);
 
         if (result.errors) {
             yield put(fetchUserInfoError(result.errors));
         } else {
-            var user: User = result;
+            var user: CurrentUser = result;
             yield put(fetchUserInfoSuccess(user));
             if (user.guideCompleted) {
                 yield put(reset(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP)));

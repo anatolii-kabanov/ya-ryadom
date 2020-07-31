@@ -1,18 +1,24 @@
 import { ThemeType } from "../../utils/enums/theme-type.enum";
 
 export interface User {
-    guideCompleted: boolean,
     vkUserId: number,
     firstName: string,
     lastName: string,
     vkUserAvatarUrl: string,
+    selectedThemes: ThemeType[],
+    aboutMySelf: string;
+    avgRating: number;
+    // some settings
+}
+
+export interface CurrentUser {
+    guideCompleted: boolean,
     selectedThemes: ThemeType[],
     lastLocation: Position | null,
     aboutMySelf: string;
     avgRating: number;
     notificationsEnabled: boolean;
     address: string;
-    // some settings
 }
 
 export interface Position {
@@ -39,11 +45,4 @@ export interface UserBaseInfo {
     firstName: string,
     lastName: string,
     vkUserAvatarUrl: string,
-}
-
-export class User implements User {
-    constructor() {
-
-        this.guideCompleted = false;
-    }
 }
