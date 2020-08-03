@@ -2,10 +2,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using System.Threading.Tasks;
 using YaRyadom.Daemon.Configurations;
 using YaRyadom.Scheduler.Services;
+using YaRyadom.Scheduler.Settings;
 using YaRyadom.Scheduler.Workers;
+using YaRyadom.Vk;
 
 namespace YaRyadom.Scheduler
 {
@@ -27,7 +30,14 @@ namespace YaRyadom.Scheduler
 		  {
 			  services.AddOptions();
 			  services.Configure<ServiceConfiguration>(hostContext.Configuration.GetSection("Daemon"));
+			  var appSettingsSection = hostContext.Configuration.GetSection("AppSettings");
+			  services.Configure<AppSettings>(appSettingsSection);
+			  var appSettings = appSettingsSection.Get<AppSettings>();
 
+			  services.AddTransient<HttpClient>();
+			  services.AddSingleton<IVkApi>(new VkApi(appSettings.ServiceToken, new HttpClient()));
+			  services.AddSingleton<IVkNotificationsWorker, VkNotificationsWorker>();
+			  services.AddSingleton<IHostedService, VkNotificationsService>();
 			  services.AddSingleton<IDailyEventsUpdateWorker, DailyEventsUpdateWorker>();
 			  services.AddSingleton<IHostedService, DailyUpdateService>();
 		  })
