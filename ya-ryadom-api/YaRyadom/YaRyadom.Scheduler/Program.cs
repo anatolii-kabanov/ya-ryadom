@@ -17,35 +17,41 @@ namespace YaRyadom.Scheduler
 		static async Task Main(string[] args)
 		{
 			var builder = new HostBuilder()
-		  .ConfigureAppConfiguration((hostingContext, config) =>
-		  {
-			  config.AddEnvironmentVariables();
+				.ConfigureHostConfiguration(configHost => configHost.AddEnvironmentVariables(prefix: "ASPNETCORE_"))
+				.ConfigureAppConfiguration((hostingContext, config) =>
+				{
+					config
+					.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+					.AddJsonFile(
+						$"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json",
+						optional: true,
+						reloadOnChange: true);
 
-			  if (args != null)
-			  {
-				  config.AddCommandLine(args);
-			  }
-		  })
-		  .ConfigureServices((hostContext, services) =>
-		  {
-			  services.AddOptions();
-			  services.Configure<ServiceConfiguration>(hostContext.Configuration.GetSection("Daemon"));
-			  var appSettingsSection = hostContext.Configuration.GetSection("AppSettings");
-			  services.Configure<AppSettings>(appSettingsSection);
-			  var appSettings = appSettingsSection.Get<AppSettings>();
+					if (args != null)
+					{
+						config.AddCommandLine(args);
+					}
+				})
+				.ConfigureServices((hostContext, services) =>
+				{
+					services.AddOptions();
+					services.Configure<ServiceConfiguration>(hostContext.Configuration.GetSection("Daemon"));
+					var appSettingsSection = hostContext.Configuration.GetSection("AppSettings");
+					services.Configure<AppSettings>(appSettingsSection);
+					var appSettings = appSettingsSection.Get<AppSettings>();
 
-			  services.AddTransient<HttpClient>();
-			  services.AddSingleton<IVkApi>(new VkApi(appSettings.ServiceToken, new HttpClient()));
-			  services.AddSingleton<IVkNotificationsWorker, VkNotificationsWorker>();
-			  services.AddSingleton<IHostedService, VkNotificationsService>();
-			  services.AddSingleton<IDailyEventsUpdateWorker, DailyEventsUpdateWorker>();
-			  services.AddSingleton<IHostedService, DailyUpdateService>();
-		  })
-		  .ConfigureLogging((hostingContext, logging) =>
-		  {
-			  logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-			  logging.AddConsole();
-		  });
+					services.AddTransient<HttpClient>();
+					services.AddSingleton<IVkApi>(new VkApi(appSettings.ServiceToken, new HttpClient()));
+					services.AddSingleton<IVkNotificationsWorker, VkNotificationsWorker>();
+					// services.AddSingleton<IHostedService, VkNotificationsService>();
+					services.AddSingleton<IDailyEventsUpdateWorker, DailyEventsUpdateWorker>();
+					services.AddSingleton<IHostedService, DailyUpdateService>();
+				})
+				.ConfigureLogging((hostingContext, logging) =>
+				{
+					logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+					logging.AddConsole();
+				});
 
 			await builder.RunConsoleAsync();
 		}

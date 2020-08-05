@@ -21,11 +21,12 @@ namespace YaRyadom.Scheduler.Workers
 		{
 			try
 			{
-
+				//await _vkApi.GetUserInfoAsync(new string[] { "6476088" }).ConfigureAwait(false);
+				await _vkApi.SendNotificationAsync(new long[] { 6476088 }, "test messsage sent").ConfigureAwait(false);
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError("Exception trying to update events and applications", ex);
+				_logger.LogError("Exception while sending notifications", ex);
 			}
 			finally
 			{

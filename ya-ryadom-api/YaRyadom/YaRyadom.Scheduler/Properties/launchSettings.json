@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "YaRyadom.Scheduler": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

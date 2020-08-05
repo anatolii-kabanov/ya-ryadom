@@ -9,5 +9,17 @@ namespace YaRyadom.Vk.Enums
 		/// </summary>
 		[Description("secure.sendNotification")]
 		SendNotification,
+
+		/// <summary>
+		/// Check notifications is available for user by id
+		/// </summary>
+		[Description("apps.isNotificationsAllowed")]
+		IsNotificationsAllowed,
+
+		/// <summary>
+		/// Get users with specific fields
+		/// </summary>
+		[Description("users.get")]
+		UsersGet,
 	}
 }
