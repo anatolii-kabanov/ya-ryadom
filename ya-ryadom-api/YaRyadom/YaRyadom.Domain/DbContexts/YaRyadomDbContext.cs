@@ -60,5 +60,7 @@ namespace YaRyadom.Domain.DbContexts
 		public DbSet<YaRyadomReview> YaRyadomReviews { get; set; }
 
 		public DbSet<YaRyadomEvent> YaRyadomEvents { get; set; }
+
+		public DbSet<YaRyadomNotification> YaRyadomNotifications { get; set; }
 	}
 }

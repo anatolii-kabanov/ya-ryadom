@@ -5,7 +5,7 @@ using YaRyadom.Domain.EntityTypeConfigurations;
 
 namespace YaRyadom.Domain.Mapping
 {
-	public class YaRyadomUserThemeMap : YaRyadomEntityTypeConfiguration<YaRyadomUserTheme>
+	internal class YaRyadomUserThemeMap : YaRyadomEntityTypeConfiguration<YaRyadomUserTheme>
 	{
 		public override void Configure(EntityTypeBuilder<YaRyadomUserTheme> builder)
 		{

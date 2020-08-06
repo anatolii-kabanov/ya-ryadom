@@ -43,7 +43,7 @@ namespace YaRyadom.Scheduler
 					services.AddTransient<HttpClient>();
 					services.AddSingleton<IVkApi>(new VkApi(appSettings.ServiceToken, new HttpClient()));
 					services.AddSingleton<IVkNotificationsWorker, VkNotificationsWorker>();
-					// services.AddSingleton<IHostedService, VkNotificationsService>();
+					services.AddSingleton<IHostedService, VkNotificationsService>();
 					services.AddSingleton<IDailyEventsUpdateWorker, DailyEventsUpdateWorker>();
 					services.AddSingleton<IHostedService, DailyUpdateService>();
 				})

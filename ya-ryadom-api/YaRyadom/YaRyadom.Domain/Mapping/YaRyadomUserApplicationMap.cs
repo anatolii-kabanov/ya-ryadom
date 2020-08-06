@@ -5,7 +5,7 @@ using YaRyadom.Domain.EntityTypeConfigurations;
 
 namespace YaRyadom.Domain.Mapping
 {
-	public class YaRyadomUserApplicationMap : YaRyadomEntityTypeConfiguration<YaRyadomUserApplication>
+	internal class YaRyadomUserApplicationMap : YaRyadomEntityTypeConfiguration<YaRyadomUserApplication>
 	{
 		public override void Configure(EntityTypeBuilder<YaRyadomUserApplication> builder)
 		{

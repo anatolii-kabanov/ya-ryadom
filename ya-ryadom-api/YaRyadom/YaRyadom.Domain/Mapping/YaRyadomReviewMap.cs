@@ -5,7 +5,7 @@ using YaRyadom.Domain.EntityTypeConfigurations;
 
 namespace YaRyadom.Domain.Mapping
 {
-	public class YaRyadomReviewMap : YaRyadomEntityTypeConfiguration<YaRyadomReview>
+	internal class YaRyadomReviewMap : YaRyadomEntityTypeConfiguration<YaRyadomReview>
 	{
 		public override void Configure(EntityTypeBuilder<YaRyadomReview> builder)
 		{

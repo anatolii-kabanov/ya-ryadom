@@ -19,11 +19,11 @@ namespace YaRyadom.Domain.Entities
 
 		#region Navigation properties
 
-		public YaRyadomEvent YaRyadomEvent { get; set; }
+		public virtual YaRyadomEvent YaRyadomEvent { get; set; }
 
-		public YaRyadomUser YaRyadomUserReviewer { get; set; }
+		public virtual YaRyadomUser YaRyadomUserReviewer { get; set; }
 
-		public YaRyadomUser YaRyadomUserToReview { get; set; }
+		public virtual YaRyadomUser YaRyadomUserToReview { get; set; }
 
 		#endregion
 	}

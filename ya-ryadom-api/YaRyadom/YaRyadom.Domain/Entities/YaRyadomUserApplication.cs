@@ -18,9 +18,9 @@ namespace YaRyadom.Domain.Entities
 
 		#region Navigation properties
 
-		public YaRyadomEvent YaRyadomEvent { get; set; }
+		public virtual YaRyadomEvent YaRyadomEvent { get; set; }
 
-		public YaRyadomUser YaRyadomUserRequested { get; set; }
+		public virtual YaRyadomUser YaRyadomUserRequested { get; set; }
 
 		#endregion
 	}

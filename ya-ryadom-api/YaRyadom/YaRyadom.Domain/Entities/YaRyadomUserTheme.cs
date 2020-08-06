@@ -11,7 +11,7 @@ namespace YaRyadom.Domain.Entities
 
 		#region Navigation properties
 
-		public YaRyadomUser YaRyadomUser { get; set; }
+		public virtual YaRyadomUser YaRyadomUser { get; set; }
 
 		#endregion
 	}

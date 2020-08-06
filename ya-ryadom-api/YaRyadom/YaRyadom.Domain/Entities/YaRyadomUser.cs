@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
+using System;
 using System.Collections.Generic;
 using YaRyadom.Domain.Entities.Base;
 
@@ -17,6 +18,8 @@ namespace YaRyadom.Domain.Entities
 		private ICollection<YaRyadomReview> _yaRyadomReviewsMine;
 
 		private ICollection<YaRyadomReview> _yaRyadomMyReviewsAboutMe;
+
+		private ICollection<YaRyadomNotification> _yaRyadomNotificationsToMe;
 
 		#endregion
 
@@ -38,36 +41,50 @@ namespace YaRyadom.Domain.Entities
 
 		public string Address { get; set; }
 
+		public DateTimeOffset VkNotificationsLockoutEnd { get; set; }
+
+		public int VkNotificationsPerHourCount { get; set; }
+
+		public int VkNotificationsPerDayCount { get; set; }
+
+		public DateTimeOffset VkNotificationsLastSentDate { get; set; }
+
 		#region Navigation properties
 
-		public ICollection<YaRyadomEvent> OwnYaRyadomEvents
+		public virtual ICollection<YaRyadomEvent> OwnYaRyadomEvents
 		{
 			get => _ownYaRyadomEvents ?? new List<YaRyadomEvent>();
 			set => _ownYaRyadomEvents = value;
 		}
 
-		public ICollection<YaRyadomUserTheme> YaRyadomUserThemes
+		public virtual ICollection<YaRyadomUserTheme> YaRyadomUserThemes
 		{
 			get => _yaRyadomUserThemes ?? new List<YaRyadomUserTheme>();
 			set => _yaRyadomUserThemes = value;
 		}
 		
-		public ICollection<YaRyadomUserApplication> YaRyadomUserApplications
+		public virtual ICollection<YaRyadomUserApplication> YaRyadomUserApplications
 		{
 			get => _yaRyadomUserApplications ?? new List<YaRyadomUserApplication>();
 			set => _yaRyadomUserApplications = value;
 		}
 
-		public ICollection<YaRyadomReview> YaRyadomReviewsMine
+		public virtual ICollection<YaRyadomReview> YaRyadomReviewsMine
 		{
 			get => _yaRyadomReviewsMine ?? new List<YaRyadomReview>();
 			set => _yaRyadomReviewsMine = value;
 		}
 
-		public ICollection<YaRyadomReview> YaRyadomReviewsAboutMe
+		public virtual ICollection<YaRyadomReview> YaRyadomReviewsAboutMe
 		{
 			get => _yaRyadomMyReviewsAboutMe ?? new List<YaRyadomReview>();
 			set => _yaRyadomMyReviewsAboutMe = value;
+		}
+
+		public virtual ICollection<YaRyadomNotification> YaRyadomNotificationsToMe
+		{
+			get => _yaRyadomNotificationsToMe ?? new List<YaRyadomNotification>();
+			set => _yaRyadomNotificationsToMe = value;
 		}
 
 		#endregion

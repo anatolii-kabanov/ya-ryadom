@@ -16,6 +16,8 @@ namespace YaRyadom.Domain.Entities
 
 		private ICollection<YaRyadomReview> _yaRyadomReviews;
 
+		private ICollection<YaRyadomNotification> _yaRyadomNotifications;
+
 		#endregion
 
 		public string Title { get; set; }
@@ -44,24 +46,30 @@ namespace YaRyadom.Domain.Entities
 
 		#region Navigation properties
 
-		public YaRyadomUser YaRyadomUserOwner { get; set; }
+		public virtual YaRyadomUser YaRyadomUserOwner { get; set; }
 
-		public ICollection<YaRyadomEventTheme> YaRyadomEventThemes
+		public virtual ICollection<YaRyadomEventTheme> YaRyadomEventThemes
 		{
 			get => _yaRyadomEventThemes ?? new List<YaRyadomEventTheme>();
 			set => _yaRyadomEventThemes = value;
 		}
 
-		public ICollection<YaRyadomUserApplication> YaRyadomUserApplications
+		public virtual ICollection<YaRyadomUserApplication> YaRyadomUserApplications
 		{
 			get => _yaRyadomUserApplications ?? new List<YaRyadomUserApplication>();
 			set => _yaRyadomUserApplications = value;
 		}
 
-		public ICollection<YaRyadomReview> YaRyadomReviews
+		public virtual ICollection<YaRyadomReview> YaRyadomReviews
 		{
 			get => _yaRyadomReviews ?? new List<YaRyadomReview>();
 			set => _yaRyadomReviews = value;
+		}
+
+		public virtual ICollection<YaRyadomNotification> YaRyadomNotifications
+		{
+			get => _yaRyadomNotifications ?? new List<YaRyadomNotification>();
+			set => _yaRyadomNotifications = value;
 		}
 
 		#endregion
