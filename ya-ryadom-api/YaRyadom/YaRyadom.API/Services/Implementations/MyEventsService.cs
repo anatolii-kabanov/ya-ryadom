@@ -55,6 +55,26 @@ namespace YaRyadom.API.Services.Implementations
 				m => m.Id == model.EventId && m.YaRyadomUserOwner.VkId == model.VkUserId,
 				cancellationToken);
 
+			if (yaRyadomEvent == null) throw new ArgumentNullException(nameof(yaRyadomEvent));
+
+			var usersIds = await _dbContext
+				.YaRyadomUserApplications
+				.AsNoTracking()
+				.Where(m => m.YaRyadomEventId == yaRyadomEvent.Id)
+				.Select(m => m.YaRyadomUserRequestedId)
+				.ToArrayAsync(cancellationToken);
+
+			foreach(var userId in usersIds)
+			{
+				_dbContext.YaRyadomNotifications.Add(new YaRyadomNotification
+				{
+					CreatedDate = DateTime.UtcNow,
+					NotificationType = NotificationType.EventRevoked,
+					YaRyadomEventId = yaRyadomEvent.Id,
+					YaRyadomUserToSendId = userId,
+				});
+			}
+
 			yaRyadomEvent.Revoked = true;
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
