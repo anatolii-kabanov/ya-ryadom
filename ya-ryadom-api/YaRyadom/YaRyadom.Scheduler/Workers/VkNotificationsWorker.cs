@@ -35,14 +35,13 @@ namespace YaRyadom.Scheduler.Workers
 						 && m.YaRyadomUserToSend.NotificationsEnabled
 						 && m.YaRyadomUserToSend.VkNotificationsLockoutEnd <= currentDate)
 					 .Include(m => m.YaRyadomUserToSend)
-					 //.Include(m => m.YaRyadomEvent)
-					 .GroupBy(m => new { m.NotificationType, m.YaRyadomEventId })					 
-					 .Take(10)// Max 10 per request
+					 .Include(m => m.YaRyadomEvent)
+					 .Take(100)// Just for now, otherwise extra checks should be added to count users
 					 .ToArrayAsync(cancellationToken)
 					 .ConfigureAwait(false);
-
+				var yaRyadomNotificationsGrouped = yaRyadomNotifications.GroupBy(m => new { m.NotificationType, m.YaRyadomEventId });
 				// Here we can reach vk notifications limit for particular user
-				foreach (var notificationGroup in yaRyadomNotifications)
+				foreach (var notificationGroup in yaRyadomNotificationsGrouped)
 				{
 					if (notificationGroup.Key.NotificationType == NotificationType.CustomMessage)
 					{
@@ -107,6 +106,10 @@ namespace YaRyadom.Scheduler.Workers
 					notification.YaRyadomUserToSend.VkNotificationsLockoutEnd = DateTime.UtcNow.AddHours(14);
 					notification.YaRyadomUserToSend.VkNotificationsPerDayCount = 0;
 				}
+
+				notification.YaRyadomUserToSend.VkNotificationsLastSentDate = currentDate;
+				notification.SentDate = currentDate;
+				notification.IsSent = true;
 			}
 		}
 
@@ -114,8 +117,8 @@ namespace YaRyadom.Scheduler.Workers
 		{
 			return notification.NotificationType switch
 			{
-				NotificationType.EventRevoked => $"К сожалению мероприятие отменено 😞 - \"{notification.YaRyadomEvent.Title}\"",
-				NotificationType.NewEventNearYou => $"Новое событие рядом с вами 😀, {notification.YaRyadomEvent.Title}",
+				NotificationType.EventRevoked => $"К сожалению мероприятие \"{notification.YaRyadomEvent.Title}\" отменено 😞",
+				NotificationType.NewEventNearYou => $"Новое событие \"{notification.YaRyadomEvent.Title}\" рядом с вами 😀",
 				NotificationType.CustomMessage => notification.Message,
 				_ => $"",
 			};
