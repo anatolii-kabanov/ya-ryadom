@@ -13,7 +13,7 @@ namespace YaRyadom.Scheduler.Services
 	{
 		private readonly IVkNotificationsWorker _vkNotificationsWorker;
 		public VkNotificationsService(
-			ILogger<DailyUpdateService> logger,
+			ILogger<VkNotificationsService> logger,
 			IOptions<ServiceConfiguration> options,
 			IVkNotificationsWorker vkNotificationsWorker) : base(logger, options)
 		{
@@ -22,6 +22,7 @@ namespace YaRyadom.Scheduler.Services
 
 		protected override async Task OnStart(CancellationToken cancellationToken)
 		{
+			// Should be replaced with timer to not to block other hosted services
 			await ExecuteAsync(cancellationToken).ConfigureAwait(false);
 		}
 

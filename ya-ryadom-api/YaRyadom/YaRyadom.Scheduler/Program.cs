@@ -39,13 +39,14 @@ namespace YaRyadom.Scheduler
 					var appSettingsSection = hostContext.Configuration.GetSection("AppSettings");
 					services.Configure<AppSettings>(appSettingsSection);
 					var appSettings = appSettingsSection.Get<AppSettings>();
+										
+					services.AddSingleton<IDailyEventsUpdateWorker, DailyEventsUpdateWorker>();
+					services.AddSingleton<IHostedService, DailyUpdateService>();
 
 					services.AddTransient<HttpClient>();
 					services.AddSingleton<IVkApi>(new VkApi(appSettings.ServiceToken, new HttpClient()));
 					services.AddSingleton<IVkNotificationsWorker, VkNotificationsWorker>();
-					services.AddSingleton<IHostedService, VkNotificationsService>();
-					services.AddSingleton<IDailyEventsUpdateWorker, DailyEventsUpdateWorker>();
-					services.AddSingleton<IHostedService, DailyUpdateService>();
+					services.AddSingleton<IHostedService, VkNotificationsService>();					
 				})
 				.ConfigureLogging((hostingContext, logging) =>
 				{

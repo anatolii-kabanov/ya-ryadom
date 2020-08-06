@@ -13,7 +13,7 @@ namespace YaRyadom.Scheduler.Services
 	{
 		private readonly IDailyEventsUpdateWorker _dailyEventsUpdateWorker;
 		private Timer _dailyTimer;
-		private int _usingResource = 0;
+		private static int _usingResource = 0;
 
 		public DailyUpdateService(
 			ILogger<DailyUpdateService> logger,
@@ -24,22 +24,34 @@ namespace YaRyadom.Scheduler.Services
 			_dailyEventsUpdateWorker = dailyEventsUpdateWorker ?? throw new ArgumentNullException(nameof(dailyEventsUpdateWorker));
 		}
 
-		protected override async Task OnStart(CancellationToken cancellationToken)
+		protected override async Task OnStart(CancellationToken cancellationToken = default)
 		{
 			_dailyTimer = new Timer(async (obj) =>
 			{
 				try
 				{
+					Logger.LogInformation($"Before Interlocked _usingResource = {_usingResource}");
 					if (0 == Interlocked.Exchange(ref _usingResource, 1))
 					{
+						Logger.LogDebug($"start....... {_dailyTimer.ToString()}");
 						_dailyTimer.Change(Timeout.Infinite, Timeout.Infinite);
-						await _dailyEventsUpdateWorker.RunAsync().ConfigureAwait(false);
+
+						await _dailyEventsUpdateWorker.RunAsync(cancellationToken).ConfigureAwait(false);
+						Logger.LogDebug("finsish...... ");
 						Interlocked.Exchange(ref _usingResource, 0);
 					}
 					else
 					{
 						return;
 					}
+				}
+				catch(Exception ex)
+				{
+					// Reset resource because Interlocked.Exchange can throw exception on first time Linux
+					// Need to look what happens
+					_usingResource = 0; 
+					
+					Logger.LogError(ex, "In daily update timer.");
 				}
 				finally
 				{
