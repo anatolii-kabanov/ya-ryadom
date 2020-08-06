@@ -6,9 +6,7 @@ import { PANELS } from '../../utils/constants/panel.constants';
 import { AppState } from "../../store/app-state";
 import ApplicationsPanel from '../panels/applications/applications.panel';
 import ApplicationsReviewModal from '../modals/applications-review.modal';
-import Icon28WriteOutline from '@vkontakte/icons/dist/28/write_outline';
-import Icon28ShareOutline from '@vkontakte/icons/dist/28/share_outline';
-import Icon28DeleteOutline from '@vkontakte/icons/dist/28/delete_outline';
+import { revokeEventRequest } from '../../store/events/my-events/actions';
 
 const osname = platform();
 
@@ -19,7 +17,7 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-
+    revokeMyEvent: typeof revokeEventRequest
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -34,25 +32,27 @@ export class ApplicationsView extends React.Component<AllProps, State>  {
         popout: null,
     }
 
-    shareEvent = (eventId) => {
+    shareEvent = (eventId: number) => {
         //TODO need to make const
         vkBridge.send('VKWebAppShare', { 'link': `https://vk.com/app7508849#${eventId}` })
+    }
+
+    revokeMyEvent = (eventId: number) => {
+        const { revokeMyEvent } = this.props;
+        revokeMyEvent(eventId);
     }
 
     openBase = (eventId) => {
         this.setState({
             popout:
                 <ActionSheet onClose={() => this.setState({ popout: null })}>
-                    {/*<ActionSheetItem autoclose>*/}
-                    {/*    Редактировать событие*/}
-                    {/*</ActionSheetItem>*/}
                     <ActionSheetItem autoclose onClick={() => this.shareEvent(eventId)}>
                         Поделиться
                     </ActionSheetItem>
-                    {/*<ActionSheetItem autoclose>*/}
-                    {/*    Удалить событие*/}
-                    {/*</ActionSheetItem>*/}
-                    {osname === IOS && <ActionSheetItem autoclose mode="cancel">Отменить</ActionSheetItem>}
+                    <ActionSheetItem autoclose onClick={() => this.revokeMyEvent(eventId)}>
+                        Отменить событие
+                    </ActionSheetItem>
+                    {osname === IOS && <ActionSheetItem autoclose mode="cancel">Назад</ActionSheetItem>}
                 </ActionSheet>
         });
     }
@@ -60,7 +60,7 @@ export class ApplicationsView extends React.Component<AllProps, State>  {
 
     render() {
         const { id, activePanel, popout } = this.props;
-        //TODO Fix spinner popout
+
         return (
             <View id={id} activePanel={activePanel} popout={popout ?? this.state.popout} modal={
                 <ApplicationsReviewModal />
@@ -76,6 +76,7 @@ const mapStateToProps = ({ history }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
+    revokeMyEvent: revokeEventRequest
 }
 
 export default connect(

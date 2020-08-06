@@ -8,6 +8,9 @@ import {
     saveMyEventSuccess,
     saveMyEventIntroRequest,
     saveMyEventGeneralRequest,
+    revokeEventRequest,
+    revokeEventError,
+    revokeEventSuccess,
 } from './actions'
 import { callApi } from '../../../utils/api';
 import { getVkUserId } from '../../authentication/reducer';
@@ -94,12 +97,43 @@ function* watchSaveEventGeneralRequest() {
     yield takeLatest(MyEventsTypes.SAVE_MY_EVENT_GENERAL, handleSaveEventGeneralRequest)
 }
 
+function* handleRevokeEventRequest(action: ReturnType<typeof revokeEventRequest>) {
+    try {
+        yield put(showSpinner());
+        const vkUserId = yield select(getVkUserId);
+        const model = {
+            vkUserId,
+            eventId: action.payload
+        }
+        const result = yield call(callApi, 'post', API_ENDPOINT, '/revoke', model);
+
+        if (result.errors) {
+            yield put(revokeEventError(result.errors));
+        } else {
+            yield put(revokeEventSuccess(action.payload));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(revokeEventError(error.stack));
+        } else {
+            yield put(revokeEventError('An unknown error occured.'));
+        }
+    } finally {
+        yield put(hideSpinner());
+    }
+}
+
+function* watchRevokeEventRequest() {
+    yield takeLatest(MyEventsTypes.REVOKE_MY_EVENT, handleRevokeEventRequest)
+}
+
 function* myEventsSagas() {
     yield all([
         fork(watchMyEventsFetchRequest),
         fork(watchSaveEventRequest),
         fork(watchSaveEventIntroRequest),
-        fork(watchSaveEventGeneralRequest)
+        fork(watchSaveEventGeneralRequest),
+        fork(watchRevokeEventRequest)
     ])
 }
 

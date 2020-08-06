@@ -10,4 +10,8 @@ export enum MyEventsTypes {
     SAVE_MY_EVENT_GENERAL= '[My Events] Save my event general',
     SAVE_MY_EVENT_SUCCESS = '[My Events] Save my event success',
     SAVE_MY_EVENT_ERROR = '[My Events] Save my event error',
+
+    REVOKE_MY_EVENT = '[My Events] (POST) Revoke my event',
+    REVOKE_MY_EVENT_SUCCESS = '[My Events] Revoke my event success',
+    REVOKE_MY_EVENT_ERROR = '[My Events] Revoke my event error',
 };

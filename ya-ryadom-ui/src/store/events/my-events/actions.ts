@@ -1,4 +1,4 @@
-import { action } from 'typesafe-actions';
+import { action, ActionType } from 'typesafe-actions';
 import { MyEventsTypes } from "./types";
 import { MyEvent, MyEventCreate } from './models';
 import { EventApplicationUpdateStatus } from '../../applications/models';
@@ -14,3 +14,15 @@ export const saveMyEventIntroRequest = (payload: MyEventCreate) => action(MyEven
 export const saveMyEventGeneralRequest = (payload: MyEventCreate) => action(MyEventsTypes.SAVE_MY_EVENT_GENERAL, payload)
 export const saveMyEventSuccess = (payload: any) => action(MyEventsTypes.SAVE_MY_EVENT_SUCCESS, payload);
 export const saveMyEventError = (payload: any) => action(MyEventsTypes.SAVE_MY_EVENT_ERROR, payload);
+
+export const revokeEventRequest = (payload: number) => action(MyEventsTypes.REVOKE_MY_EVENT, payload);
+export const revokeEventSuccess = (payload: number) => action(MyEventsTypes.REVOKE_MY_EVENT_SUCCESS, payload);
+export const revokeEventError = (payload: any) => action(MyEventsTypes.REVOKE_MY_EVENT_ERROR, payload);
+
+
+export type MyEventsActions = ActionType<
+    typeof fetchMyEventsListSuccess |
+    typeof saveMyEventSuccess |
+    typeof revokeEventSuccess |
+    typeof updateParticipantStatus
+>;
