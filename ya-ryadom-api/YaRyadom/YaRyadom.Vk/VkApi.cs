@@ -36,6 +36,9 @@ namespace YaRyadom.Vk
 
 		public async Task<NotificationResponse> SendNotificationAsync(long[] usersIds, string message)
 		{
+			if (string.IsNullOrEmpty(message)) throw new ArgumentNullException(nameof(message));
+			if (message.Length > 254) throw new ArgumentOutOfRangeException(nameof(message));
+
 			var queryString = HttpUtility.ParseQueryString(string.Empty);
 			var users = string.Join(",", usersIds);
 			queryString["user_ids"] = users;
@@ -44,7 +47,7 @@ namespace YaRyadom.Vk
 			queryString["access_token"] = _accessToken;
 			var postValues = new FormUrlEncodedContent(queryString.AllKeys.ToDictionary(k => k, k => queryString[k]));
 			var response = await _httpClient
-				.PostAsync($"{_apiUrl}{VkApiMethod.SendNotification.GetDescription()}?{queryString.ToString()}", postValues)
+				.PostAsync($"{_apiUrl}{VkApiMethod.NotificationsSendMessage.GetDescription()}?{queryString.ToString()}", postValues)
 				.ConfigureAwait(false);
 			var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 			var notificationResponse = JsonConvert.DeserializeObject<NotificationResponse>(json);

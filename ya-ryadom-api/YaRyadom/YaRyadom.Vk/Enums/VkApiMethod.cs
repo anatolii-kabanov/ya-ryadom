@@ -5,7 +5,8 @@ namespace YaRyadom.Vk.Enums
 	public enum VkApiMethod
 	{
 		/// <summary>
-		/// Send notifications to specific users
+		/// NOT WORKING!!!
+		/// Send notifications to specific users 
 		/// </summary>
 		[Description("secure.sendNotification")]
 		SendNotification,
@@ -21,5 +22,12 @@ namespace YaRyadom.Vk.Enums
 		/// </summary>
 		[Description("users.get")]
 		UsersGet,
+
+		/// <summary>
+		/// USE THIS METHOD TO SEND NOTIFICATIONS
+		/// Send notifications to specific users 
+		/// </summary>
+		[Description("notifications.sendMessage")]
+		NotificationsSendMessage
 	}
 }
