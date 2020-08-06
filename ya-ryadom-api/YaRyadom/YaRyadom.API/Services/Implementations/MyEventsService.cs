@@ -60,7 +60,10 @@ namespace YaRyadom.API.Services.Implementations
 			var usersIds = await _dbContext
 				.YaRyadomUserApplications
 				.AsNoTracking()
-				.Where(m => m.YaRyadomEventId == yaRyadomEvent.Id)
+				.Where(m => m.YaRyadomEventId == yaRyadomEvent.Id 
+					&& m.Status != ApplicationStatus.Rejected
+					&& m.Status != ApplicationStatus.None
+					&& m.YaRyadomUserRequested.NotificationsEnabled)
 				.Select(m => m.YaRyadomUserRequestedId)
 				.ToArrayAsync(cancellationToken);
 

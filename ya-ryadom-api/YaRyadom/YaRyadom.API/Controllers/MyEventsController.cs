@@ -71,7 +71,7 @@ namespace YaRyadom.API.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpPost("revoke/{id}")]
+		[HttpPost("revoke")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[VkUserIdFilter]

@@ -41,7 +41,7 @@ namespace YaRyadom.Scheduler.Services
 				{
 					Logger.LogError("Notification worker", ex);
 				}
-				await Task.Delay(5000, cancellationToken);
+				await Task.Delay(30000, cancellationToken);
 			}
 		}
 

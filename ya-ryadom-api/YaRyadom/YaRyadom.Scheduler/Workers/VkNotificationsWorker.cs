@@ -39,6 +39,13 @@ namespace YaRyadom.Scheduler.Workers
 					 .Take(100)// Just for now, otherwise extra checks should be added to count users
 					 .ToArrayAsync(cancellationToken)
 					 .ConfigureAwait(false);
+
+				if (!yaRyadomNotifications.Any())
+				{
+					_logger.LogInformation($"There are no notifications to send.");
+					return;
+				}
+
 				var yaRyadomNotificationsGrouped = yaRyadomNotifications.GroupBy(m => new { m.NotificationType, m.YaRyadomEventId });
 				// Here we can reach vk notifications limit for particular user
 				foreach (var notificationGroup in yaRyadomNotificationsGrouped)
