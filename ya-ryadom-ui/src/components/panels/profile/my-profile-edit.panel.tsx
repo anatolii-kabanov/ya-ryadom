@@ -41,7 +41,8 @@ class MyProfileEditPanel extends React.Component<AllProps>{
      */
     constructor(props) {
         super(props);
-        this.onNotificationClick = this.onNotificationClick.bind(this)
+        this.onNotificationClick = this.onNotificationClick.bind(this);
+        this.onGeolocationClick = this.onGeolocationClick.bind(this);
     }
 
     componentDidMount() {
@@ -53,6 +54,15 @@ class MyProfileEditPanel extends React.Component<AllProps>{
             allowNotifications();
         } else {
             disableNotifications();
+        }
+    }
+
+    onGeolocationClick(event: any) {
+        const { } = this.props;
+        if (event.target.checked) {
+            
+        } else {
+            
         }
     }
 
@@ -72,11 +82,16 @@ class MyProfileEditPanel extends React.Component<AllProps>{
                         </span>
                     </RichCell>
                 </Group>
-                <Group separator="show">
+                <Group separator="hide">
                     <Cell asideContent={<Switch checked={currentUser.notificationsEnabled} name="enableNotifications" className="switcher" onClick={this.onNotificationClick} />}>
                         Уведомления
                     </Cell>
                     <Cell description="Уведомления о событиях">
+                    </Cell>
+                </Group>
+                <Group separator="show">
+                    <Cell asideContent={<Switch checked={currentUser.geolocationEnabled} name="enableGeolocation" className="switcher" onClick={this.onGeolocationClick} />}>
+                        Геолокация
                     </Cell>
                 </Group>
                 <Group separator="show">

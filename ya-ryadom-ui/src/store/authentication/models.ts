@@ -18,6 +18,7 @@ export interface CurrentUser {
     aboutMySelf: string;
     avgRating: number;
     notificationsEnabled: boolean;
+    geolocationEnabled: boolean;
     address: string;
 }
 
