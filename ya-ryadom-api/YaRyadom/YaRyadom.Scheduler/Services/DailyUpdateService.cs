@@ -30,7 +30,7 @@ namespace YaRyadom.Scheduler.Services
 			{
 				try
 				{
-					Logger.LogInformation($"Before Interlocked _usingResource = {_usingResource}");
+					Logger.LogDebug($"Before Interlocked _usingResource = {_usingResource}");
 					if (0 == Interlocked.Exchange(ref _usingResource, 1))
 					{
 						Logger.LogDebug($"start....... {_dailyTimer.ToString()}");
