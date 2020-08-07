@@ -60,14 +60,14 @@ namespace YaRyadom.API.Services.Implementations
 			var usersIds = await _dbContext
 				.YaRyadomUserApplications
 				.AsNoTracking()
-				.Where(m => m.YaRyadomEventId == yaRyadomEvent.Id 
+				.Where(m => m.YaRyadomEventId == yaRyadomEvent.Id
 					&& m.Status != ApplicationStatus.Rejected
 					&& m.Status != ApplicationStatus.None
 					&& m.YaRyadomUserRequested.NotificationsEnabled)
 				.Select(m => m.YaRyadomUserRequestedId)
 				.ToArrayAsync(cancellationToken);
 
-			foreach(var userId in usersIds)
+			foreach (var userId in usersIds)
 			{
 				_dbContext.YaRyadomNotifications.Add(new YaRyadomNotification
 				{
@@ -79,6 +79,7 @@ namespace YaRyadom.API.Services.Implementations
 			}
 
 			yaRyadomEvent.Revoked = true;
+			yaRyadomEvent.Ended = true;
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
@@ -87,7 +88,11 @@ namespace YaRyadom.API.Services.Implementations
 		{
 			var events = await _mapper
 			  .ProjectTo<MyEventServiceModel>(
-				  TableNoTracking.Where(m => m.YaRyadomUserOwner.VkId == vkId)
+				  TableNoTracking
+					  .Where(m => m.YaRyadomUserOwner.VkId == vkId)
+					  .OrderBy(m => m.Ended)
+					  .ThenBy(m => m.Date)
+					  .ThenBy(m => m.Time)
 			  )
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
@@ -104,9 +109,11 @@ namespace YaRyadom.API.Services.Implementations
 			var events = await _mapper
 			  .ProjectTo<MyEventServiceModel>(
 				  TableNoTracking
-				  .Where(m =>
-						m.YaRyadomUserApplications.Any(mm => mm.YaRyadomUserRequested.VkId == vkId && mm.Status == ApplicationStatus.Confirmed)
-					)
+					  .Where(m =>
+							m.YaRyadomUserApplications.Any(mm => mm.YaRyadomUserRequested.VkId == vkId && mm.Status == ApplicationStatus.Confirmed)
+						)
+					  .OrderBy(m => m.Ended)
+					  .ThenBy(m => m.Date)
 			  )
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
@@ -123,7 +130,10 @@ namespace YaRyadom.API.Services.Implementations
 			var events = await _mapper
 			  .ProjectTo<MyEventWithApplicationsServiceModel>(
 				  TableNoTracking
-				  .Where(m => m.YaRyadomUserOwner.VkId == vkId)
+					  .Where(m => m.YaRyadomUserOwner.VkId == vkId)
+					  .OrderBy(m => m.Ended)
+					  .ThenBy(m => m.Date)
+					  .ThenBy(m => m.Time)
 			  )
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
