@@ -12,19 +12,18 @@ import { connect } from 'react-redux';
 import { ReactComponent as IntroImage } from '../../../assets/images/svg/hello-intro.svg';
 import { AppState } from '../../../store/app-state';
 import { goForward } from '../../../store/history/actions';
-import { fetchUserGeoRequest } from "../../../store/authentication/actions";
 import { UserInfo } from '@vkontakte/vk-bridge';
-import { CurrentUser } from '../../../store/authentication/models';
+import { VIEWS } from '../../../utils/constants/view.constants';
+import { PANELS } from '../../../utils/constants/panel.constants';
+import { VkHistoryModel } from '../../../store/history/models';
 
 interface PropsFromState {
     id: string,
     vkUserInfo: UserInfo,
-    currentUser: CurrentUser
 }
 
 interface PropsFromDispatch {
     goForwardView: typeof goForward,
-    getGeoData: typeof fetchUserGeoRequest,
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -41,12 +40,12 @@ class HelloIntroPanel extends React.Component<AllProps>  {
     }
 
     onHelloIntroCompleted() {
-        const { getGeoData } = this.props;
-        getGeoData();
+        const { goForwardView } = this.props;
+        goForwardView(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.GEOLOCATION_INTRO_PANEL));
     }
 
     render() {
-        const { id, vkUserInfo, currentUser } = this.props;
+        const { id, vkUserInfo } = this.props;
         return (
             <Panel id={id} className="hello-intro-panel">
                 <PanelHeader>
@@ -58,13 +57,10 @@ class HelloIntroPanel extends React.Component<AllProps>  {
                     </Div>
                     <Div className="intro-text">
                         <p className="first-row-text">Твой будущий друг уже рядом. <br /> Несколько действий и ты в большой тусовке своего города.</p>
-                        {
-                            currentUser && <div><p className="second-row-text">Весь спектр интересов в одном приложении. <br /> Каждый найдёт себе дело по душе.</p>
-                                <Div>
-                                    <Button size="xl" className="btn-primary" onClick={() => this.onHelloIntroCompleted()}>Начать</Button>
-                                </Div>
-                            </div>
-                        }
+                        <p className="second-row-text">Весь спектр интересов в одном приложении. <br /> Каждый найдёт себе дело по душе.</p>
+                        <Div>
+                            <Button size="xl" className="btn-primary" onClick={() => this.onHelloIntroCompleted()}>Начать</Button>
+                        </Div>
                     </Div>
                 </Group>
             </Panel>
@@ -79,7 +75,6 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 
 const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
-    getGeoData: fetchUserGeoRequest,
 }
 
 export default connect(

@@ -22,6 +22,10 @@ export interface CurrentUser {
     address: string;
 }
 
+export class CurrentUser implements CurrentUser {
+    
+}
+
 export interface Position {
     // X
     longitude: number;

@@ -71,6 +71,13 @@
   color: #818c99;
 }
 
+.switcher {
+  .Switch__self:checked+.Switch__pseudo {
+    border-color: $primary-color !important;
+    background: $primary-color !important;
+  }
+}
+
 
 /* Google maps*/
 
@@ -135,4 +142,9 @@
 .flex-between {
   display: flex;
   justify-content: space-between;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
 }

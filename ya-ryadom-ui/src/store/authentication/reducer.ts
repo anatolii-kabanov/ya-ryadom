@@ -2,6 +2,8 @@ import { Reducer } from 'redux';
 import { AuthenticationState } from './state';
 import { AuthenticationTypes } from './types';
 import { AppState } from '../app-state';
+import { AuthenticationActions } from './actions';
+import _ from 'lodash';
 
 export const initialState: AuthenticationState = {
     currentUser: null,
@@ -9,7 +11,7 @@ export const initialState: AuthenticationState = {
     geoData: null,
 }
 
-const reducer: Reducer<AuthenticationState> = (state = initialState, action) => {
+const reducer: Reducer<AuthenticationState, AuthenticationActions> = (state = initialState, action: AuthenticationActions) => {
     switch (action.type) {
         case AuthenticationTypes.FETCH_VK_USER_INFO_SUCCESS: {
             return { ...state, vkUserInfo: action.payload }
@@ -21,22 +23,46 @@ const reducer: Reducer<AuthenticationState> = (state = initialState, action) => 
             return { ...state, geoData: action.payload }
         }
         case AuthenticationTypes.SAVE_USER_THEMES_SUCCESS: {
-            return { ...state, currentUser: { ...state.currentUser, selectedThemes: action.payload } }
+            const newState = _.cloneDeep(state);
+            if (newState.currentUser) {
+                newState.currentUser.selectedThemes = action.payload;
+            }
+            return newState;
         }
         case AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS: {
-            return { ...state, currentUser: { ...state.currentUser, lastLocation: action.payload } }
+            const newState = _.cloneDeep(state);
+            if (newState.currentUser) {
+                newState.currentUser.lastLocation = action.payload;
+            }
+            return newState;
         }
         case AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS: {
-            return { ...state, currentUser: { ...state.currentUser, aboutMySelf: action.payload } }
+            const newState = _.cloneDeep(state);
+            if (newState.currentUser) {
+                newState.currentUser.aboutMySelf = action.payload;
+            }
+            return newState;
         }
         case AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED_SUCCESS: {
-            return { ...state, currentUser: { ...state.currentUser, guideCompleted: true } }
+            const newState = _.cloneDeep(state);
+            if (newState.currentUser) {
+                newState.currentUser.guideCompleted = true;
+            }
+            return newState;
         }
         case AuthenticationTypes.ALLOW_NOTIFICATIONS_SUCCESS: {
-            return { ...state, currentUser: { ...state.currentUser, notificationsEnabled: true } }
+            const newState = _.cloneDeep(state);
+            if (newState.currentUser) {
+                newState.currentUser.notificationsEnabled = true;
+            }
+            return newState;
         }
         case AuthenticationTypes.DISABLE_NOTIFICATIONS_SUCCESS: {
-            return { ...state, currentUser: { ...state.currentUser, notificationsEnabled: false } }
+            const newState = _.cloneDeep(state);
+            if (newState.currentUser) {
+                newState.currentUser.notificationsEnabled = false;
+            }
+            return newState;
         }
         default: {
             return state

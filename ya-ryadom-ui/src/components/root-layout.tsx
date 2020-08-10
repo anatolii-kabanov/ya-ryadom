@@ -14,8 +14,6 @@ import GeneralView from './views/general.view';
 import { ROOTS } from '../utils/constants/root.constants';
 import { CurrentUser } from '../store/authentication/models';
 import MyEventCreateView from "./views/my-events-create.view";
-import { PANELS } from "../utils/constants/panel.constants";
-import MyEventCreatePanel from "./panels/my-event-create.panel";
 
 interface PropsFromState {
     activeView: string;
@@ -34,12 +32,7 @@ class RootLayout extends React.Component<AllProps>  {
 
     componentDidMount() {
         const { getVkUserInfo } = this.props;
-
-        if (window.location.hash) {
-            getVkUserInfo(true);
-        } else {
-            getVkUserInfo(false)
-        }
+        getVkUserInfo();
     }
 
     renderLayout() {

@@ -6,7 +6,7 @@ import {
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
-import { saveUserIntroAboutMysel } from '../../../store/authentication/actions';
+import { saveUserIntroAboutMyself } from '../../../store/authentication/actions';
 import AboutMyselfForm from '../../forms/about-myself.form';
 
 interface PropsFromState {
@@ -14,7 +14,7 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    saveAboutMyself: typeof saveUserIntroAboutMysel
+    saveAboutMyself: typeof saveUserIntroAboutMyself
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -38,7 +38,7 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    saveAboutMyself: saveUserIntroAboutMysel
+    saveAboutMyself: saveUserIntroAboutMyself
 }
 
 export default connect(

@@ -33,8 +33,8 @@ import {
     disableNotificationsSuccess,
     saveUserIntroThemes,
     saveUserProfileThemes,
-    saveUserIntroAboutMysel,
-    saveUserProfileAboutMysel
+    saveUserIntroAboutMyself,
+    saveUserProfileAboutMyself
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo, CurrentUser } from './models';
@@ -59,7 +59,7 @@ function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
         if (result.errors) {
             yield put(fetchUserInfoError(result.errors));
         } else {
-            var user: CurrentUser = result;
+            var user: CurrentUser = result || new CurrentUser();
             yield put(fetchUserInfoSuccess(user));
             if (user.guideCompleted) {
                 yield put(reset(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP)));
@@ -90,20 +90,20 @@ function* handleFetchVkUserInfo(action: ReturnType<typeof fetchVkUserInfoRequest
         } else {
             const vkUserInfo = result as UserInfo;
             yield put(fetchVkUserInfoSuccess(vkUserInfo));
-            yield put(saveUserInfoRequest({
-                vkUserId: vkUserInfo.id,
-                firstName: vkUserInfo.first_name,
-                lastName: vkUserInfo.last_name,
-                vkUserAvatarUrl: vkUserInfo.photo_200,
-            }));
-            yield take(saveUserInfoRequest);
+            // yield put(saveUserInfoRequest({
+            //     vkUserId: vkUserInfo.id,
+            //     firstName: vkUserInfo.first_name,
+            //     lastName: vkUserInfo.last_name,
+            //     vkUserAvatarUrl: vkUserInfo.photo_200,
+            // }));
+            // yield take(saveUserInfoRequest);
             // Request our user info
             yield put(fetchUserInfoRequest(vkUserInfo.id));
 
-            // if app has been opened by sharable event link
-            if (action.payload) {
-                goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP))
-            }
+            // // if app has been opened by sharable event link
+            // if (action.payload) {
+            //     goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP))
+            // }
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -128,11 +128,11 @@ function* handleFetchUserGeo() {
         } else {
             const geoData = result as Geo;
             yield put(fetchUserGeoSuccess(geoData));
-            if (geoData?.available) {
-                yield put(saveUserLocationRequest({ latitude: geoData?.lat, longitude: geoData?.long }));
-            } else {
-                yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.SELECT_CITY_INTRO_PANEL)));
-            }
+            // if (geoData?.available) {
+            //     yield put(saveUserLocationRequest({ latitude: geoData?.lat, longitude: geoData?.long }));
+            // } else {
+            //     yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.SELECT_CITY_INTRO_PANEL)));
+            // }
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -256,7 +256,7 @@ function* watchSaveUserLocationRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_LOCATION, handleSaveUserLocationRequest)
 }
 
-function* handleSaveUserIntroAboutMyself(action: ReturnType<typeof saveUserIntroAboutMysel>) {
+function* handleSaveUserIntroAboutMyself(action: ReturnType<typeof saveUserIntroAboutMyself>) {
     yield put(saveUserAboutMyselfRequest(action.payload));
     yield take(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS);
     yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.CREATE_EVENT_PANEL)));
@@ -266,7 +266,7 @@ function* watchSaveUserIntroAboutMyself() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_INTRO_ABOUT_MYSELF, handleSaveUserIntroAboutMyself)
 }
 
-function* handleSaveUserProfileAboutMyself(action: ReturnType<typeof saveUserProfileAboutMysel>) {
+function* handleSaveUserProfileAboutMyself(action: ReturnType<typeof saveUserProfileAboutMyself>) {
     yield put(saveUserAboutMyselfRequest(action.payload));
     yield take(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS);
     yield put(goBack());

@@ -7,7 +7,7 @@ import {
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
 import { UserInfo } from '@vkontakte/vk-bridge';
-import { saveUserProfileAboutMysel } from '../../../store/authentication/actions';
+import { saveUserProfileAboutMyself } from '../../../store/authentication/actions';
 import AboutMyselfForm from '../../forms/about-myself.form';
 import MainHeaderPanel from "../headers/main.header";
 
@@ -17,7 +17,7 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    save: typeof saveUserProfileAboutMysel
+    save: typeof saveUserProfileAboutMyself
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -53,7 +53,7 @@ const mapStateToProps = ({ }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    save: saveUserProfileAboutMysel
+    save: saveUserProfileAboutMyself
 }
 
 export default connect(
