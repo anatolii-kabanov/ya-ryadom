@@ -35,4 +35,5 @@ export enum AuthenticationTypes {
     DISABLE_NOTIFICATIONS = '[Authentication] Disable notifications',
     DISABLE_NOTIFICATIONS_SUCCESS = '[Authentication] Disable notifications success',
     DISABLE_NOTIFICATIONS_ERROR = '[Authentication] Disable notifications error',
+    COMPLETE_USER_GUIDE = '[Authentication] Complete user guide',
 };

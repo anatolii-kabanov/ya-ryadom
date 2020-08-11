@@ -1,12 +1,11 @@
-import './event-created-intro.panel.scss';
+import './completed-intro.panel.scss';
 import React from 'react';
 import {
     Panel,
     PanelHeader,
     Group,
     Button,
-    Div,
-    Title,
+    Placeholder,
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
@@ -17,8 +16,11 @@ import { PANELS } from '../../../utils/constants/panel.constants';
 import { ReactComponent as IntroFinishedImage } from '../../../assets/images/svg/intro-finished.svg';
 import { TABS } from '../../../utils/constants/tab.constants';
 
+interface OwnProps {
+    id: string;
+}
+
 interface PropsFromState {
-    id: string,
 }
 
 interface PropsFromDispatch {
@@ -29,18 +31,24 @@ interface State {
 
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
-class EventCreatedIntroPanel extends React.Component<AllProps, State>  {
+class CompletedIntroPanel extends React.Component<AllProps, State>  {
 
     constructor(props) {
         super(props);
         this.onClickNext = this.onClickNext.bind(this);
+        this.onCreateEventClick = this.onCreateEventClick.bind(this);
     }
 
     onClickNext = () => {
         const { goForward } = this.props;
         goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP));
+    }
+
+    onCreateEventClick = () => {
+        const { goForward } = this.props;
+        goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.CREATE_EVENT_PANEL));
     }
 
     render() {
@@ -53,18 +61,23 @@ class EventCreatedIntroPanel extends React.Component<AllProps, State>  {
                     <IntroFinishedImage></IntroFinishedImage>
                 </Group>
                 <Group className="intro-text" separator="hide">
-                    <p className="first-row-text">Поздравляем!<br/>Ваше первое событие создано.</p>
+                    <Placeholder
+                        header="Поздравляем!"
+                    >
+                        Профиль успешно заполнен.
+                    </Placeholder>
                 </Group>
                 <Group className="btn-container-bottom">
-                    <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Каталог событий</Button>
+                    <Button className="btn-primary" size="xl" onClick={this.onCreateEventClick}>Создать событие</Button>
+                    <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Пропустить</Button>
                 </Group>
             </Panel>
         )
     }
 }
 
-const mapStateToProps = ({ authentication }: AppState) => ({
-
+const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
+    id: ownProps.id
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
@@ -74,4 +87,4 @@ const mapDispatchToProps: PropsFromDispatch = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(EventCreatedIntroPanel);
+)(CompletedIntroPanel);

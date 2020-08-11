@@ -7,7 +7,8 @@ import {
     Switch,
     Placeholder,
     Div,
-    Button
+    Button,
+    Caption
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
@@ -34,21 +35,29 @@ interface PropsFromDispatch {
     clearUserGeo: typeof clearUserGeo,
 }
 
+interface State {
+    geoAvailable: boolean;
+}
+
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
-class GeolocationIntroPanel extends React.Component<AllProps>  {
+class GeolocationIntroPanel extends React.Component<AllProps, State>  {
 
     /**
      *
      */
     constructor(props) {
         super(props);
+        this.state = {
+            geoAvailable: false
+        };
         this.onClickNext = this.onClickNext.bind(this);
         this.onGeolocationClick = this.onGeolocationClick.bind(this);
     }
 
     onGeolocationClick = (event: any) => {
         const { getGeoData, clearUserGeo } = this.props;
+        this.setState({ geoAvailable: event.target.checked });
         if (event.target.checked) {
             getGeoData();
         } else {
@@ -66,7 +75,7 @@ class GeolocationIntroPanel extends React.Component<AllProps>  {
     }
 
     render() {
-        const { id, currentUser } = this.props;
+        const { id, currentUser, userGeo } = this.props;
         return (
             <Panel id={id} className="geolocation-intro-panel">
                 <PanelHeader>
@@ -79,6 +88,13 @@ class GeolocationIntroPanel extends React.Component<AllProps>  {
                     >
                         Разрешите использовать Ваши геоданные в нашем приложении
                     </Placeholder>
+                    {
+                        this.state.geoAvailable && !userGeo?.available &&
+                        <Placeholder >
+                            Похоже на то что Вам нужно разрешить доступ к геолокации для приложения "VK"
+                            <Caption className="geo-info" level="2" weight="regular">Или нажмите кнопку "Далее", чтобы выбрать город по умолчанию</Caption>
+                        </Placeholder>
+                    }
                 </Group>
                 <Group className="btn-container-bottom">
                     <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Далее</Button>

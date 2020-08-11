@@ -76,11 +76,11 @@ function* watchSaveEventRequest() {
 }
 
 function* handleSaveEventIntroRequest(action: ReturnType<typeof saveMyEventIntroRequest>) {
-    yield put(saveMyEventRequest(action.payload));
-    yield take(MyEventsTypes.SAVE_MY_EVENT_SUCCESS);
-    yield put(saveUserGuideCompletedRequest());
-    yield take(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED_SUCCESS);
-    yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.EVENT_CREATED_INTRO_PANEL)));
+    // yield put(saveMyEventRequest(action.payload));
+    // yield take(MyEventsTypes.SAVE_MY_EVENT_SUCCESS);
+    // yield put(saveUserGuideCompletedRequest());
+    // yield take(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED_SUCCESS);
+    // yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.COMPLETED_INTRO_PANEL)));
 }
 
 function* watchSaveEventIntroRequest() {

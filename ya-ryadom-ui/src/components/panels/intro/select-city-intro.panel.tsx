@@ -41,6 +41,9 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
 
     constructor(props) {
         super(props);
+        this.state = {
+            userLocation: null
+        };
         this.onClickNext = this.onClickNext.bind(this);
         this.onLocationChanged = this.onLocationChanged.bind(this);
     }
@@ -62,6 +65,7 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
 
     render() {
         const { id } = this.props;
+        const { userLocation } = this.state;
         return (
             <Panel id={id} className="select-city-intro-panel">
                 <PanelHeader>
@@ -74,7 +78,7 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
                 </Group>
                 <Group>
                     <Div className="btn-container-bottom">
-                        <Button className="btn-primary" size="xl" onClick={this.onClickNext} disabled={!this.state.userLocation}>Далее</Button>
+                        <Button className="btn-primary" size="xl" onClick={this.onClickNext} disabled={!userLocation}>Далее</Button>
                     </Div>
                 </Group>
             </Panel>

@@ -41,7 +41,7 @@ class AboutMyselfIntroPanel extends React.Component<AllProps>  {
     onSave = (text: string) => {
         const { setUserAboutMyself, goForward } = this.props;
         setUserAboutMyself(text);
-        goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.EVENT_CREATED_INTRO_PANEL));
+        goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.COMPLETED_INTRO_PANEL));
     }
 
     render() {
@@ -50,7 +50,7 @@ class AboutMyselfIntroPanel extends React.Component<AllProps>  {
             <Panel id={id} className="about-myself-intro-panel">
                 <PanelHeader>
                 </PanelHeader>
-                <AboutMyselfForm onSave={this.onSave}></AboutMyselfForm>
+                <AboutMyselfForm onSave={this.onSave} btnText="Завершить"></AboutMyselfForm>
             </Panel>
         )
     }
