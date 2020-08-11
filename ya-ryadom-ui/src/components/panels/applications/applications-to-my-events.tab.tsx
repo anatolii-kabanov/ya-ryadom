@@ -26,7 +26,7 @@ import { openUserProfile } from '../../../store/history/actions';
 interface PropsFromState {
     myEvents: MyEvent[],
     eventsApplications: EventsApplications,
-    openBase: (eventId: Number) => void,
+    openBase: (eventId: number) => void,
 }
 
 interface PropsFromDispatch {

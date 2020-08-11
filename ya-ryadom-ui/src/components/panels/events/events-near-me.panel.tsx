@@ -13,18 +13,22 @@ import Icon24Filter from '@vkontakte/icons/dist/24/filter';
 import Icon28Filter from '@vkontakte/icons/dist/28/sliders_outline';
 import { TABS } from '../../../utils/constants/tab.constants';
 
-interface PropsFromState {
+interface OwnProps {
     id: string;
-    activeTab: string;
     openFilter: () => void;
+}
+
+interface PropsFromState {
+    activeTab: string | undefined;
 }
 
 interface PropsFromDispatch {
 }
-type AllProps = PropsFromState & PropsFromDispatch;
+
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
-    
+
 }
 
 class EventsNearMePanel extends React.Component<AllProps, State>  {
@@ -35,23 +39,24 @@ class EventsNearMePanel extends React.Component<AllProps, State>  {
             <Panel id={id} className="events-near-me-panel">
                 <MainHeaderPanel leftButton={
                     IS_PLATFORM_ANDROID
-                        ? <Icon24Filter className="nav-icon-selected filter" onClick={openFilter}></Icon24Filter>
-                        : <Icon28Filter className="nav-icon-selected filter" onClick={openFilter}></Icon28Filter>
-                } text={"События"}>
-                </MainHeaderPanel>
+                        ? <Icon24Filter className="nav-icon-selected filter" onClick={openFilter} />
+                        : <Icon28Filter className="nav-icon-selected filter" onClick={openFilter} />
+                } text={"События"} />
                 <Group separator="show">
                     <EventsTabs></EventsTabs>
                 </Group>
-                {activeTab === TABS.EVENTS_LIST && <EventsNearMeListTabPage></EventsNearMeListTabPage>}
-                {activeTab === TABS.EVENTS_MAP && <EventsNearMeMapTabPage></EventsNearMeMapTabPage>}
+                {activeTab === TABS.EVENTS_LIST && <EventsNearMeListTabPage id={TABS.EVENTS_LIST}></EventsNearMeListTabPage>}
+                {activeTab === TABS.EVENTS_MAP && <EventsNearMeMapTabPage id={TABS.EVENTS_MAP}></EventsNearMeMapTabPage>}
 
             </Panel >
         )
     }
 }
 
-const mapStateToProps = ({ history }: AppState) => ({
-    activeTab: history.currentViewPanel.tab
+const mapStateToProps = ({ history }: AppState, ownProps: OwnProps) => ({
+    activeTab: history.currentViewPanel.tab,
+    id: ownProps.id,
+    openFilter: ownProps.openFilter
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

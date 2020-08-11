@@ -11,19 +11,22 @@ import { VIEWS } from '../../utils/constants/view.constants';
 import { goForward } from '../../store/history/actions';
 import Icon28Add from '@vkontakte/icons/dist/28/add_square_outline';
 import { TABS } from '../../utils/constants/tab.constants';
-import { ROOTS } from '../../utils/constants/root.constants';
+
+interface OwnProps {
+    activeStory: string;
+    children: React.ReactNode;
+}
 
 interface PropsFromState {
     activeView: string;
     activePanel: string;
-    activeStory: string;
 }
 
 interface PropsFromDispatch {
     goForwardView: typeof goForward,
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class MenuEpic extends React.Component<AllProps>  {
     render() {
@@ -59,9 +62,11 @@ class MenuEpic extends React.Component<AllProps>  {
     }
 }
 
-const mapStateToProps = ({ history }: AppState) => ({
+const mapStateToProps = ({ history }: AppState, ownProps: OwnProps) => ({
     activeView: history.currentViewPanel.view,
-    activePanel: history.currentViewPanel.panel
+    activePanel: history.currentViewPanel.panel,
+    activeStory: ownProps.activeStory,
+    children: ownProps.children
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

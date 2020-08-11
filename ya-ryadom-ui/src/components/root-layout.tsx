@@ -18,7 +18,7 @@ import MyEventCreateView from "./views/my-events-create.view";
 interface PropsFromState {
     activeView: string;
     spinnerVisible: boolean;
-    currentUser: CurrentUser;
+    currentUser: CurrentUser | null;
 }
 
 interface PropsFromDispatch {

@@ -20,7 +20,7 @@ import ApplicationsToMyEventsTab from './applications-to-my-events.tab';
 interface PropsFromState {
     id: string;
     applications: Application[];
-    openBase: () => void;
+    openBase: (eventId: number) => void;
 }
 
 interface PropsFromDispatch {

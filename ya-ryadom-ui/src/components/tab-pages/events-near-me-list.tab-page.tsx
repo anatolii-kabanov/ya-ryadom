@@ -4,26 +4,20 @@ import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { fetchListRequest } from '../../store/events/events-near-me/actions';
 import { EventNearMe } from '../../store/events/events-near-me/models';
-import { Geo } from '../../store/authentication/models';
 import { applyToEventFromEvents } from '../../store/applications/actions';
-import { Position } from '../../store/authentication/models';
-import { UserInfo } from '@vkontakte/vk-bridge';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import { dateOptions } from '../../utils/constants/event-date-options.constant';
-import { goForward, openUserProfile } from "./../../store/history/actions";
-import { VkHistoryModel } from '../../store/history/models';
-import { VIEWS } from '../../utils/constants/view.constants';
-import { PANELS } from '../../utils/constants/panel.constants';
+import { openUserProfile } from "./../../store/history/actions";
 import EmptyText from '../general/empty-text';
 import { ApplicationStatusString } from '../../utils/constants/application-status-string.constant';
 
-interface PropsFromState {
+interface OwnProps {
     id: string;
+}
+
+interface PropsFromState {
     eventsList: EventNearMe[];
-    userPosition: Geo;
-    lastLocation: Position;
-    vkUserInfo: UserInfo;
 }
 
 interface PropsFromDispatch {
@@ -32,7 +26,7 @@ interface PropsFromDispatch {
     openUserProfile: typeof openUserProfile
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
 }
@@ -84,11 +78,9 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
     }
 }
 
-const mapStateToProps = ({ events, authentication }: AppState) => ({
+const mapStateToProps = ({ events }: AppState, ownProps: OwnProps) => ({
     eventsList: events.eventsNearMe.eventsList,
-    userPosition: authentication.geoData,
-    lastLocation: authentication.currentUser?.lastLocation,
-    vkUserInfo: authentication.vkUserInfo,
+    id: ownProps.id
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

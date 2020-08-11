@@ -11,16 +11,18 @@ import { saveUserProfileAboutMyself } from '../../../store/authentication/action
 import AboutMyselfForm from '../../forms/about-myself.form';
 import MainHeaderPanel from "../headers/main.header";
 
+interface OwnProps {
+    id: string;
+}
+
 interface PropsFromState {
-    id: string,
-    vkUserInfo: UserInfo,
 }
 
 interface PropsFromDispatch {
     save: typeof saveUserProfileAboutMyself
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class MyProfileEditAboutMyselfPanel extends React.Component<AllProps>  {
 
@@ -48,8 +50,8 @@ class MyProfileEditAboutMyselfPanel extends React.Component<AllProps>  {
     }
 }
 
-const mapStateToProps = ({ }: AppState) => ({
-
+const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
+    id: ownProps.id
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

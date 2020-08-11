@@ -12,8 +12,11 @@ import RatingInput from '../inputs/rating.input';
 import { ReviewModel } from '../../store/reviews/models';
 import { Validators } from '../../utils/validation/validators';
 
-interface PropsFromState {
+interface OwnProps {
     onSave: (userReview: ReviewModel) => void;
+}
+
+interface PropsFromState {
 }
 
 interface PropsFromDispatch {
@@ -21,7 +24,7 @@ interface PropsFromDispatch {
 }
 
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
     text: string;
@@ -132,8 +135,8 @@ class ReviewForm extends React.Component<AllProps, State> {
 }
 
 
-const mapStateToProps = ({ }: AppState) => ({
-
+const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
+    onSave: ownProps.onSave
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

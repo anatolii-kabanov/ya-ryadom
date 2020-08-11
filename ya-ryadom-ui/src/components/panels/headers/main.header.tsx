@@ -6,10 +6,12 @@ import Icon24Back from '@vkontakte/icons/dist/24/back';
 import { AppState } from '../../../store/app-state';
 import { goBack } from '../../../store/history/actions';
 
+interface OwnProps {
+    text?: string;
+    leftButton?: React.ReactNode;
+}
 interface PropsFromState {
-    text: string;
     firstPage: boolean;
-    leftButton?: React.Component;
 }
 
 interface PropsFromDispatch {
@@ -17,7 +19,7 @@ interface PropsFromDispatch {
 
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 const osname = platform();
 
@@ -37,8 +39,10 @@ class MainHeaderPanel extends React.Component<AllProps>  {
     }
 }
 
-const mapStateToProps = ({ history }: AppState) => ({
+const mapStateToProps = ({ history }: AppState, ownProps: OwnProps) => ({
     firstPage: history.history && history.history.length === 1,
+    text: ownProps.text,
+    leftButton: ownProps.leftButton,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

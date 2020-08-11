@@ -24,9 +24,12 @@ import { ApplicationStatus } from '../../../utils/enums/application-status.enum'
 import { ApplicationStatusString } from '../../../utils/constants/application-status-string.constant';
 import { applyToEventFromUserEvents } from '../../../store/applications/actions';
 
-interface PropsFromState {
+interface OwnProps {
     id: string;
-    vkUserInfo: UserInfo;
+}
+
+interface PropsFromState {
+    vkUserInfo: UserInfo | null;
     vkUserId: number;
     userCreatedEvents: UserEvents;
     userVisitedEvents: UserEvents;
@@ -39,7 +42,7 @@ interface PropsFromDispatch {
     applyToEvent: typeof applyToEventFromUserEvents;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 const TABS = {
     "СОЗДАЛ": "Создал",
@@ -76,7 +79,7 @@ class UserEventsPanel extends React.Component<AllProps> {
             return <EmptyText text="Событий пока нет" />;
         } else {
             return eventsToRender.map((event, key) => {
-                const userApplication = event.participants.find((m) => m.vkUserId === vkUserInfo.id);
+                const userApplication = event.participants.find((m) => m.vkUserId === vkUserInfo?.id);
                 return <Group key={key}>
                     <Header
                         mode="secondary">{ALL_THEMES.filter(theme => theme.id === event.themeType)[0].name}</Header>
@@ -149,11 +152,12 @@ class UserEventsPanel extends React.Component<AllProps> {
     }
 }
 
-const mapStateToProps = ({ events, authentication }: AppState) => ({
+const mapStateToProps = ({ events, authentication }: AppState, ownProps: OwnProps) => ({
     userCreatedEvents: events.userEvents.userCreatedEvents,
     userVisitedEvents: events.userEvents.userVisitedEvents,
     vkUserInfo: authentication.vkUserInfo,
     vkUserId: events.eventsNearMe.currentVkId,
+    id: ownProps.id,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

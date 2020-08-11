@@ -10,17 +10,20 @@ import { revokeEventRequest } from '../../store/events/my-events/actions';
 
 const osname = platform();
 
-interface PropsFromState {
+interface OwnProps {
     id: string;
+    popout?: any;
+}
+
+interface PropsFromState {
     activePanel: string;
-    popout: any;
 }
 
 interface PropsFromDispatch {
     revokeMyEvent: typeof revokeEventRequest
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
 
@@ -42,7 +45,7 @@ export class ApplicationsView extends React.Component<AllProps, State>  {
         revokeMyEvent(eventId);
     }
 
-    openBase = (eventId) => {
+    openBase = (eventId: number) => {
         this.setState({
             popout:
                 <ActionSheet onClose={() => this.setState({ popout: null })}>
@@ -71,8 +74,10 @@ export class ApplicationsView extends React.Component<AllProps, State>  {
     }
 }
 
-const mapStateToProps = ({ history }: AppState) => ({
+const mapStateToProps = ({ history }: AppState, ownProps: OwnProps) => ({
     activePanel: history.currentViewPanel.panel,
+    id: ownProps.id,
+    popout: ownProps.popout
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

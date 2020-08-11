@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
 import { CurrentUser, Geo } from '../../../store/authentication/models';
 import Icon32Place from '@vkontakte/icons/dist/32/place';
-import { fetchUserGeoRequest } from '../../../store/authentication/actions';
+import { fetchUserGeoRequest, clearUserGeo } from '../../../store/authentication/actions';
 import { goForward } from '../../../store/history/actions';
 import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
@@ -31,6 +31,7 @@ interface PropsFromState {
 interface PropsFromDispatch {
     getGeoData: typeof fetchUserGeoRequest,
     goForward: typeof goForward,
+    clearUserGeo: typeof clearUserGeo,
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
@@ -47,11 +48,11 @@ class GeolocationIntroPanel extends React.Component<AllProps>  {
     }
 
     onGeolocationClick = (event: any) => {
-        const { getGeoData } = this.props;
+        const { getGeoData, clearUserGeo } = this.props;
         if (event.target.checked) {
             getGeoData();
         } else {
-
+            clearUserGeo();
         }
     }
 
@@ -96,6 +97,7 @@ const mapStateToProps = ({ authentication }: AppState, ownProps: OwnProps) => ({
 const mapDispatchToProps: PropsFromDispatch = {
     getGeoData: fetchUserGeoRequest,
     goForward: goForward,
+    clearUserGeo: clearUserGeo,
 }
 
 export default connect(

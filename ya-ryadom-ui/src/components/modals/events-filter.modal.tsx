@@ -28,10 +28,13 @@ import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import AutocompleteMap from '../inputs/autocomplete-map.input';
 import { Position } from '../../store/authentication/models';
 
-interface PropsFromState {
-    activeModal: string;
-    filter: EventsFilter;
+interface OwnProps {
+    activeModal: string | null;
     onClose: (updateEvents?: boolean) => void;
+}
+
+interface PropsFromState {
+    filter: EventsFilter;
 }
 
 interface PropsFromDispatch {
@@ -43,7 +46,7 @@ interface PropsFromDispatch {
     updateAddress: typeof updateEventsAddressFilter;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
     radius: number;
@@ -134,8 +137,10 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
     }
 }
 
-const mapStateToProps = ({ ui }: AppState) => ({
-    filter: ui.settings.eventsFilterForm
+const mapStateToProps = ({ ui }: AppState, ownProps: OwnProps) => ({
+    filter: ui.settings.eventsFilterForm,
+    activeModal: ownProps.activeModal,
+    onClose: ownProps.onClose
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

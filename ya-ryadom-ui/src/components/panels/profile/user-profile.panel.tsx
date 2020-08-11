@@ -15,7 +15,6 @@ import { AppState } from "../../../store/app-state";
 import MainHeaderPanel from "../headers/main.header";
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { goForward } from "../../../store/history/actions";
-import { fetchMyEventsListRequest } from "../../../store/events/my-events/actions";
 import xhr from "xhr";
 import PillInput from "../../inputs/pill.input";
 import { ALL_THEMES } from "../../../utils/constants/theme.constants";
@@ -23,16 +22,19 @@ import Icon28HomeOutline from '@vkontakte/icons/dist/28/home_outline';
 import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline';
 import { fetchUserInfoRequest } from "../../../store/authentication/actions";
-import { User } from "../../../store/authentication/models";
+import { CurrentUser } from "../../../store/authentication/models";
 import { VIEWS } from "../../../utils/constants/view.constants";
 import { PANELS } from "../../../utils/constants/panel.constants";
 import { VkHistoryModel } from "../../../store/history/models";
 import Icon24Star from '@vkontakte/icons/dist/24/favorite';
 
-interface PropsFromState {
+interface OwnProps {
     id: string;
-    vkUserInfo: UserInfo;
-    currentUser: User;
+}
+
+interface PropsFromState {
+    vkUserInfo: UserInfo | null;
+    currentUser: CurrentUser | null;
     vkUserId: number;
 }
 
@@ -41,12 +43,12 @@ interface PropsFromDispatch {
     fetchUserInfoRequest: typeof fetchUserInfoRequest;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
     currentProfile: {
         [key: string]: any,
-        lastLocation: {longitude: 0, latitude: 0},
+        lastLocation: { longitude: 0, latitude: 0 },
         selectedThemes: [],
     },
     currentUserThemes: any[],
@@ -54,7 +56,7 @@ interface State {
     themesInCommon: any[]
 }
 
-class ProfilePanel extends React.Component<AllProps, State>{
+class UserProfilePanel extends React.Component<AllProps, State>{
 
     /**
      *
@@ -63,7 +65,7 @@ class ProfilePanel extends React.Component<AllProps, State>{
         super(props);
         this.state = {
             currentProfile: {
-                lastLocation: {longitude: 0, latitude: 0},
+                lastLocation: { longitude: 0, latitude: 0 },
                 selectedThemes: [],
             },
             currentUserThemes: [],
@@ -78,19 +80,19 @@ class ProfilePanel extends React.Component<AllProps, State>{
             uri: `${process.env.REACT_APP_API_ENDPOINT}/auth/user-info/${vkUserId}`,
             sync: true
         }, (err, resp, body) => {
-                const response = JSON.parse(body);
-                const { currentUser } = this.props;
+            const response = JSON.parse(body);
+            const { currentUser } = this.props;
 
-                const currentProfileThemes = ALL_THEMES.filter(t => response.selectedThemes.indexOf(t.id) !== -1);
-                const currentUserThemes = ALL_THEMES.filter(t => currentUser.selectedThemes.indexOf(t.id) !== -1);
+            const currentProfileThemes = ALL_THEMES.filter(t => response.selectedThemes.indexOf(t.id) !== -1);
+            const currentUserThemes = ALL_THEMES.filter(t => currentUser?.selectedThemes.indexOf(t.id) !== -1);
 
-                this.setState({
-                    currentProfile: response,
-                    currentProfileThemes: currentProfileThemes,
-                    currentUserThemes: currentUserThemes,
-                    themesInCommon: currentProfileThemes.filter(t => currentUserThemes.includes(t))
-                })
-            }
+            this.setState({
+                currentProfile: response,
+                currentProfileThemes: currentProfileThemes,
+                currentUserThemes: currentUserThemes,
+                themesInCommon: currentProfileThemes.filter(t => currentUserThemes.includes(t))
+            })
+        }
         )
     }
 
@@ -135,24 +137,24 @@ class ProfilePanel extends React.Component<AllProps, State>{
                     <div className="div-icons-menu">
 
                         <a className="a-icon"
-                           href={`https://vk.com/id${vkUserId}`}
-                           onClick={() => window.open(`https://vk.com/id${vkUserId}`)}
+                            href={`https://vk.com/id${vkUserId}`}
+                            onClick={() => window.open(`https://vk.com/id${vkUserId}`)}
                         >
-                            <Icon28HomeOutline className="menu-icon"/>
+                            <Icon28HomeOutline className="menu-icon" />
                             Профиль VK
                         </a>
 
                         <a className="a-icon"
-                           onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_REVIEWS_PANEL))}
+                            onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_REVIEWS_PANEL))}
                         >
-                            <Icon28FavoriteOutline className="menu-icon"/>
+                            <Icon28FavoriteOutline className="menu-icon" />
                             Отзывы
                         </a>
 
                         <a className="a-icon"
-                           onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_EVENTS_PANEL))}
+                            onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.USER_EVENTS_PANEL))}
                         >
-                            <Icon28UsersOutline className="menu-icon"/>
+                            <Icon28UsersOutline className="menu-icon" />
                             События
                         </a>
 
@@ -173,11 +175,12 @@ class ProfilePanel extends React.Component<AllProps, State>{
     }
 }
 
-const mapStateToProps = ({ events, authentication }: AppState) => ({
+const mapStateToProps = ({ events, authentication }: AppState, ownProps: OwnProps) => ({
     myEvents: events.myEvents.eventsList,
     vkUserId: events.eventsNearMe.currentVkId,
     vkUserInfo: authentication.vkUserInfo,
     currentUser: authentication.currentUser,
+    id: ownProps.id
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
@@ -188,5 +191,5 @@ const mapDispatchToProps: PropsFromDispatch = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ProfilePanel);
+)(UserProfilePanel);
 

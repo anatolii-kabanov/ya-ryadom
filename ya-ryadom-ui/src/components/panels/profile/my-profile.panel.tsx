@@ -23,17 +23,20 @@ import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
 
-interface PropsFromState {
+interface OwnProps {
     id: string;
-    vkUserInfo: UserInfo;
-    currentUser: CurrentUser;
+}
+
+interface PropsFromState {
+    vkUserInfo: UserInfo | null;
+    currentUser: CurrentUser | null;
 }
 
 interface PropsFromDispatch {
     goForwardView: typeof goForward;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class MyProfilePanel extends React.Component<AllProps>{
 
@@ -84,10 +87,11 @@ class MyProfilePanel extends React.Component<AllProps>{
     }
 }
 
-const mapStateToProps = ({ events, authentication }: AppState) => ({
+const mapStateToProps = ({ events, authentication }: AppState, ownProps: OwnProps) => ({
     myEvents: events.myEvents.eventsList,
     vkUserInfo: authentication.vkUserInfo,
     currentUser: authentication.currentUser,
+    id: ownProps.id,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

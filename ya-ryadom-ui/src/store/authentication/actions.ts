@@ -25,7 +25,6 @@ export const saveUserGuideCompletedRequest = () => action(AuthenticationTypes.SA
 export const saveUserGuideCompletedSuccess = () => action(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED_SUCCESS);
 export const saveUserGuideCompletedError = (payload: any) => action(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED_ERROR, payload);
 
-export const saveUserIntroThemes = (payload: ThemeType[]) => action(AuthenticationTypes.SAVE_USER_INTRO_THEMES, payload);
 export const saveUserProfileThemes = (payload: ThemeType[]) => action(AuthenticationTypes.SAVE_USER_PROFILE_THEMES, payload);
 
 export const saveUserThemesRequest = (payload: ThemeType[]) => action(AuthenticationTypes.SAVE_USER_THEMES, payload);
@@ -36,7 +35,6 @@ export const saveUserLocationRequest = (payload: Position) => action(Authenticat
 export const saveUserLocationSuccess = (payload: Position) => action(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS, payload);
 export const saveUserLocationError = (payload: any) => action(AuthenticationTypes.SAVE_USER_LOCATION_ERROR, payload);
 
-export const saveUserIntroAboutMyself = (payload: string) => action(AuthenticationTypes.SAVE_USER_INTRO_ABOUT_MYSELF, payload);
 export const saveUserProfileAboutMyself = (payload: string) => action(AuthenticationTypes.SAVE_USER_PROFILE_ABOUT_MYSELF, payload);
 
 export const saveUserAboutMyselfRequest = (payload: string) => action(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF, payload);
@@ -51,6 +49,11 @@ export const disableNotificationsRequest = () => action(AuthenticationTypes.DISA
 export const disableNotificationsSuccess = () => action(AuthenticationTypes.DISABLE_NOTIFICATIONS_SUCCESS);
 export const disableNotificationsError = (payload: any) => action(AuthenticationTypes.DISABLE_NOTIFICATIONS_ERROR, payload);
 
+export const clearUserGeo = () => action(AuthenticationTypes.CLEAR_USER_GEO);
+export const setUserDefaultLocation = (payload: Position) => action(AuthenticationTypes.SET_USER_DEFAULT_LOCATION, payload);
+export const setUserThemes = (payload: ThemeType[]) => action(AuthenticationTypes.SET_USER_THEMES, payload);
+export const setUserAboutMyself = (payload: string) => action(AuthenticationTypes.SET_USER_ABOUT_MYSELF, payload);
+
 export type AuthenticationActions = ActionType<
     typeof fetchUserInfoSuccess |
     typeof fetchVkUserInfoSuccess |
@@ -61,5 +64,9 @@ export type AuthenticationActions = ActionType<
     typeof saveUserLocationSuccess |
     typeof saveUserAboutMyselfSuccess |
     typeof allowNotificationsSuccess |
-    typeof disableNotificationsSuccess
+    typeof disableNotificationsSuccess |
+    typeof clearUserGeo |
+    typeof setUserDefaultLocation |
+    typeof setUserThemes |
+    typeof setUserAboutMyself
 >;

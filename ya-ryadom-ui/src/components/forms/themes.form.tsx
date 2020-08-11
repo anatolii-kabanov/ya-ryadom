@@ -13,8 +13,11 @@ import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import PillInput from '../inputs/pill.input';
 import { ThemeType } from '../../utils/enums/theme-type.enum';
 
-interface PropsFromState {
+interface OwnProps {
     onSave: (themes: ThemeType[]) => void;
+}
+
+interface PropsFromState {
     btnText?: string;
     selectedThemes: ThemeType[],
 }
@@ -24,7 +27,7 @@ interface PropsFromDispatch {
 }
 
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
     selectedThemes: ThemeType[],
@@ -113,8 +116,9 @@ class ThemesForm extends React.Component<AllProps, State>  {
     }
 }
 
-const mapStateToProps = ({ authentication }: AppState) => ({
-    selectedThemes: authentication.currentUser?.selectedThemes
+const mapStateToProps = ({ authentication }: AppState, ownProps: OwnProps) => ({
+    selectedThemes: authentication.currentUser?.selectedThemes,
+    onSave: ownProps.onSave,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

@@ -11,16 +11,18 @@ import ThemesForm from '../../forms/themes.form';
 import { saveUserProfileThemes } from '../../../store/authentication/actions';
 import MainHeaderPanel from "../headers/main.header";
 
+interface OwnProps {
+    id: string
+}
+
 interface PropsFromState {
-    id: string,
-    vkUserInfo: UserInfo,
 }
 
 interface PropsFromDispatch {
     save: typeof saveUserProfileThemes
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class MyProfileEditThemesPanel extends React.Component<AllProps>  {
 
@@ -50,8 +52,8 @@ class MyProfileEditThemesPanel extends React.Component<AllProps>  {
     }
 }
 
-const mapStateToProps = ({ }: AppState) => ({
-
+const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
+    id: ownProps.id
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

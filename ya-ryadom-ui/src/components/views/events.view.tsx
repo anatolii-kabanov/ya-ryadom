@@ -13,13 +13,16 @@ import { fetchListRequest } from '../../store/events/events-near-me/actions';
 import { Geo } from '../../store/authentication/models';
 import { Position } from '../../store/authentication/models';
 
-interface PropsFromState {
+interface OwnProps {
     id: string;
+    popout?: any;
+}
+
+interface PropsFromState {
     activePanel: string;
-    popout: any;
     filter: EventsFilter;
     userPosition: Geo;
-    vkUserInfo: UserInfo;
+    vkUserInfo: UserInfo | null;
     lastLocation: Position;
 }
 
@@ -27,7 +30,7 @@ interface PropsFromDispatch {
     fetchList: typeof fetchListRequest,
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
     activeModal: string | null; // VK modal use null to hide it
@@ -89,21 +92,22 @@ class EventsView extends React.Component<AllProps, State>  {
         const { id, activePanel, popout } = this.props;
         return (
             <View id={id} activePanel={activePanel} popout={popout} modal={
-                <EventsFilterModal activeModal={this.state.activeModal} onClose={this.onClose} dynamicContentHeight></EventsFilterModal>
+                <EventsFilterModal activeModal={this.state.activeModal} onClose={this.onClose}></EventsFilterModal>
             }>
-                <EventsNearMeMapPanel openFilter={this.openFilter} id={PANELS.EVENTS_NEAR_ME_PANEL}>
-                </EventsNearMeMapPanel>
+                <EventsNearMeMapPanel openFilter={this.openFilter} id={PANELS.EVENTS_NEAR_ME_PANEL} />
             </View>
         )
     }
 }
 
-const mapStateToProps = ({ history, authentication, ui }: AppState) => ({
+const mapStateToProps = ({ history, authentication, ui }: AppState, ownProps: OwnProps) => ({
     activePanel: history.currentViewPanel.panel,
     userPosition: authentication.geoData,
     lastLocation: authentication.currentUser?.lastLocation,
     vkUserInfo: authentication.vkUserInfo,
-    filter: ui.settings.eventsFilter
+    filter: ui.settings.eventsFilter,
+    id: ownProps.id,
+    popout: ownProps.popout
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

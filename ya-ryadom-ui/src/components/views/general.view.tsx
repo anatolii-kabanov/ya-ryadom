@@ -1,26 +1,28 @@
 import React from 'react';
-import { ScreenSpinner, View } from '@vkontakte/vkui';
+import { View } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { PANELS } from '../../utils/constants/panel.constants';
 import MyProfileEditThemesPanel from '../panels/profile/my-profile-edit-themes.panel';
 import MyProfileEditAboutMyselfPanel from '../panels/profile/my-profile-edit-about-myself.panel';
-import MyEventCreatePanel from '../panels/my-event-create.panel';
 import ProfilePanel from "../panels/profile/user-profile.panel";
 import UserEventsPanel from "../panels/events/user-events.panel";
 import ReviewsPanel from "../panels/reviews/reviews.panel";
 
-interface PropsFromState {
+interface OwnProps {
     id: string;
+    popout?: any;
+}
+
+interface PropsFromState {
     activePanel: string;
-    popout: any;
 }
 
 interface PropsFromDispatch {
 
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class GeneralView extends React.Component<AllProps>  {
 
@@ -42,8 +44,10 @@ class GeneralView extends React.Component<AllProps>  {
     }
 }
 
-const mapStateToProps = ({ history }: AppState) => ({
-    activePanel: history.currentViewPanel.panel
+const mapStateToProps = ({ history }: AppState, ownProps: OwnProps) => ({
+    activePanel: history.currentViewPanel.panel,
+    id: ownProps.id,
+    popout: ownProps.popout
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

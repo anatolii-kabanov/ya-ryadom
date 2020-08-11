@@ -11,7 +11,7 @@ import { VIEWS } from '../../utils/constants/view.constants';
 import { TABS } from '../../utils/constants/tab.constants';
 
 interface PropsFromState {
-    activeTab: string;
+    activeTab?: string;
 }
 
 interface PropsFromDispatch {

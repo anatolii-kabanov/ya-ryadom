@@ -6,17 +6,20 @@ import MyProfilePanel from "../panels/profile/my-profile.panel";
 import MyProfileEditPanel from "../panels/profile/my-profile-edit.panel";
 import { AppState } from "../../store/app-state";
 
-interface PropsFromState {
+interface OwnProps {
     id: string;
+    popout?: any;
+}
+
+interface PropsFromState {
     activePanel: string;
-    popout: any;
 }
 
 interface PropsFromDispatch {
 
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 export class MyProfileView extends React.Component<AllProps>  {
     render() {
@@ -30,8 +33,10 @@ export class MyProfileView extends React.Component<AllProps>  {
     }
 }
 
-const mapStateToProps = ({ history }: AppState) => ({
+const mapStateToProps = ({ history }: AppState, ownProps: OwnProps) => ({
     activePanel: history.currentViewPanel.panel,
+    id: ownProps.id,
+    popout: ownProps.popout
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

@@ -3,16 +3,19 @@ import { Panel, Group } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
 import MainHeaderPanel from "./../headers/main.header";
-import ReviewForm from '../../forms/review.form';
+
+interface OwnProps {
+    id: string;
+}
 
 interface PropsFromState {
-    id: string;
+
 }
 
 interface PropsFromDispatch {
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
 
@@ -35,17 +38,16 @@ class MyReviewsPanel extends React.Component<AllProps, State>  {
         const { id } = this.props;
         return (
             <Panel id={id}>
-                <MainHeaderPanel text='Отзывы'></MainHeaderPanel>
+                <MainHeaderPanel text='Отзывы' />
                 <Group>
-                    <ReviewForm></ReviewForm>
                 </Group>
             </Panel>
         )
     }
 }
 
-const mapStateToProps = ({ }: AppState) => ({
-
+const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
+    id: ownProps.id,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

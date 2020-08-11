@@ -64,6 +64,32 @@ const reducer: Reducer<AuthenticationState, AuthenticationActions> = (state = in
             }
             return newState;
         }
+        case AuthenticationTypes.CLEAR_USER_GEO: {
+            const newState = _.cloneDeep(state);
+            newState.geoData = null;
+            return newState;
+        }
+        case AuthenticationTypes.SET_USER_DEFAULT_LOCATION: {
+            const newState = _.cloneDeep(state);
+            if (newState.currentUser) {
+                newState.currentUser.lastLocation = action.payload;
+            }
+            return newState;
+        }
+        case AuthenticationTypes.SET_USER_THEMES: {
+            const newState = _.cloneDeep(state);
+            if (newState.currentUser) {
+                newState.currentUser.selectedThemes = action.payload;
+            }
+            return newState;
+        }
+        case AuthenticationTypes.SET_USER_ABOUT_MYSELF: {
+            const newState = _.cloneDeep(state);
+            if (newState.currentUser) {
+                newState.currentUser.aboutMySelf = action.payload;
+            }
+            return newState;
+        }
         default: {
             return state
         }

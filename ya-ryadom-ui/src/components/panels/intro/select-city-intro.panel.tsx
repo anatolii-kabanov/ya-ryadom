@@ -12,25 +12,32 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
 import AutocompleteMap from '../../inputs/autocomplete-map.input';
 import { Position } from '../../../store/authentication/models';
-import { saveUserLocationRequest } from '../../../store/authentication/actions';
+import { setUserDefaultLocation } from '../../../store/authentication/actions';
+import { goForward } from '../../../store/history/actions';
+import { VkHistoryModel } from '../../../store/history/models';
+import { VIEWS } from '../../../utils/constants/view.constants';
+import { PANELS } from '../../../utils/constants/panel.constants';
+
+interface OwnProps {
+    id: string;
+}
 
 interface PropsFromState {
-    id: string,
+
 }
 
 interface PropsFromDispatch {
-    saveLocation: typeof saveUserLocationRequest
+    setUserDefaultLocation: typeof setUserDefaultLocation,
+    goForward: typeof goForward,
 }
 
 interface State {
     userLocation: Position | null;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class SelectCityIntroPanel extends React.Component<AllProps, State>  {
-
-
 
     constructor(props) {
         super(props);
@@ -39,10 +46,12 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
     }
 
     onClickNext = () => {
-        const { saveLocation } = this.props;
+        const { setUserDefaultLocation, goForward } = this.props;
         const { userLocation } = this.state;
-        if (userLocation)
-            saveLocation(userLocation);
+        if (userLocation) {
+            setUserDefaultLocation(userLocation);
+            goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.THEMES_INTRO_PANEL));
+        }
     }
 
     onLocationChanged = (location: Position) => {
@@ -65,7 +74,7 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
                 </Group>
                 <Group>
                     <Div className="btn-container-bottom">
-                        <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Далее</Button>
+                        <Button className="btn-primary" size="xl" onClick={this.onClickNext} disabled={!this.state.userLocation}>Далее</Button>
                     </Div>
                 </Group>
             </Panel>
@@ -73,12 +82,13 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
     }
 }
 
-const mapStateToProps = ({ authentication }: AppState) => ({
-
+const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
+    id: ownProps.id
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    saveLocation: saveUserLocationRequest
+    setUserDefaultLocation: setUserDefaultLocation,
+    goForward: goForward
 }
 
 export default connect(
