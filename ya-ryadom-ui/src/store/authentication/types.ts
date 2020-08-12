@@ -49,4 +49,7 @@ export enum AuthenticationTypes {
 
     COMPLETE_USER_GUIDE = '[Authentication] Complete user guide',
     SET_USER_GEOLOCATION = '[Authentication] Set user geo location',
+
+    ENABLE_USER_LOCATION = '[Authentication] Enable user location',
+    DISABLE_USER_LOCATION = '[Authentication] Disable user location',
 };

@@ -18,7 +18,7 @@ import { CurrentUser } from "../../../store/authentication/models";
 import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
-import { allowNotificationsRequest, disableNotificationsRequest } from '../../../store/authentication/actions';
+import { allowNotificationsRequest, disableNotificationsRequest, enableUserGeolocation, disableUserGeolocation } from '../../../store/authentication/actions';
 
 interface PropsFromState {
     id: string;
@@ -30,6 +30,8 @@ interface PropsFromDispatch {
     goForwardView: typeof goForward;
     allowNotifications: typeof allowNotificationsRequest,
     disableNotifications: typeof disableNotificationsRequest,
+    enableUserGeolocation: typeof enableUserGeolocation,
+    disableUserGeolocation: typeof disableUserGeolocation,
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
@@ -58,11 +60,11 @@ class MyProfileEditPanel extends React.Component<AllProps>{
     }
 
     onGeolocationClick(event: any) {
-        const { } = this.props;
+        const { enableUserGeolocation, disableUserGeolocation } = this.props;
         if (event.target.checked) {
-            
+            enableUserGeolocation();
         } else {
-            
+            disableUserGeolocation();
         }
     }
 
@@ -115,6 +117,8 @@ const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
     allowNotifications: allowNotificationsRequest,
     disableNotifications: disableNotificationsRequest,
+    enableUserGeolocation: enableUserGeolocation,
+    disableUserGeolocation: disableUserGeolocation,
 }
 
 export default connect(

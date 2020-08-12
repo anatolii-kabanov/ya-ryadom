@@ -46,6 +46,12 @@ export interface UserIntro {
     selectedThemes: ThemeType[],
 }
 
+export interface GeolocationRequest {
+    vkUserId?: number;
+    geolocationEnabled: boolean;
+    location: Position | null;
+}
+
 export interface SaveUserInfoRequest {
     vkUserId: number,
     firstName: string,

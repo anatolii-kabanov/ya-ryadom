@@ -1,6 +1,6 @@
 import { action, ActionType } from 'typesafe-actions';
 import { AuthenticationTypes } from "./types";
-import { CurrentUser, SaveUserInfoRequest } from './models';
+import { CurrentUser, SaveUserInfoRequest, GeolocationRequest } from './models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ThemeType } from '../../utils/enums/theme-type.enum';
 import { Position } from './models';
@@ -31,8 +31,8 @@ export const saveUserThemesRequest = (payload: ThemeType[]) => action(Authentica
 export const saveUserThemesSuccess = (payload: ThemeType[]) => action(AuthenticationTypes.SAVE_USER_THEMES_SUCCESS, payload);
 export const saveUserThemesError = (payload: any) => action(AuthenticationTypes.SAVE_USER_THEMES_ERROR, payload);
 
-export const saveUserLocationRequest = (payload: Position) => action(AuthenticationTypes.SAVE_USER_LOCATION, payload);
-export const saveUserLocationSuccess = (payload: Position) => action(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS, payload);
+export const saveUserLocationRequest = (payload: GeolocationRequest) => action(AuthenticationTypes.SAVE_USER_LOCATION, payload);
+export const saveUserLocationSuccess = (payload: Position | null) => action(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS, payload);
 export const saveUserLocationError = (payload: any) => action(AuthenticationTypes.SAVE_USER_LOCATION_ERROR, payload);
 
 export const saveUserProfileAboutMyself = (payload: string) => action(AuthenticationTypes.SAVE_USER_PROFILE_ABOUT_MYSELF, payload);
@@ -55,6 +55,9 @@ export const setUserThemes = (payload: ThemeType[]) => action(AuthenticationType
 export const setUserAboutMyself = (payload: string) => action(AuthenticationTypes.SET_USER_ABOUT_MYSELF, payload);
 export const setUserGeolocation = (payload: boolean) => action(AuthenticationTypes.SET_USER_GEOLOCATION, payload);
 export const completeUserGuide = (payload: string) => action(AuthenticationTypes.COMPLETE_USER_GUIDE, payload);
+
+export const enableUserGeolocation = () => action(AuthenticationTypes.ENABLE_USER_LOCATION);
+export const disableUserGeolocation = () => action(AuthenticationTypes.DISABLE_USER_LOCATION);
 
 export type AuthenticationActions = ActionType<
     typeof fetchUserInfoSuccess |

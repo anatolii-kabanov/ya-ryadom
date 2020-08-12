@@ -22,9 +22,6 @@ import {
     saveUserAboutMyselfRequest,
     saveUserAboutMyselfError,
     saveUserAboutMyselfSuccess,
-    saveUserGuideCompletedRequest,
-    saveUserGuideCompletedSuccess,
-    saveUserGuideCompletedError,
     allowNotificationsRequest,
     allowNotificationsError,
     allowNotificationsSuccess,
@@ -34,7 +31,11 @@ import {
     saveUserProfileThemes,
     saveUserProfileAboutMyself,
     completeUserGuide,
-    setUserAboutMyself
+    setUserAboutMyself,
+    enableUserGeolocation,
+    setUserGeolocation,
+    fetchUserGeoRequest,
+    clearUserGeo
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo, CurrentUser, SaveUserInfoRequest, Position } from './models';
@@ -202,8 +203,9 @@ function* handleSaveUserLocationRequest(action: ReturnType<typeof saveUserLocati
 
         const userLocation = {
             vkUserId: vkUserId,
-            latitude: action.payload.latitude,
-            longitude: action.payload.longitude
+            geolocationEnabled: action.payload.geolocationEnabled,
+            latitude: action.payload.location?.latitude,
+            longitude: action.payload.location?.longitude
         };
 
         const result = yield call(callApi, 'post', API_ENDPOINT, '/user-info/location/save', userLocation);
@@ -211,8 +213,7 @@ function* handleSaveUserLocationRequest(action: ReturnType<typeof saveUserLocati
         if (result.errors) {
             yield put(saveUserLocationError(result.errors));
         } else {
-            yield put(saveUserLocationSuccess(action.payload));
-            yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.THEMES_INTRO_PANEL)));
+            yield put(saveUserLocationSuccess(action.payload.location));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -269,37 +270,6 @@ function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAbo
 
 function* watchSaveUserAboutMyselfRequest() {
     yield takeLatest(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF, handleSaveUserAboutMyselfRequest)
-}
-
-function* handleSaveUserGuideCompletedRequest(action: ReturnType<typeof saveUserGuideCompletedRequest>) {
-    try {
-        yield put(showSpinner());
-        const vkUserId = yield select(getVkUserId);
-
-        const user = {
-            vkUserId: vkUserId,
-        };
-
-        const result = yield call(callApi, 'post', API_ENDPOINT, '/user-info/guide/save', user);
-
-        if (result.errors) {
-            yield put(saveUserGuideCompletedError(result.errors));
-        } else {
-            yield put(saveUserGuideCompletedSuccess());
-        }
-    } catch (error) {
-        if (error instanceof Error && error.stack) {
-            yield put(saveUserGuideCompletedError(error.stack));
-        } else {
-            yield put(saveUserGuideCompletedError('An unknown error occured.'));
-        }
-    } finally {
-        yield put(hideSpinner());
-    }
-}
-
-function* watchSaveUserGuideCompletedRequest() {
-    yield takeLatest(AuthenticationTypes.SAVE_USER_GUIDE_COMPLETED, handleSaveUserGuideCompletedRequest)
 }
 
 function* handleAllowNotificationsRequest(action: ReturnType<typeof allowNotificationsRequest>) {
@@ -395,6 +365,36 @@ function* watchCompleteUserGuide() {
     yield takeLatest(AuthenticationTypes.COMPLETE_USER_GUIDE, handleCompleteUserGuide)
 }
 
+function* handleEnableUserGeolocation() {
+    yield put(fetchUserGeoRequest());
+    yield take(AuthenticationTypes.FETCH_USER_GEO_SUCCESS);
+    const currentUser: CurrentUser = yield put(select(getCurrentUser));
+    const geoData: Geo | null = yield put(select(getGeoData));
+    const location = geoData
+        ? { latitude: geoData.lat, longitude: geoData.long }
+        : currentUser.lastLocation;
+    const model = { geolocationEnabled: true, location: location };
+    yield put(saveUserLocationRequest(model));
+    yield take(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS);
+    yield put(setUserGeolocation(true));
+}
+
+function* watchEnableUserGeolocation() {
+    yield takeLatest(AuthenticationTypes.ENABLE_USER_LOCATION, handleEnableUserGeolocation)
+}
+
+function* handleDisableUserGeolocation() {   
+    const model = { geolocationEnabled: false, location: null };
+    yield put(saveUserLocationRequest(model));
+    yield take(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS);
+    yield put(setUserGeolocation(false));
+    yield put(clearUserGeo());
+}
+
+function* watchDisableUserGeolocation() {
+    yield takeLatest(AuthenticationTypes.DISABLE_USER_LOCATION, handleDisableUserGeolocation)
+}
+
 function* authenticationSagas() {
     yield all([
         fork(watchFetchUserInfoRequest),
@@ -404,12 +404,13 @@ function* authenticationSagas() {
         fork(watchSaveUserThemesRequest),
         fork(watchSaveUserLocationRequest),
         fork(watchSaveUserAboutMyselfRequest),
-        fork(watchSaveUserGuideCompletedRequest),
         fork(watchAllowNotificationsRequest),
         fork(watchDisableNotificationsRequest),
         fork(watchSaveUserProfileThemes),
         fork(watchSaveUserProfileAboutMyself),
-        fork(watchCompleteUserGuide)
+        fork(watchCompleteUserGuide),
+        fork(watchEnableUserGeolocation),
+        fork(watchDisableUserGeolocation),
     ])
 }
 
