@@ -57,7 +57,7 @@ function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
         };
         const result = yield call(callApi, 'post', API_ENDPOINT, `/my-info`, model);
 
-        if (result.errors) {
+        if (result?.errors) {
             yield put(fetchUserInfoError(result.errors));
         } else {
             const currentUser: CurrentUser | null = yield put(select(getCurrentUser));

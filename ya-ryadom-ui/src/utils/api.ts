@@ -12,5 +12,11 @@ export async function callApi(
         },
         body: JSON.stringify(data)
     })
-    return await response.json();
+    try {
+        const text = await response.text(); 
+        const data = JSON.parse(text); // Try to parse it as json
+        return data;
+    } catch (error) {
+        return null;
+    }
 }
