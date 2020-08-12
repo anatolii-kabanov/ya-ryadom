@@ -52,6 +52,19 @@ namespace YaRyadom.API.Services.Implementations
 				Entities.Add(yaRyadomUser);
 			}
 
+			if (yaRyadomUser.YaRyadomUserThemes.Any())
+				_dbContext.YaRyadomUserThemes.RemoveRange(yaRyadomUser.YaRyadomUserThemes);
+
+			foreach (var theme in model.SelectedThemes)
+			{
+				_dbContext.YaRyadomUserThemes.Add(
+					new YaRyadomUserTheme
+					{
+						Type = (ThemeType)theme,
+						YaRyadomUser = yaRyadomUser
+					});
+			}
+
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
