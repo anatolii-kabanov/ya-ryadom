@@ -102,7 +102,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
                     const confirmed = item.participants.filter((p) => p.applicationStatus === ApplicationStatus.confirmed);
                     const newApplicants = photos.length;
                     return <Group key={key} separator="show" className="application-card" header={
-                        <Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openBase(item.id)}/>}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
+                        <Header mode="secondary" aside={!item.ended && <Icon16MoreHorizontal onClick={() => openBase(item.id)} />}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                         <Div className="body">
                             <div className="title">{item.title}</div>
                             <div className="description">{item.description}</div>
