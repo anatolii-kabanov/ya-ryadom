@@ -4,7 +4,7 @@
   }
   .intro-image {
     text-align: center;
-    padding-top: 30px;
+    padding-top: 10px;
     svg {
       width: 100%;
       height: 100%;
@@ -15,6 +15,9 @@
       }
       @media (max-height: 600px) {
         max-height: 220px;
+      }
+      @media (max-height: 450px) {
+        max-height: 150px;
       }
     }
   }

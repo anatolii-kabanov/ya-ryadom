@@ -59,6 +59,8 @@ export const completeUserGuide = (payload: string) => action(AuthenticationTypes
 export const enableUserGeolocation = () => action(AuthenticationTypes.ENABLE_USER_LOCATION);
 export const disableUserGeolocation = () => action(AuthenticationTypes.DISABLE_USER_LOCATION);
 
+export const setUserLocationProcess = (payload: boolean) => action(AuthenticationTypes.SET_USER_LOCATION_PROCESS, payload);
+
 export type AuthenticationActions = ActionType<
     typeof fetchUserInfoSuccess |
     typeof fetchVkUserInfoSuccess |

@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
 import { CurrentUser, Geo } from '../../../store/authentication/models';
 import Icon32Place from '@vkontakte/icons/dist/32/place';
-import { fetchUserGeoRequest, clearUserGeo, setUserGeolocation } from '../../../store/authentication/actions';
+import { setUserLocationProcess } from '../../../store/authentication/actions';
 import { goForward } from '../../../store/history/actions';
 import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
@@ -30,10 +30,8 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    getGeoData: typeof fetchUserGeoRequest,
-    setUserGeolocation: typeof setUserGeolocation,
+    setUserLocationProcess: typeof setUserLocationProcess,
     goForward: typeof goForward,
-    clearUserGeo: typeof clearUserGeo,
 }
 
 interface State {
@@ -57,15 +55,10 @@ class GeolocationIntroPanel extends React.Component<AllProps, State>  {
     }
 
     onGeolocationClick = (event: any) => {
-        const { getGeoData, clearUserGeo, setUserGeolocation } = this.props;
+        const { setUserLocationProcess } = this.props;
         this.setState({ geoAvailable: event.target.checked });
         const { checked } = event.target;
-        if (checked) {
-            getGeoData();
-        } else {
-            clearUserGeo();
-        }
-        setUserGeolocation(checked);
+        setUserLocationProcess(checked);
     }
 
     onClickNext = () => {
@@ -115,10 +108,8 @@ const mapStateToProps = ({ authentication }: AppState, ownProps: OwnProps) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    getGeoData: fetchUserGeoRequest,
-    setUserGeolocation: setUserGeolocation,
+    setUserLocationProcess: setUserLocationProcess,
     goForward: goForward,
-    clearUserGeo: clearUserGeo,
 }
 
 export default connect(

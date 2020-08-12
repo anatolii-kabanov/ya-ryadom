@@ -35,7 +35,8 @@ import {
     enableUserGeolocation,
     setUserGeolocation,
     fetchUserGeoRequest,
-    clearUserGeo
+    clearUserGeo,
+    setUserLocationProcess
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo, CurrentUser, SaveUserInfoRequest, Position } from './models';
@@ -396,6 +397,21 @@ function* watchDisableUserGeolocation() {
     yield takeLatest(AuthenticationTypes.DISABLE_USER_LOCATION, handleDisableUserGeolocation)
 }
 
+function* handleSetUserLocationProcess(action: ReturnType<typeof setUserLocationProcess>) {
+    if (action.payload) {
+        yield put(fetchUserGeoRequest());
+        yield take(AuthenticationTypes.FETCH_USER_GEO_SUCCESS);
+        setUserGeolocation(action.payload);
+    } else {
+        yield put(clearUserGeo());
+        setUserGeolocation(action.payload);
+    }
+}
+
+function* watchSetUserLocationProcess() {
+    yield takeLatest(AuthenticationTypes.SET_USER_LOCATION_PROCESS, handleSetUserLocationProcess)
+}
+
 function* authenticationSagas() {
     yield all([
         fork(watchFetchUserInfoRequest),
@@ -412,6 +428,7 @@ function* authenticationSagas() {
         fork(watchCompleteUserGuide),
         fork(watchEnableUserGeolocation),
         fork(watchDisableUserGeolocation),
+        fork(watchSetUserLocationProcess)
     ])
 }
 

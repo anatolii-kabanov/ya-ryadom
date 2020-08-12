@@ -29,6 +29,8 @@ export class CurrentUser implements CurrentUser {
         this.selectedThemes = [];  
         this.avgRating = 0;     
         this.notificationsEnabled = false; 
+        this.geolocationEnabled = false;
+        this.guideCompleted = false;
     }
 }
 

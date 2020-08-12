@@ -52,4 +52,6 @@ export enum AuthenticationTypes {
 
     ENABLE_USER_LOCATION = '[Authentication] Enable user location',
     DISABLE_USER_LOCATION = '[Authentication] Disable user location',
+
+    SET_USER_LOCATION_PROCESS = '[Authentication] Set user location',
 };
