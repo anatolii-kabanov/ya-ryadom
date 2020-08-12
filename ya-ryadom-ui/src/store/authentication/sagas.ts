@@ -60,7 +60,7 @@ function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
         if (result?.errors) {
             yield put(fetchUserInfoError(result.errors));
         } else {
-            const currentUser: CurrentUser | null = yield put(select(getCurrentUser));
+            const currentUser: CurrentUser | null = yield select(getCurrentUser);
             var user: CurrentUser = result || currentUser || new CurrentUser();
             yield put(fetchUserInfoSuccess(user));
             if (user.guideCompleted) {
@@ -368,8 +368,8 @@ function* watchCompleteUserGuide() {
 function* handleEnableUserGeolocation() {
     yield put(fetchUserGeoRequest());
     yield take(AuthenticationTypes.FETCH_USER_GEO_SUCCESS);
-    const currentUser: CurrentUser = yield put(select(getCurrentUser));
-    const geoData: Geo | null = yield put(select(getGeoData));
+    const currentUser: CurrentUser = yield select(getCurrentUser);
+    const geoData: Geo | null = yield select(getGeoData);
     const location = geoData
         ? { latitude: geoData.lat, longitude: geoData.long }
         : currentUser.lastLocation;
@@ -384,7 +384,7 @@ function* watchEnableUserGeolocation() {
 }
 
 function* handleDisableUserGeolocation() {
-    const currentUser: CurrentUser = yield put(select(getCurrentUser));
+    const currentUser: CurrentUser = yield select(getCurrentUser);
     const model = { geolocationEnabled: false, location: currentUser.lastLocation };
     yield put(saveUserLocationRequest(model));
     yield take(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS);

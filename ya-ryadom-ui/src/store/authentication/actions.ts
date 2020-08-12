@@ -1,6 +1,6 @@
 import { action, ActionType } from 'typesafe-actions';
 import { AuthenticationTypes } from "./types";
-import { CurrentUser, SaveUserInfoRequest, GeolocationRequest } from './models';
+import { CurrentUser, SaveUserInfoRequest, GeolocationRequest, Geo } from './models';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import { ThemeType } from '../../utils/enums/theme-type.enum';
 import { Position } from './models';
@@ -14,7 +14,7 @@ export const fetchVkUserInfoSuccess = (payload: UserInfo) => action(Authenticati
 export const fetchVkUserInfoError = (payload: any) => action(AuthenticationTypes.FETCH_VK_USER_INFO_ERROR, payload);
 
 export const fetchUserGeoRequest = () => action(AuthenticationTypes.FETCH_USER_GEO);
-export const fetchUserGeoSuccess = (payload: any) => action(AuthenticationTypes.FETCH_USER_GEO_SUCCESS, payload);
+export const fetchUserGeoSuccess = (payload: Geo | null) => action(AuthenticationTypes.FETCH_USER_GEO_SUCCESS, payload);
 export const fetchUserGeoError = (payload: any) => action(AuthenticationTypes.FETCH_USER_GEO_ERROR, payload);
 
 export const saveUserInfoRequest = (payload: SaveUserInfoRequest) => action(AuthenticationTypes.SAVE_USER_INFO, payload);

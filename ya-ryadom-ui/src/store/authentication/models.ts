@@ -25,6 +25,9 @@ export interface CurrentUser {
 
 export class CurrentUser implements CurrentUser {
 
+    constructor() {
+        this.selectedThemes = [];        
+    }
 }
 
 export interface Position {
