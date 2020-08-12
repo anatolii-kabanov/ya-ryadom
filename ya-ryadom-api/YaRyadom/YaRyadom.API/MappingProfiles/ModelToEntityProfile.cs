@@ -54,6 +54,7 @@ namespace YaRyadom.API.MappingProfiles
 			CreateMap<UserLocationRequestModel, YaRyadomUser>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.VkId, opt => opt.Ignore())
+				.ForMember(dest => dest.GeolocationEnabled, opt => opt.MapFrom(src => src.GeolocationEnabled))
 				.ForMember(dest => dest.LastLocation, opt => opt.MapFrom(src => geometryFactory.CreatePoint(new Coordinate(src.Longitude, src.Latitude))));
 
 			CreateMap<UserAboutMyselfRequestModel, YaRyadomUser>()

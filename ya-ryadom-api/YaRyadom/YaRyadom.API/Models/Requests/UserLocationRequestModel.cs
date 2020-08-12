@@ -4,6 +4,8 @@ namespace YaRyadom.API.Models.Requests
 {
 	public class UserLocationRequestModel : BaseVkUserRequestModel
 	{
+		public bool GeolocationEnabled { get; set; }
+
 		/// <summary>
 		/// X
 		/// </summary>
