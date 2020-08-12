@@ -75,7 +75,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.YaRyadomEventThemes.Select(m => (ThemeTypeModel)m.Type).FirstOrDefault()))
 				.ForMember(dest => dest.Revoked, opt => opt.MapFrom(src => src.Revoked))
 				.ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
-				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.YaRyadomUserApplications));
+				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.YaRyadomUserApplications.Where(m => m.Status != ApplicationStatus.None)));
 
 			CreateMap<YaRyadomEvent, UserEventServiceModel>()
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

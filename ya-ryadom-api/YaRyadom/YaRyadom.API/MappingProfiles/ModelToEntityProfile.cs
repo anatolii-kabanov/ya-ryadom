@@ -19,7 +19,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.NotificationsEnabled, opt => opt.MapFrom(src => src.NotificationsEnabled))
 				.ForMember(dest => dest.GeolocationEnabled, opt => opt.MapFrom(src => src.GeolocationEnabled))
 				.ForMember(dest => dest.LastLocation, opt => opt.MapFrom(src => geometryFactory.CreatePoint(new Coordinate(src.LastLocation.Longitude, src.LastLocation.Latitude))))
-				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMySelf))
+				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMySelf.Trim()))
 				.ForMember(dest => dest.VkId, opt => opt.MapFrom(src => src.VkUserId))
 				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.VkUserAvatarUrl))
 				.ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
@@ -30,8 +30,8 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.VkId, opt => opt.Ignore());
 			CreateMap<EventFormModel, YaRyadomEvent>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
-				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
-				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+				.ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title.Trim()))
+				.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description.Trim()))
 				.ForMember(dest => dest.Date, opt => opt.MapFrom(src =>
 					!string.IsNullOrWhiteSpace(src.Date)
 					? DateTimeOffset.ParseExact(src.Date, "dd.MM.yyyy", CultureInfo.InvariantCulture).ToOffset(-TimeSpan.FromMinutes(src.TimeZoneMinutes))
