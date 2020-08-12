@@ -89,7 +89,7 @@ namespace YaRyadom.API.Services.Implementations
 			var events = await _mapper
 			  .ProjectTo<MyEventServiceModel>(
 				  TableNoTracking
-					  .Where(m => m.YaRyadomUserOwner.VkId == vkId)
+					  .Where(m => m.YaRyadomUserOwner.VkId == vkId && !m.Revoked)
 					  .OrderBy(m => m.Ended)
 					  .ThenBy(m => m.Date)
 					  .ThenBy(m => m.Time)
