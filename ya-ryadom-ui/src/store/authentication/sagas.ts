@@ -60,7 +60,7 @@ function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
         if (result.errors) {
             yield put(fetchUserInfoError(result.errors));
         } else {
-            const currentUser: CurrentUser = yield put(select(getCurrentUser));
+            const currentUser: CurrentUser | null = yield put(select(getCurrentUser));
             var user: CurrentUser = result || currentUser || new CurrentUser();
             yield put(fetchUserInfoSuccess(user));
             if (user.guideCompleted) {
@@ -383,8 +383,9 @@ function* watchEnableUserGeolocation() {
     yield takeLatest(AuthenticationTypes.ENABLE_USER_LOCATION, handleEnableUserGeolocation)
 }
 
-function* handleDisableUserGeolocation() {   
-    const model = { geolocationEnabled: false, location: null };
+function* handleDisableUserGeolocation() {
+    const currentUser: CurrentUser = yield put(select(getCurrentUser));
+    const model = { geolocationEnabled: false, location: currentUser.lastLocation };
     yield put(saveUserLocationRequest(model));
     yield take(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS);
     yield put(setUserGeolocation(false));

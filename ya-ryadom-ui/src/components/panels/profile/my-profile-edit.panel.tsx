@@ -7,6 +7,7 @@ import {
     RichCell,
     Cell,
     Switch,
+    Placeholder,
 } from "@vkontakte/vkui";
 import { connect } from 'react-redux';
 import { AppState } from "../../../store/app-state";
@@ -14,16 +15,25 @@ import { AppState } from "../../../store/app-state";
 import MainHeaderPanel from "../headers/main.header";
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { goForward } from "../../../store/history/actions";
-import { CurrentUser } from "../../../store/authentication/models";
+import { CurrentUser, Geo } from "../../../store/authentication/models";
 import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
-import { allowNotificationsRequest, disableNotificationsRequest, enableUserGeolocation, disableUserGeolocation } from '../../../store/authentication/actions';
+import {
+    allowNotificationsRequest,
+    disableNotificationsRequest,
+    enableUserGeolocation,
+    disableUserGeolocation
+} from '../../../store/authentication/actions';
+
+interface OwnProps {
+    id: string;
+}
 
 interface PropsFromState {
-    id: string;
     vkUserInfo: UserInfo;
     currentUser: CurrentUser;
+    userGeo: Geo | null;
 }
 
 interface PropsFromDispatch {
@@ -34,7 +44,7 @@ interface PropsFromDispatch {
     disableUserGeolocation: typeof disableUserGeolocation,
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class MyProfileEditPanel extends React.Component<AllProps>{
 
@@ -69,7 +79,7 @@ class MyProfileEditPanel extends React.Component<AllProps>{
     }
 
     render() {
-        const { id, vkUserInfo, goForwardView, currentUser } = this.props;
+        const { id, vkUserInfo, goForwardView, currentUser, userGeo } = this.props;
         return (
             <Panel className="my-profile" id={id}>
                 <MainHeaderPanel text='Мой профиль'></MainHeaderPanel>
@@ -95,6 +105,12 @@ class MyProfileEditPanel extends React.Component<AllProps>{
                     <Cell asideContent={<Switch checked={currentUser.geolocationEnabled} name="enableGeolocation" className="switcher" onClick={this.onGeolocationClick} />}>
                         Геолокация
                     </Cell>
+                    {
+                        currentUser.geolocationEnabled && userGeo && !userGeo.available &&
+                        <Placeholder >
+                            Похоже на то что Вам нужно разрешить доступ к геолокации для приложения "VK"
+                        </Placeholder>
+                    }
                 </Group>
                 <Group separator="show">
                     <Cell expandable onClick={() => goForwardView(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.MY_PROFILE_EDIT_ABOUT_MYSELF_PANEL))}>О себе</Cell>
@@ -107,10 +123,12 @@ class MyProfileEditPanel extends React.Component<AllProps>{
     }
 }
 
-const mapStateToProps = ({ events, authentication }: AppState) => ({
+const mapStateToProps = ({ events, authentication }: AppState, ownProps: OwnProps) => ({
     myEvents: events.myEvents.eventsList,
     vkUserInfo: authentication.vkUserInfo,
     currentUser: authentication.currentUser,
+    userGeo: authentication.geoData,
+    id: ownProps.id
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

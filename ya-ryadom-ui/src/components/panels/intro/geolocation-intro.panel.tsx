@@ -93,7 +93,7 @@ class GeolocationIntroPanel extends React.Component<AllProps, State>  {
                         Разрешите использовать Ваши геоданные в нашем приложении
                     </Placeholder>
                     {
-                        geoAvailable && !userGeo?.available &&
+                        geoAvailable && userGeo && !userGeo.available &&
                         <Placeholder >
                             Похоже на то что Вам нужно разрешить доступ к геолокации для приложения "VK"
                             <Caption className="geo-info" level="2" weight="regular">Или нажмите кнопку "Далее", чтобы выбрать город по умолчанию</Caption>
