@@ -32,15 +32,17 @@ import {
     disableNotificationsError,
     disableNotificationsSuccess,
     saveUserProfileThemes,
-    saveUserProfileAboutMyself
+    saveUserProfileAboutMyself,
+    completeUserGuide,
+    setUserAboutMyself
 } from './actions'
 import { callApi } from '../../utils/api';
-import { Geo, CurrentUser } from './models';
+import { Geo, CurrentUser, SaveUserInfoRequest, Position } from './models';
 import { goForward, reset, goBack } from '../history/actions';
 import { VkHistoryModel } from '../history/models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
-import { getVkUserId, getGeoData } from './reducer';
+import { getVkUserId, getGeoData, getVkUserInfo, getCurrentUser } from './reducer';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 import { TABS } from '../../utils/constants/tab.constants';
 
@@ -57,7 +59,8 @@ function* handleFetchUserInfo(action: ReturnType<typeof fetchUserInfoRequest>) {
         if (result.errors) {
             yield put(fetchUserInfoError(result.errors));
         } else {
-            var user: CurrentUser = result || new CurrentUser();
+            const currentUser: CurrentUser = yield put(select(getCurrentUser));
+            var user: CurrentUser = result || currentUser || new CurrentUser();
             yield put(fetchUserInfoSuccess(user));
             if (user.guideCompleted) {
                 yield put(reset(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP)));
@@ -88,20 +91,7 @@ function* handleFetchVkUserInfo(action: ReturnType<typeof fetchVkUserInfoRequest
         } else {
             const vkUserInfo = result as UserInfo;
             yield put(fetchVkUserInfoSuccess(vkUserInfo));
-            // yield put(saveUserInfoRequest({
-            //     vkUserId: vkUserInfo.id,
-            //     firstName: vkUserInfo.first_name,
-            //     lastName: vkUserInfo.last_name,
-            //     vkUserAvatarUrl: vkUserInfo.photo_200,
-            // }));
-            // yield take(saveUserInfoRequest);
-            // Request our user info
             yield put(fetchUserInfoRequest(vkUserInfo.id));
-
-            // // if app has been opened by sharable event link
-            // if (action.payload) {
-            //     goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP))
-            // }
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -126,11 +116,6 @@ function* handleFetchUserGeo() {
         } else {
             const geoData = result as Geo;
             yield put(fetchUserGeoSuccess(geoData));
-            // if (geoData?.available) {
-            //     yield put(saveUserLocationRequest({ latitude: geoData?.lat, longitude: geoData?.long }));
-            // } else {
-            //     yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.SELECT_CITY_INTRO_PANEL)));
-            // }
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
@@ -385,6 +370,31 @@ function* watchDisableNotificationsRequest() {
     yield takeLatest(AuthenticationTypes.DISABLE_NOTIFICATIONS, handleDisableNotificationsRequest)
 }
 
+function* handleCompleteUserGuide(action: ReturnType<typeof completeUserGuide>) {
+    yield put(showSpinner());
+
+    yield put(setUserAboutMyself(action.payload));
+
+    const vkUserInfo: UserInfo = yield select(getVkUserInfo);
+    const currentUser: CurrentUser = yield select(getCurrentUser);
+    const geoData: Geo = yield select(getGeoData);
+    let position: Position | undefined;
+    if (geoData?.available) {
+        position = { latitude: geoData.lat, longitude: geoData.long };
+    }
+    var model = SaveUserInfoRequest.fromVkAndCurrentUser(vkUserInfo, currentUser, position);
+    yield put(saveUserInfoRequest(model));
+    yield take(AuthenticationTypes.SAVE_USER_INFO_SUCCESS);
+
+    yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.COMPLETED_INTRO_PANEL)));
+
+    yield put(hideSpinner());
+}
+
+function* watchCompleteUserGuide() {
+    yield takeLatest(AuthenticationTypes.COMPLETE_USER_GUIDE, handleCompleteUserGuide)
+}
+
 function* authenticationSagas() {
     yield all([
         fork(watchFetchUserInfoRequest),
@@ -398,7 +408,8 @@ function* authenticationSagas() {
         fork(watchAllowNotificationsRequest),
         fork(watchDisableNotificationsRequest),
         fork(watchSaveUserProfileThemes),
-        fork(watchSaveUserProfileAboutMyself)
+        fork(watchSaveUserProfileAboutMyself),
+        fork(watchCompleteUserGuide)
     ])
 }
 

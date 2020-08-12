@@ -100,3 +100,5 @@ export { reducer as authenticationReducer };
 
 export const getVkUserId = (state: AppState) => state.authentication.vkUserInfo?.id;
 export const getGeoData = (state: AppState) => state.authentication.geoData;
+export const getVkUserInfo = (state: AppState) => state.authentication.vkUserInfo;
+export const getCurrentUser = (state: AppState) => state.authentication.currentUser;

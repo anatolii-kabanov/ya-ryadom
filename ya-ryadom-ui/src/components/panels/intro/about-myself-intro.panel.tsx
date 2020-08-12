@@ -6,12 +6,8 @@ import {
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
-import { setUserAboutMyself } from '../../../store/authentication/actions';
+import { completeUserGuide } from '../../../store/authentication/actions';
 import AboutMyselfForm from '../../forms/about-myself.form';
-import { goForward } from '../../../store/history/actions';
-import { VkHistoryModel } from '../../../store/history/models';
-import { VIEWS } from '../../../utils/constants/view.constants';
-import { PANELS } from '../../../utils/constants/panel.constants';
 
 interface OwnProps {
     id: string,
@@ -22,8 +18,7 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    setUserAboutMyself: typeof setUserAboutMyself,
-    goForward: typeof goForward,
+    completeUserGuide: typeof completeUserGuide,
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
@@ -39,9 +34,8 @@ class AboutMyselfIntroPanel extends React.Component<AllProps>  {
     }
 
     onSave = (text: string) => {
-        const { setUserAboutMyself, goForward } = this.props;
-        setUserAboutMyself(text);
-        goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.COMPLETED_INTRO_PANEL));
+        const { completeUserGuide } = this.props;
+        completeUserGuide(text);
     }
 
     render() {
@@ -61,8 +55,7 @@ const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    setUserAboutMyself: setUserAboutMyself,
-    goForward: goForward,
+    completeUserGuide: completeUserGuide,
 }
 
 export default connect(
