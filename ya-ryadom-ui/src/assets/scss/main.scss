@@ -72,12 +72,16 @@
 }
 
 .switcher {
-  .Switch__self:checked+.Switch__pseudo {
+  .Switch__self:checked + .Switch__pseudo {
     border-color: $primary-color !important;
     background: $primary-color !important;
   }
-}
 
+  .Switch__self:checked + .Switch__pseudo::before {
+    border-color: white !important;
+    background: white !important;
+  }
+}
 
 /* Google maps*/
 
