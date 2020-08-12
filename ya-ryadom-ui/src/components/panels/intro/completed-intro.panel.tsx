@@ -48,7 +48,7 @@ class CompletedIntroPanel extends React.Component<AllProps, State>  {
 
     onCreateEventClick = () => {
         const { goForward } = this.props;
-        goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.CREATE_EVENT_PANEL));
+        goForward(new VkHistoryModel(VIEWS.MY_EVENT_CREATE_VIEW, PANELS.CREATE_EVENT_PANEL));
     }
 
     render() {
