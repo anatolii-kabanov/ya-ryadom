@@ -8,6 +8,8 @@ namespace YaRyadom.API.Models
 
 		public bool NotificationsEnabled { get; set; }
 
+		public bool GeolocationEnabled { get; set; }
+
 		public PositionModel LastLocation { get; set; }
 
 		public string Address { get; set; }

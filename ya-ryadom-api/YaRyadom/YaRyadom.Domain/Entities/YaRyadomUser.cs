@@ -39,6 +39,8 @@ namespace YaRyadom.Domain.Entities
 
 		public bool NotificationsEnabled { get; set; }
 
+		public bool GeolocationEnabled { get; set; }
+
 		public string Address { get; set; }
 
 		public DateTimeOffset VkNotificationsLockoutEnd { get; set; }

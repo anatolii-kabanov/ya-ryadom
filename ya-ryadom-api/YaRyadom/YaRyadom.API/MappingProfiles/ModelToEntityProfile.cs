@@ -17,6 +17,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.GuideCompleted, opt => opt.MapFrom(src => src.GuideCompleted))
 				.ForMember(dest => dest.NotificationsEnabled, opt => opt.MapFrom(src => src.NotificationsEnabled))
+				.ForMember(dest => dest.GeolocationEnabled, opt => opt.MapFrom(src => src.GeolocationEnabled))
 				.ForMember(dest => dest.LastLocation, opt => opt.MapFrom(src => geometryFactory.CreatePoint(new Coordinate(src.LastLocation.Longitude, src.LastLocation.Latitude))))
 				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMySelf))
 				.ForMember(dest => dest.VkId, opt => opt.MapFrom(src => src.VkUserId))

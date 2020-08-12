@@ -37,6 +37,11 @@ namespace YaRyadom.Domain.Mapping
 				.HasColumnName("notifications_enabled")
 				.IsRequired()
 				.HasDefaultValue(false);
+			builder
+				.Property(m => m.GeolocationEnabled)
+				.HasColumnName("geolocation_enabled")
+				.IsRequired()
+				.HasDefaultValue(false);
 			builder.Property(m => m.Address).HasMaxLength(255).HasColumnName("address");
 		}
 	}
