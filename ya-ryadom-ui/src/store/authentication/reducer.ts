@@ -90,6 +90,13 @@ const reducer: Reducer<AuthenticationState, AuthenticationActions> = (state = in
             }
             return newState;
         }
+        case AuthenticationTypes.SET_USER_GEOLOCATION: {
+            const newState = _.cloneDeep(state);
+            if (newState.currentUser) {
+                newState.currentUser.geolocationEnabled = action.payload;
+            }
+            return newState;
+        }
         default: {
             return state
         }

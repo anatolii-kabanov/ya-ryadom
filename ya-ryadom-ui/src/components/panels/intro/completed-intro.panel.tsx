@@ -54,19 +54,16 @@ class CompletedIntroPanel extends React.Component<AllProps, State>  {
     render() {
         const { id } = this.props;
         return (
-            <Panel id={id} className="event-created-intro-panel">
+            <Panel id={id} className="completed-intro-panel">
                 <PanelHeader>
                 </PanelHeader>
                 <Group className="intro-image text-center" separator="hide">
                     <IntroFinishedImage></IntroFinishedImage>
                 </Group>
-                <Group className="intro-text" separator="hide">
-                    <Placeholder
-                        header="Поздравляем!"
-                    >
-                        Профиль успешно заполнен.
-                    </Placeholder>
-                </Group>
+                <Placeholder
+                    header="Поздравляем!">
+                    Профиль успешно заполнен.
+                </Placeholder>
                 <Group className="btn-container-bottom">
                     <Button className="btn-primary" size="xl" onClick={this.onCreateEventClick}>Создать событие</Button>
                     <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Пропустить</Button>

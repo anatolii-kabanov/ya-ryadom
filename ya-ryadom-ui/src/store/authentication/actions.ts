@@ -53,6 +53,7 @@ export const clearUserGeo = () => action(AuthenticationTypes.CLEAR_USER_GEO);
 export const setUserDefaultLocation = (payload: Position) => action(AuthenticationTypes.SET_USER_DEFAULT_LOCATION, payload);
 export const setUserThemes = (payload: ThemeType[]) => action(AuthenticationTypes.SET_USER_THEMES, payload);
 export const setUserAboutMyself = (payload: string) => action(AuthenticationTypes.SET_USER_ABOUT_MYSELF, payload);
+export const setUserGeolocation = (payload: boolean) => action(AuthenticationTypes.SET_USER_GEOLOCATION, payload);
 export const completeUserGuide = (payload: string) => action(AuthenticationTypes.COMPLETE_USER_GUIDE, payload);
 
 export type AuthenticationActions = ActionType<
@@ -69,5 +70,6 @@ export type AuthenticationActions = ActionType<
     typeof clearUserGeo |
     typeof setUserDefaultLocation |
     typeof setUserThemes |
-    typeof setUserAboutMyself
+    typeof setUserAboutMyself |
+    typeof setUserGeolocation
 >;
