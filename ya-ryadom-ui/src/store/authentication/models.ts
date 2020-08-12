@@ -26,7 +26,9 @@ export interface CurrentUser {
 export class CurrentUser implements CurrentUser {
 
     constructor() {
-        this.selectedThemes = [];        
+        this.selectedThemes = [];  
+        this.avgRating = 0;     
+        this.notificationsEnabled = false; 
     }
 }
 

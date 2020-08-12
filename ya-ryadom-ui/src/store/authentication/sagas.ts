@@ -120,9 +120,9 @@ function* handleFetchUserGeo() {
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
-            yield put(fetchVkUserInfoError(error.stack));
+            yield put(fetchUserGeoError(error.stack));
         } else {
-            yield put(fetchVkUserInfoError('An unknown error occured.'));
+            yield put(fetchUserGeoError(error));
         }
     }
 }
