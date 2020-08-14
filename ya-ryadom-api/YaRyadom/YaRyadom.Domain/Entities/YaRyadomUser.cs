@@ -21,6 +21,8 @@ namespace YaRyadom.Domain.Entities
 
 		private ICollection<YaRyadomNotification> _yaRyadomNotificationsToMe;
 
+		private ICollection<YaRyadomComplaint> _yaRyadomMyComplaints;
+
 		#endregion
 
 		public long VkId { get; set; }
@@ -89,6 +91,11 @@ namespace YaRyadom.Domain.Entities
 			set => _yaRyadomNotificationsToMe = value;
 		}
 
+		public virtual ICollection<YaRyadomComplaint> YaRyadomMyComplaints
+		{
+			get => _yaRyadomMyComplaints ?? new List<YaRyadomComplaint>();
+			set => _yaRyadomMyComplaints = value;
+		}
 		#endregion
 	}
 }

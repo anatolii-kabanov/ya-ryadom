@@ -18,6 +18,8 @@ namespace YaRyadom.Domain.Entities
 
 		private ICollection<YaRyadomNotification> _yaRyadomNotifications;
 
+		private ICollection<YaRyadomComplaint> _yaRyadomComplaints;
+
 		#endregion
 
 		public string Title { get; set; }
@@ -70,6 +72,12 @@ namespace YaRyadom.Domain.Entities
 		{
 			get => _yaRyadomNotifications ?? new List<YaRyadomNotification>();
 			set => _yaRyadomNotifications = value;
+		}
+
+		public virtual ICollection<YaRyadomComplaint> YaRyadomComplaints
+		{
+			get => _yaRyadomComplaints ?? new List<YaRyadomComplaint>();
+			set => _yaRyadomComplaints = value;
 		}
 
 		#endregion

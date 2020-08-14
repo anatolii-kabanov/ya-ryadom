@@ -82,6 +82,7 @@ namespace YaRyadom.API
 			services.AddTransient<IReviewsService, ReviewsService>();
 			services.AddTransient<IApplicationsService, ApplicationsService>();
 			services.AddTransient<IUserEventsService, UserEventsService>();
+			services.AddTransient<IComplaintsService, ComplaintsService>();
 
 			#endregion
 
