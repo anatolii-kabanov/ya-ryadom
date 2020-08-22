@@ -8,10 +8,12 @@ import { reviewsReducer } from './reviews/reducer';
 import { spinnerReducer } from './ui/spinner/reducer';
 import { settingsReducer } from './ui/settings/reducer';
 import { userEventsReducer } from './events/user-events/reducer';
+import { complaintsReducer } from './complaints/reducer';
 
 export const createRootReducer = () =>
     combineReducers({
         authentication: authenticationReducer,
+        complaints: complaintsReducer,
         history: historyReducer,
         events: combineReducers({
             eventsNearMe: eventsNearMeReducer,

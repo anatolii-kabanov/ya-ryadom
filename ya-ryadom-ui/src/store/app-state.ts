@@ -4,9 +4,11 @@ import { EventsState } from "./events/state";
 import { ApplicationsState } from "./applications/state";
 import { ReviewsState } from "./reviews/state";
 import { UiState } from "./ui/state";
+import { ComplaintsState } from "./complaints/state";
 
 export interface AppState {
     authentication: AuthenticationState,
+    complaints: ComplaintsState,
     history: HistoryState,
     events: EventsState,
     applications: ApplicationsState,
