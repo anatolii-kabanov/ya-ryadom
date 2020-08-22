@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from '@vkontakte/vkui';
+import { View, ModalRoot } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { PANELS } from '../../utils/constants/panel.constants';
@@ -12,6 +12,7 @@ import { UserInfo } from '@vkontakte/vk-bridge';
 import { fetchListRequest } from '../../store/events/events-near-me/actions';
 import { Geo } from '../../store/authentication/models';
 import { Position } from '../../store/authentication/models';
+import ComplaintModal from '../modals/complaint.modal';
 
 interface OwnProps {
     id: string;
@@ -92,7 +93,10 @@ class EventsView extends React.Component<AllProps, State>  {
         const { id, activePanel, popout } = this.props;
         return (
             <View id={id} activePanel={activePanel} popout={popout} modal={
-                <EventsFilterModal activeModal={this.state.activeModal} onClose={this.onClose}></EventsFilterModal>
+                <ModalRoot activeModal={this.state.activeModal} onClose={() => this.onClose()}>
+                    <EventsFilterModal onClose={this.onClose} />
+                    <ComplaintModal />
+                </ModalRoot>
             }>
                 <EventsNearMeMapPanel openFilter={this.openFilter} id={PANELS.EVENTS_NEAR_ME_PANEL} />
             </View>

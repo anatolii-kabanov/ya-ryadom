@@ -5,7 +5,6 @@ import {
     Input,
     Slider,
     ModalPage,
-    ModalRoot,
     ModalPageHeader,
     PanelHeaderButton,
     Select,
@@ -29,7 +28,6 @@ import AutocompleteMap from '../inputs/autocomplete-map.input';
 import { Position } from '../../store/authentication/models';
 
 interface OwnProps {
-    activeModal: string | null;
     onClose: (updateEvents?: boolean) => void;
 }
 
@@ -101,45 +99,42 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { activeModal, filter, onClose, clearFilter } = this.props;
+        const { filter, onClose, clearFilter } = this.props;
         return (
-            <ModalRoot activeModal={activeModal} onClose={() => onClose()}>
-                <ModalPage id={MODALS.EVENTS_FILTER}
-                    className="filter-modal"
-                    onClose={() => onClose()}
-                    header={
-                        <ModalPageHeader
-                            left={<PanelHeaderButton className="text-primary clear" onClick={() => clearFilter()}>Очистить</PanelHeaderButton>}
-                            right={<PanelHeaderButton onClick={() => onClose()}><Icon24Dismiss /></PanelHeaderButton>}
-                        >
-                            Фильтры
+            <ModalPage id={MODALS.EVENTS_FILTER}
+                className="filter-modal"
+                onClose={() => onClose()}
+                header={
+                    <ModalPageHeader
+                        left={<PanelHeaderButton className="text-primary clear" onClick={() => clearFilter()}>Очистить</PanelHeaderButton>}
+                        right={<PanelHeaderButton onClick={() => onClose()}><Icon24Dismiss /></PanelHeaderButton>}
+                    >
+                        Фильтры
                         </ModalPageHeader>
-                    }>
-                    <FormLayout>
-                        <Input value={filter.text} type="text" placeholder="Поиск по интересам" name="textSearch" onChange={this.handleInputChange}></Input>
-                        <Select value={filter.selectedTheme} top="Тема" placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
-                            {this.renderThemesSelect()}
-                        </Select>
-                        <AutocompleteMap address={filter.address} top="Адрес" placeholder="Выбрать адрес" type="address" loadMaps={true} onLocationChanged={this.handleLocationChange}></AutocompleteMap>
-                        <Slider
-                            min={1}
-                            max={100}
-                            step={0.5}
-                            value={filter.radius}
-                            onChange={radius => this.handleRadiusChange(radius)}
-                            top={<span className="radius">Радиус <span>{filter.radius}  км</span></span>}
-                        />
-                        <Button className="btn-primary" size="xl" onClick={this.showResultsClick}>Показать результаты</Button>
-                    </FormLayout>
-                </ModalPage>
-            </ModalRoot>
+                }>
+                <FormLayout>
+                    <Input value={filter.text} type="text" placeholder="Поиск по интересам" name="textSearch" onChange={this.handleInputChange}></Input>
+                    <Select value={filter.selectedTheme} top="Тема" placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
+                        {this.renderThemesSelect()}
+                    </Select>
+                    <AutocompleteMap address={filter.address} top="Адрес" placeholder="Выбрать адрес" type="address" loadMaps={true} onLocationChanged={this.handleLocationChange}></AutocompleteMap>
+                    <Slider
+                        min={1}
+                        max={100}
+                        step={0.5}
+                        value={filter.radius}
+                        onChange={radius => this.handleRadiusChange(radius)}
+                        top={<span className="radius">Радиус <span>{filter.radius}  км</span></span>}
+                    />
+                    <Button className="btn-primary" size="xl" onClick={this.showResultsClick}>Показать результаты</Button>
+                </FormLayout>
+            </ModalPage>
         )
     }
 }
 
 const mapStateToProps = ({ ui }: AppState, ownProps: OwnProps) => ({
     filter: ui.settings.eventsFilterForm,
-    activeModal: ownProps.activeModal,
     onClose: ownProps.onClose
 })
 

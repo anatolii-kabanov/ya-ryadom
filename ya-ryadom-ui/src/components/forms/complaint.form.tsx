@@ -5,24 +5,13 @@ import {
     Button,
     Textarea
 } from '@vkontakte/vkui';
-import { AppState } from '../../store/app-state';
-import { connect } from 'react-redux';
 import { Validators } from '../../utils/validation/validators';
 
 interface OwnProps {
     onSave: () => void;
 }
 
-interface PropsFromState {
-
-}
-
-interface PropsFromDispatch {
-
-}
-
-
-type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps;
 
 interface State {
     text: string;
@@ -90,15 +79,4 @@ class ComplaintsForm extends React.Component<AllProps, State>  {
     }
 }
 
-const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
-    onSave: ownProps.onSave,
-})
-
-const mapDispatchToProps: PropsFromDispatch = {
-
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ComplaintsForm);
+export default ComplaintsForm;
