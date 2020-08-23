@@ -5,9 +5,12 @@ import {
 } from '@vkontakte/vkui';
 import { AppState } from './../../store/app-state';
 import { connect } from 'react-redux';
-import { MODALS } from '../../utils/constants/modal.constants';
 import ComplaintForm from '../forms/complaint.form';
 import { setActiveModal } from '../../store/history/actions';
+
+interface OwnProps {
+    id: string;
+}
 
 interface PropsFromState {
 }
@@ -16,7 +19,7 @@ interface PropsFromDispatch {
     setActiveModal: typeof setActiveModal
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
 }
@@ -33,9 +36,9 @@ class ComplaintReviewModal extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { setActiveModal } = this.props;
+        const { setActiveModal, id } = this.props;
         return (
-            <ModalPage id={MODALS.APPLICATION_REVIEW}
+            <ModalPage id={id}
                 className="complaint-modal"
                 onClose={() => setActiveModal(null)}
                 header="Отправить жалобу">
@@ -45,8 +48,8 @@ class ComplaintReviewModal extends React.Component<AllProps, State>  {
     }
 }
 
-const mapStateToProps = ({ history }: AppState) => ({
-    
+const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
+    id: ownProps.id
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

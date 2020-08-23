@@ -1,7 +1,7 @@
 import './events-near-me.panel.scss';
 import React from 'react';
 import {
-    Panel, IS_PLATFORM_ANDROID, FixedLayout, Group
+    Panel, IS_PLATFORM_ANDROID, Group
 } from '@vkontakte/vkui';
 import { AppState } from '../../../store/app-state';
 import { connect } from 'react-redux';
@@ -16,6 +16,7 @@ import { TABS } from '../../../utils/constants/tab.constants';
 interface OwnProps {
     id: string;
     openFilter: () => void;
+    openComplaintForm: () => void;
 }
 
 interface PropsFromState {

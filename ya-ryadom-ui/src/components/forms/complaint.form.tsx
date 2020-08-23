@@ -3,9 +3,11 @@ import React from 'react';
 import {
     FormLayout,
     Button,
-    Textarea
+    Textarea,
+    Select
 } from '@vkontakte/vkui';
 import { Validators } from '../../utils/validation/validators';
+import { ALL_COMPLAINTS } from '../../utils/constants/complaint.constants';
 
 interface OwnProps {
     onSave: () => void;
@@ -60,10 +62,27 @@ class ComplaintsForm extends React.Component<AllProps, State>  {
         return formIsValid;
     }
 
+    private renderComlaintsSelect() {
+        const complaints = ALL_COMPLAINTS;
+        if (complaints) {
+            return complaints
+                .map((item, key) => {
+                    return <option
+                        key={key}
+                        value={item.id}>
+                        {item.name}
+                    </option>
+                });
+        }
+    }
+
     render() {
         const { errors, text } = this.state;
         return (
             <FormLayout>
+                <Select top="Причина" placeholder="Выберите причину" name="selectedComplaint" onChange={this.handleInputChange} required>
+                    {this.renderComlaintsSelect()}
+                </Select>
                 <Textarea
                     minLength={0}
                     maxLength={maxValues.maxText}

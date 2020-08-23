@@ -12,7 +12,6 @@ import {
 } from '@vkontakte/vkui';
 import { AppState } from './../../store/app-state';
 import { connect } from 'react-redux';
-import { MODALS } from '../../utils/constants/modal.constants';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
 import { EventsFilter } from '../../store/ui/settings/state';
 import {
@@ -28,6 +27,7 @@ import AutocompleteMap from '../inputs/autocomplete-map.input';
 import { Position } from '../../store/authentication/models';
 
 interface OwnProps {
+    id: string;
     onClose: (updateEvents?: boolean) => void;
 }
 
@@ -99,9 +99,9 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { filter, onClose, clearFilter } = this.props;
+        const { filter, onClose, clearFilter, id } = this.props;
         return (
-            <ModalPage id={MODALS.EVENTS_FILTER}
+            <ModalPage id={id}
                 className="filter-modal"
                 onClose={() => onClose()}
                 header={
@@ -135,7 +135,8 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
 
 const mapStateToProps = ({ ui }: AppState, ownProps: OwnProps) => ({
     filter: ui.settings.eventsFilterForm,
-    onClose: ownProps.onClose
+    onClose: ownProps.onClose,
+    id: ownProps.id
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, ModalRoot } from '@vkontakte/vkui';
+import { View } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { PANELS } from '../../utils/constants/panel.constants';
 import EventsNearMeMapPanel from "../panels/events/events-near-me.panel";
-import EventsFilterModal from '../modals/events-filter.modal';
 import { MODALS } from '../../utils/constants/modal.constants';
 import debounce from 'lodash/debounce';
 import { EventsFilter } from '../../store/ui/settings/state';
@@ -12,7 +11,7 @@ import { UserInfo } from '@vkontakte/vk-bridge';
 import { fetchListRequest } from '../../store/events/events-near-me/actions';
 import { Geo } from '../../store/authentication/models';
 import { Position } from '../../store/authentication/models';
-import ComplaintModal from '../modals/complaint.modal';
+import { EventsModalRoot } from '../modals/events.modal.root';
 
 interface OwnProps {
     id: string;
@@ -45,7 +44,8 @@ class EventsView extends React.Component<AllProps, State>  {
             activeModal: null
         };
         this.openFilter = this.openFilter.bind(this);
-        this.onClose = this.onClose.bind(this);
+        this.onCloseFilter = this.onCloseFilter.bind(this);
+        this.openComplaintForm = this.openComplaintForm.bind(this);
     }
 
     public componentDidMount() {
@@ -81,10 +81,14 @@ class EventsView extends React.Component<AllProps, State>  {
     }
 
     openFilter() {
-        this.setState({ activeModal: MODALS.EVENTS_FILTER })
+        this.setState({ activeModal: MODALS.EVENTS_FILTER });
     }
 
-    onClose(updateEvents?: boolean) {
+    openComplaintForm() {
+        this.setState({ activeModal: MODALS.COMPLAINT });
+    }
+
+    onCloseFilter(updateEvents?: boolean) {
         updateEvents && this.updateEvents({});
         this.setState({ activeModal: null });
     }
@@ -93,12 +97,12 @@ class EventsView extends React.Component<AllProps, State>  {
         const { id, activePanel, popout } = this.props;
         return (
             <View id={id} activePanel={activePanel} popout={popout} modal={
-                <ModalRoot activeModal={this.state.activeModal} onClose={() => this.onClose()}>
-                    <EventsFilterModal onClose={this.onClose} />
-                    <ComplaintModal />
-                </ModalRoot>
+                <EventsModalRoot activeModal={this.state.activeModal}
+                    onClose={() => this.setState({ activeModal: null })}
+                    onCloseFilter={this.onCloseFilter} />
             }>
-                <EventsNearMeMapPanel openFilter={this.openFilter} id={PANELS.EVENTS_NEAR_ME_PANEL} />
+                <EventsNearMeMapPanel
+                    openComplaintForm={this.openComplaintForm} openFilter={this.openFilter} id={PANELS.EVENTS_NEAR_ME_PANEL} />
             </View>
         )
     }
