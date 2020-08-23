@@ -31,14 +31,15 @@ import debounce from 'lodash/debounce';
 import UserMarker from '../map/user-marker';
 import { EventsFilter } from '../../store/ui/settings/state';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
-import { VkHistoryModel } from "../../store/history/models";
-import { VIEWS } from "../../utils/constants/view.constants";
-import { PANELS } from "../../utils/constants/panel.constants";
 import { dateOptions } from '../../utils/constants/event-date-options.constant';
 import { ApplicationStatusString } from '../../utils/constants/application-status-string.constant';
 
-interface PropsFromState {
+interface OwnProps {
+    openComplaintForm: (eventId: number) => void;
     id: string;
+}
+
+interface PropsFromState {
     events: EventNearMe[];
     userPosition: Geo;
     vkUserInfo: UserInfo;
@@ -53,7 +54,7 @@ interface PropsFromDispatch {
     setCurrentVkId: typeof setCurrentVkId,
     openUserProfile: typeof openUserProfile
 }
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
     eventOnMap: any;
@@ -219,12 +220,14 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }
 }
 
-const mapStateToProps = ({ events, authentication, ui }: AppState) => ({
+const mapStateToProps = ({ events, authentication, ui }: AppState, ownProps: OwnProps) => ({
     events: events.eventsNearMe.eventsList,
     userPosition: authentication.geoData,
     lastLocation: authentication.currentUser?.lastLocation,
     vkUserInfo: authentication.vkUserInfo,
-    filter: ui.settings.eventsFilter
+    filter: ui.settings.eventsFilter,
+    id: ownProps.id,
+    openComplaintForm: ownProps.openComplaintForm
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

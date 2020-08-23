@@ -1,12 +1,13 @@
 import './application-review.modal.scss';
 import React from 'react';
 import {
-    ModalPage,
+    ModalPage, ModalPageHeader, PanelHeaderButton,
 } from '@vkontakte/vkui';
 import { AppState } from './../../store/app-state';
 import { connect } from 'react-redux';
 import ComplaintForm from '../forms/complaint.form';
 import { setActiveModal } from '../../store/history/actions';
+import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
 
 interface OwnProps {
     id: string;
@@ -41,7 +42,13 @@ class ComplaintReviewModal extends React.Component<AllProps, State>  {
             <ModalPage id={id}
                 className="complaint-modal"
                 onClose={() => setActiveModal(null)}
-                header="Отправить жалобу">
+                header={
+                    <ModalPageHeader
+                        right={<PanelHeaderButton onClick={() => setActiveModal(null)}><Icon24Dismiss /></PanelHeaderButton>}
+                    >
+                        Отправить жалобу
+                        </ModalPageHeader>
+                }>
                 <ComplaintForm onSave={this.onSave} />
             </ModalPage>
         )

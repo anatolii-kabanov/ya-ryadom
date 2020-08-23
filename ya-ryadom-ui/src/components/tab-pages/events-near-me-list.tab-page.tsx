@@ -11,9 +11,11 @@ import { dateOptions } from '../../utils/constants/event-date-options.constant';
 import { openUserProfile } from "./../../store/history/actions";
 import EmptyText from '../general/empty-text';
 import { ApplicationStatusString } from '../../utils/constants/application-status-string.constant';
+import Icon16MoreHorizontal from '@vkontakte/icons/dist/16/more_horizontal';
 
 interface OwnProps {
     id: string;
+    openComplaintForm: (eventId: number) => void;
 }
 
 interface PropsFromState {
@@ -39,12 +41,12 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
     }
 
     private renderEvents() {
-        const { eventsList, openUserProfile } = this.props;
+        const { eventsList, openUserProfile, openComplaintForm } = this.props;
         if (eventsList) {
             return eventsList
                 .map((item, key) => {
                     return <div key={key}>
-                        <Group separator="show" header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
+                        <Group separator="show" header={<Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openComplaintForm(item.id)} />}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                             <RichCell
                                 disabled
                                 multiline
@@ -80,7 +82,8 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
 
 const mapStateToProps = ({ events }: AppState, ownProps: OwnProps) => ({
     eventsList: events.eventsNearMe.eventsList,
-    id: ownProps.id
+    id: ownProps.id,
+    openComplaintForm: ownProps.openComplaintForm,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
