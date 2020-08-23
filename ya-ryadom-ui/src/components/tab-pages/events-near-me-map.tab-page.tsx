@@ -33,6 +33,7 @@ import { EventsFilter } from '../../store/ui/settings/state';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import { dateOptions } from '../../utils/constants/event-date-options.constant';
 import { ApplicationStatusString } from '../../utils/constants/application-status-string.constant';
+import Icon16MoreHorizontal from '@vkontakte/icons/dist/16/more_horizontal';
 
 interface OwnProps {
     openComplaintForm: (eventId: number) => void;
@@ -151,7 +152,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { events, openUserProfile } = this.props;
+        const { events, openUserProfile, openComplaintForm } = this.props;
         let eventOnMap;
         let selectedEvent = events.find((e) => e.id === this.state.eventOnMap?.id)
         if (selectedEvent) {
@@ -159,7 +160,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                 <CardGrid>
                     <Card size="l">
                         <div className="cell-container">
-                            <Group header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === selectedEvent?.themeType)?.name}</Header>}>
+                            <Group header={<Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openComplaintForm(selectedEvent?.id || 0)} />}>{ALL_THEMES.find(m => m.id === selectedEvent?.themeType)?.name}</Header>}>
                                 <RichCell
                                     disabled
                                     multiline
