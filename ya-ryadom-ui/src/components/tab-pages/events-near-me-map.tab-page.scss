@@ -3,4 +3,9 @@
     height: 65vh;
     width: 100%;
   }
+  .selected-event-aside {
+    display: flex;
+    justify-content: space-between;
+    min-width: 60px;
+  }
 }

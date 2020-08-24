@@ -160,7 +160,12 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                 <CardGrid>
                     <Card size="l">
                         <div className="cell-container">
-                            <Group header={<Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openPopout(selectedEvent?.id || 0)} />}>{ALL_THEMES.find(m => m.id === selectedEvent?.themeType)?.name}</Header>}>
+                            <Group header={<Header mode="secondary" aside={
+                                <div className="selected-event-aside">
+                                    <Icon16MoreHorizontal onClick={() => openPopout(selectedEvent?.id || 0)} />
+                                    <Icon24Dismiss onClick={() => this.setState({ eventOnMap: null })} />
+                                </div>
+                            }>{ALL_THEMES.find(m => m.id === selectedEvent?.themeType)?.name}</Header>}>
                                 <RichCell
                                     disabled
                                     multiline
@@ -172,10 +177,6 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                 >
                                     <span>{selectedEvent?.userFullName} <span className="distance">{selectedEvent?.distance && (selectedEvent?.distance / 1000).toFixed(2)} км</span></span>
                                 </RichCell>
-
-                                <Icon24Dismiss
-                                    className="close-cross"
-                                    onClick={() => this.setState({ eventOnMap: null })} />
 
                                 <Div className="map-card-buttons-div">
                                     {selectedEvent?.applicationStatus === ApplicationStatus.none
