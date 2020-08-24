@@ -24,11 +24,11 @@ namespace YaRyadom.API.Controllers
 		}
 		
 		[AllowAnonymous]
-		[HttpPost("add")]
+		[HttpPost("to-event")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[VkUserIdFilter]
-		public async Task<IActionResult> ApproveApplication([FromBody] EventComplaintRequestModel model, CancellationToken cancellationToken = default)
+		public async Task<IActionResult> ComplaintToEvent([FromBody] EventComplaintRequestModel model, CancellationToken cancellationToken = default)
 		{
 			await _complaintsService.AddAsync(model, cancellationToken).ConfigureAwait(false);
 			return Ok(true);
