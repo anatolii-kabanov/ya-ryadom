@@ -5,9 +5,11 @@ import {
 } from '@vkontakte/vkui';
 import { AppState } from './../../store/app-state';
 import { connect } from 'react-redux';
-import ComplaintForm from '../forms/complaint.form';
+import ComplaintsForm from '../forms/complaint.form';
 import { setActiveModal } from '../../store/history/actions';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
+import { sendComplaintToEventRequest } from '../../store/complaints/actions';
+import { ComplaintForm } from '../../store/complaints/models';
 
 interface OwnProps {
     id: string;
@@ -17,7 +19,8 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    setActiveModal: typeof setActiveModal
+    setActiveModal: typeof setActiveModal,
+    sendComplaintToEvent: typeof sendComplaintToEventRequest
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
@@ -32,8 +35,9 @@ class ComplaintReviewModal extends React.Component<AllProps, State>  {
         this.onSave = this.onSave.bind(this);
     }
 
-    onSave = () => {
-
+    onSave = (data: ComplaintForm) => {
+        const { sendComplaintToEvent } = this.props;
+        sendComplaintToEvent(data);
     }
 
     render() {
@@ -49,7 +53,7 @@ class ComplaintReviewModal extends React.Component<AllProps, State>  {
                         Отправить жалобу
                         </ModalPageHeader>
                 }>
-                <ComplaintForm onSave={this.onSave} />
+                <ComplaintsForm onSave={this.onSave} />
             </ModalPage>
         )
     }
@@ -60,7 +64,8 @@ const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    setActiveModal: setActiveModal
+    setActiveModal: setActiveModal,
+    sendComplaintToEvent: sendComplaintToEventRequest
 }
 
 export default connect(

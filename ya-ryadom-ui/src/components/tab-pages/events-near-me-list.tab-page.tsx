@@ -15,7 +15,7 @@ import Icon16MoreHorizontal from '@vkontakte/icons/dist/16/more_horizontal';
 
 interface OwnProps {
     id: string;
-    openComplaintForm: (eventId: number) => void;
+    openPopout: (eventId: number) => void;
 }
 
 interface PropsFromState {
@@ -41,12 +41,12 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
     }
 
     private renderEvents() {
-        const { eventsList, openUserProfile, openComplaintForm } = this.props;
+        const { eventsList, openUserProfile, openPopout } = this.props;
         if (eventsList) {
             return eventsList
                 .map((item, key) => {
                     return <div key={key}>
-                        <Group separator="show" header={<Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openComplaintForm(item.id)} />}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
+                        <Group separator="show" header={<Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openPopout(item.id)} />}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                             <RichCell
                                 disabled
                                 multiline
@@ -83,7 +83,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
 const mapStateToProps = ({ events }: AppState, ownProps: OwnProps) => ({
     eventsList: events.eventsNearMe.eventsList,
     id: ownProps.id,
-    openComplaintForm: ownProps.openComplaintForm,
+    openPopout: ownProps.openPopout,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

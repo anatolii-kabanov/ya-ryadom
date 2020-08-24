@@ -16,7 +16,7 @@ import { TABS } from '../../../utils/constants/tab.constants';
 interface OwnProps {
     id: string;
     openFilter: () => void;
-    openComplaintForm: (eventId: number) => void;
+    openPopout: (eventId: number) => void;
 }
 
 interface PropsFromState {
@@ -34,7 +34,7 @@ interface State {
 
 class EventsNearMePanel extends React.Component<AllProps, State>  {
     render() {
-        const { id, activeTab, openFilter, openComplaintForm } = this.props;
+        const { id, activeTab, openFilter, openPopout } = this.props;
 
         return (
             <Panel id={id} className="events-near-me-panel">
@@ -46,8 +46,8 @@ class EventsNearMePanel extends React.Component<AllProps, State>  {
                 <Group separator="show">
                     <EventsTabs></EventsTabs>
                 </Group>
-                {activeTab === TABS.EVENTS_LIST && <EventsNearMeListTabPage openComplaintForm={openComplaintForm} id={TABS.EVENTS_LIST} />}
-                {activeTab === TABS.EVENTS_MAP && <EventsNearMeMapTabPage openComplaintForm={openComplaintForm} id={TABS.EVENTS_MAP} />}
+                {activeTab === TABS.EVENTS_LIST && <EventsNearMeListTabPage openPopout={openPopout} id={TABS.EVENTS_LIST} />}
+                {activeTab === TABS.EVENTS_MAP && <EventsNearMeMapTabPage openPopout={openPopout} id={TABS.EVENTS_MAP} />}
 
             </Panel >
         )
@@ -58,7 +58,7 @@ const mapStateToProps = ({ history }: AppState, ownProps: OwnProps) => ({
     activeTab: history.currentViewPanel.tab,
     id: ownProps.id,
     openFilter: ownProps.openFilter,
-    openComplaintForm: ownProps.openComplaintForm
+    openPopout: ownProps.openPopout
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

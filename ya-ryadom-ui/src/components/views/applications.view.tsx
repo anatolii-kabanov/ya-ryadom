@@ -26,13 +26,16 @@ interface PropsFromDispatch {
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
-
+    popout: any;
 }
 
 export class ApplicationsView extends React.Component<AllProps, State>  {
 
-    state = {
-        popout: null,
+    constructor(props: AllProps) {
+        super(props);
+        this.state = {
+            popout: null,
+        };
     }
 
     shareEvent = (eventId: number) => {

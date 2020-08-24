@@ -8,14 +8,16 @@ import {
 } from '@vkontakte/vkui';
 import { Validators } from '../../utils/validation/validators';
 import { ALL_COMPLAINTS } from '../../utils/constants/complaint.constants';
+import { ComplaintForm } from '../../store/complaints/models';
 
 interface OwnProps {
-    onSave: () => void;
+    onSave: (data: ComplaintForm) => void;
 }
 
 type AllProps = OwnProps;
 
 interface State {
+    selectedComplaint: number | null;
     text: string;
     errors: any | null;
 }
@@ -30,23 +32,26 @@ class ComplaintsForm extends React.Component<AllProps, State>  {
         super(props);
         this.onSave = this.onSave.bind(this);
         this.state = {
+            selectedComplaint: null,
             text: '',
             errors: null
         };
     }
 
-    onSave = (data) => {
+    onSave = (event: any) => {
         if (!this.isValid()) return;
         const { onSave } = this.props;
-        onSave();
+
+        onSave({ selectedComplaint: this.state.selectedComplaint || 0, text: this.state.text });
     }
 
     handleInputChange = (event) => {
         event.preventDefault();
         const { value, name } = event.target;
+        console.log(name)
         this.setState({
-            text: value
-        });
+            [name]: value
+        } as State);
         this.setState({
             errors: {
                 ...this.state.errors,
@@ -80,12 +85,16 @@ class ComplaintsForm extends React.Component<AllProps, State>  {
         const { errors, text } = this.state;
         return (
             <FormLayout>
-                <Select top="Причина" placeholder="Выберите причину" name="selectedComplaint" onChange={this.handleInputChange} required>
+                <Select
+                    status={errors?.selectedComplaint ? 'error' : 'default'}
+                    top="Причина" placeholder="Выберите причину"
+                    name="selectedComplaint" onChange={this.handleInputChange} required>
                     {this.renderComlaintsSelect()}
                 </Select>
                 <Textarea
                     minLength={0}
                     maxLength={maxValues.maxText}
+                    name="text"
                     top={<span className="flex-between">Описание <span>{maxValues.maxText - text.length}</span></span>}
                     placeholder="Введите текст"
                     onChange={this.handleInputChange}

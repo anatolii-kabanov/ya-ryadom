@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from '@vkontakte/vkui';
+import { View, ActionSheet, ActionSheetItem, IOS, IS_PLATFORM_ANDROID } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { PANELS } from '../../utils/constants/panel.constants';
@@ -12,36 +12,40 @@ import { fetchListRequest } from '../../store/events/events-near-me/actions';
 import { Geo } from '../../store/authentication/models';
 import { Position } from '../../store/authentication/models';
 import { EventsModalRoot } from '../modals/events.modal.root';
+import { setActiveModal } from '../../store/history/actions';
+import { openEventComplaintForm } from '../../store/complaints/actions';
 
 interface OwnProps {
     id: string;
-    popout?: any;
 }
 
 interface PropsFromState {
     activePanel: string;
+    activeModal: string | null;
     filter: EventsFilter;
-    userPosition: Geo;
+    userPosition: Geo | null;
     vkUserInfo: UserInfo | null;
-    lastLocation: Position;
+    lastLocation?: Position | null;
 }
 
 interface PropsFromDispatch {
     fetchList: typeof fetchListRequest,
+    setActiveModal: typeof setActiveModal,
+    openEventComplaintForm: typeof openEventComplaintForm
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
-    activeModal: string | null; // VK modal use null to hide it
+    popout: any;
 }
 
 class EventsView extends React.Component<AllProps, State>  {
 
-    constructor(props) {
+    constructor(props: AllProps) {
         super(props);
         this.state = {
-            activeModal: null
+            popout: null
         };
         this.openFilter = this.openFilter.bind(this);
         this.onCloseFilter = this.onCloseFilter.bind(this);
@@ -81,28 +85,43 @@ class EventsView extends React.Component<AllProps, State>  {
     }
 
     openFilter() {
-        this.setState({ activeModal: MODALS.EVENTS_FILTER });
+        const { setActiveModal } = this.props;
+        setActiveModal(MODALS.EVENTS_FILTER);
     }
 
-    openComplaintForm() {
-        this.setState({ activeModal: MODALS.COMPLAINT });
+    openComplaintForm(eventId: number) {
+        const { openEventComplaintForm } = this.props;
+        openEventComplaintForm(eventId);
     }
 
     onCloseFilter(updateEvents?: boolean) {
         updateEvents && this.updateEvents({});
-        this.setState({ activeModal: null });
+        const { setActiveModal } = this.props;
+        setActiveModal(null);
+    }
+
+    openPopout = (eventId: number) => {
+        this.setState({
+            popout: <ActionSheet onClose={() => this.setState({ popout: null })}>
+                <ActionSheetItem autoclose onClick={() => this.openComplaintForm(eventId)}>
+                    Пожаловаться
+                </ActionSheetItem>
+                {!IS_PLATFORM_ANDROID && <ActionSheetItem autoclose mode="cancel">Назад</ActionSheetItem>}
+            </ActionSheet>
+        });
     }
 
     render() {
-        const { id, activePanel, popout } = this.props;
+        const { id, activePanel, activeModal, setActiveModal } = this.props;
+        const { popout } = this.state;
         return (
             <View id={id} activePanel={activePanel} popout={popout} modal={
-                <EventsModalRoot activeModal={this.state.activeModal}
-                    onClose={() => this.setState({ activeModal: null })}
+                <EventsModalRoot activeModal={activeModal}
+                    onClose={() => setActiveModal(null)}
                     onCloseFilter={this.onCloseFilter} />
             }>
                 <EventsNearMeMapPanel
-                    openComplaintForm={this.openComplaintForm} openFilter={this.openFilter} id={PANELS.EVENTS_NEAR_ME_PANEL} />
+                    openPopout={this.openPopout} openFilter={this.openFilter} id={PANELS.EVENTS_NEAR_ME_PANEL} />
             </View>
         )
     }
@@ -110,16 +129,18 @@ class EventsView extends React.Component<AllProps, State>  {
 
 const mapStateToProps = ({ history, authentication, ui }: AppState, ownProps: OwnProps) => ({
     activePanel: history.currentViewPanel.panel,
+    activeModal: history.currentModal,
     userPosition: authentication.geoData,
     lastLocation: authentication.currentUser?.lastLocation,
     vkUserInfo: authentication.vkUserInfo,
     filter: ui.settings.eventsFilter,
     id: ownProps.id,
-    popout: ownProps.popout
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
     fetchList: fetchListRequest,
+    setActiveModal: setActiveModal,
+    openEventComplaintForm: openEventComplaintForm
 }
 
 export default connect(

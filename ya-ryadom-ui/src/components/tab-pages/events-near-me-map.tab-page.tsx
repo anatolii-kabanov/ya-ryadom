@@ -36,7 +36,7 @@ import { ApplicationStatusString } from '../../utils/constants/application-statu
 import Icon16MoreHorizontal from '@vkontakte/icons/dist/16/more_horizontal';
 
 interface OwnProps {
-    openComplaintForm: (eventId: number) => void;
+    openPopout: (eventId: number) => void;
     id: string;
 }
 
@@ -152,7 +152,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { events, openUserProfile, openComplaintForm } = this.props;
+        const { events, openUserProfile, openPopout } = this.props;
         let eventOnMap;
         let selectedEvent = events.find((e) => e.id === this.state.eventOnMap?.id)
         if (selectedEvent) {
@@ -160,7 +160,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                 <CardGrid>
                     <Card size="l">
                         <div className="cell-container">
-                            <Group header={<Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openComplaintForm(selectedEvent?.id || 0)} />}>{ALL_THEMES.find(m => m.id === selectedEvent?.themeType)?.name}</Header>}>
+                            <Group header={<Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openPopout(selectedEvent?.id || 0)} />}>{ALL_THEMES.find(m => m.id === selectedEvent?.themeType)?.name}</Header>}>
                                 <RichCell
                                     disabled
                                     multiline
@@ -228,7 +228,7 @@ const mapStateToProps = ({ events, authentication, ui }: AppState, ownProps: Own
     vkUserInfo: authentication.vkUserInfo,
     filter: ui.settings.eventsFilter,
     id: ownProps.id,
-    openComplaintForm: ownProps.openComplaintForm
+    openPopout: ownProps.openPopout
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
