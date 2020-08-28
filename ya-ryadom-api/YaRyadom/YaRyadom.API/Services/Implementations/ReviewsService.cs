@@ -23,6 +23,15 @@ namespace YaRyadom.API.Services.Implementations
 
 		public async Task<bool> AddAsync(UserReviewRequestModel model, CancellationToken cancellationToken = default)
 		{
+			var reviewExist = await TableNoTracking
+				.AnyAsync(m => m.YaRyadomEventId == model.EventId
+					&& m.YaRyadomUserReviewer.VkId == model.VkUserId
+					&& m.YaRyadomUserToReview.VkId == model.VkUserToReviewId,
+					cancellationToken)
+				.ConfigureAwait(false);
+
+			if (reviewExist) return false;
+
 			var yaRyadomReview = _mapper.Map<YaRyadomReview>(model);
 
 			var users = await _dbContext

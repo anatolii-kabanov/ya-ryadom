@@ -1,4 +1,5 @@
-﻿using YaRyadom.API.Models.Base;
+﻿using System.ComponentModel.DataAnnotations;
+using YaRyadom.API.Models.Base;
 using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models
@@ -15,12 +16,18 @@ namespace YaRyadom.API.Models
 		/// </summary>
 		public double Latitude { get; set; }
 
+		[Required]
 		public string Date { get; set; }
 
+		[Required]
 		public string Time { get; set; }
 
+		[StringLength(20)]
+		[Required]
 		public string Title { get; set; }
 
+		[StringLength(84)]
+		[Required]
 		public string Description { get; set; }
 
 		public int UserId { get; set; }
@@ -29,6 +36,7 @@ namespace YaRyadom.API.Models
 
 		public double TimeZoneMinutes { get; set; }
 
+		[Required]
 		public ThemeTypeModel[] SelectedThemes { get; set; }
 	}
 }

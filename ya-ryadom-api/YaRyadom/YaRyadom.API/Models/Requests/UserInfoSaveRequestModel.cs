@@ -1,4 +1,5 @@
-﻿using YaRyadom.API.Models.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models.Requests
 {
@@ -10,8 +11,11 @@ namespace YaRyadom.API.Models.Requests
 
 		public bool NotificationsEnabled { get; set; }
 
+		[Required]
 		public ThemeTypeModel[] SelectedThemes { get; set; }
-		
+
+		[Required]
+		[StringLength(84)]
 		public string AboutMySelf { get; set; }
 
 		public PositionModel LastLocation { get; set; }
