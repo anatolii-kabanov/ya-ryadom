@@ -108,7 +108,7 @@ class MyProfileEditPanel extends React.Component<AllProps>{
                     {
                         currentUser.geolocationEnabled && userGeo && !userGeo.available &&
                         <Placeholder >
-                            Похоже на то что Вам нужно разрешить доступ к геолокации для приложения "VK"
+                            Похоже на то, что Вам нужно разрешить доступ к геолокации для приложения "VK"
                         </Placeholder>
                     }
                 </Group>
