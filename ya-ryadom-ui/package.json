@@ -1,11 +1,11 @@
 {
   "name": "ya-ryadom-ui",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@vkontakte/icons": "^1.28.0",
-    "@vkontakte/vk-bridge": "^2.2.3",
-    "@vkontakte/vkui": "^3.11.7",
+    "@vkontakte/icons": "^1.37.0",
+    "@vkontakte/vk-bridge": "^2.2.8",
+    "@vkontakte/vkui": "^3.12.1",
     "@vkontakte/vkui-connect": "^1.5.4",
     "dateformat": "^3.0.3",
     "google-map-react": "^1.1.7",
