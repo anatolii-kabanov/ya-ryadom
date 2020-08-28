@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using YaRyadom.API.Models.Base;
+using YaRyadom.API.Validation;
 
 namespace YaRyadom.API.Models.Requests
 {
@@ -14,6 +15,7 @@ namespace YaRyadom.API.Models.Requests
 
 		public int EventId { get; set; }
 
+		[NotEqualVkId]
 		public long VkUserToReviewId { get; set; }
 
 		public double TimeZoneMinutes { get; set; }
