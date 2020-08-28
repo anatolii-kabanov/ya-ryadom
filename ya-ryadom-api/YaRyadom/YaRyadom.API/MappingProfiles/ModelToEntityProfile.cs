@@ -60,19 +60,19 @@ namespace YaRyadom.API.MappingProfiles
 			CreateMap<UserAboutMyselfRequestModel, YaRyadomUser>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.VkId, opt => opt.Ignore())
-				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMyself));
+				.ForMember(dest => dest.AboutMySelf, opt => opt.MapFrom(src => src.AboutMyself.Trim()));
 
 			CreateMap<UserReviewRequestModel, YaRyadomReview>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTimeOffset.Now.ToOffset(-TimeSpan.FromMinutes(src.TimeZoneMinutes))))
 				.ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
-				.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
+				.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text.Trim()))
 				.ForMember(dest => dest.YaRyadomEventId, opt => opt.MapFrom(src => src.EventId));
 
 			CreateMap<EventComplaintRequestModel, YaRyadomComplaint>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.ComplaintType, opt => opt.MapFrom(src => (ComplaintType)src.ComplaintType))
-				.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
+				.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text.Trim()))
 				.ForMember(dest => dest.YaRyadomEventId, opt => opt.MapFrom(src => src.EventId));
 		}
 	}
