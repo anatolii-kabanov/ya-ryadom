@@ -1,4 +1,5 @@
-﻿using YaRyadom.API.Models.Base;
+﻿using System.ComponentModel.DataAnnotations;
+using YaRyadom.API.Models.Base;
 using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models.Requests
@@ -20,8 +21,10 @@ namespace YaRyadom.API.Models.Requests
 		/// <summary>
 		/// Km
 		/// </summary>
+		[Range(1.0, 100.0)]
 		public double MaxDistance { get; set; }
 
+		[StringLength(84)]
 		public string SearchText { get; set; }
 
 		public ThemeTypeModel? Theme { get; set; }
