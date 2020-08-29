@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using YaRyadom.API.Models.Enums;
+using YaRyadom.API.Validation;
 
 namespace YaRyadom.API.Models.Requests
 {
@@ -12,6 +13,8 @@ namespace YaRyadom.API.Models.Requests
 		public bool NotificationsEnabled { get; set; }
 
 		[Required]
+		[IsValidEnum]
+		[ArrayNumbersNotDuplicated]
 		public ThemeTypeModel[] SelectedThemes { get; set; }
 
 		[Required]

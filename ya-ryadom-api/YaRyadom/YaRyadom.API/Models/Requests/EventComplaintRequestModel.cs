@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using YaRyadom.API.Models.Base;
 using YaRyadom.API.Models.Enums;
+using YaRyadom.API.Validation;
 
 namespace YaRyadom.API.Models.Requests
 {
 	public class EventComplaintRequestModel : BaseVkUserRequestModel
 	{
 		[Required]
+		[IsValidEnum]
 		public ComplaintTypeModel ComplaintType { get; set; }
 
 		[Required]

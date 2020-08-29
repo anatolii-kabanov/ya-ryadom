@@ -32,6 +32,13 @@ namespace YaRyadom.API.Services.Implementations
 
 			if (reviewExist) return false;
 
+			var validReview = await _dbContext
+				.YaRyadomEvents
+				.AsNoTracking()
+				.AnyAsync(m => m.Id == model.EventId && m.YaRyadomUserOwner.VkId == model.VkUserToReviewId, cancellationToken);
+
+			if (!validReview) return false;
+
 			var yaRyadomReview = _mapper.Map<YaRyadomReview>(model);
 
 			var users = await _dbContext
