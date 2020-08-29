@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Linq;
+using System.Net;
 using System.Web;
 using YaRyadom.API.Helpers;
 using YaRyadom.API.Models.Base;
@@ -28,16 +29,28 @@ namespace YaRyadom.API.Filters
 
 				if (actionExecutingContext.ActionDescriptor is ControllerActionDescriptor descriptor)
 				{
-					var parameters = descriptor.MethodInfo.GetParameters().Where(p => p.ParameterType.BaseType == typeof(BaseVkUserRequestModel));
-
-					foreach (var parameter in parameters)
+					if (actionExecutingContext.HttpContext.Request.Method == WebRequestMethods.Http.Get)
 					{
-						var argument = actionExecutingContext.ActionArguments[parameter.Name] as BaseVkUserRequestModel;
-						if(argument.VkUserId != vkUserId)
+						// Vk user id should be first
+						var vkUserIdParameter = descriptor.MethodInfo.GetParameters().FirstOrDefault();
+						var id = (long)actionExecutingContext.ActionArguments[vkUserIdParameter.Name];
+						if (id != vkUserId)
 						{
 							throw new Exception();
 						}
-					}
+					} else
+					{
+						var parameters = descriptor.MethodInfo.GetParameters().Where(p => p.ParameterType.BaseType == typeof(BaseVkUserRequestModel));
+
+						foreach (var parameter in parameters)
+						{
+							var argument = actionExecutingContext.ActionArguments[parameter.Name] as BaseVkUserRequestModel;
+							if (argument.VkUserId != vkUserId)
+							{
+								throw new Exception();
+							}
+						}
+					}					
 				}
 
 				base.OnActionExecuting(actionExecutingContext);

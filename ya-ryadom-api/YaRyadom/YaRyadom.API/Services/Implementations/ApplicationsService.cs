@@ -100,7 +100,7 @@ namespace YaRyadom.API.Services.Implementations
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
-		public async Task<ApplicationModel[]> GetAllToMeAsync(int vkUserId, CancellationToken cancellationToken = default)
+		public async Task<ApplicationModel[]> GetAllToMeAsync(long vkUserId, CancellationToken cancellationToken = default)
 		{
 			var applications = await _mapper
 				.ProjectTo<ApplicationModel>(
@@ -112,7 +112,7 @@ namespace YaRyadom.API.Services.Implementations
 			return applications;
 		}
 
-		public async Task<MineApplicationModel[]> GetAllMineAsync(int vkUserId, CancellationToken cancellationToken = default)
+		public async Task<MineApplicationModel[]> GetAllMineAsync(long vkUserId, CancellationToken cancellationToken = default)
 		{
 			var applications = await _mapper
 				.ProjectTo<MineApplicationModel>(

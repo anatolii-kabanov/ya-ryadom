@@ -27,6 +27,7 @@ namespace YaRyadom.API.Controllers
 		[HttpPost]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
 		public async Task<IActionResult> GetEventsNearMe([FromBody] EventsRequestModel requestModel, CancellationToken cancellationToken = default)
 		{
 			var events = await _eventsNearMeService

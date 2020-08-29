@@ -10,9 +10,9 @@ namespace YaRyadom.API.Services.Interfaces
 	{
 		Task<ApplicationModel[]> GetAllByEventAsync(int eventId, CancellationToken cancellationToken = default);
 
-		Task<ApplicationModel[]> GetAllToMeAsync(int vkUserId, CancellationToken cancellationToken = default);
+		Task<ApplicationModel[]> GetAllToMeAsync(long vkUserId, CancellationToken cancellationToken = default);
 
-		Task<MineApplicationModel[]> GetAllMineAsync(int vkUserId, CancellationToken cancellationToken = default);
+		Task<MineApplicationModel[]> GetAllMineAsync(long vkUserId, CancellationToken cancellationToken = default);
 
 		Task<bool> ApproveAsync(ApplicationActionRequestModel model, CancellationToken cancellationToken = default);
 

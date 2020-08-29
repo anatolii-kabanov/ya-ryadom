@@ -38,7 +38,8 @@ namespace YaRyadom.API.Controllers
 		[HttpGet("to-me/{vkUserId}")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> GetAllApplicationsToMe(int vkUserId, CancellationToken cancellationToken = default)
+		[VkUserIdFilter]
+		public async Task<IActionResult> GetAllApplicationsToMe(long vkUserId, CancellationToken cancellationToken = default)
 		{
 			var result = await _applicationsService.GetAllToMeAsync(vkUserId, cancellationToken).ConfigureAwait(false);
 			return Ok(result);
@@ -48,7 +49,8 @@ namespace YaRyadom.API.Controllers
 		[HttpGet("mine/{vkUserId}")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> GetAllMineApplications(int vkUserId, CancellationToken cancellationToken = default)
+		[VkUserIdFilter]
+		public async Task<IActionResult> GetAllMineApplications(long vkUserId, CancellationToken cancellationToken = default)
 		{
 			var result = await _applicationsService.GetAllMineAsync(vkUserId, cancellationToken).ConfigureAwait(false);
 			return Ok(result);

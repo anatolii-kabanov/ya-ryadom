@@ -1,12 +1,11 @@
-﻿using YaRyadom.API.Models.Enums;
+﻿using YaRyadom.API.Models.Base;
+using YaRyadom.API.Models.Enums;
 
 namespace YaRyadom.API.Models.Requests
 {
-	public class EventsRequestModel
+	public class EventsRequestModel : BaseVkUserRequestModel
 	{
 		public int UserId { get; set; }
-
-		public long VkUserId { get; set; }
 
 		/// <summary>
 		/// X
