@@ -17,6 +17,7 @@ import { openEventComplaintForm } from '../../store/complaints/actions';
 
 interface OwnProps {
     id: string;
+    popout?: React.ReactNode;
 }
 
 interface PropsFromState {
@@ -112,10 +113,9 @@ class EventsView extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { id, activePanel, activeModal, setActiveModal } = this.props;
-        const { popout } = this.state;
+        const { id, activePanel, activeModal, setActiveModal, popout } = this.props;
         return (
-            <View id={id} activePanel={activePanel} popout={popout} modal={
+            <View id={id} activePanel={activePanel} popout={popout || this.state.popout} modal={
                 <EventsModalRoot activeModal={activeModal}
                     onClose={() => setActiveModal(null)}
                     onCloseFilter={this.onCloseFilter} />
@@ -135,6 +135,7 @@ const mapStateToProps = ({ history, authentication, ui }: AppState, ownProps: Ow
     vkUserInfo: authentication.vkUserInfo,
     filter: ui.settings.eventsFilter,
     id: ownProps.id,
+    popout: ownProps.popout
 })
 
 const mapDispatchToProps: PropsFromDispatch = {

@@ -11,7 +11,6 @@ import MainEpic from './epics/menu.epic';
 import ReviewsView from './views/reviews.view';
 import ApplicationsView from './views/applications.view';
 import GeneralView from './views/general.view';
-import { ROOTS } from '../utils/constants/root.constants';
 import { CurrentUser } from '../store/authentication/models';
 import MyEventCreateView from "./views/my-events-create.view";
 
@@ -47,14 +46,12 @@ class RootLayout extends React.Component<AllProps>  {
                     <GeneralView id={VIEWS.GENERAL_VIEW}></GeneralView>
                 </Root>;
             default:
-                return <MainEpic activeStory={ROOTS.MAIN_ROOT}>
-                    <Root id={ROOTS.MAIN_ROOT} activeView={activeView} popout={spinnerVisible && <ScreenSpinner />}>
-                        <ApplicationsView id={VIEWS.APPLICATIONS_VIEW}></ApplicationsView>
-                        <ReviewsView id={VIEWS.REVIEWS_VIEW}></ReviewsView>
-                        <MyProfileView id={VIEWS.MY_PROFILE_VIEW}></MyProfileView>
-                        <EventsView id={VIEWS.EVENTS_NEAR_ME_VIEW}></EventsView>
-                        <MyEventCreateView id={VIEWS.MY_EVENT_CREATE_VIEW}></MyEventCreateView>
-                    </Root>
+                return <MainEpic activeStory={activeView}>
+                    <ApplicationsView id={VIEWS.APPLICATIONS_VIEW} popout={spinnerVisible && <ScreenSpinner />}></ApplicationsView>
+                    <ReviewsView id={VIEWS.REVIEWS_VIEW} popout={spinnerVisible && <ScreenSpinner />}></ReviewsView>
+                    <MyProfileView id={VIEWS.MY_PROFILE_VIEW} popout={spinnerVisible && <ScreenSpinner />}></MyProfileView>
+                    <EventsView id={VIEWS.EVENTS_NEAR_ME_VIEW} popout={spinnerVisible && <ScreenSpinner />}></EventsView>
+                    <MyEventCreateView id={VIEWS.MY_EVENT_CREATE_VIEW} popout={spinnerVisible && <ScreenSpinner />}></MyEventCreateView>
                 </MainEpic>;
         }
     }
