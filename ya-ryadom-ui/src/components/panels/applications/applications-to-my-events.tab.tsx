@@ -97,11 +97,11 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
         const showUsers = this.showUsers;
         if (myEvents) {
             return myEvents
-                .map((item, key) => {
+                .map((item, index) => {
                     const photos = item.participants.filter((p) => p.applicationStatus === ApplicationStatus.sent).map((p) => p.vkUserAvatarUrl);
                     const confirmed = item.participants.filter((p) => p.applicationStatus === ApplicationStatus.confirmed);
                     const newApplicants = photos.length;
-                    return <Group key={key} separator="show" className="application-card" header={
+                    return <Group key={index} separator={index !== myEvents.length - 1 ? "show" : "hide"} className="application-card" header={
                         <Header mode="secondary" aside={!item.ended && <Icon16MoreHorizontal onClick={() => openBase(item.id)} />}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                         <Div className="body">
                             <div className="title">{item.title}</div>

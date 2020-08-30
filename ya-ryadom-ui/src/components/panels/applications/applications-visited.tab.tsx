@@ -51,10 +51,10 @@ export class ApplicationsVisitedTab extends React.Component<AllProps, State>  {
     private renderVisitedEvents() {
         const { applications, openUserProfile } = this.props;
         if (applications) {
-            return applications
-                .filter((a) => a.status === ApplicationStatus.visited)
-                .map((item, key) => {
-                    return <Group key={key} separator="show" className="application-card" header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
+            const onlyVisited = applications.filter((a) => a.status === ApplicationStatus.visited);
+            return onlyVisited
+                .map((item, index) => {
+                    return <Group key={index} separator={index !== onlyVisited.length - 1 ? "show" : "hide"} className="application-card" header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                         <RichCell
                             disabled
                             multiline

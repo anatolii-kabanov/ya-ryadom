@@ -44,28 +44,26 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
         const { eventsList, openUserProfile, openPopout } = this.props;
         if (eventsList) {
             return eventsList
-                .map((item, key) => {
-                    return <div key={key}>
-                        <Group separator="show" header={<Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openPopout(item.id)} />}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
-                            <RichCell
-                                disabled
-                                multiline
-                                before={<Avatar onClick={() => openUserProfile(item.vkUserOwnerId)} size={48} src={item.vkUserAvatarUrl} />}
-                                text={item?.description}
-                                caption={`${new Date(item.date).toLocaleDateString('ru-RU', dateOptions)} в ${item.time}`}
-                            >
-                                <span>{item?.userFullName} <span className="distance">{item?.distance && (item?.distance / 1000).toFixed(2)} км.</span></span>
-                            </RichCell>
-                            <Div className="map-card-buttons-div">
-                                {item.applicationStatus === ApplicationStatus.none
-                                    ? <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
-                                    : <Button className="button-primary btn-status disabled" disabled={true}>{ApplicationStatusString[item.applicationStatus]}</Button>}
-                                <Button className="btn-secondary width-50 text-center"
-                                    onClick={() => openUserProfile(item.vkUserOwnerId)}
-                                >Профиль</Button>
-                            </Div>
-                        </Group>
-                    </div>
+                .map((item, index) => {
+                    return <Group key={index} separator={index !== eventsList.length - 1 ? "show" : "hide"} header={<Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openPopout(item.id)} />}>{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
+                        <RichCell
+                            disabled
+                            multiline
+                            before={<Avatar onClick={() => openUserProfile(item.vkUserOwnerId)} size={48} src={item.vkUserAvatarUrl} />}
+                            text={item?.description}
+                            caption={`${new Date(item.date).toLocaleDateString('ru-RU', dateOptions)} в ${item.time}`}
+                        >
+                            <span>{item?.userFullName} <span className="distance">{item?.distance && (item?.distance / 1000).toFixed(2)} км.</span></span>
+                        </RichCell>
+                        <Div className="map-card-buttons-div">
+                            {item.applicationStatus === ApplicationStatus.none
+                                ? <Button className="button-primary" onClick={() => this.apply(item.id)}>Иду</Button>
+                                : <Button className="button-primary btn-status disabled" disabled={true}>{ApplicationStatusString[item.applicationStatus]}</Button>}
+                            <Button className="btn-secondary width-50 text-center"
+                                onClick={() => openUserProfile(item.vkUserOwnerId)}
+                            >Профиль</Button>
+                        </Div>
+                    </Group>
                 });
         }
     }
@@ -73,9 +71,9 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State>  {
     render() {
         const { eventsList } = this.props;
         return (
-            <Group separator="hide">
+            <div>
                 {eventsList?.length > 0 ? this.renderEvents() : <EmptyText text="События не найдены" />}
-            </Group>
+            </div>
         )
     }
 }

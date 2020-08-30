@@ -35,10 +35,12 @@ export class MineApplicationsTab extends React.Component<AllProps, State>  {
     private renderApplications() {
         const { applications, revoke, openUserProfile } = this.props;
         if (applications) {
-            return applications
-                .filter((a) => a.status === ApplicationStatus.sent || a.status === ApplicationStatus.confirmed)
-                .map((item, key) => {
-                    return <Group className="application-card" separator="show" key={key} header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
+            const mineApplications = applications
+                .filter((a) => a.status === ApplicationStatus.sent || a.status === ApplicationStatus.confirmed);
+            return mineApplications
+                .map((item, index) => {
+                    return <Group className="application-card" separator={index !== mineApplications.length - 1 ? "show" : "hide"} key={index}
+                        header={<Header mode="secondary">{ALL_THEMES.find(m => m.id === item.themeType)?.name}</Header>}>
                         <RichCell
                             disabled
                             multiline
