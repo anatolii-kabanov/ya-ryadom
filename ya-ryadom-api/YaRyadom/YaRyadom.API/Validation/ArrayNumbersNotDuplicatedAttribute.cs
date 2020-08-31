@@ -9,17 +9,19 @@ namespace YaRyadom.API.Validation
 	{
 		protected override ValidationResult IsValid(object value, ValidationContext validationContext)
 		{
-			var valueType = value.GetType();
-
-			if (valueType.IsArray)
+			if (value != null)
 			{
-				var arrayOfNumbers = value as ICollection<int>;
-				if (arrayOfNumbers.Count != arrayOfNumbers.Distinct().Count())
+				var valueType = value.GetType();
+
+				if (valueType.IsArray)
 				{
-					return new ValidationResult($"Contains duplicates.");
+					var arrayOfNumbers = value as ICollection<int>;
+					if (arrayOfNumbers.Count != arrayOfNumbers.Distinct().Count())
+					{
+						return new ValidationResult($"Contains duplicates.");
+					}
 				}
 			}
-
 			return ValidationResult.Success;
 		}
 	}

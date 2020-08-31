@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using YaRyadom.API.Models.Base;
 using YaRyadom.API.Models.Enums;
+using YaRyadom.API.Validation;
 
 namespace YaRyadom.API.Models.Requests
 {
@@ -29,6 +30,7 @@ namespace YaRyadom.API.Models.Requests
 		[StringLength(84)]
 		public string SearchText { get; set; }
 
+		[IsValidEnum]
 		public ThemeTypeModel? Theme { get; set; }
 	}
 }

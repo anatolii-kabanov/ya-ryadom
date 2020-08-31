@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using YaRyadom.API.Models.Base;
 using YaRyadom.API.Models.Enums;
 using YaRyadom.API.Validation;
@@ -20,9 +21,11 @@ namespace YaRyadom.API.Models
 		public double Latitude { get; set; }
 
 		[Required]
+		[CurrentDate]
 		public string Date { get; set; }
 
 		[Required]
+		[ValidTime]
 		public string Time { get; set; }
 
 		[StringLength(20)]
