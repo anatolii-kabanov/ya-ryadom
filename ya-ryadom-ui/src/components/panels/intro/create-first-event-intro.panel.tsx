@@ -24,7 +24,7 @@ class CreateFirstEventIntroPanel extends React.Component<AllProps>  {
         return (
             <Panel id={id}>
                 <MainHeaderPanel text='Создание события'></MainHeaderPanel>
-                <Group>
+                <Group separator="hide">
                     <EventForm onSave={saveEvent}></EventForm>
                 </Group>
             </Panel>

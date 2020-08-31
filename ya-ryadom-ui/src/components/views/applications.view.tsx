@@ -68,7 +68,7 @@ export class ApplicationsView extends React.Component<AllProps, State>  {
         const { id, activePanel, popout } = this.props;
 
         return (
-        <View id={id} activePanel={activePanel} popout={popout || this.state.popout} modal={
+            <View id={id} activePanel={activePanel} popout={popout || this.state.popout} modal={
                 <ApplicationsReviewModal />
             }>
                 <ApplicationsPanel id={PANELS.APPLICATIONS_PANEL} openBase={this.openBase}></ApplicationsPanel>

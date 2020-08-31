@@ -49,7 +49,7 @@ class MyProfilePanel extends React.Component<AllProps>{
             const themes = ALL_THEMES;
             return themes
                 .map((item, key) => {
-                    return <PillInput key={key} id={item.id} selected={currentUser.selectedThemes.indexOf(item.id) !== -1} onClick={() => ''} text={item.name}></PillInput>
+                    return <PillInput key={key} id={item.id} disabled={true} selected={currentUser.selectedThemes.indexOf(item.id) !== -1} text={item.name}></PillInput>
                 });
         }
     }

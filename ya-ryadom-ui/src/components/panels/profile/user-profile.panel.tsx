@@ -103,10 +103,10 @@ class UserProfilePanel extends React.Component<AllProps, State>{
             return currentProfileThemes
                 .map((item: any, key) => {
                     if (currentUserThemes.includes(item)) {
-                        return <PillInput key={key} id={item.id} selected={true} onClick={() => ''} text={item.name}></PillInput>
+                        return <PillInput key={key} id={item.id} disabled={true} selected={true} onClick={() => ''} text={item.name}></PillInput>
                     }
                     else {
-                        return <PillInput key={key} id={item.id} selected={false} onClick={() => ''} text={item.name}></PillInput>
+                        return <PillInput key={key} id={item.id} disabled={true} selected={false} onClick={() => ''} text={item.name}></PillInput>
                     }
                 });
         }
