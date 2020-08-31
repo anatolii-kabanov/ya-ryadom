@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace YaRyadom.API.Filters
 				if (valid)
 					return;
 			}
-			throw new ArgumentNullException();
+			actionExecutingContext.Result = new BadRequestResult();
 		}
 	}
 }

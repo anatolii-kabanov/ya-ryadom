@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace YaRyadom.API.Filters
 				var isValidId = long.TryParse(vkUserIdString, out var vkUserId);
 				if (string.IsNullOrWhiteSpace(vkUserIdString) || !isValidId)
 				{
-					throw new ArgumentNullException();
+					actionExecutingContext.Result = new BadRequestResult();
+					return;
 				}
 
 				if (actionExecutingContext.ActionDescriptor is ControllerActionDescriptor descriptor)
@@ -36,7 +38,8 @@ namespace YaRyadom.API.Filters
 						var id = (long)actionExecutingContext.ActionArguments[vkUserIdParameter.Name];
 						if (id != vkUserId)
 						{
-							throw new Exception();
+							actionExecutingContext.Result = new BadRequestResult();
+							return;
 						}
 					} else
 					{
@@ -47,7 +50,8 @@ namespace YaRyadom.API.Filters
 							var argument = actionExecutingContext.ActionArguments[parameter.Name] as BaseVkUserRequestModel;
 							if (argument.VkUserId != vkUserId)
 							{
-								throw new Exception();
+								actionExecutingContext.Result = new BadRequestResult();
+								return;
 							}
 						}
 					}					
@@ -56,7 +60,7 @@ namespace YaRyadom.API.Filters
 				base.OnActionExecuting(actionExecutingContext);
 				return;
 			}
-			throw new ArgumentNullException();
+			actionExecutingContext.Result = new BadRequestResult();
 		}
 	}
 }
