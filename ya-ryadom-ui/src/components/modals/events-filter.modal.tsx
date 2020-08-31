@@ -114,7 +114,7 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
                 }>
                 <FormLayout>
                     <Input value={filter.text} type="text" placeholder="Поиск по интересам" name="textSearch" onChange={this.handleInputChange}></Input>
-                    <Select value={filter.selectedTheme} top="Тема" placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
+                    <Select value={filter.selectedTheme ?? ''} top="Тема" placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
                         {this.renderThemesSelect()}
                     </Select>
                     <AutocompleteMap address={filter.address} top="Адрес" placeholder="Выбрать адрес" type="address" loadMaps={true} onLocationChanged={this.handleLocationChange}></AutocompleteMap>

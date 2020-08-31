@@ -8,7 +8,6 @@ export const initialState: SettingsState = {
     },
     eventsFilterForm: {
         text: '',
-        selectedTheme: 0,
         radius: 10,
     },
 }
