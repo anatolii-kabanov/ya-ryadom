@@ -40,7 +40,7 @@ namespace YaRyadom.API.Filters
 						}
 					} else
 					{
-						var parameters = descriptor.MethodInfo.GetParameters().Where(p => p.ParameterType.BaseType == typeof(BaseVkUserRequestModel));
+						var parameters = descriptor.MethodInfo.GetParameters().Where(p => typeof(IBaseVkUserRequestModel).IsAssignableFrom(p.ParameterType));
 
 						foreach (var parameter in parameters)
 						{
