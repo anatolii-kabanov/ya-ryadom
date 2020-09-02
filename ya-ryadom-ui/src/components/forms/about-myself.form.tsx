@@ -66,17 +66,13 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
     }
 
     isValid() {
-        let errors = {};
-        let formIsValid = true;
-        if (!this.state.aboutMyself || this.state.aboutMyself.length === 0) {
-            formIsValid = false;
-            errors['aboutMyself'] = "Напишите о себе";
-        } else if (this.state.aboutMyself.length > 64) {
-            formIsValid = false;
-            errors['aboutMyself'] = "Максимум 64 символа";
-        }
+        this.setState({
+            errors: { 
+                ...this.state.errors, 
+                aboutMyself: Validators.required(this.state.aboutMyself) || Validators.maxLength(this.state.aboutMyself, maxValues.maxAboutMyself) }
+        });
 
-        this.setState({ errors: errors });
+        let formIsValid = !this.state.errors.aboutMyself;
         return formIsValid;
     }
 
@@ -91,7 +87,7 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
                         <FormLayout>
                             <Textarea
                                 minLength={1}
-                                maxLength={64}
+                                maxLength={maxValues.maxAboutMyself}
                                 placeholder="Введите текст"
                                 name="aboutMyself"
                                 top={<span className="flex-between">О себе<span>{maxValues.maxAboutMyself - aboutMyself.length}</span></span>}

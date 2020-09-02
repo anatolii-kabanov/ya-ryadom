@@ -1,5 +1,5 @@
 export async function callApi(
-    method: string, url: string, path: string, data?: any, token?: string, contentType?: string) {
+    method: string, url: string, path: string, data?: any, token?: string, contentType?: string): Promise<any> {
     const response = await fetch(`${url}${path}`, {
         method,
         mode: 'cors',
@@ -12,8 +12,8 @@ export async function callApi(
         },
         body: JSON.stringify(data)
     })
-    try {
-        const text = await response.text(); 
+    try {        
+        const text = await response.text();
         const data = JSON.parse(text); // Try to parse it as json
         return data;
     } catch (error) {

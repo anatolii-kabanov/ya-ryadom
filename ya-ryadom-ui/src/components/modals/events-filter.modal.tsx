@@ -50,6 +50,10 @@ interface State {
     radius: number;
 }
 
+const maxValues = {
+    maxSearchText: 84,
+}
+
 class EventsFilterModal extends React.Component<AllProps, State>  {
 
     constructor(props) {
@@ -113,7 +117,13 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
                         </ModalPageHeader>
                 }>
                 <FormLayout>
-                    <Input value={filter.text} type="text" placeholder="Поиск по интересам" name="textSearch" onChange={this.handleInputChange}></Input>
+                    <Input
+                        maxLength={maxValues.maxSearchText}
+                        value={filter.text}
+                        type="text"
+                        placeholder="Поиск по интересам"
+                        name="textSearch"
+                        onChange={this.handleInputChange}></Input>
                     <Select value={filter.selectedTheme ?? ''} top="Тема" placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
                         {this.renderThemesSelect()}
                     </Select>
