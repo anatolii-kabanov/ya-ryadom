@@ -41,7 +41,7 @@ namespace YaRyadom.API.Services.Implementations
 				&& m.Location.Distance(userPosition) <= model.MaxDistance;
 			if (!string.IsNullOrWhiteSpace(model.SearchText))
 			{
-				Expression<Func<YaRyadomEvent, bool>> whereTextExpression = m => m.SearchVector.Matches(EF.Functions.ToTsQuery("russian", model.SearchText));
+				Expression<Func<YaRyadomEvent, bool>> whereTextExpression = m => m.SearchVector.Matches(EF.Functions.PlainToTsQuery("russian", model.SearchText));
 				whereExpression = whereExpression.AndAlso(whereTextExpression);
 			}
 

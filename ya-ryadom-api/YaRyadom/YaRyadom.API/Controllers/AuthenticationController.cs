@@ -87,8 +87,9 @@ namespace YaRyadom.API.Controllers
 		[VkUserIdFilter]
 		public async Task<IActionResult> SaveAboutMyself([FromBody] UserAboutMyselfRequestModel model, CancellationToken cancellationToken = default)
 		{
-			await _authenticationService.SaveUserAboutMyselfAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok(true);
+			var result = await _authenticationService.SaveUserAboutMyselfAsync(model, cancellationToken).ConfigureAwait(false);
+			if (!result) return BadRequest();
+			return Ok(result);
 		}
 
 		[AllowAnonymous]

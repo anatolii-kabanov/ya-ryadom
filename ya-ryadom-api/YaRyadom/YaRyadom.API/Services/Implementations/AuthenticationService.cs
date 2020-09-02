@@ -65,7 +65,9 @@ namespace YaRyadom.API.Services.Implementations
 					});
 			}
 
-			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
+			await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+			return true;
 		}
 
 		public async Task<bool> SaveUserThemesAsync(UserThemesRequestModel model, CancellationToken cancellationToken = default)
@@ -75,7 +77,7 @@ namespace YaRyadom.API.Services.Implementations
 				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
 				.ConfigureAwait(false);
 
-			if (yaRyadomUser == null) throw new ArgumentNullException(nameof(yaRyadomUser));
+			if (yaRyadomUser == null) return false;
 
 			_mapper.Map(model, yaRyadomUser);
 
@@ -92,7 +94,9 @@ namespace YaRyadom.API.Services.Implementations
 					});
 			}
 
-			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
+			await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+			return true;
 		}
 
 		public async Task<bool> SaveUserLocationAsync(UserLocationRequestModel model, CancellationToken cancellationToken = default)
@@ -101,11 +105,13 @@ namespace YaRyadom.API.Services.Implementations
 				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
 				.ConfigureAwait(false);
 
-			if (yaRyadomUser == null) throw new ArgumentNullException(nameof(yaRyadomUser));
+			if (yaRyadomUser == null) return false;
 
 			_mapper.Map(model, yaRyadomUser);
 
-			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
+			await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+			return true;
 		}
 
 		public async Task<bool> SaveUserAboutMyselfAsync(UserAboutMyselfRequestModel model, CancellationToken cancellationToken = default)
@@ -118,7 +124,9 @@ namespace YaRyadom.API.Services.Implementations
 
 			_mapper.Map(model, yaRyadomUser);
 
-			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
+			await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+			return true;
 		}
 
 		public async Task<bool> SaveUserGuideCompletedAsync(UserGuideCompletedRequestModel model, CancellationToken cancellationToken = default)
