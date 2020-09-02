@@ -63,8 +63,9 @@ namespace YaRyadom.API.Controllers
 		[VkUserIdFilter]
 		public async Task<IActionResult> ApproveApplication([FromBody] ApplicationActionRequestModel model, CancellationToken cancellationToken = default)
 		{
-			await _applicationsService.ApproveAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok(true);
+			var result = await _applicationsService.ApproveAsync(model, cancellationToken).ConfigureAwait(false);
+			if (!result) return BadRequest();
+			return Ok(result);
 		}
 
 		[AllowAnonymous]
@@ -74,8 +75,9 @@ namespace YaRyadom.API.Controllers
 		[VkUserIdFilter]
 		public async Task<IActionResult> RejectApplication([FromBody] ApplicationActionRequestModel model, CancellationToken cancellationToken = default)
 		{
-			await _applicationsService.RejectAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok(true);
+			var result = await _applicationsService.RejectAsync(model, cancellationToken).ConfigureAwait(false);
+			if (!result) return BadRequest();
+			return Ok(result);
 		}
 
 
@@ -90,8 +92,9 @@ namespace YaRyadom.API.Controllers
 			{
 				model.TimeZoneMinutes = minutes;
 			}
-			await _applicationsService.ApplyAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok(true);
+			var result = await _applicationsService.ApplyAsync(model, cancellationToken).ConfigureAwait(false);
+			if (!result) return BadRequest();
+			return Ok(result);
 		}
 
 		[AllowAnonymous]
@@ -101,8 +104,9 @@ namespace YaRyadom.API.Controllers
 		[VkUserIdFilter]
 		public async Task<IActionResult> Revoke([FromBody] ApplicationActionRequestModel model, CancellationToken cancellationToken)
 		{
-			await _applicationsService.RevokeAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok(true);
+			var result = await _applicationsService.RevokeAsync(model, cancellationToken).ConfigureAwait(false);
+			if (!result) return BadRequest();
+			return Ok(result);
 		}
 	}
 }

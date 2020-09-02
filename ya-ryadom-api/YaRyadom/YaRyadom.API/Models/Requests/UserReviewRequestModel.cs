@@ -13,6 +13,7 @@ namespace YaRyadom.API.Models.Requests
 		[Range(1, 5)]
 		public int Rating { get; set; }
 
+		[Range(1, int.MaxValue, ErrorMessage = "The value should be greater or equal {1}.")]
 		public int EventId { get; set; }
 
 		[NotEqualVkId]

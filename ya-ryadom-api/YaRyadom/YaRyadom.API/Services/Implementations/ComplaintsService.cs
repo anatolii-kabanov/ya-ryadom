@@ -21,6 +21,14 @@ namespace YaRyadom.API.Services.Implementations
 
 		public async Task<bool> AddAsync(EventComplaintRequestModel model, CancellationToken cancellationToken = default)
 		{
+			var eventExist = await _dbContext
+				.YaRyadomEvents
+				.AsNoTracking()
+				.AnyAsync(m => m.Id == model.EventId && m.YaRyadomUserOwner.VkId != model.VkUserId, cancellationToken)
+				.ConfigureAwait(false);
+
+			if (!eventExist) return false;
+
 			var yaRyadomComplaint = _mapper.Map<YaRyadomComplaint>(model);
 
 			var yaRyadomUser = await _dbContext

@@ -77,8 +77,9 @@ namespace YaRyadom.API.Controllers
 		[VkUserIdFilter]
 		public async Task<IActionResult> Revoke([FromBody] EventActionRequestModel model, CancellationToken cancellationToken = default)
 		{
-			await _myEventsService.RevokeAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok(true);
+			var result = await _myEventsService.RevokeAsync(model, cancellationToken).ConfigureAwait(false);
+			if (!result) return BadRequest();
+			return Ok(result);
 		}
 
 	}

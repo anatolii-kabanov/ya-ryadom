@@ -53,9 +53,10 @@ namespace YaRyadom.API.Services.Implementations
 		{
 			var yaRyadomEvent = await Entities.FirstOrDefaultAsync(
 				m => m.Id == model.EventId && m.YaRyadomUserOwner.VkId == model.VkUserId,
-				cancellationToken);
+				cancellationToken)
+				.ConfigureAwait(false);
 
-			if (yaRyadomEvent == null) throw new ArgumentNullException(nameof(yaRyadomEvent));
+			if (yaRyadomEvent == null) return false;
 
 			var usersIds = await _dbContext
 				.YaRyadomUserApplications

@@ -41,6 +41,8 @@ namespace YaRyadom.API.Services.Implementations
 				.Where(m => m.Id == model.ApplicationId && m.YaRyadomEvent.YaRyadomUserOwner.VkId == model.VkUserId)
 				.FirstOrDefaultAsync(cancellationToken);
 
+			if (application == null) return false;
+
 			application.Status = ApplicationStatus.Confirmed;
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
@@ -53,6 +55,8 @@ namespace YaRyadom.API.Services.Implementations
 				.Where(m => m.Id == model.ApplicationId && m.YaRyadomEvent.YaRyadomUserOwner.VkId == model.VkUserId)
 				.FirstOrDefaultAsync(cancellationToken);
 
+			if (application == null) return false;
+
 			application.Status = ApplicationStatus.Rejected;
 
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
@@ -60,6 +64,14 @@ namespace YaRyadom.API.Services.Implementations
 
 		public async Task<bool> ApplyAsync(ApplicationRequestModel model, CancellationToken cancellationToken = default)
 		{
+			var eventExist = await _dbContext
+				.YaRyadomEvents
+				.AsNoTracking()
+				.AnyAsync(m => m.Id == model.EventId && !m.Ended && !m.Revoked, cancellationToken)
+				.ConfigureAwait(false);
+
+			if (!eventExist) return false;
+
 			var application = await Query
 				.Where(m => m.YaRyadomEventId == model.EventId && m.YaRyadomUserRequested.VkId == model.VkUserId)
 				.FirstOrDefaultAsync(cancellationToken);
@@ -92,6 +104,8 @@ namespace YaRyadom.API.Services.Implementations
 				.Where(m => m.Id == model.ApplicationId && m.YaRyadomUserRequested.VkId == model.VkUserId)
 				.FirstOrDefaultAsync(cancellationToken)
 				.ConfigureAwait(false);
+
+			if (application == null) return false;
 
 			// Move status back
 			application.Status = ApplicationStatus.None;

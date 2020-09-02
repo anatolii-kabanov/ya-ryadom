@@ -30,8 +30,9 @@ namespace YaRyadom.API.Controllers
 		[VkUserIdFilter]
 		public async Task<IActionResult> ComplaintToEvent([FromBody] EventComplaintRequestModel model, CancellationToken cancellationToken = default)
 		{
-			await _complaintsService.AddAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok(true);
+			var result = await _complaintsService.AddAsync(model, cancellationToken).ConfigureAwait(false);
+			if (!result) return BadRequest();
+			return Ok(result);
 		}
 	}
 }
