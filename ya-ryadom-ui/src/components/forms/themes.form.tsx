@@ -19,7 +19,7 @@ interface OwnProps {
 
 interface PropsFromState {
     btnText?: string;
-    selectedThemes: ThemeType[],
+    selectedThemes?: ThemeType[],
 }
 
 interface PropsFromDispatch {
@@ -36,12 +36,12 @@ interface State {
 
 class ThemesForm extends React.Component<AllProps, State>  {
 
-    constructor(props) {
+    constructor(props: AllProps) {
         super(props);
         this.onFillInProfile = this.onFillInProfile.bind(this);
         this.handlePillClick = this.handlePillClick.bind(this);
         this.state = {
-            selectedThemes: [...props.selectedThemes],
+            selectedThemes: props.selectedThemes ? [...props.selectedThemes] : [],
             errors: null
         };
     }

@@ -32,7 +32,6 @@ import {
     saveUserProfileAboutMyself,
     completeUserGuide,
     setUserAboutMyself,
-    enableUserGeolocation,
     setUserGeolocation,
     fetchUserGeoRequest,
     clearUserGeo,
@@ -47,6 +46,7 @@ import { PANELS } from '../../utils/constants/panel.constants';
 import { getVkUserId, getGeoData, getVkUserInfo, getCurrentUser } from './reducer';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 import { TABS } from '../../utils/constants/tab.constants';
+import { Action } from 'typesafe-actions';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/auth`;
 
@@ -147,8 +147,6 @@ function* handleSaveUserInfoRequest(action: ReturnType<typeof saveUserInfoReques
         } else {
             yield put(saveUserInfoError('An unknown error occured.'));
         }
-    } finally {
-
     }
 }
 
@@ -355,9 +353,10 @@ function* handleCompleteUserGuide(action: ReturnType<typeof completeUserGuide>) 
     }
     var model = SaveUserInfoRequest.fromVkAndCurrentUser(vkUserInfo, currentUser, position);
     yield put(saveUserInfoRequest(model));
-    yield take(AuthenticationTypes.SAVE_USER_INFO_SUCCESS);
-
-    yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.COMPLETED_INTRO_PANEL)));
+    var effect: Action = yield take(saveUserInfoRequest);
+    if (effect.type == AuthenticationTypes.SAVE_USER_INFO_SUCCESS) {
+        yield put(goForward(new VkHistoryModel(VIEWS.INTRO_VIEW, PANELS.COMPLETED_INTRO_PANEL)));
+    }
 
     yield put(hideSpinner());
 }
