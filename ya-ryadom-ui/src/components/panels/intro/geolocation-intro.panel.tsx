@@ -56,8 +56,8 @@ class GeolocationIntroPanel extends React.Component<AllProps, State>  {
 
     onGeolocationClick = (event: any) => {
         const { setUserLocationProcess } = this.props;
-        this.setState({ geoAvailable: event.target.checked });
         const { checked } = event.target;
+        this.setState({ geoAvailable: checked });        
         setUserLocationProcess(checked);
     }
 

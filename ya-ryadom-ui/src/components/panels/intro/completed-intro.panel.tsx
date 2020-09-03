@@ -48,6 +48,8 @@ class CompletedIntroPanel extends React.Component<AllProps, State>  {
 
     onCreateEventClick = () => {
         const { goForward } = this.props;
+        // Just because after create event user returning back on previous page.
+        goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP));
         goForward(new VkHistoryModel(VIEWS.MY_EVENT_CREATE_VIEW, PANELS.CREATE_EVENT_PANEL));
     }
 

@@ -400,10 +400,10 @@ function* handleSetUserLocationProcess(action: ReturnType<typeof setUserLocation
     if (action.payload) {
         yield put(fetchUserGeoRequest());
         yield take(AuthenticationTypes.FETCH_USER_GEO_SUCCESS);
-        setUserGeolocation(action.payload);
+        yield put(setUserGeolocation(action.payload));
     } else {
         yield put(clearUserGeo());
-        setUserGeolocation(action.payload);
+        yield put(setUserGeolocation(action.payload));
     }
 }
 
