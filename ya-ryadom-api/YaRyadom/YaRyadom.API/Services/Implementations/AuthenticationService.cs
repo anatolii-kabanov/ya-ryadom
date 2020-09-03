@@ -41,6 +41,7 @@ namespace YaRyadom.API.Services.Implementations
 		public async Task<bool> SaveUserInfoAsync(UserInfoSaveRequestModel model, CancellationToken cancellationToken = default)
 		{
 			var yaRyadomUser = await Entities
+				.Include(m => m.YaRyadomUserThemes)
 				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
 				.ConfigureAwait(false)
 				?? new YaRyadomUser();
