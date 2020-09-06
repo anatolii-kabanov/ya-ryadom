@@ -29,7 +29,7 @@ namespace YaRyadom.API.Services.Implementations
 
 			var dateTime = yaRyadomEvent.Date.Value.Add(yaRyadomEvent.Time.Value);
 
-			if (dateTime < DateTime.UtcNow)
+			if (dateTime.UtcDateTime < DateTime.UtcNow)
 			{
 				return false;
 			}
