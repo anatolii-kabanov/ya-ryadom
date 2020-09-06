@@ -1,6 +1,6 @@
 import React from "react";
 import { MAP } from "../../utils/constants/map.constants";
-import { Spinner, Input } from "@vkontakte/vkui";
+import { Spinner, Input, FormStatus } from "@vkontakte/vkui";
 import { Position } from "../../store/authentication/models";
 
 interface AutocompleteProps {
@@ -15,6 +15,7 @@ interface AutocompleteProps {
 interface State {
     query: string;
     googleMapsReady: boolean;
+    googleMapsError: boolean;
 }
 
 class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
@@ -26,14 +27,15 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
         this.autoComplete = React.createRef();
         this.state = {
             query: props.address,
-            googleMapsReady: false
+            googleMapsReady: false,
+            googleMapsError: false,
         };
     }
 
     componentDidMount() {
         const { type } = this.props;
         this.loadGoogleMaps(() => {
-            this.setState({ googleMapsReady: true });
+            this.setState({ googleMapsReady: true, googleMapsError: false });
             this.autoComplete = new window.google.maps.places.Autocomplete(
                 this.autoComplete.current,
                 { types: [type], componentRestrictions: { country: "ru" } }
@@ -73,6 +75,11 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
             script.onload = () => {
                 if (callback) callback();
             };
+
+            script.onerror = (error) => {
+                console.log(error);
+                this.setState({ googleMapsError: true });
+            }
         }
         if ((existingScript || !loadMaps) && callback) callback();
     };
@@ -85,11 +92,15 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
     };
 
     render() {
-        const { query, googleMapsReady } = this.state;
+        const { query, googleMapsReady, googleMapsError } = this.state;
         const { placeholder, top } = this.props;
         return (
             !googleMapsReady
-                ? <Spinner size="large"></Spinner>
+                ? (!googleMapsError
+                    ? <Spinner size="large"></Spinner>
+                    : <FormStatus mode="error">
+                        Произошла ошибка при загрузке. Проверьте интернет соединение и попробуйте еще раз.
+                    </FormStatus>)
                 : <div className="search-places-input">
                     <Input
                         top={top}
