@@ -138,7 +138,7 @@ class UserProfilePanel extends React.Component<AllProps, State>{
 
                         <a className="a-icon"
                             href={`https://vk.com/id${vkUserId}`}
-                            onClick={() => window.open(`https://vk.com/id${vkUserId}`)}
+                            target="_blank"
                         >
                             <Icon28HomeOutline className="menu-icon" />
                             Профиль VK
