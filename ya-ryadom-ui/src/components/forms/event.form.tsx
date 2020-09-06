@@ -201,6 +201,13 @@ class EventForm extends React.Component<AllProps, EventState> {
         if (!this.state.eventTime) {
             formIsValid = false;
             errors['eventTime'] = "Обязательное поле";
+        } else {
+            const currentDate = new Date();
+            const selectedDate = new Date(`${this.state.eventDate} ${this.state.eventTime}`);
+            if (selectedDate < currentDate) {
+                formIsValid = false;
+                errors['eventTime'] = "Нельзя выбрать прошедшее время";
+            }
         }
 
         if (!this.state.selectedPosition?.lat) {
@@ -253,13 +260,20 @@ class EventForm extends React.Component<AllProps, EventState> {
                 </Select>
                 <Input
                     min={new Date().toISOString().split('T')[0]}
+                    max={new Date(9999, 11).toISOString().split('T')[0]}
                     status={errors.eventDate ? 'error' : 'default'}
                     top="Дата встречи"
                     type="date"
                     name="eventDate"
                     bottom={errors.eventDate}
                     onChange={this.handleInputChange} required />
-                <Input status={errors.eventTime ? 'error' : 'default'} top="Время встречи" type="time" name="eventTime" onChange={this.handleInputChange} required />
+                <Input
+                    status={errors.eventTime ? 'error' : 'default'}
+                    bottom={errors.eventTime}
+                    top="Время встречи"
+                    type="time"
+                    name="eventTime"
+                    onChange={this.handleInputChange} required />
                 <AutocompleteMap top="Место встречи" placeholder="Адрес" type="address" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                 <div className="map">
                     <GoogleMapReact
