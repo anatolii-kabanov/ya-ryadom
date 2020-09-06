@@ -55,7 +55,7 @@ export class ApplicationsView extends React.Component<AllProps, State>  {
                     <ActionSheetItem autoclose onClick={() => this.shareEvent(eventId)}>
                         Поделиться
                     </ActionSheetItem>
-                    <ActionSheetItem autoclose onClick={() => this.revokeMyEvent(eventId)}>
+                    <ActionSheetItem autoclose onClick={() => this.revokeMyEvent(eventId)} mode="destructive">
                         Отменить событие
                     </ActionSheetItem>
                     {osname === IOS && <ActionSheetItem autoclose mode="cancel">Назад</ActionSheetItem>}
