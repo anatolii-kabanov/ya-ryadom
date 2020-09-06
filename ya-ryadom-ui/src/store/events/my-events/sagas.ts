@@ -55,7 +55,7 @@ function* handleSaveEventRequest(action: ReturnType<typeof saveMyEventRequest>) 
         yield put(showSpinner());
         const result = yield call(callApi, 'post', API_ENDPOINT, '/create', action.payload);
 
-        if (result.errors) {
+        if (result.errors || result?.status >= 400) {
             yield put(saveMyEventError(result.errors));
         } else {
             yield put(saveMyEventSuccess(result));

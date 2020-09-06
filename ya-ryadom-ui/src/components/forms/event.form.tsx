@@ -16,7 +16,6 @@ import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { Position } from '../../store/authentication/models';
-import { goForward } from "../../store/history/actions";
 import isEmpty from "lodash/isEmpty";
 import { MyEventCreate } from '../../store/events/events-near-me/models';
 import { ALL_THEMES } from '../../utils/constants/theme.constants';
@@ -31,7 +30,6 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    goForwardView: typeof goForward
 }
 
 
@@ -309,7 +307,7 @@ const mapStateToProps = ({ authentication }: AppState) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    goForwardView: goForward
+    
 }
 
 export default connect(

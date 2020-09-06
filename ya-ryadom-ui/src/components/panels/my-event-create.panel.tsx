@@ -3,11 +3,13 @@ import { Panel, Group, PanelHeader } from '@vkontakte/vkui';
 import EventForm from '../forms/event.form';
 import { connect } from 'react-redux';
 import { AppState } from '../../store/app-state';
-import MainHeaderPanel from "./headers/main.header";
 import { saveMyEventGeneralRequest } from '../../store/events/my-events/actions';
 
-interface PropsFromState {
+interface OwnProps {
     id: string;
+}
+
+interface PropsFromState {
 }
 
 interface PropsFromDispatch {
@@ -15,7 +17,7 @@ interface PropsFromDispatch {
 }
 
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class MyEventCreatePanel extends React.Component<AllProps>  {
     render() {
@@ -31,8 +33,8 @@ class MyEventCreatePanel extends React.Component<AllProps>  {
     }
 }
 
-const mapStateToProps = ({ }: AppState) => ({
-
+const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
+    id: ownProps.id
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
