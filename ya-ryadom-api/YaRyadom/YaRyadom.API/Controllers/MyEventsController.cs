@@ -66,8 +66,9 @@ namespace YaRyadom.API.Controllers
 			{
 				model.TimeZoneMinutes = minutes;
 			}
-			await _myEventsService.AddAsync(model, cancellationToken).ConfigureAwait(false);
-			return Ok(true);
+			var result = await _myEventsService.AddAsync(model, cancellationToken).ConfigureAwait(false);
+			if (!result) return BadRequest();
+			return Ok(result);
 		}
 
 		[AllowAnonymous]

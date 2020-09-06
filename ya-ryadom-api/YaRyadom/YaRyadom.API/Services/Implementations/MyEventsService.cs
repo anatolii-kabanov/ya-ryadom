@@ -27,6 +27,13 @@ namespace YaRyadom.API.Services.Implementations
 		{
 			var yaRyadomEvent = _mapper.Map<YaRyadomEvent>(model);
 
+			var dateTime = yaRyadomEvent.Date.Value.Add(yaRyadomEvent.Time.Value);
+
+			if (dateTime < DateTime.UtcNow)
+			{
+				return false;
+			}
+
 			var yaRyadomUser = await _dbContext
 				.YaRyadomUsers
 				.FirstOrDefaultAsync(m => m.VkId == model.VkUserId, cancellationToken)
