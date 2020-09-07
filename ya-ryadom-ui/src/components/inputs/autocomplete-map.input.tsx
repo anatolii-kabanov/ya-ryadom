@@ -10,6 +10,7 @@ interface AutocompleteProps {
     placeholder?: string;
     top?: string;
     address?: string;
+    isOnline?: boolean;
 }
 
 interface State {
@@ -17,6 +18,8 @@ interface State {
     googleMapsReady: boolean;
     googleMapsError: boolean;
 }
+
+const scriptId = "googlePlacesScript";
 
 class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
 
@@ -33,6 +36,22 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
     }
 
     componentDidMount() {
+        this.initGoogleMaps();
+    }
+
+    componentWillUnmount() {
+        this.unloadGoogleMaps();
+    }
+
+    componentDidUpdate(prevProps: AutocompleteProps) {
+        const { googleMapsReady, googleMapsError } = this.state;
+        const { isOnline } = this.props;
+        if (prevProps.isOnline !== isOnline && isOnline && googleMapsError && !googleMapsReady) {
+            this.initGoogleMaps();
+        }
+    }
+
+    initGoogleMaps = () => {
         const { type } = this.props;
         this.loadGoogleMaps(() => {
             this.setState({ googleMapsReady: true, googleMapsError: false });
@@ -58,18 +77,17 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
         });
     }
 
-    componentWillUnmount() {
-        this.unloadGoogleMaps();
-    }
-
     loadGoogleMaps = (callback) => {
         const { loadMaps } = this.props;
-        const existingScript = document.getElementById("googlePlacesScript");
+        let existingScript = document.getElementById(scriptId);
+
         if (!existingScript && loadMaps) {
             const script = document.createElement("script");
+            script.async = true;
+            script.defer = true;
             script.src =
                 `https://maps.googleapis.com/maps/api/js?key=${MAP.KEY}&libraries=places`;
-            script.id = "googlePlacesScripty";
+            script.id = scriptId;
             document.body.appendChild(script);
             //action to do after a script is loaded in our case setState
             script.onload = () => {
@@ -77,15 +95,17 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
             };
 
             script.onerror = (error) => {
-                console.log(error);
                 this.setState({ googleMapsError: true });
+                document.body.removeChild(script);
             }
         }
-        if ((existingScript || !loadMaps) && callback) callback();
+        if ((existingScript || !loadMaps) && callback) {
+            callback()
+        };
     };
 
     unloadGoogleMaps = () => {
-        let googlePlacesScript = document.getElementById("googlePlacesScript");
+        let googlePlacesScript = document.getElementById(scriptId);
         if (googlePlacesScript) {
             googlePlacesScript.remove();
         }
@@ -99,7 +119,7 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
                 ? (!googleMapsError
                     ? <Spinner size="large"></Spinner>
                     : <FormStatus mode="error">
-                        Произошла ошибка при загрузке. Проверьте интернет соединение и попробуйте еще раз.
+                        При загрузке произошла ошибка. Проверьте интернет соединение и попробуйте еще раз.
                     </FormStatus>)
                 : <div className="search-places-input">
                     <Input

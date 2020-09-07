@@ -23,7 +23,7 @@ interface OwnProps {
 }
 
 interface PropsFromState {
-
+    isOnline: boolean;
 }
 
 interface PropsFromDispatch {
@@ -64,7 +64,7 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { id } = this.props;
+        const { id, isOnline } = this.props;
         const { userLocation } = this.state;
         return (
             <Panel id={id} className="select-city-intro-panel">
@@ -73,7 +73,7 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
                 <Div><Title level="3" weight="bold" className="title text-center">Выберите город</Title ></Div>
                 <Group separator="hide">
                     <Div>
-                        <AutocompleteMap type="(cities)" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
+                        <AutocompleteMap isOnline={isOnline} type="(cities)" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                     </Div>
                 </Group>
                 <Group>
@@ -86,7 +86,8 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
     }
 }
 
-const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
+const mapStateToProps = ({ ui }: AppState, ownProps: OwnProps) => ({
+    isOnline: ui.settings.isOnline,
     id: ownProps.id
 })
 

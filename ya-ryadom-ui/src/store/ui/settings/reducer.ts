@@ -1,6 +1,8 @@
 import { Reducer } from 'redux';
 import { SettingsState } from './state';
 import { SetingsTypes } from './types';
+import { SettingsActions } from './actions';
+import _ from 'lodash';
 
 export const initialState: SettingsState = {
     eventsFilter: {
@@ -10,22 +12,21 @@ export const initialState: SettingsState = {
         text: '',
         radius: 10,
     },
+    isOnline: true,
 }
 
-const reducer: Reducer<SettingsState> = (state = initialState, action) => {
+const reducer: Reducer<SettingsState, SettingsActions> = (state = initialState, action: SettingsActions) => {
     switch (action.type) {
         case SetingsTypes.CLEAR_EVENTS_FILTER: {
-            return {
-                ...state,
-                eventsFilter: { ...initialState.eventsFilter },
-                eventsFilterForm: { ...initialState.eventsFilterForm }
-            };
+            const newState = _.cloneDeep(state);
+            newState.eventsFilter = { ...initialState.eventsFilter };
+            newState.eventsFilterForm = { ...initialState.eventsFilterForm };
+            return newState;
         }
         case SetingsTypes.SET_EVENTS_FILTER: {
-            return {
-                ...state,
-                eventsFilter: { ...state.eventsFilterForm }
-            };
+            const newState = _.cloneDeep(state);
+            newState.eventsFilter = _.cloneDeep(newState.eventsFilterForm);
+            return newState;
         }
         case SetingsTypes.UPDATE_EVENTS_RADIUS_FILTER: {
             return {
@@ -54,6 +55,11 @@ const reducer: Reducer<SettingsState> = (state = initialState, action) => {
                     address: action.payload.address
                 }
             };
+        }
+        case SetingsTypes.SET_ONLINE_STATUS: {
+            const newState = _.cloneDeep(state);
+            newState.isOnline = action.payload;
+            return newState;
         }
         default: {
             return state

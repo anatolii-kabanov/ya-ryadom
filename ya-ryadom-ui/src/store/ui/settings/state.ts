@@ -4,6 +4,7 @@ import { Position } from '../../authentication/models';
 export interface SettingsState {
     eventsFilter: EventsFilter,
     eventsFilterForm: EventsFilter,
+    isOnline: boolean;
 }
 
 export interface EventsFilter {

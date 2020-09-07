@@ -48,7 +48,6 @@ class ComplaintsForm extends React.Component<AllProps, State>  {
     handleInputChange = (event) => {
         event.preventDefault();
         const { value, name } = event.target;
-        console.log(name)
         this.setState({
             [name]: value
         } as State);

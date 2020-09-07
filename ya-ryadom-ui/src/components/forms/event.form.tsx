@@ -22,18 +22,22 @@ import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import AutocompleteMap from '../inputs/autocomplete-map.input';
 import { Validators } from '../../utils/validation/validators';
 
+interface OwnProps {
+    onSave: (myEvent: MyEventCreate) => void;
+}
+
 interface PropsFromState {
     userPosition: Geo,
     vkUserInfo: UserInfo,
     lastLocation: Position,
-    onSave: (myEvent: MyEventCreate) => void;
+    isOnline: boolean,
 }
 
 interface PropsFromDispatch {
 }
 
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface EventState {
     zoom: number,
@@ -230,7 +234,7 @@ class EventForm extends React.Component<AllProps, EventState> {
 
     render() {
         const { selectedPosition, errors, eventDescription, eventName } = this.state;
-
+        const { isOnline } = this.props;
         return (
             <FormLayout>
                 <Input
@@ -272,7 +276,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                     type="time"
                     name="eventTime"
                     onChange={this.handleInputChange} required />
-                <AutocompleteMap top="Место встречи" placeholder="Адрес" type="address" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
+                <AutocompleteMap isOnline={isOnline} top="Место встречи" placeholder="Адрес" type="address" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                 <div className="map">
                     <GoogleMapReact
                         yesIWantToUseGoogleMapApiInternals={true}
@@ -300,14 +304,16 @@ class EventForm extends React.Component<AllProps, EventState> {
 }
 
 
-const mapStateToProps = ({ authentication }: AppState) => ({
+const mapStateToProps = ({ authentication, ui }: AppState, ownProps: OwnProps) => ({
     userPosition: authentication.geoData,
     vkUserInfo: authentication.vkUserInfo,
     lastLocation: authentication.currentUser?.lastLocation,
+    isOnline: ui.settings.isOnline,
+    onSave: ownProps.onSave,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    
+
 }
 
 export default connect(

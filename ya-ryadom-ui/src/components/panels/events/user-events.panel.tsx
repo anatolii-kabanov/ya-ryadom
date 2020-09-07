@@ -65,7 +65,7 @@ class UserEventsPanel extends React.Component<AllProps> {
 
     }
 
-    renderEvents(activeTab) {
+    renderEvents(activeTab: string) {
         const { userCreatedEvents, userVisitedEvents, vkUserId, vkUserInfo, applyToEvent } = this.props;
 
         let eventsToRender: UserEvent[];
@@ -124,9 +124,6 @@ class UserEventsPanel extends React.Component<AllProps> {
     render() {
         const { id } = this.props;
         const { activeTab } = this.state;
-        // need to get event by user id
-        // need to get all events in which user participated
-        // need to get all user participating in the event
         return (
             <Panel className="" id={id}>
                 <MainHeaderPanel text='События'></MainHeaderPanel>

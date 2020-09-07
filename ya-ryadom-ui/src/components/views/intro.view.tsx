@@ -8,7 +8,6 @@ import ThemesIntroPanel from '../panels/intro/themes-intro.panel';
 import SelectCityIntroPanel from '../panels/intro/select-city-intro.panel';
 import AboutMyselfIntroPanel from '../panels/intro/about-myself-intro.panel';
 import CompletedIntroPanel from '../panels/intro/completed-intro.panel';
-import CreateFirstEventIntroPanel from '../panels/intro/create-first-event-intro.panel';
 import GeolocationIntroPanel from '../panels/intro/geolocation-intro.panel';
 
 interface PropsFromState {

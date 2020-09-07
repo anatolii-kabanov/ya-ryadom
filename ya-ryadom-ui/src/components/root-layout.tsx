@@ -13,6 +13,7 @@ import ApplicationsView from './views/applications.view';
 import GeneralView from './views/general.view';
 import { CurrentUser } from '../store/authentication/models';
 import MyEventCreateView from "./views/my-events-create.view";
+import { setOnlineStatus } from '../store/ui/settings/actions';
 
 interface PropsFromState {
     activeView: string;
@@ -22,6 +23,7 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     getVkUserInfo: typeof fetchVkUserInfoRequest,
+    setOnlineStatus: typeof setOnlineStatus,
 }
 
 
@@ -29,9 +31,26 @@ type AllProps = PropsFromState & PropsFromDispatch;
 
 class RootLayout extends React.Component<AllProps>  {
 
+    constructor(props: AllProps) {
+        super(props);
+        this.handleNetworkChange = this.handleNetworkChange.bind(this);
+    }
+
     componentDidMount() {
         const { getVkUserInfo } = this.props;
         getVkUserInfo();
+        window.addEventListener('offline', this.handleNetworkChange);
+        window.addEventListener('online', this.handleNetworkChange);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('offline', this.handleNetworkChange);
+        window.removeEventListener('online', this.handleNetworkChange);
+    }
+
+    handleNetworkChange = () => {
+        const { setOnlineStatus } = this.props;
+        setOnlineStatus(window.navigator.onLine);
     }
 
     renderLayout() {
@@ -76,6 +95,7 @@ const mapStateToProps = ({ history, ui, authentication }: AppState) => ({
 
 const mapDispatchToProps: PropsFromDispatch = {
     getVkUserInfo: fetchVkUserInfoRequest,
+    setOnlineStatus: setOnlineStatus,
 }
 
 export default connect(

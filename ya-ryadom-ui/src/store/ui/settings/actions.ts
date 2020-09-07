@@ -1,4 +1,4 @@
-import { action } from 'typesafe-actions';
+import { action, ActionType } from 'typesafe-actions';
 import { SetingsTypes } from "./types";
 import { ThemeType } from '../../../utils/enums/theme-type.enum';
 import { Position } from '../../authentication/models';
@@ -9,3 +9,14 @@ export const updateEventsRadiusFilter = (payload: number) => action(SetingsTypes
 export const updateEventsThemeFilter = (payload: ThemeType) => action(SetingsTypes.UPDATE_EVENTS_THEME_FILTER, payload);
 export const updateEventsTextFilter = (payload: string) => action(SetingsTypes.UPDATE_EVENTS_TEXT_FILTER, payload);
 export const updateEventsAddressFilter = (payload: { position: Position, address: string }) => action(SetingsTypes.UPDATE_EVENTS_ADDRESS_FILTER, payload);
+export const setOnlineStatus = (payload: boolean) => action(SetingsTypes.SET_ONLINE_STATUS, payload);
+
+export type SettingsActions = ActionType<
+    typeof clearEventsFilter |
+    typeof setEventsFilter |
+    typeof updateEventsRadiusFilter |
+    typeof updateEventsThemeFilter |
+    typeof updateEventsTextFilter |
+    typeof updateEventsAddressFilter |
+    typeof setOnlineStatus 
+>;
