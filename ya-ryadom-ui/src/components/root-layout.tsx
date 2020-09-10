@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Root, ScreenSpinner } from '@vkontakte/vkui';
+import { Root, ScreenSpinner, ConfigProvider } from '@vkontakte/vkui';
 import { AppState } from '../store/app-state';
 import { connect } from 'react-redux';
 import { VIEWS } from '../utils/constants/view.constants';
@@ -80,9 +80,9 @@ class RootLayout extends React.Component<AllProps>  {
         return (
             !currentUser
                 ? <ScreenSpinner />
-                : <div>
+                : <ConfigProvider>
                     {this.renderLayout()}
-                </div>
+                </ConfigProvider>
         )
     }
 }
