@@ -13,6 +13,7 @@ import ApplicationsView from './views/applications.view';
 import GeneralView from './views/general.view';
 import { CurrentUser } from '../store/authentication/models';
 import MyEventCreateView from "./views/my-events-create.view";
+import MainSnackbar from '../components/snackbars/main.snackbar';
 import { setOnlineStatus } from '../store/ui/settings/actions';
 
 interface PropsFromState {
@@ -82,6 +83,7 @@ class RootLayout extends React.Component<AllProps>  {
                 ? <ScreenSpinner />
                 : <ConfigProvider>
                     {this.renderLayout()}
+                    <MainSnackbar/>
                 </ConfigProvider>
         )
     }

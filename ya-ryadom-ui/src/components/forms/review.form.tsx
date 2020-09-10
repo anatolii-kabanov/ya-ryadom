@@ -96,7 +96,7 @@ class ReviewForm extends React.Component<AllProps, State> {
         let formIsValid = true;
         if (!this.state.text || this.state.text.length === 0) {
             formIsValid = false;
-            errors['text'] = "Напишите как все прошло";
+            errors['text'] = "Напишите, как все прошло";
         } else if (this.state.text.length > maxValues.maxText) {
             formIsValid = false;
             errors['text'] = `Максимум ${maxValues.maxText} символа`;

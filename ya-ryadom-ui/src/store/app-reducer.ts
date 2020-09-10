@@ -9,6 +9,7 @@ import { spinnerReducer } from './ui/spinner/reducer';
 import { settingsReducer } from './ui/settings/reducer';
 import { userEventsReducer } from './events/user-events/reducer';
 import { complaintsReducer } from './complaints/reducer';
+import { notificationsReducer } from './ui/notifications/reducer';
 
 export const createRootReducer = () =>
     combineReducers({
@@ -24,6 +25,7 @@ export const createRootReducer = () =>
         reviews: reviewsReducer,
         ui: combineReducers({
             spinner: spinnerReducer,
-            settings: settingsReducer
+            settings: settingsReducer,
+            notifications: notificationsReducer
         }),
     });

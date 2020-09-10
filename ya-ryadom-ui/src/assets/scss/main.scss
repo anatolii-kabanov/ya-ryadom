@@ -1,5 +1,9 @@
 @import "/variables";
 
+.error {
+  color: $error-color;
+}
+
 .btn-primary {
   background-color: $background-color !important;
   margin-left: 24px !important;
