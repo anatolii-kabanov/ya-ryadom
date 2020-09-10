@@ -21,6 +21,9 @@ import { PANELS } from '../../../utils/constants/panel.constants';
 import { showSpinner, hideSpinner } from '../../ui/spinner/actions';
 import { saveUserGuideCompletedRequest } from '../../authentication/actions';
 import { AuthenticationTypes } from '../../authentication/types';
+import { SnackbarErrorNotification } from '../../ui/notifications/models';
+import { NOTIFICATION_MESSAGES } from '../../../utils/constants/notification-messages.constants';
+import { addNotificaiton } from '../../ui/notifications/actions';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/my-events`;
 
@@ -61,6 +64,7 @@ function* handleSaveEventRequest(action: ReturnType<typeof saveMyEventRequest>) 
             yield put(saveMyEventSuccess(result));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(saveMyEventError(error.stack));
         } else {
@@ -113,6 +117,7 @@ function* handleRevokeEventRequest(action: ReturnType<typeof revokeEventRequest>
             yield put(revokeEventSuccess(action.payload));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(revokeEventError(error.stack));
         } else {

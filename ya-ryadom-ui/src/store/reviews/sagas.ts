@@ -16,6 +16,9 @@ import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 import { setActiveModal } from '../history/actions';
 import { getSelectedUserToReview } from './reducer';
 import { removeApplication } from '../applications/actions';
+import { addNotificaiton } from '../ui/notifications/actions';
+import { SnackbarErrorNotification } from '../ui/notifications/models';
+import { NOTIFICATION_MESSAGES } from '../../utils/constants/notification-messages.constants';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/reviews`;
 
@@ -64,6 +67,7 @@ function* handleAddReviewRequest(action: ReturnType<typeof addReviewRequest>) {
             yield put(setUserToReview(null));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(addReviewError(error.stack));
         } else {

@@ -47,6 +47,9 @@ import { getVkUserId, getGeoData, getVkUserInfo, getCurrentUser } from './reduce
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 import { TABS } from '../../utils/constants/tab.constants';
 import { Action } from 'typesafe-actions';
+import { addNotificaiton } from '../ui/notifications/actions';
+import { SnackbarErrorNotification } from '../ui/notifications/models';
+import { NOTIFICATION_MESSAGES } from '../../utils/constants/notification-messages.constants';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/auth`;
 
@@ -142,6 +145,7 @@ function* handleSaveUserInfoRequest(action: ReturnType<typeof saveUserInfoReques
             yield put(saveUserInfoSuccess(result));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(saveUserInfoError(error.stack));
         } else {
@@ -182,6 +186,7 @@ function* handleSaveUserThemesRequest(action: ReturnType<typeof saveUserThemesRe
             yield put(saveUserThemesSuccess(action.payload));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(saveUserThemesError(error.stack));
         } else {
@@ -257,6 +262,7 @@ function* handleSaveUserAboutMyselfRequest(action: ReturnType<typeof saveUserAbo
             yield put(saveUserAboutMyselfSuccess(action.payload));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(saveUserAboutMyselfError(error.stack));
         } else {
@@ -291,6 +297,7 @@ function* handleAllowNotificationsRequest(action: ReturnType<typeof allowNotific
             yield put(allowNotificationsSuccess());
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(allowNotificationsError(error.stack));
         } else {

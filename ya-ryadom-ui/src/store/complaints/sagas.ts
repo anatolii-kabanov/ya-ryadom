@@ -17,6 +17,9 @@ import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 import { setActiveModal } from '../history/actions';
 import { MODALS } from '../../utils/constants/modal.constants';
 import { getSelectedEventId } from './reducer';
+import { addNotificaiton } from '../ui/notifications/actions';
+import { SnackbarErrorNotification } from '../ui/notifications/models';
+import { NOTIFICATION_MESSAGES } from '../../utils/constants/notification-messages.constants';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/complaints`;
 
@@ -42,6 +45,7 @@ function* handleSendComplaintToEventRequest(action: ReturnType<typeof sendCompla
             yield put(setActiveModal(null));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(sendComplaintToEventError(error.stack));
         } else {

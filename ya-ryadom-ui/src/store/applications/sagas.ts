@@ -9,6 +9,9 @@ import { setSentStatus as setSentStatusFromUserEvents, fetchUserCreatedEventsLis
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 import { updateParticipantStatus } from '../events/my-events/actions';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
+import { addNotificaiton } from '../ui/notifications/actions';
+import { NOTIFICATION_MESSAGES } from '../../utils/constants/notification-messages.constants';
+import { SnackbarErrorNotification } from '../ui/notifications/models';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/applicatioins`;
 
@@ -122,6 +125,7 @@ function* handleApplyToEventRequest(action: ReturnType<typeof applyToEventReques
             yield put(applyToEventSuccess(action.payload));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(applyToEventError(error.stack));
         } else {
@@ -153,6 +157,7 @@ function* handleConfirmApplicantRequest(action: ReturnType<typeof confirmApplica
             yield put(updateParticipantStatus({ ...action.payload, status: ApplicationStatus.confirmed }));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(confirmApplicantError(error.stack));
         } else {
@@ -184,6 +189,7 @@ function* handleRejectApplicantRequest(action: ReturnType<typeof rejectApplicant
             yield put(updateParticipantStatus({ ...action.payload, status: ApplicationStatus.rejected }));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(rejectApplicantError(error.stack));
         } else {
@@ -214,6 +220,7 @@ function* handleRevokeApplicationRequest(action: ReturnType<typeof revokeApplica
             yield put(revokeApplicationSuccess(action.payload));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(revokeApplicationError(error.stack));
         } else {

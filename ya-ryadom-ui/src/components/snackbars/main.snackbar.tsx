@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Snackbar, Avatar } from '@vkontakte/vkui';
+import { Snackbar } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../store/app-state';
 import { SnackbarNotification } from '../../store/ui/notifications/state';
@@ -29,11 +29,15 @@ class MainSnackbar extends React.Component<AllProps>  {
     render() {
         const { currentNotification, removeNotification } = this.props;
         return (
-            currentNotification &&
-            <Snackbar onClose={() => removeNotification()}
-                before={<Icon24Error className="error"/>}>
-                {currentNotification.message}
-            </Snackbar>
+            <React.Fragment>
+                {
+                    currentNotification &&
+                    <Snackbar key={new Date().getTime()} onClose={() => removeNotification()}
+                        before={<Icon24Error className="error" />}>
+                        {currentNotification.message}
+                    </Snackbar>
+                }
+            </React.Fragment>
         )
     }
 }
