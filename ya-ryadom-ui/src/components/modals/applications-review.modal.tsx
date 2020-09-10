@@ -45,8 +45,8 @@ class ApplicationsReviewModal extends React.Component<AllProps, State>  {
                 <ModalCard id={MODALS.APPLICATION_REVIEW}
                     className="application-review-modal"
                     onClose={() => setActiveModal(null)}
-                    header="Оцени как прошла встреча"
-                    caption="Пользователь не увидет какую оценку вы ему поставили">
+                    header="Оцени, как прошла встреча"
+                    caption="Пользователь не увидет, какую оценку вы ему поставили">
                     <ReviewForm onSave={this.onSaveReview} />
                 </ModalCard>
             </ModalRoot>
