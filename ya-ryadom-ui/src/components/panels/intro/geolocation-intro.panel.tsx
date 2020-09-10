@@ -80,7 +80,7 @@ class GeolocationIntroPanel extends React.Component<AllProps, State>  {
                 <Group separator="hide">
                     <Placeholder
                         icon={<Icon32Place className="nav-icon-selected" />}
-                        header="Ваша геопозиция будет нужна нам, чтобы подбирать события находящиеся поблизости с Вами."
+                        header="Ваша геопозиция будет нужна нам, чтобы подбирать события, находящиеся поблизости с Вами."
                         action={<Div className="flex-center"><Switch checked={currentUser.geolocationEnabled} name="enableGeolocation" className="switcher" onClick={this.onGeolocationClick} /></Div>}
                     >
                         Разрешите использовать Ваши геоданные в нашем приложении

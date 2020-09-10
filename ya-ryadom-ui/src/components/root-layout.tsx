@@ -15,6 +15,9 @@ import { CurrentUser } from '../store/authentication/models';
 import MyEventCreateView from "./views/my-events-create.view";
 import MainSnackbar from '../components/snackbars/main.snackbar';
 import { setOnlineStatus } from '../store/ui/settings/actions';
+import { addNotificaiton } from '../store/ui/notifications/actions';
+import { SnackbarErrorNotification } from '../store/ui/notifications/models';
+import { NOTIFICATION_MESSAGES } from '../utils/constants/notification-messages.constants';
 
 interface PropsFromState {
     activeView: string;
@@ -25,6 +28,7 @@ interface PropsFromState {
 interface PropsFromDispatch {
     getVkUserInfo: typeof fetchVkUserInfoRequest,
     setOnlineStatus: typeof setOnlineStatus,
+    addNotification: typeof addNotificaiton
 }
 
 
@@ -50,8 +54,11 @@ class RootLayout extends React.Component<AllProps>  {
     }
 
     handleNetworkChange = () => {
-        const { setOnlineStatus } = this.props;
+        const { setOnlineStatus, addNotification } = this.props;
         setOnlineStatus(window.navigator.onLine);
+        if (!window.navigator.onLine) {
+            addNotification(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.CHECK_INTERNET_CONNECTION));
+        }
     }
 
     renderLayout() {
@@ -83,7 +90,7 @@ class RootLayout extends React.Component<AllProps>  {
                 ? <ScreenSpinner />
                 : <ConfigProvider>
                     {this.renderLayout()}
-                    <MainSnackbar/>
+                    <MainSnackbar />
                 </ConfigProvider>
         )
     }
@@ -98,6 +105,7 @@ const mapStateToProps = ({ history, ui, authentication }: AppState) => ({
 const mapDispatchToProps: PropsFromDispatch = {
     getVkUserInfo: fetchVkUserInfoRequest,
     setOnlineStatus: setOnlineStatus,
+    addNotification: addNotificaiton
 }
 
 export default connect(
