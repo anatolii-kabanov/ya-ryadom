@@ -60,10 +60,15 @@ class ComplaintsForm extends React.Component<AllProps, State>  {
     }
 
     isValid() {
-        let errors = {};
-        let formIsValid = true;
-        this.setState({ errors: errors });
-        return formIsValid;
+        const { selectedComplaint, text } = this.state;
+        const errors = {
+            text: Validators.required(text) || Validators.maxLength(text, maxValues.maxText),
+            selectedComplaint: Validators.required(selectedComplaint)
+        };
+        this.setState({
+            errors: errors
+        });
+        return !errors?.text && !errors?.selectedComplaint;
     }
 
     private renderComlaintsSelect() {
@@ -87,6 +92,7 @@ class ComplaintsForm extends React.Component<AllProps, State>  {
                 <Select
                     status={errors?.selectedComplaint ? 'error' : 'default'}
                     top="Причина" placeholder="Выберите причину"
+                    bottom={errors?.selectedComplaint}
                     name="selectedComplaint" onChange={this.handleInputChange} required>
                     {this.renderComlaintsSelect()}
                 </Select>

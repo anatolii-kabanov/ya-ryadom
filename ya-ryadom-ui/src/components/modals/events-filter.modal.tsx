@@ -106,6 +106,7 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
         const { filter, onClose, clearFilter, id } = this.props;
         return (
             <ModalPage id={id}
+                dynamicContentHeight={true}
                 className="filter-modal"
                 onClose={() => onClose()}
                 header={

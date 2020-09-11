@@ -1,4 +1,4 @@
-import './application-review.modal.scss';
+import './complaint.modal.scss';
 import React from 'react';
 import {
     ModalPage, ModalPageHeader, PanelHeaderButton,
@@ -44,6 +44,7 @@ class ComplaintReviewModal extends React.Component<AllProps, State>  {
         const { setActiveModal, id } = this.props;
         return (
             <ModalPage id={id}
+                dynamicContentHeight={true}
                 className="complaint-modal"
                 onClose={() => setActiveModal(null)}
                 header={
@@ -51,7 +52,7 @@ class ComplaintReviewModal extends React.Component<AllProps, State>  {
                         right={<PanelHeaderButton onClick={() => setActiveModal(null)}><Icon24Dismiss /></PanelHeaderButton>}
                     >
                         Отправить жалобу
-                        </ModalPageHeader>
+                    </ModalPageHeader>
                 }>
                 <ComplaintsForm onSave={this.onSave} />
             </ModalPage>
