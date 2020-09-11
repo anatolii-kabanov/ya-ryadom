@@ -52,7 +52,9 @@ namespace YaRyadom.API.Services.Implementations
 		{
 			var application = await _dbContext
 				.YaRyadomUserApplications
-				.Where(m => m.Id == model.ApplicationId && m.YaRyadomEvent.YaRyadomUserOwner.VkId == model.VkUserId)
+				.Where(m => m.Id == model.ApplicationId
+					&& (m.Status == ApplicationStatus.Sent || m.Status == ApplicationStatus.Confirmed)
+					&& m.YaRyadomEvent.YaRyadomUserOwner.VkId == model.VkUserId)
 				.FirstOrDefaultAsync(cancellationToken);
 
 			if (application == null) return false;
@@ -67,7 +69,9 @@ namespace YaRyadom.API.Services.Implementations
 			var eventExist = await _dbContext
 				.YaRyadomEvents
 				.AsNoTracking()
-				.AnyAsync(m => m.Id == model.EventId && !m.Ended && !m.Revoked, cancellationToken)
+				.AnyAsync(m => m.Id == model.EventId 
+					&& !m.Ended && !m.Revoked 
+					&& m.YaRyadomUserOwner.VkId != model.VkUserId, cancellationToken)
 				.ConfigureAwait(false);
 
 			if (!eventExist) return false;
@@ -78,6 +82,10 @@ namespace YaRyadom.API.Services.Implementations
 
 			if (application != null)
 			{
+				if (application.Status != ApplicationStatus.None)
+				{
+					return false;
+				}
 				application.Status = ApplicationStatus.Sent;
 				application.Date = DateTimeOffset.UtcNow.ToOffset(-TimeSpan.FromMinutes(model.TimeZoneMinutes));
 			}
@@ -101,7 +109,9 @@ namespace YaRyadom.API.Services.Implementations
 		public async Task<bool> RevokeAsync(ApplicationActionRequestModel model, CancellationToken cancellationToken = default)
 		{
 			var application = await Query
-				.Where(m => m.Id == model.ApplicationId && m.YaRyadomUserRequested.VkId == model.VkUserId)
+				.Where(m => m.Id == model.ApplicationId 
+					&& (m.Status == ApplicationStatus.Sent || m.Status == ApplicationStatus.Confirmed)
+					&& m.YaRyadomUserRequested.VkId == model.VkUserId)
 				.FirstOrDefaultAsync(cancellationToken)
 				.ConfigureAwait(false);
 
