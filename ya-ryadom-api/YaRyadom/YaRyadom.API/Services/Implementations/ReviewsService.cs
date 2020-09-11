@@ -35,7 +35,8 @@ namespace YaRyadom.API.Services.Implementations
 			var validReview = await _dbContext
 				.YaRyadomEvents
 				.AsNoTracking()
-				.AnyAsync(m => m.Id == model.EventId && m.YaRyadomUserOwner.VkId == model.VkUserToReviewId, cancellationToken);
+				.AnyAsync(m => m.Id == model.EventId && m.YaRyadomUserOwner.VkId == model.VkUserToReviewId, cancellationToken)
+				.ConfigureAwait(false);
 
 			if (!validReview) return false;
 

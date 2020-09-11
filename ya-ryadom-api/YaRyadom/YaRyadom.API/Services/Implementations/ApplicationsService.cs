@@ -140,7 +140,7 @@ namespace YaRyadom.API.Services.Implementations
 		{
 			var applications = await _mapper
 				.ProjectTo<MineApplicationModel>(
-					TableNoTracking.Where(m => m.YaRyadomUserRequested.VkId == vkUserId && !m.Revoked && !m.YaRyadomEvent.YaRyadomReviews.Any(mm => mm.YaRyadomUserReviewer.VkId != vkUserId))
+					TableNoTracking.Where(m => m.YaRyadomUserRequested.VkId == vkUserId && !m.Revoked && !m.YaRyadomEvent.YaRyadomReviews.Any(mm => mm.YaRyadomUserReviewer.VkId == vkUserId))
 				)
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);

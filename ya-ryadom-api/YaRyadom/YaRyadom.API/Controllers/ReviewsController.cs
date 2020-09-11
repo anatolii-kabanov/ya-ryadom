@@ -57,6 +57,7 @@ namespace YaRyadom.API.Controllers
 				model.TimeZoneMinutes = minutes;
 			}
 			var result = await _reviewsService.AddAsync(model, cancellationToken).ConfigureAwait(false);
+			if (!result) return BadRequest();
 			return Ok(result);
 		}
 
