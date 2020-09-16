@@ -26,7 +26,7 @@ namespace YaRyadom.API.Services.Implementations
 		{
 			var applications = await _mapper
 				.ProjectTo<ApplicationModel>(
-					TableNoTracking.Where(m => m.YaRyadomEventId == eventId)
+					TableNoTracking.Where(m => m.YaRyadomEventId == eventId && m.Status != ApplicationStatus.None)
 				)
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);

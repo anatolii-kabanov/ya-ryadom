@@ -45,7 +45,7 @@ interface State {
 
 export class ApplicationsToMyEventsTab extends React.Component<AllProps, State>  {
 
-    constructor(props) {
+    constructor(props: AllProps) {
         super(props);
         this.state = {
 
@@ -60,11 +60,8 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
     }
 
     showUsers(eventId: number) { // compare ids to request if needed
-        const { eventsApplications, fetchEventApplicants } = this.props;
-        const applications = eventsApplications[eventId];
-        if (!applications || applications.length === 0) {
-            fetchEventApplicants(eventId);
-        }
+        const { fetchEventApplicants } = this.props;
+        fetchEventApplicants(eventId);
         this.setState({ [eventId]: true });
     }
 
@@ -73,6 +70,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
         const applications = eventsApplications[id];
         if (applications) {
             return applications
+                .filter((a) => a.status === ApplicationStatus.sent)
                 .map((item, key) => {
                     return <RichCell
                         key={key}

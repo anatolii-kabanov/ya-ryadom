@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { ApplicationsActions } from './actions';
 import { ApplicationsState } from './state';
 import { ApplicationsTypes } from './types';
 
@@ -8,7 +9,7 @@ export const initialState: ApplicationsState = {
     applicationsToMe: []
 }
 
-const reducer: Reducer<ApplicationsState> = (state = initialState, action) => {
+const reducer: Reducer<ApplicationsState, ApplicationsActions> = (state = initialState, action: ApplicationsActions) => {
     switch (action.type) {
         case ApplicationsTypes.FETCH_EVENT_APPLICANTS_SUCCESS: {
             return {

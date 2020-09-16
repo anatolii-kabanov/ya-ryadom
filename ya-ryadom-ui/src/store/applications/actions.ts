@@ -1,4 +1,4 @@
-import { action } from 'typesafe-actions';
+import { action, ActionType } from 'typesafe-actions';
 import { ApplicationsTypes } from "./types";
 import { EventApplications, EventApplicationRequest } from './models';
 import { ApplyToEvent } from '../events/user-events/models';
@@ -34,3 +34,14 @@ export const revokeApplicationSuccess = (payload: number) => action(Applications
 export const revokeApplicationError = (payload: any) => action(ApplicationsTypes.REVOKE_APPLICATION_ERROR, payload);
 
 export const removeApplication = (payload: number) => action(ApplicationsTypes.REMOVE_APPLICATION, payload);
+
+export type ApplicationsActions = ActionType<
+    typeof fetchEventApplicantsSuccess |
+    typeof fetchMineApplicationsSuccess |
+    typeof fetchApplicationsToMeSuccess |
+    typeof applyToEventSuccess |
+    typeof confirmApplicantSuccess |
+    typeof rejectApplicantSuccess |
+    typeof revokeApplicationSuccess |
+    typeof removeApplication
+>;
