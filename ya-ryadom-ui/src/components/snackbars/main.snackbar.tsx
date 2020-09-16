@@ -1,3 +1,4 @@
+import './main.snackbar.scss';
 import * as React from 'react';
 import { Snackbar } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
@@ -32,7 +33,7 @@ class MainSnackbar extends React.Component<AllProps>  {
             <React.Fragment>
                 {
                     currentNotification &&
-                    <Snackbar key={new Date().getTime()} onClose={() => removeNotification()}
+                    <Snackbar className="snackbar" key={new Date().getTime()} onClose={() => removeNotification()}
                         before={<Icon24Error className="error" />}>
                         {currentNotification.message}
                     </Snackbar>
