@@ -1,6 +1,30 @@
 import { all, call, fork, put, takeEvery, takeLatest, select, take } from 'redux-saga/effects';
 import { ApplicationsTypes } from './types';
-import { fetchEventApplicantsRequest, fetchEventApplicantsError, fetchEventApplicantsSuccess, applyToEventRequest, applyToEventError, applyToEventSuccess, confirmApplicantRequest, confirmApplicantError, confirmApplicantSuccess, rejectApplicantRequest, rejectApplicantError, rejectApplicantSuccess, revokeApplicationRequest, revokeApplicationError, revokeApplicationSuccess, fetchMineApplicationsRequest, fetchMineApplicationsError, fetchMineApplicationsSuccess, fetchApplicationsToMeRequest, fetchApplicationsToMeError, fetchApplicationsToMeSuccess, applyToEventFromUserEvents, applyToEventFromEvents } from './actions'
+import { 
+    fetchEventApplicantsRequest, 
+    fetchEventApplicantsError, 
+    fetchEventApplicantsSuccess, 
+    applyToEventRequest, 
+    applyToEventError, 
+    applyToEventSuccess, 
+    confirmApplicantRequest, 
+    confirmApplicantError, 
+    confirmApplicantSuccess, 
+    rejectApplicantRequest, 
+    rejectApplicantError,
+    rejectApplicantSuccess, 
+    revokeApplicationRequest, 
+    revokeApplicationError, 
+    revokeApplicationSuccess, 
+    fetchMineApplicationsRequest, 
+    fetchMineApplicationsError, 
+    fetchMineApplicationsSuccess, 
+    fetchApplicationsToMeRequest, 
+    fetchApplicationsToMeError, 
+    fetchApplicationsToMeSuccess, 
+    applyToEventFromUserEvents, 
+    applyToEventFromEvents 
+} from './actions'
 import { callApi } from '../../utils/api';
 import { ApplicationRequest } from './models';
 import { getVkUserId } from '../authentication/reducer';

@@ -97,6 +97,11 @@ const reducer: Reducer<AuthenticationState, AuthenticationActions> = (state = in
             }
             return newState;
         }
+        case AuthenticationTypes.SET_USER_GEO: {
+            const newState = _.cloneDeep(state);
+            newState.geoData = action.payload;
+            return newState;
+        }
         default: {
             return state
         }

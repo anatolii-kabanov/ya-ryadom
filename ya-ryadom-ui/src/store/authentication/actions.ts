@@ -50,6 +50,8 @@ export const disableNotificationsSuccess = () => action(AuthenticationTypes.DISA
 export const disableNotificationsError = (payload: any) => action(AuthenticationTypes.DISABLE_NOTIFICATIONS_ERROR, payload);
 
 export const clearUserGeo = () => action(AuthenticationTypes.CLEAR_USER_GEO);
+export const setUserGeo = (payload: Geo) => action(AuthenticationTypes.SET_USER_GEO, payload);
+
 export const setUserDefaultLocation = (payload: Position) => action(AuthenticationTypes.SET_USER_DEFAULT_LOCATION, payload);
 export const setUserThemes = (payload: ThemeType[]) => action(AuthenticationTypes.SET_USER_THEMES, payload);
 export const setUserAboutMyself = (payload: string) => action(AuthenticationTypes.SET_USER_ABOUT_MYSELF, payload);
@@ -76,5 +78,6 @@ export type AuthenticationActions = ActionType<
     typeof setUserDefaultLocation |
     typeof setUserThemes |
     typeof setUserAboutMyself |
-    typeof setUserGeolocation
+    typeof setUserGeolocation |
+    typeof setUserGeo
 >;

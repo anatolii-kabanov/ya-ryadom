@@ -8,6 +8,7 @@ export enum AuthenticationTypes {
     FETCH_USER_GEO_ERROR = '[Authentication] User geo error',
 
     CLEAR_USER_GEO = '[Authentication] Clear user geo',
+    SET_USER_GEO = '[Authentication] Set user geo',
     SET_USER_DEFAULT_LOCATION = '[Authentication] Set user default location',
 
     SAVE_USER_INFO = '[Authentication] (POST) Save user info',

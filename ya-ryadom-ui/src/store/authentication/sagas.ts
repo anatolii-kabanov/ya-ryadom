@@ -35,7 +35,7 @@ import {
     setUserGeolocation,
     fetchUserGeoRequest,
     clearUserGeo,
-    setUserLocationProcess
+    setUserLocationProcess, setUserGeo
 } from './actions'
 import { callApi } from '../../utils/api';
 import { Geo, CurrentUser, SaveUserInfoRequest, Position } from './models';
@@ -114,12 +114,19 @@ function* watchFetchVkUserInfoRequest() {
 function* handleFetchUserGeo() {
     try {
         // Work only via vk tunnel
-        const result = yield vkBridge.send("VKWebAppGetGeodata", {});
+        const { response, error } = yield call(() => vkBridge.send("VKWebAppGetGeodata", {})
+            .then((response) => ({ response }))
+            .catch((error) => ({ error }))
+        );
 
-        if (result.error_type) {
-            yield put(fetchUserGeoError(result.errors));
+        if (error || !response.available) {
+            if (!response.available) {
+                const geoData = response as Geo;
+                yield put(setUserGeo(geoData));
+            }
+            yield put(fetchUserGeoError(error));
         } else {
-            const geoData = result as Geo;
+            const geoData = response as Geo;
             yield put(fetchUserGeoSuccess(geoData));
         }
     } catch (error) {
@@ -214,12 +221,14 @@ function* handleSaveUserLocationRequest(action: ReturnType<typeof saveUserLocati
 
         const result = yield call(callApi, 'post', API_ENDPOINT, '/user-info/location/save', userLocation);
 
-        if (result.errors) {
+        if (result.errors || result?.status >= 400) {
+            yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
             yield put(saveUserLocationError(result.errors));
         } else {
             yield put(saveUserLocationSuccess(action.payload.location));
         }
     } catch (error) {
+        yield put(addNotificaiton(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)));
         if (error instanceof Error && error.stack) {
             yield put(saveUserLocationError(error.stack));
         } else {
@@ -281,7 +290,11 @@ function* handleAllowNotificationsRequest(action: ReturnType<typeof allowNotific
     try {
         yield put(showSpinner());
 
-        const result = yield vkBridge.send("VKWebAppAllowNotifications", {});
+        const { result, error } = yield call(() => vkBridge.send("VKWebAppAllowNotifications", {})
+            .then(response => ({ result: response.result }))
+            .catch(error => ({ error }))
+        );
+
         let notificationSaved = false;
         if (result) {
             const vkUserId = yield select(getVkUserId);
@@ -291,8 +304,8 @@ function* handleAllowNotificationsRequest(action: ReturnType<typeof allowNotific
             };
             notificationSaved = yield call(callApi, 'post', API_ENDPOINT, '/user-info/notifications/save', model);
         }
-        if (!result || !notificationSaved || result.error_type) {
-            yield put(allowNotificationsError(result?.errors));
+        if (!result || !notificationSaved || error) {
+            yield put(allowNotificationsError(error?.error_data));
         } else {
             yield put(allowNotificationsSuccess());
         }
@@ -373,17 +386,23 @@ function* watchCompleteUserGuide() {
 }
 
 function* handleEnableUserGeolocation() {
+    yield put(showSpinner());
     yield put(fetchUserGeoRequest());
-    yield take(AuthenticationTypes.FETCH_USER_GEO_SUCCESS);
-    const currentUser: CurrentUser = yield select(getCurrentUser);
-    const geoData: Geo | null = yield select(getGeoData);
-    const location = geoData
-        ? { latitude: geoData.lat, longitude: geoData.long }
-        : currentUser.lastLocation;
-    const model = { geolocationEnabled: true, location: location };
-    yield put(saveUserLocationRequest(model));
-    yield take(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS);
-    yield put(setUserGeolocation(true));
+    const userGeoEffect: Action = yield take(fetchUserGeoRequest);
+    if (userGeoEffect.type == AuthenticationTypes.FETCH_USER_GEO_SUCCESS) {
+        const currentUser: CurrentUser = yield select(getCurrentUser);
+        const geoData: Geo | null = yield select(getGeoData);
+        const location = geoData
+            ? { latitude: geoData.lat, longitude: geoData.long }
+            : currentUser.lastLocation;
+        const model = { geolocationEnabled: true, location: location };
+        yield put(saveUserLocationRequest(model));
+        const userLocationEffect: Action = yield take(saveUserLocationRequest);
+        if (userLocationEffect.type == AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS) {
+            yield put(setUserGeolocation(true));
+        }
+    }
+    yield put(hideSpinner());
 }
 
 function* watchEnableUserGeolocation() {
@@ -391,12 +410,15 @@ function* watchEnableUserGeolocation() {
 }
 
 function* handleDisableUserGeolocation() {
+    yield put(showSpinner());
     const currentUser: CurrentUser = yield select(getCurrentUser);
     const model = { geolocationEnabled: false, location: currentUser.lastLocation };
     yield put(saveUserLocationRequest(model));
-    yield take(AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS);
-    yield put(setUserGeolocation(false));
-    yield put(clearUserGeo());
+    const userLocationEffect: Action = yield take(saveUserLocationRequest);
+    if (userLocationEffect.type === AuthenticationTypes.SAVE_USER_LOCATION_SUCCESS) {
+        yield put(setUserGeolocation(false));
+    }
+    yield put(hideSpinner());
 }
 
 function* watchDisableUserGeolocation() {
