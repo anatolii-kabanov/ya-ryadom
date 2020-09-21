@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,9 +64,41 @@ namespace YaRyadom.Scheduler.Workers
 					{
 						var usersIds = notificationGroup
 							.Where(m => m.YaRyadomUserToSend.VkNotificationsLockoutEnd <= currentDate)
-							.Select(m => m.YaRyadomUserToSend.VkId).ToArray();
+							.Select(m => m.YaRyadomUserToSend.VkId)
+							.ToArray();
 
-						await SendNotificationAsync(usersIds, notificationGroup.ToArray()).ConfigureAwait(false);
+						var usersIdsToSend = new List<long>();
+
+						foreach (var userId in usersIds)
+						{
+							var notificationAllowanceResponse = await _vkApi.IsNotificationsAllowedAsync(userId).ConfigureAwait(false);
+							if (notificationAllowanceResponse.Response != null && notificationAllowanceResponse.Response.IsAllowed)
+							{
+								usersIdsToSend.Add(userId);
+							}
+						}
+
+						var notificationsDisabledIds = usersIds.Where(u => !usersIdsToSend.Contains(u)).ToArray();
+
+						// Should be replaced because setting multiple times
+						if (notificationsDisabledIds.Length > 0)
+						{
+							var users = await dbContext
+								.YaRyadomUsers
+								.Where(u => notificationsDisabledIds.Contains(u.VkId))
+								.ToArrayAsync(cancellationToken)
+								.ConfigureAwait(false);
+
+							foreach(var user in users)
+							{
+								user.NotificationsEnabled = false;
+							}
+						}
+
+						if (usersIdsToSend.Any())
+						{
+							await SendNotificationAsync(usersIdsToSend.ToArray(), notificationGroup.ToArray()).ConfigureAwait(false);
+						}						
 						await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 					}
 
@@ -87,7 +120,7 @@ namespace YaRyadom.Scheduler.Workers
 		{
 			var message = GetMessage(notifications.First());
 			await _vkApi.SendNotificationAsync(usersIds, message).ConfigureAwait(false);
-			foreach(var notification in notifications)
+			foreach (var notification in notifications)
 			{
 				var currentDate = DateTime.UtcNow;
 				var hours = (currentDate - notification.YaRyadomUserToSend.VkNotificationsLastSentDate).TotalHours;
@@ -96,14 +129,14 @@ namespace YaRyadom.Scheduler.Workers
 				{
 					notification.YaRyadomUserToSend.VkNotificationsPerHourCount = 0;
 				}
-				if(lastSentYesterday)
+				if (lastSentYesterday)
 				{
 					notification.YaRyadomUserToSend.VkNotificationsPerDayCount = 0;
 				}
 
 				notification.YaRyadomUserToSend.VkNotificationsPerHourCount++;
 				notification.YaRyadomUserToSend.VkNotificationsPerDayCount++;
-				if(notification.YaRyadomUserToSend.VkNotificationsPerHourCount >= 2)
+				if (notification.YaRyadomUserToSend.VkNotificationsPerHourCount >= 2)
 				{
 					notification.YaRyadomUserToSend.VkNotificationsLockoutEnd = DateTime.UtcNow.AddHours(1);
 					notification.YaRyadomUserToSend.VkNotificationsPerHourCount = 0;
