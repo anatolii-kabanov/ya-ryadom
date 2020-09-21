@@ -27,7 +27,7 @@ namespace YaRyadom.API.Filters
 			{
 				var uri = new Uri(vkUrl);
 				var queryParameters = HttpUtility.ParseQueryString(uri.Query);
-				var orderedKeys = queryParameters.AllKeys.Where(p => p.StartsWith("vk_")).OrderBy(p => p.StartsWith("vk_"));
+				var orderedKeys = queryParameters.AllKeys.Where(p => p.StartsWith("vk_")).OrderBy(p => p);
 				var orderedQuery = HttpUtility.ParseQueryString(string.Empty);
 				foreach (var key in orderedKeys)
 				{

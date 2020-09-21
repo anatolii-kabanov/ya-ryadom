@@ -1,13 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace YaRyadom.Vk.Models.Users
+﻿namespace YaRyadom.Vk.Models.Users
 {
-	public class UserInfoResponse : BaseResponse
+	public class UserInfoResponse : BaseResponse<UserInfo[]>
 	{
-		/// <summary>
-		/// 
-		/// </summary>
-		[JsonProperty("response")]
-		public UserInfo[] UserInfos { get; set; }
+
 	}
 }

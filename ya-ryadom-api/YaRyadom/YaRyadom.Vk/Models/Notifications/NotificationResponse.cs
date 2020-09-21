@@ -1,6 +1,6 @@
 ﻿namespace YaRyadom.Vk.Models.Notifications
 {
-	public class NotificationResponse : BaseResponse
+	public class NotificationResponse : BaseResponse<NotificationResponseModel[]>
 	{
 	}
 }

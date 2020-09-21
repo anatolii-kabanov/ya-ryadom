@@ -17,6 +17,6 @@ namespace YaRyadom.Vk
 		/// <returns></returns>
 		Task<UserInfoResponse> GetUserInfoAsync(string[] userIdsOrScreenNames);
 
-		Task<BaseResponse> IsNotificationsAllowedAsync(long usersId);
+		Task<NotificationAllowanceResponse> IsNotificationsAllowedAsync(long userId);
 	}
 }

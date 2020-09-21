@@ -47,7 +47,7 @@ namespace YaRyadom.Vk
 			queryString["access_token"] = _accessToken;
 			var postValues = new FormUrlEncodedContent(queryString.AllKeys.ToDictionary(k => k, k => queryString[k]));
 			var response = await _httpClient
-				.PostAsync($"{_apiUrl}{VkApiMethod.NotificationsSendMessage.GetDescription()}?{queryString.ToString()}", postValues)
+				.PostAsync($"{_apiUrl}{VkApiMethod.NotificationsSendMessage.GetDescription()}?{queryString}", postValues)
 				.ConfigureAwait(false);
 			var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 			var notificationResponse = JsonConvert.DeserializeObject<NotificationResponse>(json);
@@ -63,20 +63,24 @@ namespace YaRyadom.Vk
 			queryString["v"] = ApiVersion;
 			queryString["access_token"] = _accessToken;
 
-			var response = await _httpClient.GetAsync($"{_apiUrl}{VkApiMethod.UsersGet.GetDescription()}?{queryString.ToString()}").ConfigureAwait(false);
+			var response = await _httpClient.GetAsync($"{_apiUrl}{VkApiMethod.UsersGet.GetDescription()}?{queryString}").ConfigureAwait(false);
 			var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 			var userInfoResponse = JsonConvert.DeserializeObject<UserInfoResponse>(json);
 			return userInfoResponse;
 		}
 
-		public async Task<BaseResponse> IsNotificationsAllowedAsync(long usersId)
+		public async Task<NotificationAllowanceResponse> IsNotificationsAllowedAsync(long usersId)
 		{
 			var queryString = HttpUtility.ParseQueryString(string.Empty);
 			queryString["user_id"] = usersId.ToString();
 			queryString["v"] = ApiVersion;
-			var response = await _httpClient.GetAsync($"{_apiUrl}{VkApiMethod.IsNotificationsAllowed.GetDescription()}?{queryString.ToString()}").ConfigureAwait(false);
+			queryString["access_token"] = _accessToken;
+			var response = await _httpClient
+				.GetAsync($"{_apiUrl}{VkApiMethod.IsNotificationsAllowed.GetDescription()}?{queryString}")
+				.ConfigureAwait(false);
 			var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-			throw new NotImplementedException();
+			var notificationAllowanceResponse = JsonConvert.DeserializeObject<NotificationAllowanceResponse>(json);
+			return notificationAllowanceResponse;
 		}
 
 
