@@ -28,6 +28,11 @@ namespace YaRyadom.API.Services.Implementations
 		{
 			var vkResponse = await _vkApi.GetUserInfoAsync(new string[] { vkId.ToString() }, vkLanguage, cancellationToken).ConfigureAwait(false);
 
+			var result = await _mapper
+				.ProjectTo<UserInfoModel>(TableNoTracking.Where(m => m.VkId == vkId))
+				.FirstOrDefaultAsync(cancellationToken)
+				.ConfigureAwait(false);
+
 			if (vkResponse.Response != null && vkResponse.Response.Length > 0)
 			{
 				var userInfo = vkResponse.Response.First();
@@ -35,15 +40,15 @@ namespace YaRyadom.API.Services.Implementations
 				if (yaRyadomUser != null)
 				{
 					// First name and last name depends on vkLanguage
+					result.FirstName = userInfo.FirstName;
+					result.LastName = userInfo.LastName;
+
 					yaRyadomUser.VkUserAvatarUrl = userInfo.Photo200Url;
 					await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 				}
 			}
 
-			return await _mapper
-				.ProjectTo<UserInfoModel>(TableNoTracking.Where(m => m.VkId == vkId))
-				.FirstOrDefaultAsync(cancellationToken)
-				.ConfigureAwait(false);
+			return result;
 		}
 	}
 }
