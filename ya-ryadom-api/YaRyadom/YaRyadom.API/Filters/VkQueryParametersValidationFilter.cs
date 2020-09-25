@@ -29,6 +29,7 @@ namespace YaRyadom.API.Filters
 				var queryParameters = HttpUtility.ParseQueryString(uri.Query);
 				var orderedKeys = queryParameters.AllKeys.Where(p => p.StartsWith("vk_")).OrderBy(p => p);
 				var orderedQuery = HttpUtility.ParseQueryString(string.Empty);
+
 				foreach (var key in orderedKeys)
 				{
 					orderedQuery[key] = queryParameters[key];
@@ -36,7 +37,11 @@ namespace YaRyadom.API.Filters
 				var token = HmacHash.GetToken(orderedQuery.ToString(), _appSettings.SecretKey);
 				var valid = token.Equals(queryParameters["sign"]);
 				if (valid)
+				{
+					actionExecutingContext.HttpContext.Items.Add(VkParameters.VkLanguage, queryParameters[VkParameters.VkLanguage]);
+					actionExecutingContext.HttpContext.Items.Add(VkParameters.VkNotificationsEnabled, queryParameters[VkParameters.VkNotificationsEnabled]);
 					return;
+				}
 			}
 			actionExecutingContext.Result = new BadRequestResult();
 		}

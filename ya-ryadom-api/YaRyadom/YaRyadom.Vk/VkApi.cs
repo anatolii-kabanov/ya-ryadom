@@ -55,14 +55,16 @@ namespace YaRyadom.Vk
 			return notificationResponse;
 		}
 
-		public async Task<UserInfoResponse> GetUserInfoAsync(string[] userIdsOrScreenNames, CancellationToken cancellationToken)
+		public async Task<UserInfoResponse> GetUserInfoAsync(string[] userIdsOrScreenNames, VkLanguage vkLanguage, CancellationToken cancellationToken)
 		{
 			var queryString = HttpUtility.ParseQueryString(string.Empty);
 			var users = string.Join(",", userIdsOrScreenNames);
+
 			queryString["user_ids"] = users;
 			queryString["fields"] = "photo_50, photo_200, city";
 			queryString["v"] = ApiVersion;
 			queryString["access_token"] = _accessToken;
+			queryString["lang"] = vkLanguage.ToString();
 
 			var response = await _httpClient.GetAsync($"{_apiUrl}{VkApiMethod.UsersGet.GetDescription()}?{queryString}", cancellationToken).ConfigureAwait(false);
 			var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);

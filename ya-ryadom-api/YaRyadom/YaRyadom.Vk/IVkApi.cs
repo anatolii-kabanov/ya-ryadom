@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using YaRyadom.Vk.Enums;
 using YaRyadom.Vk.Models;
 using YaRyadom.Vk.Models.Notifications;
 using YaRyadom.Vk.Models.Users;
@@ -16,7 +17,7 @@ namespace YaRyadom.Vk
 		/// </summary>
 		/// <param name="userIdsOrScreenNames"></param>
 		/// <returns></returns>
-		Task<UserInfoResponse> GetUserInfoAsync(string[] userIdsOrScreenNames, CancellationToken cancellationToken = default);
+		Task<UserInfoResponse> GetUserInfoAsync(string[] userIdsOrScreenNames, VkLanguage vkLanguage = VkLanguage.Ru, CancellationToken cancellationToken = default);
 
 		Task<NotificationAllowanceResponse> IsNotificationsAllowedAsync(long userId, CancellationToken cancellationToken = default);
 	}

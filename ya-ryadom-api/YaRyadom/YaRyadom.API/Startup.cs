@@ -79,7 +79,10 @@ namespace YaRyadom.API
 			#region Services
 
 			var appSettings = appSettingsSection.Get<AppSettings>();
-			services.AddSingleton<IVkApi>(new VkApi(appSettings.ServiceToken, new HttpClient()));
+
+			var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.Add("Accept-Language", "ru-RU, ru;q=0.9, en-US;q=0.8, en;q=0.7, *;q=0.5");
+			services.AddSingleton<IVkApi>(new VkApi(appSettings.ServiceToken, httpClient));
 
 			services.AddTransient<IAuthenticationService, AuthenticationService>();
 			services.AddTransient<IEventsNearMeService, EventsNearMeService>();

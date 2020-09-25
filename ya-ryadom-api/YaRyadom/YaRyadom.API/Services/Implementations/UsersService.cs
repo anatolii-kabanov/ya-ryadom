@@ -9,6 +9,7 @@ using YaRyadom.API.Services.Interfaces;
 using YaRyadom.Domain.DbContexts;
 using YaRyadom.Domain.Entities;
 using YaRyadom.Vk;
+using YaRyadom.Vk.Enums;
 
 namespace YaRyadom.API.Services.Implementations
 {
@@ -23,9 +24,9 @@ namespace YaRyadom.API.Services.Implementations
 			_vkApi = vkApi ?? throw new ArgumentNullException(nameof(vkApi));
 		}
 
-		public async Task<UserInfoModel> GetUserByVkIdAsync(long vkId, CancellationToken cancellationToken)
+		public async Task<UserInfoModel> GetUserByVkIdAsync(long vkId, VkLanguage vkLanguage, CancellationToken cancellationToken)
 		{
-			var vkResponse = await _vkApi.GetUserInfoAsync(new string[] { vkId.ToString() }, cancellationToken).ConfigureAwait(false);
+			var vkResponse = await _vkApi.GetUserInfoAsync(new string[] { vkId.ToString() }, vkLanguage, cancellationToken).ConfigureAwait(false);
 
 			if (vkResponse.Response != null && vkResponse.Response.Length > 0)
 			{
@@ -33,8 +34,7 @@ namespace YaRyadom.API.Services.Implementations
 				var yaRyadomUser = await Query.FirstOrDefaultAsync(u => u.VkId == vkId, cancellationToken).ConfigureAwait(false);
 				if (yaRyadomUser != null)
 				{
-					yaRyadomUser.FirstName = userInfo.FirstName;
-					yaRyadomUser.LastName = userInfo.LastName;
+					// First name and last name depends on vkLanguage
 					yaRyadomUser.VkUserAvatarUrl = userInfo.Photo200Url;
 					await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 				}
