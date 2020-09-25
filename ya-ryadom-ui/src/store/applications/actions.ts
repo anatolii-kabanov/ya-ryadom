@@ -16,7 +16,7 @@ export const fetchApplicationsToMeSuccess = (payload: any) => action(Application
 export const fetchApplicationsToMeError = (payload: any) => action(ApplicationsTypes.FETCH_APPLICATIONS_TO_ME_ERROR, payload);
 
 export const applyToEventFromEvents = (payload: number) => action(ApplicationsTypes.APPLY_TO_EVENT_FROM_EVENTS, payload);
-export const applyToEventFromUserEvents = (payload: ApplyToEvent) => action(ApplicationsTypes.APPLY_TO_EVENT_FROM_USERS_EVENTS, payload);
+export const applyToEventFromUserEvents = (payload: number) => action(ApplicationsTypes.APPLY_TO_EVENT_FROM_USERS_EVENTS, payload);
 export const applyToEventRequest = (payload: number) => action(ApplicationsTypes.APPLY_TO_EVENT, payload);
 export const applyToEventSuccess = (payload: any) => action(ApplicationsTypes.APPLY_TO_EVENT_SUCCESS, payload);
 export const applyToEventError = (payload: any) => action(ApplicationsTypes.APPLY_TO_EVENT_ERROR, payload);

@@ -7,7 +7,7 @@ import {
     addReviewRequest,
     addReviewError,
     addReviewSuccess,
-    setUserToReview
+    setUserToReview, fetchReviewsAboutUserRequest, fetchReviewsAboutUserError, fetchReviewsAboutUserSuccess
 } from './actions'
 import { callApi } from '../../utils/api';
 import { SaveReviewRequest, SelectedUserToReview } from './models';
@@ -19,6 +19,7 @@ import { removeApplication } from '../applications/actions';
 import { addNotificaiton } from '../ui/notifications/actions';
 import { SnackbarErrorNotification } from '../ui/notifications/models';
 import { NOTIFICATION_MESSAGES } from '../../utils/constants/notification-messages.constants';
+import { getSelectedProfileVkUserId } from '../users/reducer';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/reviews`;
 
@@ -82,10 +83,39 @@ function* watchAddReviewRequest() {
     yield takeLatest(ReviewsTypes.ADD_REVIEW, handleAddReviewRequest)
 }
 
+function* handleFetchReviewsAboutUserRequest(action: ReturnType<typeof fetchReviewsAboutUserRequest>) {
+    try {
+        yield put(showSpinner());
+
+        const vkUserId = yield select(getSelectedProfileVkUserId);
+
+        const result = yield call(callApi, 'get', API_ENDPOINT, `/about-user/${vkUserId}`);
+
+        if (result.errors) {
+            yield put(fetchReviewsAboutUserError(result.errors));
+        } else {
+            yield put(fetchReviewsAboutUserSuccess({ vkUserId: vkUserId, reviews: result }));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(fetchReviewsAboutUserError(error.stack));
+        } else {
+            yield put(fetchReviewsAboutUserError('An unknown error occured.'));
+        }
+    } finally {
+        yield put(hideSpinner());
+    }
+}
+
+function* watchFetchReviewsAboutUserRequest() {
+    yield takeEvery(ReviewsTypes.FETCH_REVIEWS_ABOUT_USER, handleFetchReviewsAboutUserRequest)
+}
+
 function* reviewsSagas() {
     yield all([
         fork(watchFetchEventReviewsRequest),
         fork(watchAddReviewRequest),
+        fork(watchFetchReviewsAboutUserRequest),
     ])
 }
 

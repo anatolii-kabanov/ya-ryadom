@@ -1,32 +1,31 @@
+import './reviews.panel.scss';
 import React from "react";
-import { Group, Panel, RichCell, Avatar, Div } from "@vkontakte/vkui";
+import { Group, Panel, RichCell, Avatar } from "@vkontakte/vkui";
 import { connect } from "react-redux";
 import MainHeaderPanel from "../headers/main.header";
 import Icon24Favorite from '@vkontakte/icons/dist/24/favorite';
 import Icon24FavoriteOutline from '@vkontakte/icons/dist/24/favorite_outline';
-import xhr from "xhr";
-
-import './reviews.panel.scss';
 import { AppState } from "../../../store/app-state";
 import { ALL_THEMES } from "../../../utils/constants/theme.constants";
 import EmptyText from "../../general/empty-text";
+import { fetchReviewsAboutUserRequest } from "../../../store/reviews/actions";
+import { UserReview } from '../../../store/reviews/models';
+
+interface OwnProps {
+    id: string;
+}
 
 interface PropsFromState {
-    id: string;
-    vkUserId: number;
+    profileReviews: UserReview[];
 }
 
 interface PropsFromDispatch {
-
+    fetchReviewsAboutUser: typeof fetchReviewsAboutUserRequest;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class ReviewsPanel extends React.Component<AllProps> {
-
-    state = {
-        profileReviews: []
-    }
 
     reviewStars(rateNum) {
         let stars: any[] = [];
@@ -43,28 +42,17 @@ class ReviewsPanel extends React.Component<AllProps> {
     };
 
     componentWillMount() {
-        const { vkUserId } = this.props
-        xhr({
-            uri: `${process.env.REACT_APP_API_ENDPOINT}/reviews/about-me/${vkUserId}`,
-            sync: true
-        }, (err, resp, body) => {
-            const profileReviews = JSON.parse(body);
-            this.setState({
-                profileReviews
-            })
-        }
-        )
+        const { fetchReviewsAboutUser } = this.props;
+        fetchReviewsAboutUser();
     }
 
     render() {
-        const { id } = this.props;
-        const { profileReviews } = this.state;
-
+        const { id, profileReviews } = this.props;
         return (
             <Panel id={id}>
                 <MainHeaderPanel text="Отзывы"></MainHeaderPanel>
                 {
-                    profileReviews.length === 0 ?
+                    !profileReviews || profileReviews.length === 0 ?
                         <EmptyText text="Отзывов пока нет" /> :
                         profileReviews.map((review: any) =>
                             <Group key={review.id} id={review.id}>
@@ -89,12 +77,13 @@ class ReviewsPanel extends React.Component<AllProps> {
     }
 }
 
-const mapStateToProps = ({ events }: AppState) => ({
-    vkUserId: events.eventsNearMe.currentVkId,
+const mapStateToProps = ({ reviews, users }: AppState, ownProps: OwnProps) => ({
+    id: ownProps.id,
+    profileReviews: reviews.reviewsAboutUsers[users.selectedProfileVkId],
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-
+    fetchReviewsAboutUser: fetchReviewsAboutUserRequest,
 }
 
 export default connect(

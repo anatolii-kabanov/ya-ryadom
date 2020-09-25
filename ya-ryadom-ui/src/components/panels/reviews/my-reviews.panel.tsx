@@ -26,7 +26,7 @@ class MyReviewsPanel extends React.Component<AllProps, State>  {
     /**
      *
      */
-    constructor(props) {
+    constructor(props: AllProps) {
         super(props);
     }
 

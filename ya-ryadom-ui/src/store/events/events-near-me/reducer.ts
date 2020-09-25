@@ -2,14 +2,14 @@ import { Reducer } from 'redux';
 import { EventsNearMeState } from './state';
 import { EventsNearMeTypes } from './types';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
+import { EventsNearMeActions } from './actions';
 
 export const initialState: EventsNearMeState = {
     eventsList: [],
     isLoading: false,
-    currentVkId: 0
 }
 
-const reducer: Reducer<EventsNearMeState> = (state = initialState, action) => {
+const reducer: Reducer<EventsNearMeState, EventsNearMeActions> = (state = initialState, action: EventsNearMeActions) => {
     switch (action.type) {
         case EventsNearMeTypes.FETCH_LIST_SUCCESS: {
             return { ...state, eventsList: action.payload.sort((a, b) => a.distance - b.distance) }
@@ -24,12 +24,6 @@ const reducer: Reducer<EventsNearMeState> = (state = initialState, action) => {
                     event,
                     ...state.eventsList.slice(index + 1),
                 ]
-            }
-        }
-        case EventsNearMeTypes.SET_CURRENT_VK_ID: {
-            return {
-                ...state,
-                currentVkId: action.payload
             }
         }
         default: {

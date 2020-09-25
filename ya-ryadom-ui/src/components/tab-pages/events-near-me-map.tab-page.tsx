@@ -19,7 +19,7 @@ import { MAP } from './../../utils/constants/map.constants';
 import { Geo } from './../../store/authentication/models';
 import { goForward, openUserProfile } from "./../../store/history/actions";
 import {
-    fetchListRequest, setCurrentVkId
+    fetchListRequest
 } from "../../store/events/events-near-me/actions";
 import { EventNearMe } from "../../store/events/events-near-me/models";
 import { UserInfo } from '@vkontakte/vk-bridge';
@@ -52,7 +52,6 @@ interface PropsFromDispatch {
     goForwardView: typeof goForward,
     fetchList: typeof fetchListRequest,
     applyToEvent: typeof applyToEventFromEvents,
-    setCurrentVkId: typeof setCurrentVkId,
     openUserProfile: typeof openUserProfile
 }
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
@@ -236,7 +235,6 @@ const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
     fetchList: fetchListRequest,
     applyToEvent: applyToEventFromEvents,
-    setCurrentVkId: setCurrentVkId,
     openUserProfile: openUserProfile
 }
 

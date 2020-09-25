@@ -10,6 +10,7 @@ import { settingsReducer } from './ui/settings/reducer';
 import { userEventsReducer } from './events/user-events/reducer';
 import { complaintsReducer } from './complaints/reducer';
 import { notificationsReducer } from './ui/notifications/reducer';
+import { usersReducer } from './users/reducer';
 
 export const createRootReducer = () =>
     combineReducers({
@@ -28,4 +29,5 @@ export const createRootReducer = () =>
             settings: settingsReducer,
             notifications: notificationsReducer
         }),
+        users: usersReducer,
     });

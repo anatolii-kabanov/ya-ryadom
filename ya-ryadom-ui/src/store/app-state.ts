@@ -5,6 +5,7 @@ import { ApplicationsState } from "./applications/state";
 import { ReviewsState } from "./reviews/state";
 import { UiState } from "./ui/state";
 import { ComplaintsState } from "./complaints/state";
+import { UsersState } from "./users/state";
 
 export interface AppState {
     authentication: AuthenticationState,
@@ -14,4 +15,5 @@ export interface AppState {
     applications: ApplicationsState,
     reviews: ReviewsState,
     ui: UiState,
+    users: UsersState,
 }

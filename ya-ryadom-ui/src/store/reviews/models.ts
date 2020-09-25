@@ -1,3 +1,5 @@
+import { ThemeType } from "../../utils/enums/theme-type.enum";
+
 export interface ReviewsRequest {
     eventId: number;
     vkUserId: number;
@@ -36,4 +38,15 @@ export interface SaveReviewRequest {
 
 export interface EventsReviews {
     [key: number]: Review[]
+}
+
+export interface UserReview {
+    id: number;
+    text: string;
+    rating: number;
+    eventTitle: string;
+    themeType: ThemeType;
+    userFullName: string;
+    eventId: number;
+    vkUserAvatarUrl: string;
 }

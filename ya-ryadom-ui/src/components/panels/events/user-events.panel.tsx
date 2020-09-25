@@ -18,8 +18,11 @@ import { AppState } from "../../../store/app-state";
 import { ALL_THEMES } from "../../../utils/constants/theme.constants";
 import { dateOptions } from "../../../utils/constants/event-date-options.constant";
 import EmptyText from "../../general/empty-text";
-import { UserEvents, UserEvent } from "../../../store/events/user-events/models";
-import { fetchUserCreatedEventsListRequest, fetchUserVisitedEventsListRequest } from "../../../store/events/user-events/actions";
+import { UserEvent } from "../../../store/events/user-events/models";
+import {
+    fetchUserCreatedEventsListRequest,
+    fetchUserVisitedEventsListRequest
+} from "../../../store/events/user-events/actions";
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { ApplicationStatusString } from '../../../utils/constants/application-status-string.constant';
 import { applyToEventFromUserEvents } from '../../../store/applications/actions';
@@ -30,9 +33,8 @@ interface OwnProps {
 
 interface PropsFromState {
     vkUserInfo: UserInfo | null;
-    vkUserId: number;
-    userCreatedEvents: UserEvents;
-    userVisitedEvents: UserEvents;
+    userCreatedEvents: UserEvent[];
+    userVisitedEvents: UserEvent[];
 }
 
 interface PropsFromDispatch {
@@ -50,29 +52,30 @@ const TABS = {
 }
 
 class UserEventsPanel extends React.Component<AllProps> {
+
     state = {
         activeTab: TABS.СОЗДАЛ,
     }
 
     componentWillMount() {
-        const { vkUserId, fetchCreatedEvents, fetchVisitedEvents } = this.props;
+        const { fetchCreatedEvents, fetchVisitedEvents } = this.props;
 
         // can user some check here or in the action, not to send too much queries
 
-        fetchCreatedEvents(vkUserId);
+        fetchCreatedEvents();
 
-        fetchVisitedEvents(vkUserId);
+        fetchVisitedEvents();
 
     }
 
     renderEvents(activeTab: string) {
-        const { userCreatedEvents, userVisitedEvents, vkUserId, vkUserInfo, applyToEvent } = this.props;
+        const { userCreatedEvents, userVisitedEvents, vkUserInfo, applyToEvent } = this.props;
 
         let eventsToRender: UserEvent[];
         if (activeTab === TABS.СОЗДАЛ) {
-            eventsToRender = userCreatedEvents[vkUserId];
+            eventsToRender = userCreatedEvents;
         } else {
-            eventsToRender = userVisitedEvents[vkUserId];
+            eventsToRender = userVisitedEvents;
         }
 
         if (!eventsToRender || eventsToRender.length === 0) {
@@ -108,7 +111,9 @@ class UserEventsPanel extends React.Component<AllProps> {
                                         <Button mode="secondary"
                                             className="button-disabled">Завершено</Button> :
                                         !userApplication || userApplication?.applicationStatus === ApplicationStatus.none
-                                            ? <Button className="button-primary" onClick={() => applyToEvent({ vkUserId: vkUserId, eventId: event.id })}>Иду</Button>
+                                            ? <Button
+                                                className="button-primary"
+                                                onClick={() => applyToEvent(event.id)}>Иду</Button>
                                             : <Button className="button-primary btn-status disabled" disabled={true}>{ApplicationStatusString[userApplication.applicationStatus]}</Button>
                                 }
                             </React.Fragment>
@@ -149,11 +154,10 @@ class UserEventsPanel extends React.Component<AllProps> {
     }
 }
 
-const mapStateToProps = ({ events, authentication }: AppState, ownProps: OwnProps) => ({
-    userCreatedEvents: events.userEvents.userCreatedEvents,
-    userVisitedEvents: events.userEvents.userVisitedEvents,
+const mapStateToProps = ({ events, authentication, users }: AppState, ownProps: OwnProps) => ({
+    userCreatedEvents: events.userEvents.userCreatedEvents[users.selectedProfileVkId],
+    userVisitedEvents: events.userEvents.userVisitedEvents[users.selectedProfileVkId],
     vkUserInfo: authentication.vkUserInfo,
-    vkUserId: events.eventsNearMe.currentVkId,
     id: ownProps.id,
 })
 

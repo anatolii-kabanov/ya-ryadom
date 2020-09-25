@@ -58,3 +58,20 @@ export const ALL_THEMES = [
         id: ThemeType.charity
     },
 ]
+
+export const ThemesNames = {
+    [ThemeType.cinema]: 'Кино',
+    [ThemeType.education]: 'Образование',
+    [ThemeType.exhibition]: 'Выставка',
+    [ThemeType.shopping]: 'Шопинг',
+    [ThemeType.sport]: 'Спорт',
+    [ThemeType.concert]: 'Концерт',
+    [ThemeType.relaxation]: 'Отдых',
+    [ThemeType.walks]: 'Прогулки',
+    [ThemeType.personalEvents]: 'Личные события',
+    [ThemeType.theatre]: 'Театр',
+    [ThemeType.spectacle]: 'Спектакль',
+    [ThemeType.bar]: 'Бар',
+    [ThemeType.meeting]: 'Митинг',
+    [ThemeType.charity]: 'Благотворительность',
+}

@@ -15,18 +15,18 @@ import { AppState } from "../../../store/app-state";
 import MainHeaderPanel from "../headers/main.header";
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { goForward } from "../../../store/history/actions";
-import xhr from "xhr";
 import PillInput from "../../inputs/pill.input";
-import { ALL_THEMES } from "../../../utils/constants/theme.constants";
+import { ThemesNames } from "../../../utils/constants/theme.constants";
 import Icon28HomeOutline from '@vkontakte/icons/dist/28/home_outline';
 import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline';
-import { fetchUserInfoRequest } from "../../../store/authentication/actions";
 import { CurrentUser } from "../../../store/authentication/models";
 import { VIEWS } from "../../../utils/constants/view.constants";
 import { PANELS } from "../../../utils/constants/panel.constants";
 import { VkHistoryModel } from "../../../store/history/models";
 import Icon24Star from '@vkontakte/icons/dist/24/favorite';
+import { User } from '../../../store/users/models';
+import { fetchUserInfoRequest } from '../../../store/users/actions';
 
 interface OwnProps {
     id: string;
@@ -35,7 +35,7 @@ interface OwnProps {
 interface PropsFromState {
     vkUserInfo: UserInfo | null;
     currentUser: CurrentUser | null;
-    vkUserId: number;
+    selectedUserInfo: User;
 }
 
 interface PropsFromDispatch {
@@ -46,14 +46,6 @@ interface PropsFromDispatch {
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
-    currentProfile: {
-        [key: string]: any,
-        lastLocation: { longitude: 0, latitude: 0 },
-        selectedThemes: [],
-    },
-    currentUserThemes: any[],
-    currentProfileThemes: any[],
-    themesInCommon: any[]
 }
 
 class UserProfilePanel extends React.Component<AllProps, State>{
@@ -61,60 +53,33 @@ class UserProfilePanel extends React.Component<AllProps, State>{
     /**
      *
      */
-    constructor(props) {
+    constructor(props: AllProps) {
         super(props);
-        this.state = {
-            currentProfile: {
-                lastLocation: { longitude: 0, latitude: 0 },
-                selectedThemes: [],
-            },
-            currentUserThemes: [],
-            currentProfileThemes: [],
-            themesInCommon: []
-        }
     }
 
     componentWillMount() {
-        const { vkUserId } = this.props
-        xhr({
-            uri: `${process.env.REACT_APP_API_ENDPOINT}/auth/user-info/${vkUserId}`,
-            sync: true
-        }, (err, resp, body) => {
-            const response = JSON.parse(body);
-            const { currentUser } = this.props;
-
-            const currentProfileThemes = ALL_THEMES.filter(t => response.selectedThemes.indexOf(t.id) !== -1);
-            const currentUserThemes = ALL_THEMES.filter(t => currentUser?.selectedThemes.indexOf(t.id) !== -1);
-
-            this.setState({
-                currentProfile: response,
-                currentProfileThemes: currentProfileThemes,
-                currentUserThemes: currentUserThemes,
-                themesInCommon: currentProfileThemes.filter(t => currentUserThemes.includes(t))
-            })
-        }
-        )
+        const { fetchUserInfoRequest } = this.props;
+        fetchUserInfoRequest();
     }
 
     private renderThemes() {
-        const { currentProfileThemes, currentUserThemes } = this.state;
+        const { selectedUserInfo, currentUser } = this.props;
 
-        if (currentProfileThemes) {
-            return currentProfileThemes
-                .map((item: any, key) => {
-                    if (currentUserThemes.includes(item)) {
-                        return <PillInput key={key} id={item.id} disabled={true} selected={true} onClick={() => ''} text={item.name}></PillInput>
+        if (selectedUserInfo?.selectedThemes) {
+            return selectedUserInfo?.selectedThemes
+                .map((themeId, key) => {
+                    if (currentUser?.selectedThemes.includes(themeId)) {
+                        return <PillInput key={key} id={themeId} disabled={true} selected={true} text={ThemesNames[themeId]}></PillInput>
                     }
                     else {
-                        return <PillInput key={key} id={item.id} disabled={true} selected={false} onClick={() => ''} text={item.name}></PillInput>
+                        return <PillInput key={key} id={themeId} disabled={true} selected={false} text={ThemesNames[themeId]}></PillInput>
                     }
                 });
         }
     }
 
     render() {
-        const { id, vkUserId, goForwardView } = this.props;
-        const { currentProfile, themesInCommon } = this.state;
+        const { id, goForwardView, selectedUserInfo, currentUser } = this.props;
         return (
             <Panel className="my-profile" id={id}>
                 <MainHeaderPanel text='Профиль'></MainHeaderPanel>
@@ -122,14 +87,14 @@ class UserProfilePanel extends React.Component<AllProps, State>{
                     <RichCell
                         disabled
                         multiline
-                        text={currentProfile?.aboutMySelf}
-                        before={<Avatar size={72} src={currentProfile?.vkUserAvatarUrl} />}
+                        text={selectedUserInfo?.aboutMySelf}
+                        before={<Avatar size={72} src={selectedUserInfo?.vkUserAvatarUrl} />}
                     >
                         <span className="profile-main-row">
-                            {currentProfile?.firstName} {currentProfile?.lastName}
+                            {selectedUserInfo?.firstName} {selectedUserInfo?.lastName}
                             <Icon24Star className="star" width={18} height={18}>
                             </Icon24Star>
-                            <Caption className="rating" weight="regular" level="1">{currentProfile?.avgRating.toFixed(1)}</Caption>
+                            <Caption className="rating" weight="regular" level="1">{selectedUserInfo?.avgRating.toFixed(1)}</Caption>
                         </span>
                     </RichCell>
                 </Group>
@@ -137,7 +102,7 @@ class UserProfilePanel extends React.Component<AllProps, State>{
                     <div className="div-icons-menu">
 
                         <a className="a-icon"
-                            href={`https://vk.com/id${vkUserId}`}
+                            href={`https://vk.com/id${selectedUserInfo?.vkUserId}`}
                             target="_blank"
                         >
                             <Icon28HomeOutline className="menu-icon" />
@@ -163,7 +128,9 @@ class UserProfilePanel extends React.Component<AllProps, State>{
                 <Group header={
                     <Header mode="secondary">
                         <span className="themes-text">
-                            Темы <span className="themes-orange-text">у вас {themesInCommon.length} общих</span>
+                            Темы <span className="themes-orange-text">у вас {
+                                selectedUserInfo?.selectedThemes.filter(t => currentUser?.selectedThemes.includes(t)).length
+                            } общих</span>
                         </span>
                     </Header>} separator="hide">
                     <Div className="pills">
@@ -175,9 +142,9 @@ class UserProfilePanel extends React.Component<AllProps, State>{
     }
 }
 
-const mapStateToProps = ({ events, authentication }: AppState, ownProps: OwnProps) => ({
+const mapStateToProps = ({ events, authentication, users }: AppState, ownProps: OwnProps) => ({
     myEvents: events.myEvents.eventsList,
-    vkUserId: events.eventsNearMe.currentVkId,
+    selectedUserInfo: users.usersProfiles[users.selectedProfileVkId],
     vkUserInfo: authentication.vkUserInfo,
     currentUser: authentication.currentUser,
     id: ownProps.id

@@ -29,7 +29,7 @@ import { callApi } from '../../utils/api';
 import { ApplicationRequest } from './models';
 import { getVkUserId } from '../authentication/reducer';
 import { setSentStatus } from '../events/events-near-me/actions';
-import { setSentStatus as setSentStatusFromUserEvents, fetchUserCreatedEventsListRequest } from '../events/user-events/actions';
+import { fetchUserCreatedEventsListRequest } from '../events/user-events/actions';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 import { updateParticipantStatus } from '../events/my-events/actions';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
@@ -110,9 +110,9 @@ function* watchFetchApplicationsToMeRequest() {
 }
 
 function* handleApplyToEventFromUserEvents(action: ReturnType<typeof applyToEventFromUserEvents>) {
-    yield put(applyToEventRequest(action.payload.eventId));
+    yield put(applyToEventRequest(action.payload));
     yield take(ApplicationsTypes.APPLY_TO_EVENT_SUCCESS);
-    yield put(fetchUserCreatedEventsListRequest(action.payload.vkUserId));
+    yield put(fetchUserCreatedEventsListRequest());
     // need to return application id from server
     // yield put(setSentStatusFromUserEvents(action.payload));
 }
