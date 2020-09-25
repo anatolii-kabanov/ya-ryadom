@@ -22,14 +22,6 @@ namespace YaRyadom.API.Services.Implementations
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 		}
 
-		public async Task<UserInfoModel> GetUserByVkIdAsync(long vkId, CancellationToken cancellationToken = default)
-		{
-			return await _mapper
-				.ProjectTo<UserInfoModel>(TableNoTracking.Where(m => m.VkId == vkId))
-				.FirstOrDefaultAsync(cancellationToken)
-				.ConfigureAwait(false);
-		}
-
 		public async Task<MyProfileModel> GetMyInfoByVkIdAsync(long vkId, CancellationToken cancellationToken = default)
 		{
 			return await _mapper

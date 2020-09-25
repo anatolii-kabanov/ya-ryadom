@@ -8,8 +8,6 @@ namespace YaRyadom.API.Services.Interfaces
 {
 	public interface IAuthenticationService : IBaseService<YaRyadomUser>
 	{
-		Task<UserInfoModel> GetUserByVkIdAsync(long vkId, CancellationToken cancellationToken = default);
-
 		Task<MyProfileModel> GetMyInfoByVkIdAsync(long vkId, CancellationToken cancellationToken = default);
 
 		Task<bool> SaveUserInfoAsync(UserInfoSaveRequestModel model, CancellationToken cancellationToken = default);

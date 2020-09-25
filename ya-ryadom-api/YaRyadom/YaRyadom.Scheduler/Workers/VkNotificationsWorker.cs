@@ -14,7 +14,7 @@ namespace YaRyadom.Scheduler.Workers
 {
 	internal class VkNotificationsWorker : IVkNotificationsWorker
 	{
-		private ILogger<VkNotificationsWorker> _logger;
+		private readonly ILogger<VkNotificationsWorker> _logger;
 		private readonly IVkApi _vkApi;
 
 		public VkNotificationsWorker(ILogger<VkNotificationsWorker> logger, IVkApi vkApi)

@@ -10,12 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using NetTopologySuite;
+using System.Net.Http;
 using YaRyadom.API.Filters;
 using YaRyadom.API.MappingProfiles;
 using YaRyadom.API.Services.Implementations;
 using YaRyadom.API.Services.Interfaces;
 using YaRyadom.API.Settings;
 using YaRyadom.Domain.DbContexts;
+using YaRyadom.Vk;
 
 namespace YaRyadom.API
 {
@@ -76,6 +78,9 @@ namespace YaRyadom.API
 
 			#region Services
 
+			var appSettings = appSettingsSection.Get<AppSettings>();
+			services.AddSingleton<IVkApi>(new VkApi(appSettings.ServiceToken, new HttpClient()));
+
 			services.AddTransient<IAuthenticationService, AuthenticationService>();
 			services.AddTransient<IEventsNearMeService, EventsNearMeService>();
 			services.AddTransient<IMyEventsService, MyEventsService>();
@@ -83,6 +88,7 @@ namespace YaRyadom.API
 			services.AddTransient<IApplicationsService, ApplicationsService>();
 			services.AddTransient<IUserEventsService, UserEventsService>();
 			services.AddTransient<IComplaintsService, ComplaintsService>();
+			services.AddTransient<IUsersService, UsersService>();
 
 			#endregion
 

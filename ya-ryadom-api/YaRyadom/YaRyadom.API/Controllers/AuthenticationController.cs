@@ -17,23 +17,11 @@ namespace YaRyadom.API.Controllers
 	[TypeFilter(typeof(VkQueryParametersValidationFilter))]
 	public class AuthenticationController : ControllerBase
 	{
-		private readonly IMapper _mapper;
 		private readonly IAuthenticationService _authenticationService;
 
-		public AuthenticationController(IMapper mapper, IAuthenticationService authenticationService)
+		public AuthenticationController(IAuthenticationService authenticationService)
 		{
-			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 			_authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
-		}
-
-		[AllowAnonymous]
-		[HttpGet("user-info/{vkUserId}")]
-		[Consumes(MediaTypeNames.Application.Json)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> GetUserInfoByVkId(long vkUserId, CancellationToken cancellationToken = default)
-		{
-			var userInfoModel = await _authenticationService.GetUserByVkIdAsync(vkUserId, cancellationToken).ConfigureAwait(false);
-			return Ok(userInfoModel);
 		}
 
 		[AllowAnonymous]

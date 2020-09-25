@@ -35,7 +35,7 @@ namespace YaRyadom.API.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet("about-me/{vkUserId}")]
+		[HttpGet("about-user/{vkUserId}")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetReviewsAboutMe(long vkUserId, CancellationToken cancellationToken = default)
