@@ -57,7 +57,7 @@ class GeolocationIntroPanel extends React.Component<AllProps, State>  {
     onGeolocationClick = (event: any) => {
         const { setUserLocationProcess } = this.props;
         const { checked } = event.target;
-        this.setState({ geoAvailable: checked });        
+        this.setState({ geoAvailable: checked });
         setUserLocationProcess(checked);
     }
 
@@ -75,25 +75,24 @@ class GeolocationIntroPanel extends React.Component<AllProps, State>  {
         const { geoAvailable } = this.state;
         return (
             <Panel id={id} className="geolocation-intro-panel">
-                <PanelHeader>
-                </PanelHeader>
+                <PanelHeader separator={false}></PanelHeader>
                 <Group separator="hide">
                     <Placeholder
                         icon={<Icon32Place className="nav-icon-selected" />}
-                        header="Ваша геопозиция будет нужна нам, чтобы подбирать события, находящиеся поблизости с Вами."
+                        header={<span className="geo-first-row">Ваша геопозиция будет нужна нам, чтобы подбирать события, находящиеся поблизости с Вами.</span>}
                         action={<Div className="flex-center"><Switch checked={currentUser.geolocationEnabled} name="enableGeolocation" className="switcher" onClick={this.onGeolocationClick} /></Div>}
                     >
                         Разрешите использовать Ваши геоданные в нашем приложении
                     </Placeholder>
                     {
                         geoAvailable && userGeo && !userGeo.available &&
-                        <Placeholder >
+                        <Div className="geo-disabled-message">
                             Похоже на то, что Вам нужно разрешить доступ к геолокации для приложения "VK"
                             <Caption className="geo-info" level="2" weight="regular">Или нажмите кнопку "Далее", чтобы выбрать город по умолчанию</Caption>
-                        </Placeholder>
+                        </Div>
                     }
                 </Group>
-                <Group className="btn-container-bottom">
+                <Group separator="hide">
                     <Button className="btn-primary" size="xl" onClick={this.onClickNext}>Далее</Button>
                 </Group>
             </Panel>

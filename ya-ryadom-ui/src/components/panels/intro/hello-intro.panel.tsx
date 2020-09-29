@@ -48,19 +48,16 @@ class HelloIntroPanel extends React.Component<AllProps>  {
         const { id, vkUserInfo } = this.props;
         return (
             <Panel id={id} className="hello-intro-panel">
-                <PanelHeader>
-                </PanelHeader>
+                <PanelHeader separator={false}></PanelHeader>
                 <Title level="2" weight="semibold" className="title">{vkUserInfo?.first_name && `Здравствуй, ${vkUserInfo.first_name}!`}</Title>
-                <Group className="intro-group">
-                    <Div className="intro-image">
+                <Group className="intro-group" separator="hide">
+                    <div className="intro-image">
                         <IntroImage></IntroImage>
-                    </Div>
+                    </div>
                     <Div className="intro-text">
                         <p className="first-row-text">Твой будущий друг уже рядом. <br /> Несколько действий и ты в большой тусовке своего города.</p>
                         <p className="second-row-text">Весь спектр интересов в одном приложении. <br /> Каждый найдёт себе дело по душе.</p>
-                        <Div>
-                            <Button size="xl" className="btn-primary" onClick={() => this.onHelloIntroCompleted()}>Начать</Button>
-                        </Div>
+                        <Button size="xl" className="btn-primary" onClick={() => this.onHelloIntroCompleted()}>Начать</Button>
                     </Div>
                 </Group>
             </Panel>

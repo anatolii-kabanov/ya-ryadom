@@ -42,7 +42,7 @@ class AboutMyselfIntroPanel extends React.Component<AllProps>  {
         const { id } = this.props;
         return (
             <Panel id={id} className="about-myself-intro-panel">
-                <PanelHeader>
+                <PanelHeader separator={false}>
                 </PanelHeader>
                 <AboutMyselfForm onSave={this.onSave} btnText="Завершить"></AboutMyselfForm>
             </Panel>

@@ -107,9 +107,7 @@ class ThemesForm extends React.Component<AllProps, State>  {
                     {errors?.selectedThemes}
                 </FormStatus>}
                 <FormLayout>
-                    <Div className="btn-container-bottom">
-                        <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>{btnText ?? 'Продолжить'}</Button>
-                    </Div>
+                    <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>{btnText ?? 'Продолжить'}</Button>
                 </FormLayout>
             </Div>
         )

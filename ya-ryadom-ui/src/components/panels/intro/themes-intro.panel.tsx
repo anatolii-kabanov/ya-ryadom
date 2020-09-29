@@ -51,10 +51,10 @@ class ThemesIntroPanel extends React.Component<AllProps>  {
         const { id } = this.props;
         return (
             <Panel id={id} className="profile-intro-panel">
-                <PanelHeader>
+                <PanelHeader separator={false}>
                     Я рядом
                 </PanelHeader>
-                <Group className="profile-group">
+                <Group className="profile-group" separator="hide">
                     <ThemesForm onSave={this.onSave}></ThemesForm>
                 </Group>
             </Panel>

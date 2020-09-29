@@ -53,9 +53,10 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
             aboutMyself: value
         })
         this.setState({
-            errors: { 
-                ...this.state.errors, 
-                aboutMyself: Validators.required(value) || Validators.maxLength(value, maxValues.maxAboutMyself) }
+            errors: {
+                ...this.state.errors,
+                aboutMyself: Validators.required(value) || Validators.maxLength(value, maxValues.maxAboutMyself)
+            }
         });
     }
 
@@ -67,9 +68,10 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
 
     isValid() {
         this.setState({
-            errors: { 
-                ...this.state.errors, 
-                aboutMyself: Validators.required(this.state.aboutMyself) || Validators.maxLength(this.state.aboutMyself, maxValues.maxAboutMyself) }
+            errors: {
+                ...this.state.errors,
+                aboutMyself: Validators.required(this.state.aboutMyself) || Validators.maxLength(this.state.aboutMyself, maxValues.maxAboutMyself)
+            }
         });
 
         let formIsValid = !this.state.errors.aboutMyself;
@@ -81,7 +83,7 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
         const { errors, aboutMyself } = this.state;
         return (
             <Group>
-                <Group className="about-myself-group">
+                <Group className="about-myself-group" separator="hide">
                     <Div className="themes-form">
                         <Div><Title level="3" weight="bold" className="title text-center">Напишите о себе</Title ></Div>
                         <FormLayout>
@@ -99,10 +101,8 @@ class AboutMyselfForm extends React.Component<AllProps, State>  {
                         </FormLayout>
                     </Div>
                 </Group>
-                <Group>
-                    <Div className="btn-container-bottom">
-                        <Button className="btn-primary" size="xl" onClick={this.onClickNext}>{btnText ?? 'Далее'}</Button>
-                    </Div>
+                <Group separator="hide">
+                    <Button className="btn-primary" size="xl" onClick={this.onClickNext}>{btnText ?? 'Далее'}</Button>
                 </Group>
             </Group>
         )

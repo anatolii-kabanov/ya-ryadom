@@ -2,6 +2,12 @@
   .title {
     padding-top: 5px;
     text-align: center;
+    @media (max-height: 600px) {
+      font-size: 18px;
+    }
+    @media (max-height: 500px) {
+      font-size: 16px;
+    }
   }
   .intro-group {
     height: 100%;
@@ -17,7 +23,10 @@
         max-height: 280px;
       }
       @media (max-height: 600px) {
-        max-height: 220px;
+        max-height: 210px;
+      }
+      @media (max-height: 500px) {
+        max-height: 140px;
       }
     }
   }
@@ -37,6 +46,11 @@
       }
       @media (max-height: 600px) {
         font-size: 16px;
+        line-height: 20px;
+      }
+      @media (max-height: 500px) {
+        font-size: 13px;
+        line-height: 16px;
       }
     }
     .second-row-text {
@@ -47,11 +61,15 @@
       text-align: center;
       letter-spacing: -0.154px;
       color: #6d7885;
+      padding-bottom: 10px;
       @media (max-height: 700px) {
         font-size: 12px;
       }
       @media (max-height: 600px) {
         font-size: 10px;
+      }
+      @media (max-height: 500px) {
+        font-size: 9px;
       }
     }
   }

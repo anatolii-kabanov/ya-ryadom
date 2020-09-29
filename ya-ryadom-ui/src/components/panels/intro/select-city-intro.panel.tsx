@@ -68,7 +68,7 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
         const { userLocation } = this.state;
         return (
             <Panel id={id} className="select-city-intro-panel">
-                <PanelHeader>
+                <PanelHeader separator={false}>
                 </PanelHeader>
                 <Div><Title level="3" weight="bold" className="title text-center">Выберите город</Title ></Div>
                 <Group separator="hide">
@@ -76,10 +76,8 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
                         <AutocompleteMap isOnline={isOnline} type="(cities)" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                     </Div>
                 </Group>
-                <Group>
-                    <Div className="btn-container-bottom">
-                        <Button className="btn-primary" size="xl" onClick={this.onClickNext} disabled={!userLocation}>Далее</Button>
-                    </Div>
+                <Group separator="hide" className="btn-next-container">
+                        <Button className="btn-primary" size="xl" onClick={this.onClickNext} disabled={!userLocation}>Далее</Button>                  
                 </Group>
             </Panel>
         )
