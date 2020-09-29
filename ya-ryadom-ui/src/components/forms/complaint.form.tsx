@@ -93,7 +93,7 @@ class ComplaintsForm extends React.Component<AllProps, State>  {
                     status={errors?.selectedComplaint ? 'error' : 'default'}
                     top="Причина" placeholder="Выберите причину"
                     bottom={errors?.selectedComplaint}
-                    name="selectedComplaint" onChange={this.handleInputChange} required>
+                    name="selectedComplaint" onChange={this.handleInputChange}>
                     {this.renderComlaintsSelect()}
                 </Select>
                 <Textarea

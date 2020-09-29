@@ -257,7 +257,10 @@ class EventForm extends React.Component<AllProps, EventState> {
                     status={errors.eventDescription ? 'error' : 'default'}
                     bottom={errors.eventDescription}
                 ></Textarea>
-                <Select status={errors.selectedTheme ? 'error' : 'default'} placeholder="Выберите тему" name="selectedTheme" onChange={this.handleInputChange} required>
+                <Select
+                    status={errors.selectedTheme ? 'error' : 'default'}
+                    bottom={errors.selectedTheme} placeholder="Выберите тему"
+                    name="selectedTheme" onChange={this.handleInputChange}>
                     {this.renderThemesSelect()}
                 </Select>
                 <Input
@@ -268,7 +271,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                     type="date"
                     name="eventDate"
                     bottom={errors.eventDate}
-                    onChange={this.handleInputChange} required />
+                    onChange={this.handleInputChange}/>
                 <Input
                     status={errors.eventTime ? 'error' : 'default'}
                     bottom={errors.eventTime}
