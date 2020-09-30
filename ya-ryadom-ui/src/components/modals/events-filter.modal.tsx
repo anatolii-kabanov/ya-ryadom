@@ -8,11 +8,12 @@ import {
     ModalPageHeader,
     PanelHeaderButton,
     Select,
-    Button,
+    Button, platform, ANDROID, IOS
 } from '@vkontakte/vkui';
 import { AppState } from './../../store/app-state';
 import { connect } from 'react-redux';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
+import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
 import { EventsFilter } from '../../store/ui/settings/state';
 import {
     clearEventsFilter,
@@ -53,6 +54,8 @@ interface State {
 const maxValues = {
     maxSearchText: 84,
 }
+
+const osname = platform();
 
 class EventsFilterModal extends React.Component<AllProps, State>  {
 
@@ -111,8 +114,18 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
                 onClose={() => onClose()}
                 header={
                     <ModalPageHeader
-                        left={<PanelHeaderButton className="text-primary clear" onClick={() => clearFilter()}>Очистить</PanelHeaderButton>}
-                        right={<PanelHeaderButton onClick={() => onClose()}><Icon24Dismiss /></PanelHeaderButton>}
+                        left={
+                            <React.Fragment>
+                                {osname === ANDROID && <PanelHeaderButton onClick={() => onClose()}> <Icon24Cancel /></PanelHeaderButton>}
+                                {osname === IOS && <PanelHeaderButton className="text-primary clear" onClick={() => clearFilter()}>Очистить</PanelHeaderButton>}
+                            </React.Fragment>
+                        }
+                        right={
+                            <React.Fragment>
+                                {osname === ANDROID && <PanelHeaderButton className="text-primary clear" onClick={() => clearFilter()}>Очистить</PanelHeaderButton>}
+                                {osname === IOS && <PanelHeaderButton onClick={() => onClose()}><Icon24Dismiss /></PanelHeaderButton>}
+                            </React.Fragment>
+                        }
                     >
                         Фильтры
                         </ModalPageHeader>
