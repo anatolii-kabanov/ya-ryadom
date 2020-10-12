@@ -87,7 +87,7 @@ class MyProfileEditPanel extends React.Component<AllProps>{
                     <RichCell
                         disabled
                         multiline
-                        before={<Avatar size={72} src={vkUserInfo?.photo_100} />}
+                        before={<Avatar size={72} src={vkUserInfo?.photo_200} />}
                     >
                         <span className="profile-main-row">
                             {vkUserInfo?.first_name} {vkUserInfo?.last_name}

@@ -64,7 +64,7 @@ class MyProfilePanel extends React.Component<AllProps>{
                         disabled
                         multiline
                         text={currentUser?.aboutMySelf}
-                        before={<Avatar size={72} src={vkUserInfo?.photo_100} />}
+                        before={<Avatar size={72} src={vkUserInfo?.photo_200} />}
                     >
                         <span className="profile-main-row">
                             {vkUserInfo?.first_name} {vkUserInfo?.last_name}

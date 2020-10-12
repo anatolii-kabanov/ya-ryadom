@@ -1,12 +1,9 @@
 import React from 'react';
 import {
-    Panel,
-    PanelHeader,
-    Group,
+    Panel
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
-import { UserInfo } from '@vkontakte/vk-bridge';
 import { saveUserProfileAboutMyself } from '../../../store/authentication/actions';
 import AboutMyselfForm from '../../forms/about-myself.form';
 import MainHeaderPanel from "../headers/main.header";
