@@ -11,16 +11,12 @@ import {
     revokeEventRequest,
     revokeEventError,
     revokeEventSuccess,
+    resetEventForm
 } from './actions'
 import { callApi } from '../../../utils/api';
 import { getVkUserId } from '../../authentication/reducer';
-import { goForward, goBack } from '../../history/actions';
-import { VkHistoryModel } from '../../history/models';
-import { VIEWS } from '../../../utils/constants/view.constants';
-import { PANELS } from '../../../utils/constants/panel.constants';
+import { goBack } from '../../history/actions';
 import { showSpinner, hideSpinner } from '../../ui/spinner/actions';
-import { saveUserGuideCompletedRequest } from '../../authentication/actions';
-import { AuthenticationTypes } from '../../authentication/types';
 import { SnackbarErrorNotification } from '../../ui/notifications/models';
 import { NOTIFICATION_MESSAGES } from '../../../utils/constants/notification-messages.constants';
 import { addNotificaiton } from '../../ui/notifications/actions';
@@ -61,6 +57,7 @@ function* handleSaveEventRequest(action: ReturnType<typeof saveMyEventRequest>) 
         if (result.errors || result?.status >= 400) {
             yield put(saveMyEventError(result.errors));
         } else {
+            yield put(resetEventForm());
             yield put(saveMyEventSuccess(result));
         }
     } catch (error) {

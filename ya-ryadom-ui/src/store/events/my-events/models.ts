@@ -36,3 +36,33 @@ export interface MyEventCreate {
     vkUserId: number,
     selectedThemes: ThemeType[]
 }
+
+export interface EventForm {
+    zoom: number,
+    address: string,
+    selectedPosition: {
+        lat: number,
+        lng: number
+    },
+    eventName: string,
+    eventDescription: string,
+    eventDate: string,
+    eventTime: string,
+    selectedTheme: number,
+}
+
+export class EventForm implements EventForm {
+
+    /**
+     *
+     */
+    constructor() {
+        this.zoom = 16;
+        this.selectedPosition = {} as any;
+        this.eventName = '';
+        this.eventDescription = '';
+        this.eventDate = '';
+        this.eventTime = '';
+        this.selectedTheme = 0;
+    }
+}

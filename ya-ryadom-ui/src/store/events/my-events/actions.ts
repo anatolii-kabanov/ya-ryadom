@@ -19,10 +19,15 @@ export const revokeEventRequest = (payload: number) => action(MyEventsTypes.REVO
 export const revokeEventSuccess = (payload: number) => action(MyEventsTypes.REVOKE_MY_EVENT_SUCCESS, payload);
 export const revokeEventError = (payload: any) => action(MyEventsTypes.REVOKE_MY_EVENT_ERROR, payload);
 
+export const updateEventForm = (payload: { name: string, value: any }) => action(MyEventsTypes.UPDATE_EVENT_FORM, payload);
+
+export const resetEventForm = () => action(MyEventsTypes.RESET_EVENT_FORM);
 
 export type MyEventsActions = ActionType<
     typeof fetchMyEventsListSuccess |
     typeof saveMyEventSuccess |
     typeof revokeEventSuccess |
-    typeof updateParticipantStatus
+    typeof updateParticipantStatus |
+    typeof updateEventForm |
+    typeof resetEventForm
 >;

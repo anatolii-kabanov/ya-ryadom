@@ -107,10 +107,10 @@ class UserEventsPanel extends React.Component<AllProps> {
                         actions={
                             <React.Fragment>
                                 {
-                                    event.ended ?
-                                        <Button mode="secondary"
-                                            className="button-disabled">Завершено</Button> :
-                                        !userApplication || userApplication?.applicationStatus === ApplicationStatus.none
+                                    event.ended
+                                        ? <Button mode="secondary"
+                                            className="button-disabled" disabled={true}>Завершено</Button>
+                                        : !userApplication || userApplication?.applicationStatus === ApplicationStatus.none
                                             ? <Button
                                                 className="button-primary"
                                                 onClick={() => applyToEvent(event.id)}>Иду</Button>

@@ -14,4 +14,7 @@ export enum MyEventsTypes {
     REVOKE_MY_EVENT = '[My Events] (POST) Revoke my event',
     REVOKE_MY_EVENT_SUCCESS = '[My Events] Revoke my event success',
     REVOKE_MY_EVENT_ERROR = '[My Events] Revoke my event error',
+
+    UPDATE_EVENT_FORM = '[My Events] Update event form',
+    RESET_EVENT_FORM = '[My Events] Reset event form',
 };

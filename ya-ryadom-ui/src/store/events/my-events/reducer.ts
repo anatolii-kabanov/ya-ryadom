@@ -3,16 +3,20 @@ import { MyEventsState } from './state';
 import { MyEventsTypes } from './types';
 import _ from 'lodash';
 import { MyEventsActions } from './actions';
+import { EventForm } from './models';
 
 export const initialState: MyEventsState = {
     eventsList: [],
     isLoading: false,
+    eventForm: new EventForm()
 }
 
 const reducer: Reducer<MyEventsState, MyEventsActions> = (state = initialState, action: MyEventsActions) => {
     switch (action.type) {
         case MyEventsTypes.FETCH_LIST_SUCCESS: {
-            return { ...state, eventsList: action.payload }
+            const newState = _.cloneDeep(state);
+            newState.eventsList = action.payload;
+            return newState;
         }
         case MyEventsTypes.UPDATE_PARTICIPANT_STATUS: {
             const payload = action.payload;
@@ -27,6 +31,16 @@ const reducer: Reducer<MyEventsState, MyEventsActions> = (state = initialState, 
         case MyEventsTypes.REVOKE_MY_EVENT_SUCCESS: {
             const newState = _.cloneDeep(state);
             newState.eventsList = newState.eventsList.filter((e) => e.id !== action.payload);
+            return newState;
+        }
+        case MyEventsTypes.UPDATE_EVENT_FORM: {
+            const newState = _.cloneDeep(state);
+            newState.eventForm[action.payload.name] = action.payload.value;
+            return newState;
+        }
+        case MyEventsTypes.RESET_EVENT_FORM: {
+            const newState = _.cloneDeep(state);
+            newState.eventForm = new EventForm();
             return newState;
         }
         default: {
