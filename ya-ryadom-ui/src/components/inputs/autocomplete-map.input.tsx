@@ -51,6 +51,12 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
         }
     }
 
+    componentWillReceiveProps(nextProps: AutocompleteProps) {
+        if (nextProps.address !== this.state.query) {
+            this.setState({ query: nextProps.address || '' });
+        }
+    }
+
     initGoogleMaps = () => {
         const { type } = this.props;
         this.loadGoogleMaps(() => {
