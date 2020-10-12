@@ -9,6 +9,7 @@ using YaRyadom.API.Filters;
 using YaRyadom.API.Helpers;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
+using YaRyadom.Vk.Enums;
 
 namespace YaRyadom.API.Controllers
 {
@@ -30,7 +31,8 @@ namespace YaRyadom.API.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetApplicationsByEvent(int eventId, CancellationToken cancellationToken = default)
 		{
-			var result = await _applicationsService.GetAllByEventAsync(eventId, cancellationToken).ConfigureAwait(false);
+			var vkLanguage = (VkLanguage)Enum.Parse(typeof(VkLanguage), HttpContext.Items[VkParameters.VkLanguage]?.ToString(), true);
+			var result = await _applicationsService.GetAllByEventAsync(eventId, vkLanguage, cancellationToken).ConfigureAwait(false);
 			return Ok(result);
 		}
 
@@ -41,7 +43,8 @@ namespace YaRyadom.API.Controllers
 		[VkUserIdFilter]
 		public async Task<IActionResult> GetAllApplicationsToMe(long vkUserId, CancellationToken cancellationToken = default)
 		{
-			var result = await _applicationsService.GetAllToMeAsync(vkUserId, cancellationToken).ConfigureAwait(false);
+			var vkLanguage = (VkLanguage)Enum.Parse(typeof(VkLanguage), HttpContext.Items[VkParameters.VkLanguage]?.ToString(), true);
+			var result = await _applicationsService.GetAllToMeAsync(vkUserId, vkLanguage, cancellationToken).ConfigureAwait(false);
 			return Ok(result);
 		}
 
@@ -52,7 +55,8 @@ namespace YaRyadom.API.Controllers
 		[VkUserIdFilter]
 		public async Task<IActionResult> GetAllMineApplications(long vkUserId, CancellationToken cancellationToken = default)
 		{
-			var result = await _applicationsService.GetAllMineAsync(vkUserId, cancellationToken).ConfigureAwait(false);
+			var vkLanguage = (VkLanguage)Enum.Parse(typeof(VkLanguage), HttpContext.Items[VkParameters.VkLanguage]?.ToString(), true);
+			var result = await _applicationsService.GetAllMineAsync(vkUserId, vkLanguage, cancellationToken).ConfigureAwait(false);
 			return Ok(result);
 		}
 

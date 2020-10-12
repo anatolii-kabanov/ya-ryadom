@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using YaRyadom.API.Filters;
+using YaRyadom.API.Helpers;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
+using YaRyadom.Vk.Enums;
 
 namespace YaRyadom.API.Controllers
 {
@@ -30,8 +32,9 @@ namespace YaRyadom.API.Controllers
 		[VkUserIdFilter]
 		public async Task<IActionResult> GetEventsNearMe([FromBody] EventsRequestModel requestModel, CancellationToken cancellationToken = default)
 		{
+			var vkLanguage = (VkLanguage)Enum.Parse(typeof(VkLanguage), HttpContext.Items[VkParameters.VkLanguage]?.ToString(), true);
 			var events = await _eventsNearMeService
-				.GetAllEventsByDistance(requestModel, cancellationToken)
+				.GetAllEventsByDistance(requestModel, vkLanguage, cancellationToken)
 				.ConfigureAwait(false);
 			return Ok(events);
 		}

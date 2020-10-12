@@ -11,16 +11,20 @@ using YaRyadom.API.Services.Interfaces;
 using YaRyadom.Domain.DbContexts;
 using YaRyadom.Domain.Entities;
 using YaRyadom.Domain.Entities.Enums;
+using YaRyadom.Vk;
+using YaRyadom.Vk.Enums;
 
 namespace YaRyadom.API.Services.Implementations
 {
 	public class MyEventsService : BaseService<YaRyadomEvent>, IMyEventsService
 	{
 		private readonly IMapper _mapper;
+		private readonly IVkApi _vkApi;
 
-		public MyEventsService(YaRyadomDbContext dbContext, IMapper mapper) : base(dbContext)
+		public MyEventsService(YaRyadomDbContext dbContext, IMapper mapper, IVkApi vkApi) : base(dbContext)
 		{
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+			_vkApi = vkApi ?? throw new ArgumentNullException(nameof(vkApi));
 		}
 
 		public async Task<bool> AddAsync(EventFormModel model, CancellationToken cancellationToken = default)
@@ -92,7 +96,7 @@ namespace YaRyadom.API.Services.Implementations
 			return await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
 		}
 
-		public async Task<MyEventModel[]> GetAllMyEvents(long vkId, CancellationToken cancellationToken = default)
+		public async Task<MyEventModel[]> GetAllMyEvents(long vkId, VkLanguage vkLanguage, CancellationToken cancellationToken = default)
 		{
 			var events = await _mapper
 			  .ProjectTo<MyEventServiceModel>(
@@ -105,6 +109,24 @@ namespace YaRyadom.API.Services.Implementations
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
 
+			var vkUserIds = events.SelectMany(e => e.Participants.Select(p => p.VkUserId)).ToHashSet();
+
+			for (var i = 0; i < vkUserIds.Count(); i += 100)
+			{
+				var idsToSend = vkUserIds.Skip(i).Take(100).Select(m => m.ToString()).ToArray();
+				var vkResponse = await _vkApi.GetUserInfoAsync(idsToSend, vkLanguage, cancellationToken).ConfigureAwait(false);
+				if (vkResponse.Response != null && vkResponse.Response.Length > 0)
+				{
+					foreach (var vkUser in vkResponse.Response)
+					{
+						foreach (var participant in events.SelectMany(e => e.Participants).Where(p => p.VkUserId == vkUser.Id))
+						{
+							participant.VkUserAvatarUrl = vkUser.Photo200Url;
+						}
+					}
+				}
+			}
+
 			var resultEvents = events
 				.Select(_mapper.Map<MyEventModel>)
 				.ToArray();
@@ -112,7 +134,7 @@ namespace YaRyadom.API.Services.Implementations
 			return resultEvents;
 		}
 
-		public async Task<MyEventModel[]> GetAllPaticipationEvents(long vkId, CancellationToken cancellationToken = default)
+		public async Task<MyEventModel[]> GetAllPaticipationEvents(long vkId, VkLanguage vkLanguage, CancellationToken cancellationToken = default)
 		{
 			var events = await _mapper
 			  .ProjectTo<MyEventServiceModel>(
@@ -126,6 +148,24 @@ namespace YaRyadom.API.Services.Implementations
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
 
+			var vkUserIds = events.SelectMany(e => e.Participants.Select(p => p.VkUserId)).ToHashSet();
+
+			for (var i = 0; i < vkUserIds.Count(); i += 100)
+			{
+				var idsToSend = vkUserIds.Skip(i).Take(100).Select(m => m.ToString()).ToArray();
+				var vkResponse = await _vkApi.GetUserInfoAsync(idsToSend, vkLanguage, cancellationToken).ConfigureAwait(false);
+				if (vkResponse.Response != null && vkResponse.Response.Length > 0)
+				{
+					foreach (var vkUser in vkResponse.Response)
+					{
+						foreach (var participant in events.SelectMany(e => e.Participants).Where(p => p.VkUserId == vkUser.Id))
+						{
+							participant.VkUserAvatarUrl = vkUser.Photo200Url;
+						}
+					}
+				}
+			}
+
 			var resultEvents = events
 				.Select(_mapper.Map<MyEventModel>)
 				.ToArray();
@@ -133,7 +173,7 @@ namespace YaRyadom.API.Services.Implementations
 			return resultEvents;
 		}
 
-		public async Task<MyEventModel[]> GetAllMyEventsWithApplications(long vkId, CancellationToken cancellationToken = default)
+		public async Task<MyEventModel[]> GetAllMyEventsWithApplications(long vkId, VkLanguage vkLanguage, CancellationToken cancellationToken = default)
 		{
 			var events = await _mapper
 			  .ProjectTo<MyEventWithApplicationsServiceModel>(
@@ -145,6 +185,24 @@ namespace YaRyadom.API.Services.Implementations
 			  )
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
+
+			var vkUserIds = events.SelectMany(e => e.Participants.Select(p => p.VkUserId)).ToHashSet();
+
+			for (var i = 0; i < vkUserIds.Count(); i += 100)
+			{
+				var idsToSend = vkUserIds.Skip(i).Take(100).Select(m => m.ToString()).ToArray();
+				var vkResponse = await _vkApi.GetUserInfoAsync(idsToSend, vkLanguage, cancellationToken).ConfigureAwait(false);
+				if (vkResponse.Response != null && vkResponse.Response.Length > 0)
+				{
+					foreach (var vkUser in vkResponse.Response)
+					{
+						foreach (var participant in events.SelectMany(e => e.Participants).Where(p => p.VkUserId == vkUser.Id))
+						{
+							participant.VkUserAvatarUrl = vkUser.Photo200Url;
+						}
+					}
+				}
+			}
 
 			var resultEvents = events
 				.Select(_mapper.Map<MyEventModel>)

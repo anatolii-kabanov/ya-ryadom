@@ -10,6 +10,7 @@ using YaRyadom.API.Helpers;
 using YaRyadom.API.Models;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
+using YaRyadom.Vk.Enums;
 
 namespace YaRyadom.API.Controllers
 {
@@ -31,7 +32,8 @@ namespace YaRyadom.API.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetAllPaticipationEvents(long vkUserId, CancellationToken cancellationToken = default)
 		{
-			var result = await _myEventsService.GetAllPaticipationEvents(vkUserId, cancellationToken).ConfigureAwait(false);
+			var vkLanguage = (VkLanguage)Enum.Parse(typeof(VkLanguage), HttpContext.Items[VkParameters.VkLanguage]?.ToString(), true);
+			var result = await _myEventsService.GetAllPaticipationEvents(vkUserId, vkLanguage, cancellationToken).ConfigureAwait(false);
 			return Ok(result);
 		}
 
@@ -41,7 +43,8 @@ namespace YaRyadom.API.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetMyEvents(long vkUserId, CancellationToken cancellationToken = default)
 		{
-			var result = await _myEventsService.GetAllMyEvents(vkUserId, cancellationToken).ConfigureAwait(false);
+			var vkLanguage = (VkLanguage)Enum.Parse(typeof(VkLanguage), HttpContext.Items[VkParameters.VkLanguage]?.ToString(), true);
+			var result = await _myEventsService.GetAllMyEvents(vkUserId, vkLanguage, cancellationToken).ConfigureAwait(false);
 			return Ok(result);
 		}
 
@@ -51,7 +54,8 @@ namespace YaRyadom.API.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetMyEventsWithApplications(long vkUserId, CancellationToken cancellationToken = default)
 		{
-			var result = await _myEventsService.GetAllMyEventsWithApplications(vkUserId, cancellationToken).ConfigureAwait(false);
+			var vkLanguage = (VkLanguage)Enum.Parse(typeof(VkLanguage), HttpContext.Items[VkParameters.VkLanguage]?.ToString(), true);
+			var result = await _myEventsService.GetAllMyEventsWithApplications(vkUserId, vkLanguage, cancellationToken).ConfigureAwait(false);
 			return Ok(result);
 		}
 
