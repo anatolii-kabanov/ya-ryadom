@@ -3,12 +3,14 @@ import { SettingsState } from './state';
 import { SetingsTypes } from './types';
 import { SettingsActions } from './actions';
 import _ from 'lodash';
+import { shallowEqual } from '../../../utils/helpers/shallow-compare.helper';
 
 export const initialState: SettingsState = {
     eventsFilter: {
         radius: 10,
     },
     eventsFilterForm: {
+        selectedTheme: '' as any,
         text: '',
         radius: 10,
     },
@@ -30,36 +32,29 @@ const reducer: Reducer<SettingsState, SettingsActions> = (state = initialState, 
             return newState;
         }
         case SetingsTypes.UPDATE_EVENTS_RADIUS_FILTER: {
-            return {
-                ...state,
-                isClearFilterEnabled: true,
-                eventsFilterForm: { ...state.eventsFilterForm, radius: action.payload }
-            };
+            const newState = _.cloneDeep(state);
+            newState.eventsFilterForm.radius = action.payload;
+            newState.isClearFilterEnabled = !shallowEqual(initialState.eventsFilterForm, newState.eventsFilterForm);
+            return newState;
         }
         case SetingsTypes.UPDATE_EVENTS_THEME_FILTER: {
-            return {
-                ...state,
-                isClearFilterEnabled: true,
-                eventsFilterForm: { ...state.eventsFilterForm, selectedTheme: action.payload }
-            };
+            const newState = _.cloneDeep(state);
+            newState.eventsFilterForm.selectedTheme = action.payload;
+            newState.isClearFilterEnabled = !shallowEqual(initialState.eventsFilterForm, newState.eventsFilterForm);
+            return newState;
         }
         case SetingsTypes.UPDATE_EVENTS_TEXT_FILTER: {
-            return {
-                ...state,
-                isClearFilterEnabled: true,
-                eventsFilterForm: { ...state.eventsFilterForm, text: action.payload }
-            };
+            const newState = _.cloneDeep(state);
+            newState.eventsFilterForm.text = action.payload;
+            newState.isClearFilterEnabled = !shallowEqual(initialState.eventsFilterForm, newState.eventsFilterForm);
+            return newState;
         }
         case SetingsTypes.UPDATE_EVENTS_ADDRESS_FILTER: {
-            return {
-                ...state,
-                isClearFilterEnabled: true,
-                eventsFilterForm: {
-                    ...state.eventsFilterForm,
-                    selectedPosition: action.payload.position,
-                    address: action.payload.address
-                }
-            };
+            const newState = _.cloneDeep(state);
+            newState.eventsFilterForm.selectedPosition = action.payload.position;
+            newState.eventsFilterForm.address = action.payload.address;
+            newState.isClearFilterEnabled = !shallowEqual(initialState.eventsFilterForm, newState.eventsFilterForm);
+            return newState;
         }
         case SetingsTypes.SET_ONLINE_STATUS: {
             const newState = _.cloneDeep(state);
