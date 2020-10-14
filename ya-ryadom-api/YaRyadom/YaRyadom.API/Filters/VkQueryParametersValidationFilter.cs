@@ -20,9 +20,9 @@ namespace YaRyadom.API.Filters
 
 		public override void OnActionExecuting(ActionExecutingContext actionExecutingContext)
 		{
-			string vkUrl = string.IsNullOrWhiteSpace(actionExecutingContext.HttpContext.Request.Headers[Header.VkReferers])
-				? actionExecutingContext.HttpContext.Request.Headers[Header.VkParameters]
-				: actionExecutingContext.HttpContext.Request.Headers[Header.VkReferers];
+			string vkUrl = string.IsNullOrWhiteSpace(actionExecutingContext.HttpContext.Request.Headers[Header.VkParameters])
+				? actionExecutingContext.HttpContext.Request.Headers[Header.VkReferers]
+				: actionExecutingContext.HttpContext.Request.Headers[Header.VkParameters];
 			if (!string.IsNullOrWhiteSpace(vkUrl))
 			{
 				var uri = new Uri(vkUrl);
