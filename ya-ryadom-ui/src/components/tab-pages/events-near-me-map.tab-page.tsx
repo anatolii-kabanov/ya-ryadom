@@ -208,7 +208,6 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                                 lng: this.getLongitude(),
                             }}
                             defaultZoom={14}
-                            distanceToMouse={(pt, m) => 0}
                         >
                             <UserMarker lat={this.getLatitude()} lng={this.getLongitude()}></UserMarker>
                             {this.renderEvents()}

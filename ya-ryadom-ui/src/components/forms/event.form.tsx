@@ -291,8 +291,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                         defaultCenter={{
                             lat: this.getLatitude(), lng: this.getLongitude()
                         }}
-                        onClick={this.onLocationClick}
-                        distanceToMouse={(pt, m) => 0}
+                        onClick={(value) => this.onLocationClick(value)}
                     >
                         {eventForm.selectedPosition?.lat && <Marker lat={eventForm.selectedPosition?.lat} lng={eventForm.selectedPosition?.lng} />}
                     </GoogleMapReact>
