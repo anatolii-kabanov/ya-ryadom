@@ -12,6 +12,7 @@ export const initialState: SettingsState = {
         text: '',
         radius: 10,
     },
+    isClearFilterEnabled: false,
     isOnline: true,
 }
 
@@ -19,7 +20,7 @@ const reducer: Reducer<SettingsState, SettingsActions> = (state = initialState, 
     switch (action.type) {
         case SetingsTypes.CLEAR_EVENTS_FILTER: {
             const newState = _.cloneDeep(state);
-            newState.eventsFilter = { ...initialState.eventsFilter };
+            newState.isClearFilterEnabled = false;
             newState.eventsFilterForm = { ...initialState.eventsFilterForm };
             return newState;
         }
@@ -31,24 +32,28 @@ const reducer: Reducer<SettingsState, SettingsActions> = (state = initialState, 
         case SetingsTypes.UPDATE_EVENTS_RADIUS_FILTER: {
             return {
                 ...state,
+                isClearFilterEnabled: true,
                 eventsFilterForm: { ...state.eventsFilterForm, radius: action.payload }
             };
         }
         case SetingsTypes.UPDATE_EVENTS_THEME_FILTER: {
             return {
                 ...state,
+                isClearFilterEnabled: true,
                 eventsFilterForm: { ...state.eventsFilterForm, selectedTheme: action.payload }
             };
         }
         case SetingsTypes.UPDATE_EVENTS_TEXT_FILTER: {
             return {
                 ...state,
+                isClearFilterEnabled: true,
                 eventsFilterForm: { ...state.eventsFilterForm, text: action.payload }
             };
         }
         case SetingsTypes.UPDATE_EVENTS_ADDRESS_FILTER: {
             return {
                 ...state,
+                isClearFilterEnabled: true,
                 eventsFilterForm: {
                     ...state.eventsFilterForm,
                     selectedPosition: action.payload.position,

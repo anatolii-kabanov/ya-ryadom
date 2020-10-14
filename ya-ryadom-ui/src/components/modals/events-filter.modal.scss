@@ -1,6 +1,11 @@
 .filter-modal {
-  .clear {
-    opacity: 0.4;
+  .clear-btn {
+    cursor: pointer;
+    &-disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: all !important;
+    }
   }
   .radius {
     display: flex;

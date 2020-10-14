@@ -34,6 +34,7 @@ interface OwnProps {
 
 interface PropsFromState {
     filter: EventsFilter;
+    isClearFilterEnabled: boolean;
 }
 
 interface PropsFromDispatch {
@@ -106,7 +107,7 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
     }
 
     render() {
-        const { filter, onClose, clearFilter, id } = this.props;
+        const { filter, onClose, clearFilter, id, isClearFilterEnabled } = this.props;
         return (
             <ModalPage id={id}
                 dynamicContentHeight={true}
@@ -117,12 +118,12 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
                         left={
                             <React.Fragment>
                                 {osname === ANDROID && <PanelHeaderButton onClick={() => onClose()}> <Icon24Cancel /></PanelHeaderButton>}
-                                {osname === IOS && <PanelHeaderButton className="text-primary clear" onClick={() => clearFilter()}>Очистить</PanelHeaderButton>}
+                                {osname === IOS && <PanelHeaderButton className={`text-primary clear-btn${!isClearFilterEnabled ? '-disabled' : ''}`} onClick={() => clearFilter()}>Очистить</PanelHeaderButton>}
                             </React.Fragment>
                         }
                         right={
                             <React.Fragment>
-                                {osname === ANDROID && <PanelHeaderButton className="text-primary clear" onClick={() => clearFilter()}>Очистить</PanelHeaderButton>}
+                                {osname === ANDROID && <PanelHeaderButton className={`text-primary clear-btn${!isClearFilterEnabled ? '-disabled' : ''}`} onClick={() => clearFilter()}>Очистить</PanelHeaderButton>}
                                 {osname === IOS && <PanelHeaderButton onClick={() => onClose()}><Icon24Dismiss /></PanelHeaderButton>}
                             </React.Fragment>
                         }
@@ -159,6 +160,7 @@ class EventsFilterModal extends React.Component<AllProps, State>  {
 
 const mapStateToProps = ({ ui }: AppState, ownProps: OwnProps) => ({
     filter: ui.settings.eventsFilterForm,
+    isClearFilterEnabled: ui.settings.isClearFilterEnabled,
     onClose: ownProps.onClose,
     id: ownProps.id
 })
