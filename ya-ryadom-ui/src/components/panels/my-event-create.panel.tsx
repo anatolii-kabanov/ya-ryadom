@@ -24,7 +24,7 @@ class MyEventCreatePanel extends React.Component<AllProps>  {
         const { id, saveEvent } = this.props;
         return (
             <Panel id={id}>
-                <PanelHeader>Создание события</PanelHeader>
+                <PanelHeader separator={false}>Создание события</PanelHeader>
                 <Group separator="hide">
                     <EventForm onSave={saveEvent}></EventForm>
                 </Group>

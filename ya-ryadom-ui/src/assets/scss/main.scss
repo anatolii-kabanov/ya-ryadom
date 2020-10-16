@@ -126,22 +126,6 @@
   background: $primary-color !important;
 }
 
-/* Panel Header */
-.PanelHeader {
-  .PanelHeader__content span {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
-    text-align: center;
-    color: #000;
-  }
-
-  .PanelHeader__separator {
-    display: none;
-  }
-}
-
 .Textarea textarea:focus,
 .Textarea textarea:active {
   border-radius: 1px solid $primary-color !important;

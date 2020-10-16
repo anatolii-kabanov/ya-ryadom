@@ -42,9 +42,9 @@ interface OwnProps {
 
 interface PropsFromState {
     events: EventNearMe[];
-    userPosition: Geo;
-    vkUserInfo: UserInfo;
-    lastLocation: Position;
+    userPosition: Geo | null;
+    vkUserInfo: UserInfo | null;
+    lastLocation: Position | null | undefined;
     filter: EventsFilter
 }
 
@@ -69,7 +69,7 @@ const createMapOptions = (maps: Maps) => {
 
 class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
 
-    constructor(props) {
+    constructor(props: AllProps) {
         super(props);
         this.state = {
             eventOnMap: null,
@@ -129,12 +129,12 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
         })
     }
 
-    getLatitude = () => {
+    getLatitude = (): number => {
         const { userPosition, lastLocation, filter } = this.props;
         if (filter.selectedPosition) {
             return filter.selectedPosition.latitude;
         }
-        return userPosition?.lat ?? lastLocation?.latitude;
+        return (userPosition?.lat ?? lastLocation?.latitude) || 0;
     }
 
     getLongitude = () => {
@@ -142,7 +142,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
         if (filter.selectedPosition) {
             return filter.selectedPosition.longitude;
         }
-        return userPosition?.long ?? lastLocation?.longitude;
+        return (userPosition?.long ?? lastLocation?.longitude) || 0;
     }
 
     apply(eventId: number) {

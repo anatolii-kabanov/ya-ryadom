@@ -6,24 +6,6 @@
   font-size: 0.8em;
 }
 
-.rc-reviews-caption {
-  position: relative;
-  font-weight: 500;
-  font-size: 1.1em;
-  color: black;
-}
-
-.rc-reviews-bottom {
-  position: relative;
-  top: -0.5em;
-  color: black;
-  white-space: pre-wrap;      /* CSS3 */
-  white-space: -moz-pre-wrap; /* Firefox */
-  white-space: -pre-wrap;     /* Opera <7 */
-  white-space: -o-pre-wrap;   /* Opera 7 */
-  word-wrap: break-word;      /* IE */
-}
-
 .rc-reviews-stars {
   color: $primary-color;
   display: flex;
@@ -42,10 +24,4 @@
 .rc-avatar {
   position: relative;
   top: 1em;
-}
-
-.no-reviews-div {
-  text-align: center;
-  position: relative;
-  top: 25vw;
 }

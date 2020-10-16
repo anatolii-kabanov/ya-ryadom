@@ -19,7 +19,7 @@ import { addNotificaiton } from '../store/ui/notifications/actions';
 import { SnackbarErrorNotification } from '../store/ui/notifications/models';
 import { NOTIFICATION_MESSAGES } from '../utils/constants/notification-messages.constants';
 import { goBack } from '../store/history/actions';
-import { VkStyles } from '../store/ui/settings/state';
+import { VkStyles } from '../store/ui/settings/models';
 
 interface PropsFromState {
     activeView: string;

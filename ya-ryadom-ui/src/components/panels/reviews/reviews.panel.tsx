@@ -58,16 +58,13 @@ class ReviewsPanel extends React.Component<AllProps> {
                             <Group key={review.id} id={review.id}>
                                 <RichCell
                                     disabled
+                                    multiline
                                     before={<Avatar size={56} src={review.vkUserAvatarUrl} className="rc-avatar" />}
-                                    caption={
-                                        <>
-                                            <p className="rc-reviews-caption">{review.userFullName}</p>
-                                            <div className="rc-reviews-bottom">{review.text}</div>
-                                            {this.reviewStars(review.rating)}
-                                        </>
-                                    }
+                                    text={review.text}
+                                    caption={this.reviewStars(review.rating)}
                                 >
                                     <span className="rc-reviews-content">{ALL_THEMES.filter(theme => theme.id === review.themeType)[0].name}</span>
+                                    <p>{review.userFullName}</p>
                                 </RichCell>
                             </Group>
                         )

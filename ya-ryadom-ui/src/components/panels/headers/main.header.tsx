@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 import { AppState } from '../../../store/app-state';
-import { goBack } from '../../../store/history/actions';
 
 interface OwnProps {
     text?: string;
@@ -15,7 +14,6 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    goBack: typeof goBack,
 
 }
 
@@ -26,9 +24,9 @@ const osname = platform();
 class MainHeaderPanel extends React.Component<AllProps>  {
 
     render() {
-        const { text, goBack, firstPage, leftButton } = this.props;
+        const { text, firstPage, leftButton } = this.props;
         return (
-            <PanelHeader
+            <PanelHeader separator={false}
                 left={leftButton || (!firstPage && <PanelHeaderButton onClick={() => window.history.back()}>
                     {osname === IOS ? <Icon28ChevronBack className="nav-icon-selected" /> : <Icon24Back className="nav-icon-selected" />}
                 </PanelHeaderButton>)}
@@ -46,7 +44,7 @@ const mapStateToProps = ({ history }: AppState, ownProps: OwnProps) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    goBack: goBack
+
 }
 
 export default connect(

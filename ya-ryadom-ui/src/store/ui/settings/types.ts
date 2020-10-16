@@ -1,4 +1,4 @@
-export enum SetingsTypes {
+export enum SettingsTypes {
     CLEAR_EVENTS_FILTER = '[Setings] Clear events filter',
     SET_EVENTS_FILTER = '[Setings] Set events filter',
     UPDATE_EVENTS_RADIUS_FILTER = '[Setings] Update events radius filter',
@@ -6,4 +6,6 @@ export enum SetingsTypes {
     UPDATE_EVENTS_TEXT_FILTER = '[Setings] Update events text filter',
     UPDATE_EVENTS_ADDRESS_FILTER = '[Setings] Update events address filter',    
     SET_ONLINE_STATUS = '[Setings] Set online status',
+    UPDATE_VK_STYLES = '[Setings] Update vk styles',
+    SUBSCRIBE_VK_STYLES = '[Setings] Subscribe on VKWebAppUpdateConfig',
 }

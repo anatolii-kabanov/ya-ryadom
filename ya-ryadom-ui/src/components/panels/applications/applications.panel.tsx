@@ -75,7 +75,7 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
         const { id } = this.props;
         return (
             <Panel id={id} className="applications-panel">
-                <PanelHeader>Заявки</PanelHeader>
+                <PanelHeader separator={false}>Заявки</PanelHeader>
                 <Group>
                     <Tabs>
                         <HorizontalScroll>

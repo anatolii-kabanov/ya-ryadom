@@ -58,7 +58,7 @@ class MyProfilePanel extends React.Component<AllProps>{
         const { id, vkUserInfo, goForwardView, currentUser } = this.props;
         return (
             <Panel className="my-profile" id={id}>
-                <PanelHeader>Мой профиль</PanelHeader>
+                <PanelHeader separator={false}>Мой профиль</PanelHeader>
                 <Group separator="hide">
                     <RichCell
                         disabled

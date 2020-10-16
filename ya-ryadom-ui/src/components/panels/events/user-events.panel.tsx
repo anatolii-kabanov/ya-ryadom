@@ -88,9 +88,8 @@ class UserEventsPanel extends React.Component<AllProps> {
                         mode="secondary">{ALL_THEMES.filter(theme => theme.id === event.themeType)[0].name}</Header>
                     <RichCell
                         disabled
-                        caption={<span
-                            className="rc-caption">{event.description}</span>}
-
+                        multiline={true}
+                        text={event.description}
                         bottom={
                             <>
                                 <p className="rc-bottom">
