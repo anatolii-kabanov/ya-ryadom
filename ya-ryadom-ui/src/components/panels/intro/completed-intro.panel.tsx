@@ -9,7 +9,7 @@ import {
 } from '@vkontakte/vkui';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
-import { goForward } from '../../../store/history/actions';
+import { reset, goForward } from '../../../store/history/actions';
 import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
@@ -24,7 +24,8 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    goForward: typeof goForward
+    reset: typeof reset,
+    goForward: typeof goForward,
 }
 
 interface State {
@@ -35,21 +36,21 @@ type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class CompletedIntroPanel extends React.Component<AllProps, State>  {
 
-    constructor(props) {
+    constructor(props: AllProps) {
         super(props);
         this.onClickNext = this.onClickNext.bind(this);
         this.onCreateEventClick = this.onCreateEventClick.bind(this);
     }
 
     onClickNext = () => {
-        const { goForward } = this.props;
-        goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP));
+        const { reset } = this.props;
+        reset(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP));
     }
 
     onCreateEventClick = () => {
-        const { goForward } = this.props;
+        const { reset, goForward } = this.props;
         // Just because after create event user returning back on previous page.
-        goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP));
+        reset(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL, TABS.EVENTS_MAP));
         goForward(new VkHistoryModel(VIEWS.MY_EVENT_CREATE_VIEW, PANELS.CREATE_EVENT_PANEL));
     }
 
@@ -80,7 +81,8 @@ const mapStateToProps = ({ }: AppState, ownProps: OwnProps) => ({
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    goForward: goForward
+    goForward: goForward,
+    reset: reset,
 }
 
 export default connect(

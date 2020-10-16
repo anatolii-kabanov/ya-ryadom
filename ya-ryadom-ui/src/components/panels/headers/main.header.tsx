@@ -29,7 +29,7 @@ class MainHeaderPanel extends React.Component<AllProps>  {
         const { text, goBack, firstPage, leftButton } = this.props;
         return (
             <PanelHeader
-                left={leftButton || (!firstPage && <PanelHeaderButton onClick={() => goBack()}>
+                left={leftButton || (!firstPage && <PanelHeaderButton onClick={() => window.history.back()}>
                     {osname === IOS ? <Icon28ChevronBack className="nav-icon-selected" /> : <Icon24Back className="nav-icon-selected" />}
                 </PanelHeaderButton>)}
             >

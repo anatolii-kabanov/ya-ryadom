@@ -1,3 +1,4 @@
+import { AppearanceSchemeType, AppearanceType } from "@vkontakte/vk-bridge";
 import { ThemeType } from "../../../utils/enums/theme-type.enum";
 import { Position } from '../../authentication/models';
 
@@ -6,6 +7,7 @@ export interface SettingsState {
     eventsFilterForm: EventsFilter,
     isClearFilterEnabled: boolean;
     isOnline: boolean;
+    vkStyles: VkStyles;
 }
 
 export interface EventsFilter {
@@ -14,4 +16,9 @@ export interface EventsFilter {
     selectedTheme?: ThemeType;
     selectedPosition?: Position;
     address?: string;
+}
+
+export interface VkStyles {
+    schemeType: AppearanceSchemeType;
+    appearance: AppearanceType;
 }

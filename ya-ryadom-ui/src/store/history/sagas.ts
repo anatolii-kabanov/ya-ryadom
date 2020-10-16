@@ -8,9 +8,10 @@ import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
 import { setProfileVkId } from '../users/actions';
 
-function* handleGoForward() {
+function* handleGoForward(action: ReturnType<typeof goForward>) {
     try {
         const historyLength = yield select(getHistoryLength);
+        window.history.pushState(action.payload, action.payload.view);
         if (historyLength === 1)
             yield vkBridge.send('VKWebAppEnableSwipeBack');
     } catch (error) {
@@ -25,8 +26,11 @@ function* watchGoForwardRequest() {
 function* handleGoBack() {
     try {
         const historyLength = yield select(getHistoryLength);
-        if (historyLength === 2)
+        if (historyLength === 1)
             yield vkBridge.send('VKWebAppDisableSwipeBack');
+        if (historyLength === 0) {
+            yield vkBridge.send("VKWebAppClose", { "status": "success" });
+        }
     } catch (error) {
 
     }
@@ -47,7 +51,7 @@ function* watchOpenUserProfile() {
 
 function* historySagas() {
     yield all([
-        fork(watchGoForwardRequest), 
+        fork(watchGoForwardRequest),
         fork(watchGoBackRequest),
         fork(watchOpenUserProfile)])
 }

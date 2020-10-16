@@ -16,6 +16,10 @@ export const initialState: SettingsState = {
     },
     isClearFilterEnabled: false,
     isOnline: true,
+    vkStyles: {
+        schemeType: 'bright_light',
+        appearance: 'light'
+    }
 }
 
 const reducer: Reducer<SettingsState, SettingsActions> = (state = initialState, action: SettingsActions) => {

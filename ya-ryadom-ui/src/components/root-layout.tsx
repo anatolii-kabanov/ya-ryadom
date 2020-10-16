@@ -18,17 +18,21 @@ import { setOnlineStatus } from '../store/ui/settings/actions';
 import { addNotificaiton } from '../store/ui/notifications/actions';
 import { SnackbarErrorNotification } from '../store/ui/notifications/models';
 import { NOTIFICATION_MESSAGES } from '../utils/constants/notification-messages.constants';
+import { goBack } from '../store/history/actions';
+import { VkStyles } from '../store/ui/settings/state';
 
 interface PropsFromState {
     activeView: string;
     spinnerVisible: boolean;
     currentUser: CurrentUser | null;
+    vkStyles: VkStyles;
 }
 
 interface PropsFromDispatch {
     getVkUserInfo: typeof fetchVkUserInfoRequest,
     setOnlineStatus: typeof setOnlineStatus,
-    addNotification: typeof addNotificaiton
+    addNotification: typeof addNotificaiton,
+    goBack: typeof goBack,
 }
 
 
@@ -39,16 +43,19 @@ class RootLayout extends React.Component<AllProps>  {
     constructor(props: AllProps) {
         super(props);
         this.handleNetworkChange = this.handleNetworkChange.bind(this);
+        this.handleGoBack = this.handleGoBack.bind(this);
     }
 
     componentDidMount() {
         const { getVkUserInfo } = this.props;
         getVkUserInfo();
+        window.addEventListener('popstate', this.handleGoBack);
         window.addEventListener('offline', this.handleNetworkChange);
         window.addEventListener('online', this.handleNetworkChange);
     }
 
     componentWillUnmount() {
+        window.removeEventListener('popstate', this.handleGoBack);
         window.removeEventListener('offline', this.handleNetworkChange);
         window.removeEventListener('online', this.handleNetworkChange);
     }
@@ -59,6 +66,11 @@ class RootLayout extends React.Component<AllProps>  {
         if (!window.navigator.onLine) {
             addNotification(new SnackbarErrorNotification(NOTIFICATION_MESSAGES.CHECK_INTERNET_CONNECTION));
         }
+    }
+
+    handleGoBack = () => {
+        const { goBack } = this.props;
+        goBack();
     }
 
     renderLayout() {
@@ -84,11 +96,11 @@ class RootLayout extends React.Component<AllProps>  {
     }
 
     render() {
-        const { currentUser } = this.props;
+        const { currentUser, vkStyles } = this.props;
         return (
             !currentUser
                 ? <ScreenSpinner />
-                : <ConfigProvider>
+                : <ConfigProvider isWebView={true} scheme={vkStyles.schemeType} appearance={vkStyles.appearance}>
                     {this.renderLayout()}
                     <MainSnackbar />
                 </ConfigProvider>
@@ -99,13 +111,15 @@ class RootLayout extends React.Component<AllProps>  {
 const mapStateToProps = ({ history, ui, authentication }: AppState) => ({
     activeView: history.currentViewPanel.view,
     spinnerVisible: ui.spinner.spinnerVisible,
-    currentUser: authentication.currentUser
+    currentUser: authentication.currentUser,
+    vkStyles: ui.settings.vkStyles,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
     getVkUserInfo: fetchVkUserInfoRequest,
     setOnlineStatus: setOnlineStatus,
-    addNotification: addNotificaiton
+    addNotification: addNotificaiton,
+    goBack: goBack,
 }
 
 export default connect(

@@ -33,6 +33,7 @@ interface PropsFromDispatch {
 
 interface State {
     userLocation: Position | null;
+    address: string;
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
@@ -42,7 +43,8 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
     constructor(props) {
         super(props);
         this.state = {
-            userLocation: null
+            userLocation: null,
+            address: ''
         };
         this.onClickNext = this.onClickNext.bind(this);
         this.onLocationChanged = this.onLocationChanged.bind(this);
@@ -57,15 +59,16 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
         }
     }
 
-    onLocationChanged = (location: Position) => {
+    onLocationChanged = (location: Position, address: string) => {
         this.setState({
-            userLocation: location
+            userLocation: location,
+            address: address
         })
     }
 
     render() {
         const { id, isOnline } = this.props;
-        const { userLocation } = this.state;
+        const { userLocation, address } = this.state;
         return (
             <Panel id={id} className="select-city-intro-panel">
                 <PanelHeader separator={false}>
@@ -73,7 +76,7 @@ class SelectCityIntroPanel extends React.Component<AllProps, State>  {
                 <Div><Title level="3" weight="bold" className="title text-center">Выберите город</Title ></Div>
                 <Group separator="hide">
                     <Div>
-                        <AutocompleteMap isOnline={isOnline} type="(cities)" loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
+                        <AutocompleteMap isOnline={isOnline} type="(cities)" address={address} loadMaps={true} onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                     </Div>
                 </Group>
                 <Group separator="hide" className="btn-next-container">
