@@ -6,7 +6,6 @@
     "@vkontakte/icons": "^1.41.1",
     "@vkontakte/vk-bridge": "^2.3.0",
     "@vkontakte/vkui": "^3.12.6",
-    "@vkontakte/vkui-connect": "^1.5.4",
     "google-map-react": "^2.1.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

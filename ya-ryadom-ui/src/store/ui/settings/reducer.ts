@@ -71,6 +71,11 @@ const reducer: Reducer<SettingsState, SettingsActions> = (state = initialState, 
             newState.vkStyles = action.payload;
             return newState;
         }
+        case SettingsTypes.REQUEST_IS_WEBVIEW_SUCCESS: {
+            const newState = _.cloneDeep(state);
+            newState.isWebView = action.payload;
+            return newState;
+        }
         default: {
             return state
         }

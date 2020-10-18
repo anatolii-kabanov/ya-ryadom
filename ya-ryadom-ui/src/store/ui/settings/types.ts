@@ -7,5 +7,6 @@ export enum SettingsTypes {
     UPDATE_EVENTS_ADDRESS_FILTER = '[Setings] Update events address filter',    
     SET_ONLINE_STATUS = '[Setings] Set online status',
     UPDATE_VK_STYLES = '[Setings] Update vk styles',
-    SUBSCRIBE_VK_STYLES = '[Setings] Subscribe on VKWebAppUpdateConfig',
+    REQUEST_IS_WEBVIEW = '[Setings] Send vk bridge is webview request',
+    REQUEST_IS_WEBVIEW_SUCCESS = '[Setings] Send vk bridge is webview request success',
 }

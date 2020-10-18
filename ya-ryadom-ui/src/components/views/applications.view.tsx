@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import vkBridge from '@vkontakte/vk-bridge';
-import { View, ActionSheet, ActionSheetItem, platform, IOS, PopoutWrapper } from '@vkontakte/vkui';
+import { View, ActionSheet, ActionSheetItem, platform, IOS } from '@vkontakte/vkui';
 import { PANELS } from '../../utils/constants/panel.constants';
 import { AppState } from "../../store/app-state";
 import ApplicationsPanel from '../panels/applications/applications.panel';
@@ -39,8 +39,8 @@ export class ApplicationsView extends React.Component<AllProps, State>  {
     }
 
     shareEvent = (eventId: number) => {
-        //TODO need to make const
-        vkBridge.send('VKWebAppShare', { 'link': `https://vk.com/app7508849#${eventId}` })
+        const app = process.env.NODE_ENV === 'development' ? 'app7528592' : 'app7508849';
+        vkBridge.send('VKWebAppShare', { 'link': `https://vk.com/${app}#eventId=${eventId}` })
     }
 
     revokeMyEvent = (eventId: number) => {

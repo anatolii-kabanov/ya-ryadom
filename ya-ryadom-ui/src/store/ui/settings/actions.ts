@@ -14,6 +14,9 @@ export const setOnlineStatus = (payload: boolean) => action(SettingsTypes.SET_ON
 
 export const updateVkStyles = (payload: VkStyles) => action(SettingsTypes.UPDATE_VK_STYLES, payload);
 
+export const requestIsWebView = () => action(SettingsTypes.REQUEST_IS_WEBVIEW);
+export const requestIsWebViewSuccess = (payload: boolean) => action(SettingsTypes.REQUEST_IS_WEBVIEW_SUCCESS, payload);
+
 export type SettingsActions = ActionType<
     typeof clearEventsFilter |
     typeof setEventsFilter |
@@ -22,5 +25,6 @@ export type SettingsActions = ActionType<
     typeof updateEventsTextFilter |
     typeof updateEventsAddressFilter |
     typeof setOnlineStatus |
-    typeof updateVkStyles
+    typeof updateVkStyles |
+    typeof requestIsWebViewSuccess
 >;

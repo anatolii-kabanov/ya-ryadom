@@ -1,8 +1,23 @@
-import { all, fork, put, call, take } from 'redux-saga/effects';
+import { all, fork, put, call, take, takeEvery } from 'redux-saga/effects';
 import vkBridge from '@vkontakte/vk-bridge';
-import { updateVkStyles } from './actions';
+import { requestIsWebViewSuccess, updateVkStyles } from './actions';
 import { eventChannel } from 'redux-saga';
 import { VkStyles } from './models';
+import { SettingsTypes } from './types';
+
+function* handleVkIsWebViewRequest() {
+    try {
+        const result: boolean = yield vkBridge.isWebView();
+        yield put(requestIsWebViewSuccess(result));
+    } catch (error) {
+       
+    }
+}
+
+function* watchVkIsWebViewRequest() {
+    yield takeEvery(SettingsTypes.REQUEST_IS_WEBVIEW, handleVkIsWebViewRequest)
+}
+
 
 function initVkAppSettingsEvents() {
     return eventChannel(eventEmmiter => {
@@ -37,7 +52,8 @@ function* vkListener() {
 
 function* settingsSagas() {
     yield all([
-        fork(vkListener)
+        fork(vkListener),
+        fork(watchVkIsWebViewRequest)
     ])
 }
 

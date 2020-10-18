@@ -14,7 +14,7 @@ import GeneralView from './views/general.view';
 import { CurrentUser } from '../store/authentication/models';
 import MyEventCreateView from "./views/my-events-create.view";
 import MainSnackbar from '../components/snackbars/main.snackbar';
-import { setOnlineStatus } from '../store/ui/settings/actions';
+import { requestIsWebView, setOnlineStatus } from '../store/ui/settings/actions';
 import { addNotificaiton } from '../store/ui/notifications/actions';
 import { SnackbarErrorNotification } from '../store/ui/notifications/models';
 import { NOTIFICATION_MESSAGES } from '../utils/constants/notification-messages.constants';
@@ -26,6 +26,7 @@ interface PropsFromState {
     spinnerVisible: boolean;
     currentUser: CurrentUser | null;
     vkStyles: VkStyles;
+    isWebView: boolean;
 }
 
 interface PropsFromDispatch {
@@ -33,6 +34,7 @@ interface PropsFromDispatch {
     setOnlineStatus: typeof setOnlineStatus,
     addNotification: typeof addNotificaiton,
     goBack: typeof goBack,
+    requestIsWebView: typeof requestIsWebView,
 }
 
 
@@ -47,11 +49,13 @@ class RootLayout extends React.Component<AllProps>  {
     }
 
     componentDidMount() {
-        const { getVkUserInfo } = this.props;
+        const { getVkUserInfo, requestIsWebView } = this.props;
         getVkUserInfo();
+        requestIsWebView();
         window.addEventListener('popstate', this.handleGoBack);
         window.addEventListener('offline', this.handleNetworkChange);
         window.addEventListener('online', this.handleNetworkChange);
+        this.setViewToRender();
     }
 
     componentWillUnmount() {
@@ -71,6 +75,28 @@ class RootLayout extends React.Component<AllProps>  {
     handleGoBack = () => {
         const { goBack } = this.props;
         goBack();
+    }
+
+    getLocationHash() {
+        return window.location.hash.replace('#', '');
+    }
+
+    getObjectUrlString(hash: string): { [key: string]: any } | null {
+        let search = hash;
+        let objectUrl = search === "" ? null : search.split("&").reduce((prev, curr) => {
+            const [key, value] = curr.split("=");
+            prev[decodeURIComponent(key)] = decodeURIComponent(value);
+            return prev;
+        }, {});
+        return objectUrl
+    }
+
+    setViewToRender() {
+        const stringHash = this.getLocationHash();
+        const objectParametrs = this.getObjectUrlString(stringHash);
+        if (objectParametrs !== null && objectParametrs.eventId) {
+
+        }
     }
 
     renderLayout() {
@@ -96,14 +122,18 @@ class RootLayout extends React.Component<AllProps>  {
     }
 
     render() {
-        const { currentUser, vkStyles } = this.props;
+        const { currentUser, vkStyles, isWebView } = this.props;
         return (
-            !currentUser
-                ? <ScreenSpinner />
-                : <ConfigProvider isWebView={true} scheme={vkStyles.schemeType} appearance={vkStyles.appearance}>
-                    {this.renderLayout()}
-                    <MainSnackbar />
-                </ConfigProvider>
+            <ConfigProvider isWebView={isWebView} scheme={vkStyles.schemeType} appearance={vkStyles.appearance}>
+                {
+                    !currentUser
+                        ? <ScreenSpinner />
+                        : <React.Fragment>
+                            {this.renderLayout()}
+                            < MainSnackbar />
+                        </React.Fragment>
+                }
+            </ConfigProvider>
         )
     }
 }
@@ -113,6 +143,7 @@ const mapStateToProps = ({ history, ui, authentication }: AppState) => ({
     spinnerVisible: ui.spinner.spinnerVisible,
     currentUser: authentication.currentUser,
     vkStyles: ui.settings.vkStyles,
+    isWebView: ui.settings.isWebView,
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
@@ -120,6 +151,7 @@ const mapDispatchToProps: PropsFromDispatch = {
     setOnlineStatus: setOnlineStatus,
     addNotification: addNotificaiton,
     goBack: goBack,
+    requestIsWebView: requestIsWebView,
 }
 
 export default connect(

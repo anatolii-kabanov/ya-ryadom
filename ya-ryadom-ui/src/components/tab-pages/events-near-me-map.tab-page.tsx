@@ -94,23 +94,6 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
         }
     }
 
-    componentDidMount() {
-
-    }
-
-    componentWillMount() {
-        // if opened by sharable event link
-        if (window.location.hash) {
-            this.setState({
-                eventOnMap: {
-                    id: Number(window.location.hash.slice(1))
-                }
-                // don't be angry :D I'll rewrite later
-            }, () => window.location.hash = '');
-
-        }
-    }
-
     updateEvents = debounce((e: any) => {
         const { fetchList, vkUserInfo, filter } = this.props;
         fetchList({
