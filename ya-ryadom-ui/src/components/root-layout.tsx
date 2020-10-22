@@ -18,7 +18,7 @@ import { requestIsWebView, setOnlineStatus } from '../store/ui/settings/actions'
 import { addNotificaiton } from '../store/ui/notifications/actions';
 import { SnackbarErrorNotification } from '../store/ui/notifications/models';
 import { NOTIFICATION_MESSAGES } from '../utils/constants/notification-messages.constants';
-import { goBack } from '../store/history/actions';
+import { goBack, openEventById } from '../store/history/actions';
 import { VkStyles } from '../store/ui/settings/models';
 
 interface PropsFromState {
@@ -35,6 +35,7 @@ interface PropsFromDispatch {
     addNotification: typeof addNotificaiton,
     goBack: typeof goBack,
     requestIsWebView: typeof requestIsWebView,
+    openEventById: typeof openEventById,
 }
 
 
@@ -92,10 +93,11 @@ class RootLayout extends React.Component<AllProps>  {
     }
 
     setViewToRender() {
+        const { openEventById } = this.props;
         const stringHash = this.getLocationHash();
         const objectParametrs = this.getObjectUrlString(stringHash);
         if (objectParametrs !== null && objectParametrs.eventId) {
-
+            // openEventById(objectParametrs.eventId);
         }
     }
 
@@ -152,6 +154,7 @@ const mapDispatchToProps: PropsFromDispatch = {
     addNotification: addNotificaiton,
     goBack: goBack,
     requestIsWebView: requestIsWebView,
+    openEventById: openEventById,
 }
 
 export default connect(

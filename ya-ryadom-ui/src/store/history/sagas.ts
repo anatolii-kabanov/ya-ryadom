@@ -2,11 +2,12 @@ import { all, fork, takeEvery, select, put, takeLatest } from 'redux-saga/effect
 import vkBridge from '@vkontakte/vk-bridge';
 import { HistoryTypes } from './types';
 import { getHistoryLength } from './reducer';
-import { openUserProfile, goForward } from './actions';
+import { openUserProfile, goForward, openEventById, moveToPrevious } from './actions';
 import { VkHistoryModel } from './models';
 import { VIEWS } from '../../utils/constants/view.constants';
 import { PANELS } from '../../utils/constants/panel.constants';
 import { setProfileVkId } from '../users/actions';
+import { fetchEventByIdRequest } from '../events/events-near-me/actions';
 
 function* handleGoForward(action: ReturnType<typeof goForward>) {
     try {
@@ -26,10 +27,12 @@ function* watchGoForwardRequest() {
 function* handleGoBack() {
     try {
         const historyLength = yield select(getHistoryLength);
-        if (historyLength === 1)
+        if (historyLength === 1) {
             yield vkBridge.send('VKWebAppDisableSwipeBack');
-        if (historyLength === 0) {
             yield vkBridge.send("VKWebAppClose", { "status": "success" });
+        }
+        if (historyLength > 1) {
+            yield put(moveToPrevious());
         }
     } catch (error) {
 
@@ -49,11 +52,22 @@ function* watchOpenUserProfile() {
     yield takeLatest(HistoryTypes.OPEN_USER_PROFILE, handleOpenUserProfile)
 }
 
+function* handleOpenEventById(action: ReturnType<typeof openEventById>) {
+    yield put(fetchEventByIdRequest(action.payload));
+    yield put(goForward(new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL)));
+}
+
+function* watchOpenEventById() {
+    yield takeLatest(HistoryTypes.OPEN_EVENT_BY_ID, handleOpenEventById)
+}
+
 function* historySagas() {
     yield all([
         fork(watchGoForwardRequest),
         fork(watchGoBackRequest),
-        fork(watchOpenUserProfile)])
+        fork(watchOpenUserProfile),
+        fork(watchOpenEventById)
+    ])
 }
 
 export default historySagas;

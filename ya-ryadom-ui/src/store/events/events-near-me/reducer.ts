@@ -3,28 +3,31 @@ import { EventsNearMeState } from './state';
 import { EventsNearMeTypes } from './types';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { EventsNearMeActions } from './actions';
+import _ from 'lodash';
 
 export const initialState: EventsNearMeState = {
     eventsList: [],
+    sharedEvents: {},
     isLoading: false,
 }
 
 const reducer: Reducer<EventsNearMeState, EventsNearMeActions> = (state = initialState, action: EventsNearMeActions) => {
     switch (action.type) {
         case EventsNearMeTypes.FETCH_LIST_SUCCESS: {
-            return { ...state, eventsList: action.payload.sort((a, b) => a.distance - b.distance) }
+            const newState = _.cloneDeep(state);
+            newState.eventsList = action.payload;
+            return newState;
         }
         case EventsNearMeTypes.SET_SENT_STATUS: {
-            const index = state.eventsList.findIndex(a => a.id === action.payload);
-            const event = { ...state.eventsList[index] };
-            event.applicationStatus = ApplicationStatus.sent;
-            return {
-                ...state, eventsList: [
-                    ...state.eventsList.slice(0, index),
-                    event,
-                    ...state.eventsList.slice(index + 1),
-                ]
-            }
+            const newState = _.cloneDeep(state);
+            const index = newState.eventsList.findIndex(a => a.id === action.payload);
+            newState.eventsList[index].applicationStatus = ApplicationStatus.sent;
+            return newState;
+        }
+        case EventsNearMeTypes.FETCH_EVENT_BY_ID_SUCCESS: {
+            const newState = _.cloneDeep(state);
+            newState.sharedEvents[action.payload.id] = action.payload;
+            return newState;
         }
         default: {
             return state

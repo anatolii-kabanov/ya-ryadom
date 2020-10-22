@@ -1,15 +1,19 @@
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { EventsNearMeTypes } from './types';
 import {
+    fetchEventByIdError,
+    fetchEventByIdRequest,
     fetchListError,
+    fetchListRequest,
     fetchListSuccess,
 } from './actions'
 import { callApi } from '../../../utils/api';
 import { showSpinner, hideSpinner } from '../../ui/spinner/actions';
+import { getVkUserId } from '../../authentication/reducer';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/events-near-me`;
 
-function* handleFetch(action) {
+function* handleFetch(action: ReturnType<typeof fetchListRequest>) {
     try {
         yield put(showSpinner());
         const result = yield call(callApi, 'POST', API_ENDPOINT, '', action.payload);
@@ -34,9 +38,40 @@ function* watchFetchRequest() {
     yield takeEvery(EventsNearMeTypes.FETCH_LIST, handleFetch)
 }
 
+function* handleFetchEventByIdRequest(action: ReturnType<typeof fetchEventByIdRequest>) {
+    try {
+        yield put(showSpinner());
+        const vkUserId = yield select(getVkUserId);
+        const model = {
+            vkUserId,
+            eventId: action.payload
+        };
+        const result = yield call(callApi, 'POST', API_ENDPOINT, '/event-by-id', model);
+
+        if (result.errors) {
+            yield put(fetchEventByIdError(result.errors));
+        } else {
+            yield put(fetchEventByIdRequest(result));
+        }
+    } catch (error) {
+        if (error instanceof Error && error.stack) {
+            yield put(fetchEventByIdError(error.stack));
+        } else {
+            yield put(fetchEventByIdError('An unknown error occured.'));
+        }
+    } finally {
+        yield put(hideSpinner());
+    }
+}
+
+function* watchFetchEventByIdRequest() {
+    yield takeEvery(EventsNearMeTypes.FETCH_EVENT_BY_ID, handleFetchEventByIdRequest)
+}
+
 function* eventsNearMeSagas() {
     yield all([
         fork(watchFetchRequest),
+        fork(watchFetchEventByIdRequest)
     ])
 }
 
