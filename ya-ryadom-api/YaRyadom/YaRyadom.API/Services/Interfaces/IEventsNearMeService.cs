@@ -10,5 +10,7 @@ namespace YaRyadom.API.Services.Interfaces
 	public interface IEventsNearMeService : IBaseService<YaRyadomEvent>
 	{
 		Task<YaRyadomEventModel[]> GetAllEventsByDistance(EventsRequestModel model, VkLanguage vkLanguage = VkLanguage.Ru, CancellationToken cancellationToken = default);
+
+		Task<YaRyadomEventModel> GetEventById(EventRequestModel model, VkLanguage vkLanguage = VkLanguage.Ru, CancellationToken cancellationToken = default);
 	}
 }

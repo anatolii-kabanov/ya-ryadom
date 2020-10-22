@@ -81,6 +81,7 @@ namespace YaRyadom.API.Services.Implementations
 					.Select(mm => (ApplicationStatusModel)mm.Status)
 					.FirstOrDefault()
 			})
+			.OrderBy(m => m.Distance)
 			.ToArrayAsync(cancellationToken)
 			.ConfigureAwait(false);
 
@@ -97,7 +98,7 @@ namespace YaRyadom.API.Services.Implementations
 						foreach (var eventNearMe in events.Where(e => e.VkUserOwnerId == vkUser.Id))
 						{
 							eventNearMe.VkUserAvatarUrl = vkUser.Photo200Url;
-							eventNearMe.UserFullName = vkUser.FirstName + ' ' + vkUser.LastName;
+							eventNearMe.UserFullName = $"{vkUser.FirstName} {vkUser.LastName}";
 						}
 					}
 				}
@@ -108,6 +109,49 @@ namespace YaRyadom.API.Services.Implementations
 				.ToArray();
 
 			return resultEvents;
+		}
+
+		public async Task<YaRyadomEventModel> GetEventById(EventRequestModel model, VkLanguage vkLanguage = VkLanguage.Ru, CancellationToken cancellationToken = default)
+		{
+			var userPosition = _geometryFactory.CreatePoint(new Coordinate(model.Longitude, model.Latitude));
+
+			var yaRyadomEvent = await TableNoTracking
+			.Where(m => m.Id == model.EventId)
+			.Select(m => new YaRyadomEventServiceModel
+			{
+				Id = m.Id,
+				Title = m.Title,
+				Description = m.Description,
+				Date = m.Date,
+				Time = m.Time,
+				MaxQuantiyty = m.MaxQuantity,
+				Revoked = m.Revoked,
+				VkUserOwnerId = m.YaRyadomUserOwner.VkId,
+				Location = m.Location,
+				Distance = m.Location.Distance(userPosition),
+				VkUserAvatarUrl = m.YaRyadomUserOwner.VkUserAvatarUrl,
+				ThemeType = m.YaRyadomEventThemes.Select(mm => (ThemeTypeModel)mm.Type).FirstOrDefault(),
+				UserFullName = m.YaRyadomUserOwner.FirstName + ' ' + m.YaRyadomUserOwner.LastName,
+				ApplicationStatus = m.YaRyadomUserApplications
+					.Where(mm => mm.YaRyadomUserRequested.VkId == model.VkUserId)
+					.Select(mm => (ApplicationStatusModel)mm.Status)
+					.FirstOrDefault()
+			})
+			.FirstOrDefaultAsync(cancellationToken)
+			.ConfigureAwait(false);
+
+			var vkResponse = await _vkApi.GetUserInfoAsync(new string[] { yaRyadomEvent.VkUserOwnerId.ToString() }, vkLanguage, cancellationToken).ConfigureAwait(false);
+
+			if (vkResponse.Response != null && vkResponse.Response.Length > 0)
+			{
+				var vkUser = vkResponse.Response.First();
+				yaRyadomEvent.VkUserAvatarUrl = vkUser.Photo200Url;
+				yaRyadomEvent.UserFullName = $"{vkUser.FirstName} {vkUser.LastName}";
+			}
+
+			var result = _mapper.Map<YaRyadomEventModel>(yaRyadomEvent);
+
+			return result;
 		}
 	}
 }

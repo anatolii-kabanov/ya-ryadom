@@ -18,5 +18,7 @@ namespace YaRyadom.API.Models
 		public int EventId { get; set; }
 
 		public string VkUserAvatarUrl { get; set; }
+
+		public long VkUserId { get; set; }
 	}
 }

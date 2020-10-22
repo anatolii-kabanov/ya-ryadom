@@ -9,6 +9,7 @@ using YaRyadom.API.Filters;
 using YaRyadom.API.Helpers;
 using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
+using YaRyadom.Vk.Enums;
 
 namespace YaRyadom.API.Controllers
 {
@@ -30,7 +31,8 @@ namespace YaRyadom.API.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetMyReviews(long vkUserId, CancellationToken cancellationToken = default)
 		{
-			var result = await _reviewsService.GetMineReviewsAsync(vkUserId, cancellationToken).ConfigureAwait(false);
+			var vkLanguage = (VkLanguage)Enum.Parse(typeof(VkLanguage), HttpContext.Items[VkParameters.VkLanguage]?.ToString(), true);
+			var result = await _reviewsService.GetMineReviewsAsync(vkUserId, vkLanguage, cancellationToken).ConfigureAwait(false);
 			return Ok(result);
 		}
 
@@ -40,7 +42,8 @@ namespace YaRyadom.API.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetReviewsAboutMe(long vkUserId, CancellationToken cancellationToken = default)
 		{
-			var result = await _reviewsService.GetReviewsAboutMeAsync(vkUserId, cancellationToken).ConfigureAwait(false);
+			var vkLanguage = (VkLanguage)Enum.Parse(typeof(VkLanguage), HttpContext.Items[VkParameters.VkLanguage]?.ToString(), true);
+			var result = await _reviewsService.GetReviewsAboutMeAsync(vkUserId, vkLanguage, cancellationToken).ConfigureAwait(false);
 			return Ok(result);
 		}
 

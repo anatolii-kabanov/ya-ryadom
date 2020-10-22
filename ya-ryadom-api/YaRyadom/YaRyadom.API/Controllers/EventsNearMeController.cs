@@ -39,5 +39,18 @@ namespace YaRyadom.API.Controllers
 			return Ok(events);
 		}
 
+		[AllowAnonymous]
+		[HttpPost("event-by-id")]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[VkUserIdFilter]
+		public async Task<IActionResult> GetEventById([FromBody] EventRequestModel requestModel, CancellationToken cancellationToken = default)
+		{
+			var vkLanguage = (VkLanguage)Enum.Parse(typeof(VkLanguage), HttpContext.Items[VkParameters.VkLanguage]?.ToString(), true);
+			var yaRyadomEvent = await _eventsNearMeService
+				.GetEventById(requestModel, vkLanguage, cancellationToken)
+				.ConfigureAwait(false);
+			return Ok(yaRyadomEvent);
+		}
 	}
 }

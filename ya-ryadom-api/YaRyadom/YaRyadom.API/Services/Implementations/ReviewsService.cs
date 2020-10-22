@@ -9,16 +9,20 @@ using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
 using YaRyadom.Domain.DbContexts;
 using YaRyadom.Domain.Entities;
+using YaRyadom.Vk;
+using YaRyadom.Vk.Enums;
 
 namespace YaRyadom.API.Services.Implementations
 {
 	public class ReviewsService : BaseService<YaRyadomReview>, IReviewsService
 	{
 		private readonly IMapper _mapper;
+		private readonly IVkApi _vkApi;
 
-		public ReviewsService(YaRyadomDbContext dbContext, IMapper mapper) : base(dbContext)
+		public ReviewsService(YaRyadomDbContext dbContext, IMapper mapper, IVkApi vkApi) : base(dbContext)
 		{
 			_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+			_vkApi = vkApi ?? throw new ArgumentNullException(nameof(vkApi));
 		}
 
 		public async Task<bool> AddAsync(UserReviewRequestModel model, CancellationToken cancellationToken = default)
@@ -68,7 +72,7 @@ namespace YaRyadom.API.Services.Implementations
 			return avgRating;
 		}
 
-		public async Task<UserReviewModel[]> GetMineReviewsAsync(long vkId, CancellationToken cancellationToken = default)
+		public async Task<UserReviewModel[]> GetMineReviewsAsync(long vkId, VkLanguage vkLanguage, CancellationToken cancellationToken = default)
 		{
 			var reviews = await _mapper
 				.ProjectTo<UserReviewModel>(
@@ -77,10 +81,29 @@ namespace YaRyadom.API.Services.Implementations
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
 
+			var vkUserIds = reviews.Select(e => e.VkUserId).ToHashSet();
+
+			for (var i = 0; i < vkUserIds.Count(); i += 100)
+			{
+				var idsToSend = vkUserIds.Skip(i).Take(100).Select(m => m.ToString()).ToArray();
+				var vkResponse = await _vkApi.GetUserInfoAsync(idsToSend, vkLanguage, cancellationToken).ConfigureAwait(false);
+				if (vkResponse.Response != null && vkResponse.Response.Length > 0)
+				{
+					foreach (var vkUser in vkResponse.Response)
+					{
+						foreach (var review in reviews.Where(p => p.VkUserId == vkUser.Id))
+						{
+							review.VkUserAvatarUrl = vkUser.Photo200Url;
+							review.UserFullName = $"{vkUser.FirstName} {vkUser.LastName}";
+						}
+					}
+				}
+			}
+
 			return reviews;
 		}
 
-		public async Task<UserReviewAboutMeModel[]> GetReviewsAboutMeAsync(long vkId, CancellationToken cancellationToken = default)
+		public async Task<UserReviewAboutMeModel[]> GetReviewsAboutMeAsync(long vkId, VkLanguage vkLanguage, CancellationToken cancellationToken = default)
 		{
 			var reviews = await _mapper
 				.ProjectTo<UserReviewAboutMeModel>(
@@ -88,6 +111,25 @@ namespace YaRyadom.API.Services.Implementations
 				)
 				.ToArrayAsync(cancellationToken)
 				.ConfigureAwait(false);
+
+			var vkUserIds = reviews.Select(e => e.VkUserId).ToHashSet();
+
+			for (var i = 0; i < vkUserIds.Count(); i += 100)
+			{
+				var idsToSend = vkUserIds.Skip(i).Take(100).Select(m => m.ToString()).ToArray();
+				var vkResponse = await _vkApi.GetUserInfoAsync(idsToSend, vkLanguage, cancellationToken).ConfigureAwait(false);
+				if (vkResponse.Response != null && vkResponse.Response.Length > 0)
+				{
+					foreach (var vkUser in vkResponse.Response)
+					{
+						foreach (var review in reviews.Where(p => p.VkUserId == vkUser.Id))
+						{
+							review.VkUserAvatarUrl = vkUser.Photo200Url;
+							review.UserFullName = $"{vkUser.FirstName} {vkUser.LastName}";
+						}
+					}
+				}
+			}
 
 			return reviews;
 		}

@@ -134,6 +134,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.YaRyadomEvent.YaRyadomEventThemes.Select(m => (ThemeTypeModel)m.Type).FirstOrDefault()))
 				.ForMember(dest => dest.EventTitle, opt => opt.MapFrom(src => src.YaRyadomEvent.Title))
 				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.YaRyadomUserToReview.FirstName + ' ' + src.YaRyadomUserToReview.LastName))
+				.ForMember(dest => dest.VkUserId, opt => opt.MapFrom(src => src.YaRyadomUserToReview.VkId))
 				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.YaRyadomUserToReview.VkUserAvatarUrl)); 
 
 			CreateMap<YaRyadomReview, UserReviewAboutMeModel>()
@@ -144,6 +145,7 @@ namespace YaRyadom.API.MappingProfiles
 				.ForMember(dest => dest.EventTitle, opt => opt.MapFrom(src => src.YaRyadomEvent.Title))
 				.ForMember(dest => dest.ThemeType, opt => opt.MapFrom(src => src.YaRyadomEvent.YaRyadomEventThemes.Select(m => (ThemeTypeModel)m.Type).FirstOrDefault()))
 				.ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.YaRyadomUserReviewer.FirstName + ' ' + src.YaRyadomUserReviewer.LastName))
+				.ForMember(dest => dest.VkUserId, opt => opt.MapFrom(src => src.YaRyadomUserReviewer.VkId))
 				.ForMember(dest => dest.VkUserAvatarUrl, opt => opt.MapFrom(src => src.YaRyadomUserReviewer.VkUserAvatarUrl));
 
 			CreateMap<YaRyadomUserApplication, ApplicationModel>()
