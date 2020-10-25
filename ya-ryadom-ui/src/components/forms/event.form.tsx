@@ -270,7 +270,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                     top="Время встречи"
                     type="time"
                     name="eventTime"
-                    onChange={this.handleInputChange} required />
+                    onChange={this.handleInputChange}/>
                 <AutocompleteMap
                     isOnline={isOnline}
                     top="Место встречи"
