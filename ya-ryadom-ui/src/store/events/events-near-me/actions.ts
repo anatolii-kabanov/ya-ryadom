@@ -8,7 +8,7 @@ export const fetchListError = (payload: any) => action(EventsNearMeTypes.FETCH_L
 
 export const setSentStatus = (payload: number) => action(EventsNearMeTypes.SET_SENT_STATUS, payload);
 
-export const fetchEventByIdRequest = (payload: any) => action(EventsNearMeTypes.FETCH_EVENT_BY_ID, payload);
+export const fetchEventByIdRequest = (payload: number) => action(EventsNearMeTypes.FETCH_EVENT_BY_ID, payload);
 export const fetchEventByIdSuccess = (payload: EventNearMe) => action(EventsNearMeTypes.FETCH_EVENT_BY_ID_SUCCESS, payload);
 export const fetchEventByIdError = (payload: any) => action(EventsNearMeTypes.FETCH_EVENT_BY_ID_ERROR, payload);
 

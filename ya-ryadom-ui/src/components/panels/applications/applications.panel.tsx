@@ -65,9 +65,9 @@ class ApplicationsPanel extends React.Component<AllProps, State>  {
         const { openBase } = this.props;
 
         return <Group>
-            {activeTab == TABS.CREATED_APPLICATIONS && <ApplicationsToMyEventsTab openBase={openBase} />}
-            {activeTab == TABS.WANT_VISIT_APPLICATIONS && <MineApplicationsTab />}
-            {activeTab == TABS.VISITED_APPLICATIONS && <ApplicationsVisitedTab />}
+            {activeTab === TABS.CREATED_APPLICATIONS && <ApplicationsToMyEventsTab openBase={openBase} />}
+            {activeTab === TABS.WANT_VISIT_APPLICATIONS && <MineApplicationsTab />}
+            {activeTab === TABS.VISITED_APPLICATIONS && <ApplicationsVisitedTab />}
         </Group>
     }
 

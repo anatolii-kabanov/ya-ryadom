@@ -6,7 +6,6 @@ import {
     Title,
     Div,
     Group,
-    Input,
     Textarea
 } from '@vkontakte/vkui';
 import { AppState } from '../../store/app-state';

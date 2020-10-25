@@ -3,6 +3,7 @@ import { EventsNearMeTypes } from './types';
 import {
     fetchEventByIdError,
     fetchEventByIdRequest,
+    fetchEventByIdSuccess,
     fetchListError,
     fetchListRequest,
     fetchListSuccess,
@@ -51,7 +52,7 @@ function* handleFetchEventByIdRequest(action: ReturnType<typeof fetchEventByIdRe
         if (result.errors) {
             yield put(fetchEventByIdError(result.errors));
         } else {
-            yield put(fetchEventByIdRequest(result));
+            yield put(fetchEventByIdSuccess(result));
         }
     } catch (error) {
         if (error instanceof Error && error.stack) {
