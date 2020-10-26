@@ -25,6 +25,11 @@ const reducer: Reducer<EventsNearMeState, EventsNearMeActions> = (state = initia
             newState.eventsList[index].applicationStatus = ApplicationStatus.sent;
             return newState;
         }
+        case EventsNearMeTypes.SET_SHARED_EVENT_SENT_STATUS: {
+            const newState = _.cloneDeep(state);
+            newState.sharedEvents[action.payload].applicationStatus = ApplicationStatus.sent;
+            return newState;
+        }
         case EventsNearMeTypes.FETCH_EVENT_BY_ID_SUCCESS: {
             const newState = _.cloneDeep(state);
             newState.sharedEvents[action.payload.id] = action.payload;

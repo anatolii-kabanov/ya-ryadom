@@ -15,11 +15,13 @@ import GoogleMapReact, { Maps } from 'google-map-react';
 import { MAP } from '../../../utils/constants/map.constants';
 import { EventNearMe } from '../../../store/events/events-near-me/models';
 import { dateOptions } from '../../../utils/constants/event-date-options.constant';
-import { applyToEventFromEvents } from '../../../store/applications/actions';
+import { applyToEventFromSelectedEvent } from '../../../store/applications/actions';
 import { openUserProfile } from '../../../store/history/actions';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import { ApplicationStatusString } from '../../../utils/constants/application-status-string.constant';
 import Marker from '../../map/marker';
+import { mapOptions } from '../../../utils/map/map-options';
+import EmptyText from '../../general/empty-text';
 
 interface OwnProps {
     id: string;
@@ -31,7 +33,7 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    applyToEvent: typeof applyToEventFromEvents,
+    applyToEvent: typeof applyToEventFromSelectedEvent,
     openUserProfile: typeof openUserProfile
 }
 
@@ -47,8 +49,8 @@ class SelectedEventPanel extends React.Component<AllProps, State>  {
         const notCurrentUsersEvent = event?.vkUserOwnerId !== currentVkUserId;
         return (
             <Panel id={id} className="selected-event-panel">
-                <MainHeaderPanel />
-                {event &&
+                <MainHeaderPanel text="Событие" />
+                {event ?
                     <Group separator="hide">
                         <RichCell
                             disabled
@@ -62,9 +64,9 @@ class SelectedEventPanel extends React.Component<AllProps, State>  {
                         {
                             notCurrentUsersEvent &&
                             <Div className="map-card-buttons-div">
-                                {event.applicationStatus === ApplicationStatus.none
+                                {!event.ended && event.applicationStatus === ApplicationStatus.none
                                     ? <Button className="button-primary" onClick={() => applyToEvent(event.id)}>Иду</Button>
-                                    : <Button className="button-primary btn-status disabled" disabled={true}>{ApplicationStatusString[event.applicationStatus]}</Button>}
+                                    : <Button className="button-primary btn-status disabled" disabled={true}>{event.ended ? "Завершено" : ApplicationStatusString[event.applicationStatus]}</Button>}
                                 <Button className="btn-secondary width-50 text-center"
                                     onClick={() => openUserProfile(event.vkUserOwnerId)}
                                 >Профиль</Button>
@@ -72,6 +74,7 @@ class SelectedEventPanel extends React.Component<AllProps, State>  {
                         }
                         <div className="map">
                             <GoogleMapReact
+                                options={mapOptions}
                                 bootstrapURLKeys={{ key: MAP.KEY }}
                                 center={{
                                     lat: event.latitude,
@@ -87,10 +90,11 @@ class SelectedEventPanel extends React.Component<AllProps, State>  {
                                     status={event.applicationStatus}
                                     lat={event.latitude}
                                     lng={event.longitude}
-                                    text={event.title}/>
+                                    text={event.title} />
                             </GoogleMapReact>
                         </div>
                     </Group>
+                    : <EmptyText text="Такого события нет" />
                 }
             </Panel >
         )
@@ -106,7 +110,7 @@ const mapStateToProps = ({ events, authentication }: AppState, ownProps: OwnProp
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    applyToEvent: applyToEventFromEvents,
+    applyToEvent: applyToEventFromSelectedEvent,
     openUserProfile: openUserProfile
 }
 

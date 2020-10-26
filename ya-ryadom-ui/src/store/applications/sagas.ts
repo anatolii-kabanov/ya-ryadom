@@ -23,12 +23,13 @@ import {
     fetchApplicationsToMeError, 
     fetchApplicationsToMeSuccess, 
     applyToEventFromUserEvents, 
-    applyToEventFromEvents 
+    applyToEventFromEvents, 
+    applyToEventFromSelectedEvent
 } from './actions'
 import { callApi } from '../../utils/api';
 import { ApplicationRequest } from './models';
 import { getVkUserId } from '../authentication/reducer';
-import { setSentStatus } from '../events/events-near-me/actions';
+import { setSentStatus, setSharedEventSentStatus } from '../events/events-near-me/actions';
 import { fetchUserCreatedEventsListRequest } from '../events/user-events/actions';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
 import { updateParticipantStatus } from '../events/my-events/actions';
@@ -129,6 +130,16 @@ function* handleApplyToEventFromEvents(action: ReturnType<typeof applyToEventFro
 
 function* watchApplyToEventFromEvents() {
     yield takeLatest(ApplicationsTypes.APPLY_TO_EVENT_FROM_EVENTS, handleApplyToEventFromEvents)
+}
+
+function* handleApplyToEventFromSelectedEvent(action: ReturnType<typeof applyToEventFromSelectedEvent>) {
+    yield put(applyToEventRequest(action.payload));
+    yield take(ApplicationsTypes.APPLY_TO_EVENT_SUCCESS);
+    yield put(setSharedEventSentStatus(action.payload));
+}
+
+function* watchApplyToEventFromSelectedEvent() {
+    yield takeLatest(ApplicationsTypes.APPLY_TO_EVENT_FROM_SELECTED_EVENT, handleApplyToEventFromSelectedEvent)
 }
 
 function* handleApplyToEventRequest(action: ReturnType<typeof applyToEventRequest>) {
@@ -270,6 +281,7 @@ function* applicationsSagas() {
         fork(watchFetchApplicationsToMeRequest),
         fork(watchApplyToEventFromUserEvents),
         fork(watchApplyToEventFromEvents),
+        fork(watchApplyToEventFromSelectedEvent)
     ])
 }
 

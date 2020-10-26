@@ -23,6 +23,7 @@ import AutocompleteMap from '../inputs/autocomplete-map.input';
 import { Validators } from '../../utils/validation/validators';
 import { updateEventForm } from '../../store/events/my-events/actions';
 import { EventForm as EventFormModel } from '../../store/events/my-events/models';
+import { mapOptions } from '../../utils/map/map-options';
 
 interface OwnProps {
     onSave: (myEvent: MyEventCreate) => void;
@@ -270,7 +271,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                     top="Время встречи"
                     type="time"
                     name="eventTime"
-                    onChange={this.handleInputChange}/>
+                    onChange={this.handleInputChange} />
                 <AutocompleteMap
                     isOnline={isOnline}
                     top="Место встречи"
@@ -281,6 +282,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                     onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                 <div className="map">
                     <GoogleMapReact
+                        options={mapOptions}
                         yesIWantToUseGoogleMapApiInternals={true}
                         bootstrapURLKeys={{ key: MAP.KEY }}
                         center={{

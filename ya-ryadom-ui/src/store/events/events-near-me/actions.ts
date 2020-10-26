@@ -7,6 +7,7 @@ export const fetchListSuccess = (payload: EventNearMe[]) => action(EventsNearMeT
 export const fetchListError = (payload: any) => action(EventsNearMeTypes.FETCH_LIST_ERROR, payload);
 
 export const setSentStatus = (payload: number) => action(EventsNearMeTypes.SET_SENT_STATUS, payload);
+export const setSharedEventSentStatus = (payload: number) => action(EventsNearMeTypes.SET_SHARED_EVENT_SENT_STATUS, payload);
 
 export const fetchEventByIdRequest = (payload: number) => action(EventsNearMeTypes.FETCH_EVENT_BY_ID, payload);
 export const fetchEventByIdSuccess = (payload: EventNearMe) => action(EventsNearMeTypes.FETCH_EVENT_BY_ID_SUCCESS, payload);
@@ -18,5 +19,6 @@ export type EventsNearMeActions = ActionType<
     typeof fetchListSuccess |
     typeof setSentStatus |
     typeof fetchEventByIdSuccess |
-    typeof setSelectedEvent
+    typeof setSelectedEvent |
+    typeof setSharedEventSentStatus
 >;

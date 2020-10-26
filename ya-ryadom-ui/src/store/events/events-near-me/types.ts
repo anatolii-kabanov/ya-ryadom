@@ -4,6 +4,7 @@ export enum EventsNearMeTypes {
     FETCH_LIST_ERROR = '[Events near me] Fetching events near me error',
 
     SET_SENT_STATUS = '[Events near me] Event changed status for user to sent',
+    SET_SHARED_EVENT_SENT_STATUS = '[Events near me] Shared event changed status for user to sent',
 
     FETCH_EVENT_BY_ID = '[Events near me] (POST) Fetching event near me by id',
     FETCH_EVENT_BY_ID_SUCCESS = '[Events near me] Fetching event near me by id success',

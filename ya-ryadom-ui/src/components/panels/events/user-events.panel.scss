@@ -3,6 +3,9 @@
 .button-primary {
   background-color: $background-color !important;
   cursor: pointer;
+  &.disabled {
+    cursor: default;
+  }
 }
 
 .button-disabled {

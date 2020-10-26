@@ -16,6 +16,7 @@ export interface EventNearMe {
     distance: number,
     id: number,
     applicationStatus: ApplicationStatus,
+    ended: boolean,
     themeType: ThemeType
 }
 

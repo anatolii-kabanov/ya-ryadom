@@ -34,6 +34,7 @@ import { ALL_THEMES } from '../../utils/constants/theme.constants';
 import { dateOptions } from '../../utils/constants/event-date-options.constant';
 import { ApplicationStatusString } from '../../utils/constants/application-status-string.constant';
 import Icon16MoreHorizontal from '@vkontakte/icons/dist/16/more_horizontal';
+import { mapOptions } from '../../utils/map/map-options';
 
 interface OwnProps {
     openPopout: (eventId: number) => void;
@@ -179,6 +180,7 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                 <Group separator="hide">
                     <div className="map">
                         <GoogleMapReact
+                            options={mapOptions}
                             bootstrapURLKeys={{ key: MAP.KEY }}
                             center={{
                                 lat: this.getLatitude(),
