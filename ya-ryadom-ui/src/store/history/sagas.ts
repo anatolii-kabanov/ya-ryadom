@@ -9,12 +9,13 @@ import {
 } from 'redux-saga/effects';
 import vkBridge from '@vkontakte/vk-bridge';
 import { HistoryTypes } from './types';
-import { getHistoryLength } from './reducer';
+import { getCurrentModal, getHistoryLength } from './reducer';
 import {
   openUserProfile,
   goForward,
   openEventById,
   moveToPrevious,
+  setActiveModal,
 } from './actions';
 import { VkHistoryModel } from './models';
 import { VIEWS } from '../../utils/constants/view.constants';
@@ -22,12 +23,9 @@ import { PANELS } from '../../utils/constants/panel.constants';
 import { setProfileVkId } from '../users/actions';
 import {
   fetchEventByIdRequest,
-  fetchEventByIdSuccess,
   setSelectedEvent,
 } from '../events/events-near-me/actions';
 import { AuthenticationTypes } from '../authentication/types';
-import { fetchUserInfoRequest } from '../authentication/actions';
-import { Action } from 'redux';
 import { TABS } from '../../utils/constants/tab.constants';
 import { getCurrentUser } from '../authentication/reducer';
 import { CurrentUser } from '../authentication/models';
@@ -47,12 +45,17 @@ function* watchGoForwardRequest() {
 function* handleGoBack() {
   try {
     const historyLength = yield select(getHistoryLength);
-    if (historyLength === 1) {
-      yield vkBridge.send('VKWebAppDisableSwipeBack');
-      yield vkBridge.send('VKWebAppClose', { status: 'success' });
-    }
-    if (historyLength > 1) {
-      yield put(moveToPrevious());
+    const currentModal = yield select(getCurrentModal);
+    if (currentModal) {
+      yield put(setActiveModal(null));
+    } else {
+      if (historyLength === 1) {
+        yield vkBridge.send('VKWebAppDisableSwipeBack');
+        yield vkBridge.send('VKWebAppClose', { status: 'success' });
+      }
+      if (historyLength > 1) {
+        yield put(moveToPrevious());
+      }
     }
   } catch (error) {}
 }
@@ -91,7 +94,7 @@ function* handleOpenEventById(action: ReturnType<typeof openEventById>) {
       goForward(
         new VkHistoryModel(
           VIEWS.EVENTS_NEAR_ME_VIEW,
-          PANELS.SELECTED_EVENT_PANEL,
+          PANELS.SELECTED_EVENT_PANEL
         )
       )
     );

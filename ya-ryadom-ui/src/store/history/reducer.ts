@@ -47,3 +47,4 @@ const reducer: Reducer<HistoryState, HistoryActions> = (state = initialState, ac
 export { reducer as historyReducer };
 
 export const getHistoryLength = (state: AppState) => state.history.history?.length;
+export const getCurrentModal = (state: AppState) => state.history.currentModal;
