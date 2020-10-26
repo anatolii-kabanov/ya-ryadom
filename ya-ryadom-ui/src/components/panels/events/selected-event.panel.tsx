@@ -5,6 +5,7 @@ import {
     Button,
     Div,
     Group,
+    Header,
     Panel,
     RichCell
 } from '@vkontakte/vkui';
@@ -22,9 +23,11 @@ import { ApplicationStatusString } from '../../../utils/constants/application-st
 import Marker from '../../map/marker';
 import { mapOptions } from '../../../utils/map/map-options';
 import EmptyText from '../../general/empty-text';
+import Icon16MoreHorizontal from '@vkontakte/icons/dist/16/more_horizontal';
 
 interface OwnProps {
     id: string;
+    openPopout: (eventId: number) => void;
 }
 
 interface PropsFromState {
@@ -45,13 +48,13 @@ interface State {
 
 class SelectedEventPanel extends React.Component<AllProps, State>  {
     render() {
-        const { id, event, currentVkUserId, openUserProfile, applyToEvent } = this.props;
+        const { id, event, currentVkUserId, openUserProfile, applyToEvent, openPopout } = this.props;
         const notCurrentUsersEvent = event?.vkUserOwnerId !== currentVkUserId;
         return (
             <Panel id={id} className="selected-event-panel">
                 <MainHeaderPanel text="Событие" />
                 {event ?
-                    <Group separator="hide">
+                    <Group separator="hide" header={!event.ended && notCurrentUsersEvent && <Header mode="secondary" aside={<Icon16MoreHorizontal onClick={() => openPopout(event.id)} />}></Header>}>
                         <RichCell
                             disabled
                             multiline

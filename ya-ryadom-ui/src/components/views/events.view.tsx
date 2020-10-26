@@ -123,7 +123,7 @@ class EventsView extends React.Component<AllProps, State>  {
             }>
                 <EventsNearMeMapPanel
                     openPopout={this.openPopout} openFilter={this.openFilter} id={PANELS.EVENTS_NEAR_ME_PANEL} />
-                <SelectedEventPanel id={PANELS.SELECTED_EVENT_PANEL}/>
+                <SelectedEventPanel openPopout={this.openPopout} id={PANELS.SELECTED_EVENT_PANEL}/>
             </View>
         )
     }
