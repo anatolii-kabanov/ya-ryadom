@@ -9,6 +9,7 @@ using YaRyadom.API.Models.Requests;
 using YaRyadom.API.Services.Interfaces;
 using YaRyadom.Domain.DbContexts;
 using YaRyadom.Domain.Entities;
+using YaRyadom.Domain.Entities.Enums;
 using YaRyadom.Vk;
 using YaRyadom.Vk.Enums;
 
@@ -39,7 +40,10 @@ namespace YaRyadom.API.Services.Implementations
 			var validReview = await _dbContext
 				.YaRyadomEvents
 				.AsNoTracking()
-				.AnyAsync(m => m.Id == model.EventId && m.YaRyadomUserOwner.VkId == model.VkUserToReviewId, cancellationToken)
+				.AnyAsync(m => m.Id == model.EventId
+					&& m.YaRyadomUserOwner.VkId == model.VkUserToReviewId
+					&& m.YaRyadomUserApplications.Any(a => a.YaRyadomUserRequested.VkId == model.VkUserId && a.Status == ApplicationStatus.Visited),
+					cancellationToken)
 				.ConfigureAwait(false);
 
 			if (!validReview) return false;
