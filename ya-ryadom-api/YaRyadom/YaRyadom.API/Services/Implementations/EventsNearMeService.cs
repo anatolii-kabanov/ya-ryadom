@@ -127,6 +127,7 @@ namespace YaRyadom.API.Services.Implementations
 				MaxQuantiyty = m.MaxQuantity,
 				Revoked = m.Revoked,
 				VkUserOwnerId = m.YaRyadomUserOwner.VkId,
+				Ended = m.Ended,
 				Location = m.Location,
 				Distance = m.Location.Distance(userPosition),
 				VkUserAvatarUrl = m.YaRyadomUserOwner.VkUserAvatarUrl,
@@ -139,6 +140,11 @@ namespace YaRyadom.API.Services.Implementations
 			})
 			.FirstOrDefaultAsync(cancellationToken)
 			.ConfigureAwait(false);
+
+			if (yaRyadomEvent == null)
+			{
+				return null;
+			}
 
 			var vkResponse = await _vkApi.GetUserInfoAsync(new string[] { yaRyadomEvent.VkUserOwnerId.ToString() }, vkLanguage, cancellationToken).ConfigureAwait(false);
 

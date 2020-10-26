@@ -50,6 +50,10 @@ namespace YaRyadom.API.Controllers
 			var yaRyadomEvent = await _eventsNearMeService
 				.GetEventById(requestModel, vkLanguage, cancellationToken)
 				.ConfigureAwait(false);
+			if (yaRyadomEvent == null)
+			{
+				return BadRequest();
+			}
 			return Ok(yaRyadomEvent);
 		}
 	}
