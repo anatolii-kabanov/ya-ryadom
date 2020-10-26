@@ -66,8 +66,7 @@ namespace YaRyadom.API.Services.Implementations
 			  .ProjectTo<UserEventServiceModel>(
 				  TableNoTracking
 				  .Where(m =>
-						m.YaRyadomUserOwner.VkId != vkId
-						&& m.YaRyadomUserApplications.Any(mm => mm.YaRyadomUserRequested.VkId == vkId && mm.Status == ApplicationStatus.Visited)
+						m.YaRyadomUserApplications.Any(mm => mm.YaRyadomUserRequested.VkId == vkId && mm.Status == ApplicationStatus.Visited)
 					)
 			  )
 			.ToArrayAsync(cancellationToken)
