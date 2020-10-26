@@ -97,7 +97,7 @@ class RootLayout extends React.Component<AllProps>  {
         const stringHash = this.getLocationHash();
         const objectParametrs = this.getObjectUrlString(stringHash);
         if (objectParametrs !== null && objectParametrs.eventId) {
-            // openEventById(objectParametrs.eventId);
+            openEventById(objectParametrs.eventId);
         }
     }
 

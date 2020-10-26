@@ -9,6 +9,7 @@ export const initialState: EventsNearMeState = {
     eventsList: [],
     sharedEvents: {},
     isLoading: false,
+    selectedEventId: null,
 }
 
 const reducer: Reducer<EventsNearMeState, EventsNearMeActions> = (state = initialState, action: EventsNearMeActions) => {
@@ -27,6 +28,11 @@ const reducer: Reducer<EventsNearMeState, EventsNearMeActions> = (state = initia
         case EventsNearMeTypes.FETCH_EVENT_BY_ID_SUCCESS: {
             const newState = _.cloneDeep(state);
             newState.sharedEvents[action.payload.id] = action.payload;
+            return newState;
+        }
+        case EventsNearMeTypes.SET_SELECTED_EVENT: {
+            const newState = _.cloneDeep(state);
+            newState.selectedEventId = action.payload;
             return newState;
         }
         default: {

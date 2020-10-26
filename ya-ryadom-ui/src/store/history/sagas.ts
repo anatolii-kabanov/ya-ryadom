@@ -23,10 +23,14 @@ import { setProfileVkId } from '../users/actions';
 import {
   fetchEventByIdRequest,
   fetchEventByIdSuccess,
+  setSelectedEvent,
 } from '../events/events-near-me/actions';
 import { AuthenticationTypes } from '../authentication/types';
 import { fetchUserInfoRequest } from '../authentication/actions';
 import { Action } from 'redux';
+import { TABS } from '../../utils/constants/tab.constants';
+import { getCurrentUser } from '../authentication/reducer';
+import { CurrentUser } from '../authentication/models';
 
 function* handleGoForward(action: ReturnType<typeof goForward>) {
   try {
@@ -69,13 +73,29 @@ function* watchOpenUserProfile() {
 }
 
 function* handleOpenEventById(action: ReturnType<typeof openEventById>) {
-  yield take(AuthenticationTypes.FETCH_VK_USER_INFO_SUCCESS);
-  yield put(fetchEventByIdRequest(action.payload));
-  yield put(
-    goForward(
-      new VkHistoryModel(VIEWS.EVENTS_NEAR_ME_VIEW, PANELS.EVENTS_NEAR_ME_PANEL)
-    )
-  );
+  yield take(AuthenticationTypes.FETCH_USER_INFO_SUCCESS);
+  const user: CurrentUser = yield select(getCurrentUser);
+  if (user?.guideCompleted) {
+    yield put(fetchEventByIdRequest(action.payload));
+    yield put(setSelectedEvent(action.payload));
+    yield put(
+      goForward(
+        new VkHistoryModel(
+          VIEWS.EVENTS_NEAR_ME_VIEW,
+          PANELS.EVENTS_NEAR_ME_PANEL,
+          TABS.EVENTS_MAP
+        )
+      )
+    );
+    yield put(
+      goForward(
+        new VkHistoryModel(
+          VIEWS.EVENTS_NEAR_ME_VIEW,
+          PANELS.SELECTED_EVENT_PANEL,
+        )
+      )
+    );
+  }
 }
 
 function* watchOpenEventById() {

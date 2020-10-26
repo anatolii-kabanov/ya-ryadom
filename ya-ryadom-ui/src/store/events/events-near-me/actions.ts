@@ -12,8 +12,11 @@ export const fetchEventByIdRequest = (payload: number) => action(EventsNearMeTyp
 export const fetchEventByIdSuccess = (payload: EventNearMe) => action(EventsNearMeTypes.FETCH_EVENT_BY_ID_SUCCESS, payload);
 export const fetchEventByIdError = (payload: any) => action(EventsNearMeTypes.FETCH_EVENT_BY_ID_ERROR, payload);
 
+export const setSelectedEvent = (payload: number) => action(EventsNearMeTypes.SET_SELECTED_EVENT, payload);
+
 export type EventsNearMeActions = ActionType<
     typeof fetchListSuccess |
     typeof setSentStatus |
-    typeof fetchEventByIdSuccess
+    typeof fetchEventByIdSuccess |
+    typeof setSelectedEvent
 >;

@@ -4,6 +4,7 @@ import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { PANELS } from '../../utils/constants/panel.constants';
 import EventsNearMeMapPanel from "../panels/events/events-near-me.panel";
+import SelectedEventPanel from "../panels/events/selected-event.panel";
 import { MODALS } from '../../utils/constants/modal.constants';
 import debounce from 'lodash/debounce';
 import { EventsFilter } from '../../store/ui/settings/state';
@@ -122,6 +123,7 @@ class EventsView extends React.Component<AllProps, State>  {
             }>
                 <EventsNearMeMapPanel
                     openPopout={this.openPopout} openFilter={this.openFilter} id={PANELS.EVENTS_NEAR_ME_PANEL} />
+                <SelectedEventPanel id={PANELS.SELECTED_EVENT_PANEL}/>
             </View>
         )
     }

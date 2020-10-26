@@ -177,10 +177,8 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
         return (
             <Group separator="hide" className="events-near-me-map">
                 <Group separator="hide">
-                    {/* <Div> from VKUI mess it up for some reason*/}
                     <div className="map">
                         <GoogleMapReact
-
                             bootstrapURLKeys={{ key: MAP.KEY }}
                             center={{
                                 lat: this.getLatitude(),
