@@ -29,7 +29,7 @@ namespace YaRyadom.API.Services.Implementations
 		public async Task<UserEventModel[]> GetCreatedEvents(long vkId, VkLanguage vkLanguage, CancellationToken cancellationToken = default)
 		{
 			var events = await _mapper
-			  .ProjectTo<UserEventServiceModel>(
+			  .ProjectTo<CreatedUserEventServiceModel>(
 				  TableNoTracking.Where(m => m.YaRyadomUserOwner.VkId == vkId)
 			  )
 				.ToArrayAsync(cancellationToken)
