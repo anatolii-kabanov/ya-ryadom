@@ -30,9 +30,9 @@ interface OwnProps {
 }
 
 interface PropsFromState {
-    userPosition: Geo,
-    vkUserInfo: UserInfo,
-    lastLocation: Position,
+    userPosition: Geo | null,
+    vkUserInfo: UserInfo | null,
+    lastLocation: Position | null | undefined,
     isOnline: boolean,
     eventForm: EventFormModel,
 }
@@ -55,16 +55,16 @@ const maxValues = {
 
 class EventForm extends React.Component<AllProps, EventState> {
 
-    constructor(props) {
+    autoCompleteRef: any;
+
+    constructor(props: AllProps) {
         super(props);
         this.state = {
             errors: {}
         };
         this.onLocationClick = this.onLocationClick.bind(this);
         this.onFillInProfile = this.onFillInProfile.bind(this)
-    }
-
-    componentDidMount() {
+        this.autoCompleteRef = React.createRef();
     }
 
     onLocationClick = (clickEventValue: ClickEventValue) => {
@@ -77,23 +77,25 @@ class EventForm extends React.Component<AllProps, EventState> {
 
     onFillInProfile = (data) => {
         if (!this.isValid()) return;
-        const { onSave, eventForm } = this.props;
+        const { onSave, eventForm, vkUserInfo } = this.props;
         if (isEmpty(eventForm.selectedPosition)) {
             // TODO handle show error
             console.log('handle error')
         }
         else {
-            onSave({
-                title: eventForm.eventName,
-                longitude: eventForm.selectedPosition.lng,
-                latitude: eventForm.selectedPosition.lat,
-                date: new Date(eventForm.eventDate).toLocaleDateString('ru-RU', "dd.MM.yyyy" as any),
-                time: eventForm.eventTime,
-                description: eventForm.eventDescription,
-                maxQuantiyty: 50,
-                vkUserId: this.props.vkUserInfo.id,
-                selectedThemes: [eventForm.selectedTheme],
-            });
+            if (vkUserInfo) {
+                onSave({
+                    title: eventForm.eventName,
+                    longitude: eventForm.selectedPosition.lng,
+                    latitude: eventForm.selectedPosition.lat,
+                    date: new Date(eventForm.eventDate).toLocaleDateString('ru-RU', "dd.MM.yyyy" as any),
+                    time: eventForm.eventTime,
+                    description: eventForm.eventDescription,
+                    maxQuantiyty: 50,
+                    vkUserId: vkUserInfo.id,
+                    selectedThemes: [eventForm.selectedTheme],
+                });
+            }
         }
     }
 
@@ -127,12 +129,12 @@ class EventForm extends React.Component<AllProps, EventState> {
 
     getLatitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return userPosition?.lat ?? lastLocation?.latitude;
+        return (userPosition?.lat ?? lastLocation?.latitude) || 0; 
     }
 
     getLongitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return userPosition?.long ?? lastLocation?.longitude;
+        return (userPosition?.long ?? lastLocation?.longitude) || 0;
     }
 
     renderThemesSelect() {
@@ -220,6 +222,10 @@ class EventForm extends React.Component<AllProps, EventState> {
         }
     }
 
+    mapLoaded(callBack) {
+
+    }
+
     render() {
         const { errors } = this.state;
         const { isOnline, eventForm } = this.props;
@@ -273,18 +279,22 @@ class EventForm extends React.Component<AllProps, EventState> {
                     name="eventTime"
                     onChange={this.handleInputChange} />
                 <AutocompleteMap
+                    ref={this.autoCompleteRef}
                     isOnline={isOnline}
                     top="Место встречи"
                     placeholder="Адрес"
                     type="address"
-                    loadMaps={true}
+                    loadMaps={false}
                     address={eventForm.address}
                     onLocationChanged={this.onLocationChanged}></AutocompleteMap>
                 <div className="map">
                     <GoogleMapReact
                         options={mapOptions}
                         yesIWantToUseGoogleMapApiInternals={true}
-                        bootstrapURLKeys={{ key: MAP.KEY }}
+                        bootstrapURLKeys={{
+                            key: MAP.KEY,
+                            libraries: ['places']
+                        }}
                         center={{
                             lat: eventForm.selectedPosition?.lat ?? this.getLatitude(),
                             lng: eventForm.selectedPosition?.lng ?? this.getLongitude()
@@ -293,7 +303,14 @@ class EventForm extends React.Component<AllProps, EventState> {
                         defaultCenter={{
                             lat: this.getLatitude(), lng: this.getLongitude()
                         }}
-                        onClick={(value) => this.onLocationClick(value)}
+                        onGoogleApiLoaded={(map) => {
+                            // onClick not working properly with Zoom control, the bug happens when on touch action only
+                            this.autoCompleteRef.current.initAutoComplete();
+                            map.map.addListener("click", (e) => {
+                                this.onLocationClick({ lat: e.latLng.lat(), lng: e.latLng.lng() } as any)
+                            });
+                        }}
+                    //onClick={(value) => this.onLocationClick(value)}
                     >
                         {eventForm.selectedPosition?.lat && <Marker lat={eventForm.selectedPosition?.lat} lng={eventForm.selectedPosition?.lng} />}
                     </GoogleMapReact>

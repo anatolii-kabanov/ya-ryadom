@@ -12,7 +12,7 @@ import {
 } from '@vkontakte/vkui';
 import { AppState } from './../../store/app-state';
 import { connect } from 'react-redux';
-import GoogleMapReact, { Maps } from 'google-map-react';
+import GoogleMapReact from 'google-map-react';
 import Marker from './../map/marker';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
 import { MAP } from './../../utils/constants/map.constants';
@@ -59,13 +59,6 @@ type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
     eventOnMap: any;
-}
-
-const createMapOptions = (maps: Maps) => {
-    return {
-        ...maps,
-        mapTypeControl: true
-    };
 }
 
 class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
@@ -181,7 +174,10 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State>  {
                     <div className="map">
                         <GoogleMapReact
                             options={mapOptions}
-                            bootstrapURLKeys={{ key: MAP.KEY }}
+                            bootstrapURLKeys={{
+                                key: MAP.KEY,
+                                libraries: ['places']
+                            }}
                             center={{
                                 lat: this.getLatitude(),
                                 lng: this.getLongitude(),

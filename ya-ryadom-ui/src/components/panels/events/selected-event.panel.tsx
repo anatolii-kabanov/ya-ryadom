@@ -78,7 +78,10 @@ class SelectedEventPanel extends React.Component<AllProps, State>  {
                         <div className="map">
                             <GoogleMapReact
                                 options={mapOptions}
-                                bootstrapURLKeys={{ key: MAP.KEY }}
+                                bootstrapURLKeys={{
+                                    key: MAP.KEY,
+                                    libraries: ['places']
+                                }}
                                 center={{
                                     lat: event.latitude,
                                     lng: event.longitude,

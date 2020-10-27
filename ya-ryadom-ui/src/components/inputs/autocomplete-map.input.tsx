@@ -24,12 +24,13 @@ const scriptId = "googlePlacesScript";
 class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
 
     autoComplete: any;
+    autoCompleteRef: any;
 
-    constructor(props) {
+    constructor(props: AutocompleteProps) {
         super(props)
-        this.autoComplete = React.createRef();
+        this.autoCompleteRef = React.createRef();
         this.state = {
-            query: props.address,
+            query: props.address || '',
             googleMapsReady: false,
             googleMapsError: false,
         };
@@ -45,7 +46,7 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
 
     componentDidUpdate(prevProps: AutocompleteProps) {
         const { googleMapsReady, googleMapsError } = this.state;
-        const { isOnline } = this.props;
+        const { isOnline, type } = this.props;
         if (prevProps.isOnline !== isOnline && isOnline && googleMapsError && !googleMapsReady) {
             this.initGoogleMaps();
         }
@@ -57,29 +58,33 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
         }
     }
 
-    initGoogleMaps = () => {
+    initAutoComplete = () => {
         const { type } = this.props;
-        this.loadGoogleMaps(() => {
-            this.setState({ googleMapsReady: true, googleMapsError: false });
-            this.autoComplete = new window.google.maps.places.Autocomplete(
-                this.autoComplete.current,
-                { types: [type], componentRestrictions: { country: "ru" } }
-            );
-            this.autoComplete.setFields(["address_components", "formatted_address", "geometry"]);
-            this.autoComplete.addListener("place_changed", () =>
-                handlePlaceSelect()
-            );
+        this.setState({ googleMapsReady: true, googleMapsError: false });
+        this.autoComplete = new window.google.maps.places.Autocomplete(
+            this.autoCompleteRef.current,
+            { types: [type], componentRestrictions: { country: "ru" } }
+        );
+        this.autoComplete.setFields(["address_components", "formatted_address", "geometry"]);
+        this.autoComplete.addListener("place_changed", () =>
+            handlePlaceSelect()
+        );
 
-            const handlePlaceSelect = async () => {
-                const addressObject = this.autoComplete.getPlace();
-                const query = addressObject.formatted_address;
-                this.setState({ query: query });
-                const { onLocationChanged } = this.props;
-                onLocationChanged({
-                    latitude: addressObject.geometry.location.lat(),
-                    longitude: addressObject.geometry.location.lng()
-                }, query);
-            }
+        const handlePlaceSelect = async () => {
+            const addressObject = this.autoComplete.getPlace();
+            const query = addressObject.formatted_address;
+            this.setState({ query: query });
+            const { onLocationChanged } = this.props;
+            onLocationChanged({
+                latitude: addressObject.geometry.location.lat(),
+                longitude: addressObject.geometry.location.lng()
+            }, query);
+        }
+    }
+
+    initGoogleMaps = () => {
+        this.loadGoogleMaps(() => {
+            this.initAutoComplete();
         });
     }
 
@@ -130,7 +135,7 @@ class AutocompleteMap extends React.PureComponent<AutocompleteProps, State>{
                 : <div className="search-places-input">
                     <Input
                         top={top}
-                        getRef={this.autoComplete}
+                        getRef={this.autoCompleteRef}
                         autoComplete="on"
                         onChange={event => this.setState({ query: event.target.value })}
                         placeholder={placeholder || "Выберите город"}
