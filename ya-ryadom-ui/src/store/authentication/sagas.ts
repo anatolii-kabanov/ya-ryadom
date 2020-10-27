@@ -529,11 +529,11 @@ function* watchCompleteUserGuide() {
   );
 }
 
-function* handleEnableUserGeolocation() {
-  yield put(showSpinner());
+function* handleEnableUserGeolocation() {  
   try {
     yield put(fetchUserGeoRequest());
     const userGeoEffect: Action = yield take(fetchUserGeoRequest);
+    yield put(showSpinner());
     if (userGeoEffect.type == AuthenticationTypes.FETCH_USER_GEO_SUCCESS) {
       const currentUser: CurrentUser = yield select(getCurrentUser);
       const geoData: Geo | null = yield select(getGeoData);
