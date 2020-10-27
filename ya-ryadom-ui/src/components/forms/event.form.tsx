@@ -45,7 +45,7 @@ interface PropsFromDispatch {
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface EventState {
-    errors: any
+    errors: any,
 }
 
 const maxValues = {
@@ -60,19 +60,10 @@ class EventForm extends React.Component<AllProps, EventState> {
     constructor(props: AllProps) {
         super(props);
         this.state = {
-            errors: {}
+            errors: {},
         };
-        this.onLocationClick = this.onLocationClick.bind(this);
         this.onFillInProfile = this.onFillInProfile.bind(this)
         this.autoCompleteRef = React.createRef();
-    }
-
-    onLocationClick = (clickEventValue: ClickEventValue) => {
-        const { updateEventForm } = this.props;
-        updateEventForm({ name: "selectedPosition", value: { lat: clickEventValue.lat, lng: clickEventValue.lng } });
-        this.setState({
-            errors: { ...this.state.errors, selectedPosition: undefined }
-        });
     }
 
     onFillInProfile = (data) => {
@@ -129,7 +120,7 @@ class EventForm extends React.Component<AllProps, EventState> {
 
     getLatitude = () => {
         const { userPosition, lastLocation } = this.props;
-        return (userPosition?.lat ?? lastLocation?.latitude) || 0; 
+        return (userPosition?.lat ?? lastLocation?.latitude) || 0;
     }
 
     getLongitude = () => {
@@ -222,10 +213,6 @@ class EventForm extends React.Component<AllProps, EventState> {
         }
     }
 
-    mapLoaded(callBack) {
-
-    }
-
     render() {
         const { errors } = this.state;
         const { isOnline, eventForm } = this.props;
@@ -305,9 +292,18 @@ class EventForm extends React.Component<AllProps, EventState> {
                         }}
                         onGoogleApiLoaded={(map) => {
                             // onClick not working properly with Zoom control, the bug happens when on touch action only
+                            const geoCoder = new map.maps.Geocoder()
                             this.autoCompleteRef.current.initAutoComplete();
                             map.map.addListener("click", (e) => {
-                                this.onLocationClick({ lat: e.latLng.lat(), lng: e.latLng.lng() } as any)
+                                geoCoder.geocode({
+                                    'latLng': e.latLng
+                                }, (results: any, status: google.maps.GeocoderStatus) => {
+                                    if (status === google.maps.GeocoderStatus.OK) {
+                                        if (results[0]) {
+                                            this.onLocationChanged({ latitude: e.latLng.lat(), longitude: e.latLng.lng() }, results[0].formatted_address);
+                                        }
+                                    }
+                                });
                             });
                         }}
                     //onClick={(value) => this.onLocationClick(value)}
