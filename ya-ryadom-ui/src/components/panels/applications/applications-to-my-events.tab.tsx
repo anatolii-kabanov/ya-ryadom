@@ -115,7 +115,7 @@ export class ApplicationsToMyEventsTab extends React.Component<AllProps, State> 
                                 photos={photos}
                             >Подтвержденные {confirmed.length} и новые {newApplicants > 0 ? '+' : ''}{newApplicants}</UsersStack>
 
-                            {!this.state[item.id] && newApplicants > 0 && <Button className="btn-primary show-applicants-btn" onClick={() => showUsers(item.id)}>Новые</Button>}
+                            {!this.state[item.id] && newApplicants > 0 && <Button className="btn-primary show-applicants-btn" disabled={item.ended} onClick={() => showUsers(item.id)}>Новые</Button>}
 
                             {this.state[item.id] && <div className="users-list">
                                 {
