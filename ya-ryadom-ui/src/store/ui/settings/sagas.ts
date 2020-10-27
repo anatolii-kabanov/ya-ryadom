@@ -29,7 +29,7 @@ function initVkAppSettingsEvents() {
                 vkStyles.appearance = isLight ? 'light' : 'dark';
                 eventEmmiter(vkStyles);
             }
-        };;
+        };
         vkBridge.subscribe(vkAppSettingsHandler);
         return () => {
             vkBridge.unsubscribe(vkAppSettingsHandler);

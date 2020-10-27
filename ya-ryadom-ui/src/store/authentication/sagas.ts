@@ -31,9 +31,11 @@ import {
   saveUserAboutMyselfRequest,
   saveUserAboutMyselfError,
   saveUserAboutMyselfSuccess,
+  allowNotifications,
   allowNotificationsRequest,
   allowNotificationsError,
   allowNotificationsSuccess,
+  disableNotifications,
   disableNotificationsRequest,
   disableNotificationsError,
   disableNotificationsSuccess,
@@ -65,6 +67,7 @@ import { Action } from 'typesafe-actions';
 import { addNotificaiton } from '../ui/notifications/actions';
 import { SnackbarErrorNotification } from '../ui/notifications/models';
 import { NOTIFICATION_MESSAGES } from '../../utils/constants/notification-messages.constants';
+import { eventChannel } from 'redux-saga';
 
 const API_ENDPOINT: any = `${process.env.REACT_APP_API_ENDPOINT}/auth`;
 
@@ -389,36 +392,57 @@ function* watchSaveUserAboutMyselfRequest() {
   );
 }
 
-function* handleAllowNotificationsRequest(
-  action: ReturnType<typeof allowNotificationsRequest>
-) {
+function* handleAllowNotifications() {
   try {
-    yield put(showSpinner());
-
     const { result, error } = yield call(() =>
       vkBridge
         .send('VKWebAppAllowNotifications', {})
         .then((response) => ({ result: response.result }))
         .catch((error) => ({ error }))
     );
-
-    let notificationSaved = false;
-    if (result) {
-      const vkUserId = yield select(getVkUserId);
-      const model = {
-        vkUserId: vkUserId,
-        notificationsEnabled: true,
-      };
-      notificationSaved = yield call(
-        callApi,
-        'post',
-        API_ENDPOINT,
-        '/user-info/notifications/save',
-        model
-      );
-    }
-    if (!result || !notificationSaved || error) {
+    if (!result || error) {
       yield put(allowNotificationsError(error?.error_data));
+    }
+  } catch (error) {
+    yield put(
+      addNotificaiton(
+        new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)
+      )
+    );
+    if (error instanceof Error && error.stack) {
+      yield put(allowNotificationsError(error.stack));
+    } else {
+      yield put(allowNotificationsError('An unknown error occured.'));
+    }
+  } finally {
+  }
+}
+
+function* watchAllowNotifications() {
+  yield takeLatest(
+    AuthenticationTypes.ALLOW_NOTIFICATIONS,
+    handleAllowNotifications
+  );
+}
+
+function* handleAllowNotificationsRequest() {
+  try {
+    yield put(showSpinner());
+    let notificationSaved = false;
+    const vkUserId = yield select(getVkUserId);
+    const model = {
+      vkUserId: vkUserId,
+      notificationsEnabled: true,
+    };
+    notificationSaved = yield call(
+      callApi,
+      'post',
+      API_ENDPOINT,
+      '/user-info/notifications/save',
+      model
+    );
+    if (!notificationSaved) {
+      yield put(allowNotificationsError(notificationSaved));
     } else {
       yield put(allowNotificationsSuccess());
     }
@@ -440,35 +464,57 @@ function* handleAllowNotificationsRequest(
 
 function* watchAllowNotificationsRequest() {
   yield takeLatest(
-    AuthenticationTypes.ALLOW_NOTIFICATIONS,
+    AuthenticationTypes.ALLOW_NOTIFICATIONS_REQUEST,
     handleAllowNotificationsRequest
   );
 }
 
-function* handleDisableNotificationsRequest(
-  action: ReturnType<typeof disableNotificationsRequest>
-) {
+function* handleDisableNotifications() {
+  try {  
+    const result = yield vkBridge.send('VKWebAppDenyNotifications', {});
+    if (!result  || result.error_type) {
+      yield put(disableNotificationsError(result.errors));
+    } 
+  } catch (error) {
+    yield put(
+      addNotificaiton(
+        new SnackbarErrorNotification(NOTIFICATION_MESSAGES.REQUEST_ERROR)
+      )
+    );
+    if (error instanceof Error && error.stack) {
+      yield put(disableNotificationsError(error.stack));
+    } else {
+      yield put(disableNotificationsError('An unknown error occured.'));
+    }
+  } finally {
+  }
+}
+
+function* watchDisableNotifications() {
+  yield takeLatest(
+    AuthenticationTypes.DISABLE_NOTIFICATIONS,
+    handleDisableNotifications
+  );
+}
+
+function* handleDisableNotificationsRequest() {
   try {
     yield put(showSpinner());
-
-    const result = yield vkBridge.send('VKWebAppDenyNotifications', {});
     let notificationSaved = false;
-    if (result) {
-      const vkUserId = yield select(getVkUserId);
-      const model = {
-        vkUserId: vkUserId,
-        notificationsEnabled: false,
-      };
-      notificationSaved = yield call(
-        callApi,
-        'post',
-        API_ENDPOINT,
-        '/user-info/notifications/save',
-        model
-      );
-    }
-    if (!result || !notificationSaved || result.error_type) {
-      yield put(disableNotificationsError(result.errors));
+    const vkUserId = yield select(getVkUserId);
+    const model = {
+      vkUserId: vkUserId,
+      notificationsEnabled: false,
+    };
+    notificationSaved = yield call(
+      callApi,
+      'post',
+      API_ENDPOINT,
+      '/user-info/notifications/save',
+      model
+    );
+    if (!notificationSaved) {
+      yield put(disableNotificationsError(notificationSaved));
     } else {
       yield put(disableNotificationsSuccess());
     }
@@ -485,7 +531,7 @@ function* handleDisableNotificationsRequest(
 
 function* watchDisableNotificationsRequest() {
   yield takeLatest(
-    AuthenticationTypes.DISABLE_NOTIFICATIONS,
+    AuthenticationTypes.DISABLE_NOTIFICATIONS_REQUEST,
     handleDisableNotificationsRequest
   );
 }
@@ -529,7 +575,7 @@ function* watchCompleteUserGuide() {
   );
 }
 
-function* handleEnableUserGeolocation() {  
+function* handleEnableUserGeolocation() {
   try {
     yield put(fetchUserGeoRequest());
     const userGeoEffect: Action = yield take(fetchUserGeoRequest);
@@ -607,6 +653,38 @@ function* watchSetUserLocationProcess() {
   );
 }
 
+function initVkNotificationListener() {
+  return eventChannel((eventEmmiter) => {
+    const vkAppSettingsHandler = ({ detail: { type, data } }) => {
+      if (type === 'VKWebAppAllowNotificationsResult') {
+        eventEmmiter(data.result);
+      }
+      if (type === 'VKWebAppDenyNotificationsResult') {
+        eventEmmiter(!data.result);
+      }
+    };
+    vkBridge.subscribe(vkAppSettingsHandler);
+    return () => {
+      vkBridge.unsubscribe(vkAppSettingsHandler);
+    };
+  });
+}
+
+function* vkNotificationListener() {
+  const chanel = yield call(initVkNotificationListener);
+  try {
+    while (true) {
+      const isNotificationEnabled: boolean = yield take(chanel);
+      if (isNotificationEnabled) {
+        yield put(allowNotificationsRequest());
+      } else {
+        yield put(disableNotificationsRequest());
+      }
+    }
+  } finally {
+  }
+}
+
 function* authenticationSagas() {
   yield all([
     fork(watchFetchUserInfoRequest),
@@ -616,14 +694,17 @@ function* authenticationSagas() {
     fork(watchSaveUserThemesRequest),
     fork(watchSaveUserLocationRequest),
     fork(watchSaveUserAboutMyselfRequest),
-    fork(watchAllowNotificationsRequest),
-    fork(watchDisableNotificationsRequest),
+    fork(watchAllowNotifications),
+    fork(watchDisableNotifications),
     fork(watchSaveUserProfileThemes),
     fork(watchSaveUserProfileAboutMyself),
     fork(watchCompleteUserGuide),
     fork(watchEnableUserGeolocation),
     fork(watchDisableUserGeolocation),
     fork(watchSetUserLocationProcess),
+    fork(vkNotificationListener),
+    fork(watchDisableNotificationsRequest),
+    fork(watchAllowNotificationsRequest),
   ]);
 }
 

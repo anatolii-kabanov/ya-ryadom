@@ -41,10 +41,12 @@ export enum AuthenticationTypes {
     SAVE_USER_ABOUT_MYSELF_ERROR = '[Authentication] Save user about my self error',
 
     ALLOW_NOTIFICATIONS = '[Authentication] Allow notifications',
+    ALLOW_NOTIFICATIONS_REQUEST = '[Authentication] Allow notifications request',
     ALLOW_NOTIFICATIONS_SUCCESS = '[Authentication] Allow notifications success',
     ALLOW_NOTIFICATIONS_ERROR = '[Authentication] Allow notifications error',
 
     DISABLE_NOTIFICATIONS = '[Authentication] Disable notifications',
+    DISABLE_NOTIFICATIONS_REQUEST = '[Authentication] Disable notifications request',
     DISABLE_NOTIFICATIONS_SUCCESS = '[Authentication] Disable notifications success',
     DISABLE_NOTIFICATIONS_ERROR = '[Authentication] Disable notifications error',
 

@@ -20,8 +20,8 @@ import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';
 import {
-    allowNotificationsRequest,
-    disableNotificationsRequest,
+    allowNotifications,
+    disableNotifications,
     enableUserGeolocation,
     disableUserGeolocation
 } from '../../../store/authentication/actions';
@@ -38,8 +38,8 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     goForwardView: typeof goForward;
-    allowNotifications: typeof allowNotificationsRequest,
-    disableNotifications: typeof disableNotificationsRequest,
+    allowNotifications: typeof allowNotifications,
+    disableNotifications: typeof disableNotifications,
     enableUserGeolocation: typeof enableUserGeolocation,
     disableUserGeolocation: typeof disableUserGeolocation,
 }
@@ -133,8 +133,8 @@ const mapStateToProps = ({ events, authentication }: AppState, ownProps: OwnProp
 
 const mapDispatchToProps: PropsFromDispatch = {
     goForwardView: goForward,
-    allowNotifications: allowNotificationsRequest,
-    disableNotifications: disableNotificationsRequest,
+    allowNotifications: allowNotifications,
+    disableNotifications: disableNotifications,
     enableUserGeolocation: enableUserGeolocation,
     disableUserGeolocation: disableUserGeolocation,
 }

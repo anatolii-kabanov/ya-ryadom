@@ -41,11 +41,13 @@ export const saveUserAboutMyselfRequest = (payload: string) => action(Authentica
 export const saveUserAboutMyselfSuccess = (payload: string) => action(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_SUCCESS, payload);
 export const saveUserAboutMyselfError = (payload: any) => action(AuthenticationTypes.SAVE_USER_ABOUT_MYSELF_ERROR, payload);
 
-export const allowNotificationsRequest = () => action(AuthenticationTypes.ALLOW_NOTIFICATIONS);
+export const allowNotifications = () => action(AuthenticationTypes.ALLOW_NOTIFICATIONS);
+export const allowNotificationsRequest = () => action(AuthenticationTypes.ALLOW_NOTIFICATIONS_REQUEST);
 export const allowNotificationsSuccess = () => action(AuthenticationTypes.ALLOW_NOTIFICATIONS_SUCCESS);
 export const allowNotificationsError = (payload: any) => action(AuthenticationTypes.ALLOW_NOTIFICATIONS_ERROR, payload);
 
-export const disableNotificationsRequest = () => action(AuthenticationTypes.DISABLE_NOTIFICATIONS);
+export const disableNotifications = () => action(AuthenticationTypes.DISABLE_NOTIFICATIONS);
+export const disableNotificationsRequest = () => action(AuthenticationTypes.DISABLE_NOTIFICATIONS_REQUEST);
 export const disableNotificationsSuccess = () => action(AuthenticationTypes.DISABLE_NOTIFICATIONS_SUCCESS);
 export const disableNotificationsError = (payload: any) => action(AuthenticationTypes.DISABLE_NOTIFICATIONS_ERROR, payload);
 
