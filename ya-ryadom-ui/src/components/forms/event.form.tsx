@@ -38,7 +38,7 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    updateEventForm: typeof updateEventForm
+    updateEventForm: typeof updateEventForm,
 }
 
 
@@ -186,7 +186,7 @@ class EventForm extends React.Component<AllProps, EventState> {
             errors['eventTime'] = "Обязательное поле";
         } else {
             const currentDate = new Date();
-            const selectedDate = new Date(`${eventForm.eventDate} ${eventForm.eventTime}`);
+            const selectedDate = new Date(`${eventForm.eventDate}T${eventForm.eventTime}`);
             if (selectedDate < currentDate) {
                 formIsValid = false;
                 errors['eventTime'] = "Нельзя выбрать прошедшее время";
@@ -331,7 +331,7 @@ const mapStateToProps = ({ authentication, ui, events }: AppState, ownProps: Own
 })
 
 const mapDispatchToProps: PropsFromDispatch = {
-    updateEventForm: updateEventForm
+    updateEventForm: updateEventForm,
 }
 
 export default connect(
