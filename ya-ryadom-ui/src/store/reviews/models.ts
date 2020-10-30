@@ -1,52 +1,52 @@
-import { ThemeType } from "../../utils/enums/theme-type.enum";
+import { ThemeType } from '../../utils/enums/theme-type.enum';
 
 export interface ReviewsRequest {
-    eventId: number;
-    vkUserId: number;
+	eventId: number;
+	vkUserId: number;
 }
 
 export interface EventReviews {
-    eventId: number;
-    applications: Review[]
+	eventId: number;
+	applications: Review[];
 }
 
 export interface Review {
-    vkUserId: number;
-    userFullName: string;
-    vkUserAvatarUrl: string;
-    date: Date;
+	vkUserId: number;
+	userFullName: string;
+	vkUserAvatarUrl: string;
+	date: Date;
 }
 
 export interface SelectedUserToReview {
-    eventId: number;
-    vkUserId: number;
-    applicationId: number;
+	eventId: number;
+	vkUserId: number;
+	applicationId: number;
 }
 
 export interface ReviewModel {
-    text: string;
-    rating: number;
+	text: string;
+	rating: number;
 }
 
 export interface SaveReviewRequest {
-    vkUserId: number;
-    text: string;
-    rating: number;
-    eventId: number;
-    vkUserToReviewId: number;
+	vkUserId: number;
+	text: string;
+	rating: number;
+	eventId: number;
+	vkUserToReviewId: number;
 }
 
 export interface EventsReviews {
-    [key: number]: Review[]
+	[key: number]: Review[];
 }
 
 export interface UserReview {
-    id: number;
-    text: string;
-    rating: number;
-    eventTitle: string;
-    themeType: ThemeType;
-    userFullName: string;
-    eventId: number;
-    vkUserAvatarUrl: string;
+	id: number;
+	text: string;
+	rating: number;
+	eventTitle: string;
+	themeType: ThemeType;
+	userFullName: string;
+	eventId: number;
+	vkUserAvatarUrl: string;
 }

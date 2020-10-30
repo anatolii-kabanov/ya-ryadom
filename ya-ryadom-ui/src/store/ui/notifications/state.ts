@@ -1,10 +1,10 @@
-import { NotificationType } from "../../../utils/enums/notification-type.enum";
+import { NotificationType } from '../../../utils/enums/notification-type.enum';
 
 export interface NotificationsState {
-    notificationsList: SnackbarNotification[];
+	notificationsList: SnackbarNotification[];
 }
 
 export interface SnackbarNotification {
-    message: string;
-    type: NotificationType;
+	message: string;
+	type: NotificationType;
 }

@@ -6,18 +6,17 @@ import { createRootReducer } from './app-reducer';
 import { rootSaga } from './app-saga';
 
 export default function configureStore(initialState: AppState) {
+	const composeEnhancers = composeWithDevTools({});
 
-    const composeEnhancers = composeWithDevTools({});
+	const sagaMiddleware = createSagaMiddleware();
 
-    const sagaMiddleware = createSagaMiddleware();
+	const store = createStore(
+		createRootReducer(),
+		initialState,
+		composeEnhancers(applyMiddleware(sagaMiddleware)),
+	);
 
-    const store = createStore(
-        createRootReducer(),
-        initialState,
-        composeEnhancers(applyMiddleware(sagaMiddleware))
-    )
+	sagaMiddleware.run(rootSaga);
 
-    sagaMiddleware.run(rootSaga)
-
-    return store;
+	return store;
 }

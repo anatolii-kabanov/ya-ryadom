@@ -1,3 +1,3 @@
 export enum ValidationErrors {
-    REQUIRED = 'Обязательное поле',
-};
+	REQUIRED = 'Обязательное поле',
+}

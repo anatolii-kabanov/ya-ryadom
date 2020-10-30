@@ -1,74 +1,74 @@
-@import "../../../assets/scss/variables";
+@import '../../../assets/scss/variables';
 
 .card-separator {
-  margin: 12px -12px;
+	margin: 12px -12px;
 }
 
 .applications-panel {
-  .btn-primary {
-    width: auto !important;
-    background-color: $background-color !important;
-    margin-right: 8px !important;
-    margin-left: auto !important;
-  }
+	.btn-primary {
+		width: auto !important;
+		background-color: $background-color !important;
+		margin-right: 8px !important;
+		margin-left: auto !important;
+	}
 
-  .btn-secondary {
-    margin-right: 10% !important;
-    margin-left: 0px !important;
-    width: auto !important;
-  }
-  .application-btns {
-    display: flex;
-    margin-top: 17px;
-  }
+	.btn-secondary {
+		margin-right: 10% !important;
+		margin-left: 0px !important;
+		width: auto !important;
+	}
+	.application-btns {
+		display: flex;
+		margin-top: 17px;
+	}
 }
 
 .application-card {
-  margin: 0 12px;
-  .applicants {
-    margin-top: 22px;
-    padding-left: 0;
-    padding-right: 0;
-  }
-  .show-applicants-btn {
-    margin-top: 15px;
-  }
-  .head {
-    font-weight: 700;
-  }
+	margin: 0 12px;
+	.applicants {
+		margin-top: 22px;
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.show-applicants-btn {
+		margin-top: 15px;
+	}
+	.head {
+		font-weight: 700;
+	}
 
-  .body {
-    .title {
-      font-weight: bold;
-      font-size: 15px;
-      line-height: 20px;
-      letter-spacing: -0.24px;
-    }
+	.body {
+		.title {
+			font-weight: bold;
+			font-size: 15px;
+			line-height: 20px;
+			letter-spacing: -0.24px;
+		}
 
-    .description {
-      font-size: 15px;
-      line-height: 20px;
-      letter-spacing: -0.24px;
-      margin-right: 60px;
-    }
+		.description {
+			font-size: 15px;
+			line-height: 20px;
+			letter-spacing: -0.24px;
+			margin-right: 60px;
+		}
 
-    .sub-info {
-      margin-top: 6px;
-      & > * {
-        font-size: 13px;
-        line-height: 16px;
-        letter-spacing: -0.078px;
-        color: $secondary-color;
-        display: inline-block;
-      }
+		.sub-info {
+			margin-top: 6px;
+			& > * {
+				font-size: 13px;
+				line-height: 16px;
+				letter-spacing: -0.078px;
+				color: $secondary-color;
+				display: inline-block;
+			}
 
-      & > .address {
-        margin-right: 40px;
-      }
-    }
-  }
+			& > .address {
+				margin-right: 40px;
+			}
+		}
+	}
 
-  .users-list {
-    margin: 25px -12px 0 -12px;
-  }
+	.users-list {
+		margin: 25px -12px 0 -12px;
+	}
 }

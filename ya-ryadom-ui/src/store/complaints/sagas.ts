@@ -49,7 +49,9 @@ function* handleSendComplaintToEventRequest(
 		if (result.errors || result?.status >= 400) {
 			yield put(
 				addNotificaiton(
-					new SnackbarErrorNotification(NOTIFICATION_MESSAGES.COMPLAINT_ALREADY_SENT),
+					new SnackbarErrorNotification(
+						NOTIFICATION_MESSAGES.COMPLAINT_ALREADY_SENT,
+					),
 				),
 			);
 			yield put(sendComplaintToEventError(result.errors));

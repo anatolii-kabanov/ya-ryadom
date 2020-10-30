@@ -3,20 +3,20 @@ import './star.input.scss';
 import Icon24Star from '@vkontakte/icons/dist/24/favorite';
 
 interface StarProps {
-    rating: number;
-    selected: boolean;
-    onClick?: (rating: number) => void;
+	rating: number;
+	selected: boolean;
+	onClick?: (rating: number) => void;
 }
 
 const StarInput: React.FC<StarProps> = ({ rating, selected, onClick }) => {
-    return (
-        <Icon24Star className={`star ${selected ? 'selected' : ''}`} onClick={() => onClick && onClick(rating)}>
-        </Icon24Star >
-    );
-}
+	return (
+		<Icon24Star
+			className={`star ${selected ? 'selected' : ''}`}
+			onClick={() => onClick && onClick(rating)}
+		></Icon24Star>
+	);
+};
 
-StarInput.defaultProps = {
-
-}
+StarInput.defaultProps = {};
 
 export default StarInput;

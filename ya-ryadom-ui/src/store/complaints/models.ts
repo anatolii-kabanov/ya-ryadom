@@ -1,18 +1,18 @@
-import { ComplaintType } from "../../utils/enums/complaint-type.enum";
+import { ComplaintType } from '../../utils/enums/complaint-type.enum';
 
 export interface ComplaintToEventRequest {
-    eventId: number;
-    vkUserId: number;
-    complaintType: ComplaintType;
-    text: string;
+	eventId: number;
+	vkUserId: number;
+	complaintType: ComplaintType;
+	text: string;
 }
 
 export interface ComplaintToUserRequest {
-    toVkUserId: number;
-    vkUserId: number;
+	toVkUserId: number;
+	vkUserId: number;
 }
 
 export interface ComplaintForm {
-    selectedComplaint: number;
-    text: string;
+	selectedComplaint: number;
+	text: string;
 }

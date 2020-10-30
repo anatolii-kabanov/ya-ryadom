@@ -1,7 +1,7 @@
-import { VkHistoryModel } from "./models";
+import { VkHistoryModel } from './models';
 
 export interface HistoryState {
-    history: VkHistoryModel[],
-    currentViewPanel: VkHistoryModel,
-    currentModal: string | null,
-};
+	history: VkHistoryModel[];
+	currentViewPanel: VkHistoryModel;
+	currentModal: string | null;
+}

@@ -1,3 +1,3 @@
 export interface SpinnerState {
-    spinnerVisible: boolean,
+	spinnerVisible: boolean;
 }

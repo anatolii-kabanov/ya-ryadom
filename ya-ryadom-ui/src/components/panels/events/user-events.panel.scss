@@ -1,29 +1,29 @@
-@import "../../../assets/scss/variables.scss";
+@import '../../../assets/scss/variables.scss';
 
 .button-primary {
-  background-color: $background-color !important;
-  cursor: pointer;
-  &.disabled {
-    cursor: default;
-  }
+	background-color: $background-color !important;
+	cursor: pointer;
+	&.disabled {
+		cursor: default;
+	}
 }
 
 .button-disabled {
-  color: $secondary-color;
+	color: $secondary-color;
 }
 
 .rc-bottom {
-  color: $secondary-color;
-  font-weight: 400;
-  font-size: 0.8em;
+	color: $secondary-color;
+	font-weight: 400;
+	font-size: 0.8em;
 }
 
 .rc-bottom-span {
-  margin-left: 2em;
+	margin-left: 2em;
 }
 
 .no-events-div {
-  text-align: center;
-  position: relative;
-  top: 25vw;
+	text-align: center;
+	position: relative;
+	top: 25vw;
 }

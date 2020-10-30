@@ -167,8 +167,8 @@ function* handleApplyToEventFromUserEvents(
 	if (effect.type == ApplicationsTypes.APPLY_TO_EVENT_SUCCESS) {
 		yield put(fetchUserCreatedEventsListRequest());
 	} else {
-        yield put(hideSpinner());
-    }
+		yield put(hideSpinner());
+	}
 }
 
 function* watchApplyToEventFromUserEvents() {

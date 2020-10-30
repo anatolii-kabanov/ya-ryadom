@@ -1,10 +1,8 @@
-import { AppearanceSchemeType, AppearanceType } from "@vkontakte/vk-bridge";
+import { AppearanceSchemeType, AppearanceType } from '@vkontakte/vk-bridge';
 
 export interface VkStyles {
-    schemeType: AppearanceSchemeType;
-    appearance: AppearanceType;
+	schemeType: AppearanceSchemeType;
+	appearance: AppearanceType;
 }
 
-export class VkStyles implements VkStyles {
-    
-}
+export class VkStyles implements VkStyles {}

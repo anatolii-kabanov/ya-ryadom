@@ -1,14 +1,14 @@
 .filter-modal {
-  .clear-btn {
-    cursor: pointer;
-    &-disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      pointer-events: all !important;
-    }
-  }
-  .radius {
-    display: flex;
-    justify-content: space-between;
-  }
+	.clear-btn {
+		cursor: pointer;
+		&-disabled {
+			opacity: 0.4;
+			cursor: not-allowed;
+			pointer-events: all !important;
+		}
+	}
+	.radius {
+		display: flex;
+		justify-content: space-between;
+	}
 }

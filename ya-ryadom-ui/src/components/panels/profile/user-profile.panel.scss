@@ -1,26 +1,26 @@
-@import "../../../assets/scss/variables.scss";
+@import '../../../assets/scss/variables.scss';
 .menu-icon {
-  margin-left: 30%;
+	margin-left: 30%;
 }
 
 .div-icons-menu {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 2em;
-  color: $primary-color
+	display: flex;
+	justify-content: space-between;
+	margin: 0 2em;
+	color: $primary-color;
 }
 
 .themes-text {
-  text-transform: none !important;
-  font-weight: 400 !important;
+	text-transform: none !important;
+	font-weight: 400 !important;
 
-  .themes-orange-text {
-    color: $primary-color;
-  }
+	.themes-orange-text {
+		color: $primary-color;
+	}
 }
 
 .a-icon {
-  text-decoration: none;
-  color: $primary-color;
-  cursor: pointer;
+	text-decoration: none;
+	color: $primary-color;
+	cursor: pointer;
 }

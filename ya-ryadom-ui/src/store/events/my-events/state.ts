@@ -1,7 +1,7 @@
-import { EventForm, MyEvent } from "./models";
+import { EventForm, MyEvent } from './models';
 
 export interface MyEventsState {
-    eventsList: MyEvent[];
-    isLoading: boolean;
-    eventForm: EventForm;
-};
+	eventsList: MyEvent[];
+	isLoading: boolean;
+	eventForm: EventForm;
+}

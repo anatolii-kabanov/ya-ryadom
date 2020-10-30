@@ -5,15 +5,15 @@ import { Provider } from 'react-redux';
 import { AppState } from './store/app-state';
 
 interface AppProps {
-  store: Store<AppState>
+	store: Store<AppState>;
 }
 
 const App: React.FC<AppProps> = ({ store }) => {
-  return (
-    <Provider store={store}>
-      <RootLayout></RootLayout>
-    </Provider>
-  );
-}
+	return (
+		<Provider store={store}>
+			<RootLayout></RootLayout>
+		</Provider>
+	);
+};
 
 export default App;

@@ -16,10 +16,10 @@ const initialState: AppState = window.INITIAL_REDUX_STATE;
 const store = configureStore(initialState);
 
 ReactDOM.render(
-    <React.StrictMode>
-        <App store={store}/>
-    </React.StrictMode>,
-    document.getElementById('root')
+	<React.StrictMode>
+		<App store={store} />
+	</React.StrictMode>,
+	document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change

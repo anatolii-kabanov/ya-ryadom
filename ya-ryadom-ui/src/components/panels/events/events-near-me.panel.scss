@@ -1,47 +1,47 @@
-@import "../../../assets/scss/variables.scss";
+@import '../../../assets/scss/variables.scss';
 
 .events-near-me-panel {
-  .filter {
-    padding-left: 5px;
-  }
+	.filter {
+		padding-left: 5px;
+	}
 }
 
 .card-container {
-  position: absolute;
-  bottom: 10%;
-  width: 100%;
-  right: 0;
-  padding-right: 0;
+	position: absolute;
+	bottom: 10%;
+	width: 100%;
+	right: 0;
+	padding-right: 0;
 }
 
 .cell-container {
-  -webkit-box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.75);
-  border-radius: inherit;
+	-webkit-box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.75);
+	box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.75);
+	border-radius: inherit;
 }
 
 .map-card-buttons-div {
-  display: flex;
-  justify-content: center;
+	display: flex;
+	justify-content: center;
 
-  .button-primary {
-    background-color: $background-color !important;
-    margin-right: 8px !important;
-    margin-left: 60px !important;
-    flex: 2;
-  }
+	.button-primary {
+		background-color: $background-color !important;
+		margin-right: 8px !important;
+		margin-left: 60px !important;
+		flex: 2;
+	}
 
-  .disabled {
-    background-color: #f2f4f5 !important;
-    color: #c7c7c7 !important;
-  }
+	.disabled {
+		background-color: #f2f4f5 !important;
+		color: #c7c7c7 !important;
+	}
 
-  .btn-secondary {
-    background-color: #f2f3f5 !important;
-    color: $background-color !important;
-    margin-right: 10% !important;
-    margin-left: 0px !important;
-    flex: 4;
-  }
+	.btn-secondary {
+		background-color: #f2f3f5 !important;
+		color: $background-color !important;
+		margin-right: 10% !important;
+		margin-left: 0px !important;
+		flex: 4;
+	}
 }

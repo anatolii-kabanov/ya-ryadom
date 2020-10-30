@@ -11,43 +11,43 @@ import CompletedIntroPanel from '../panels/intro/completed-intro.panel';
 import GeolocationIntroPanel from '../panels/intro/geolocation-intro.panel';
 
 interface PropsFromState {
-    id: string;
-    activePanel: string;
+	id: string;
+	activePanel: string;
 }
 
-interface PropsFromDispatch {
-
-}
-
+interface PropsFromDispatch {}
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class IntroView extends React.Component<AllProps>  {
-    render() {
-        let { id, activePanel } = this.props;
+class IntroView extends React.Component<AllProps> {
+	render() {
+		let { id, activePanel } = this.props;
 
-        return (
-            <View id={id} activePanel={activePanel}>
-                <HelloIntroPanel id={PANELS.HELLO_INTRO_PANEL}></HelloIntroPanel>
-                <GeolocationIntroPanel id={PANELS.GEOLOCATION_INTRO_PANEL}></GeolocationIntroPanel>
-                <ThemesIntroPanel id={PANELS.THEMES_INTRO_PANEL}></ThemesIntroPanel>
-                <SelectCityIntroPanel id={PANELS.SELECT_CITY_INTRO_PANEL}></SelectCityIntroPanel>
-                <AboutMyselfIntroPanel id={PANELS.ABOUT_MYSELF_INTRO_PANEL}></AboutMyselfIntroPanel>
-                <CompletedIntroPanel id={PANELS.COMPLETED_INTRO_PANEL}></CompletedIntroPanel>
-            </View>
-        )
-    }
+		return (
+			<View id={id} activePanel={activePanel}>
+				<HelloIntroPanel id={PANELS.HELLO_INTRO_PANEL}></HelloIntroPanel>
+				<GeolocationIntroPanel
+					id={PANELS.GEOLOCATION_INTRO_PANEL}
+				></GeolocationIntroPanel>
+				<ThemesIntroPanel id={PANELS.THEMES_INTRO_PANEL}></ThemesIntroPanel>
+				<SelectCityIntroPanel
+					id={PANELS.SELECT_CITY_INTRO_PANEL}
+				></SelectCityIntroPanel>
+				<AboutMyselfIntroPanel
+					id={PANELS.ABOUT_MYSELF_INTRO_PANEL}
+				></AboutMyselfIntroPanel>
+				<CompletedIntroPanel
+					id={PANELS.COMPLETED_INTRO_PANEL}
+				></CompletedIntroPanel>
+			</View>
+		);
+	}
 }
 
-const mapStateToProps = ({ history, authentication }: AppState) => ({
-    activePanel: history.currentViewPanel.panel,
-})
+const mapStateToProps = ({ history }: AppState) => ({
+	activePanel: history.currentViewPanel.panel,
+});
 
-const mapDispatchToProps: PropsFromDispatch = {
+const mapDispatchToProps: PropsFromDispatch = {};
 
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(IntroView);
+export default connect(mapStateToProps, mapDispatchToProps)(IntroView);

@@ -8,50 +8,47 @@ import Icon24Error from '@vkontakte/icons/dist/24/error_circle';
 import { removeNotificaiton } from '../../store/ui/notifications/actions';
 
 interface PropsFromState {
-    currentNotification: SnackbarNotification | null;
+	currentNotification: SnackbarNotification | null;
 }
 
 interface PropsFromDispatch {
-    removeNotification: typeof removeNotificaiton;
+	removeNotification: typeof removeNotificaiton;
 }
-
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
-class MainSnackbar extends React.Component<AllProps>  {
+class MainSnackbar extends React.Component<AllProps> {
+	constructor(props: AllProps) {
+		super(props);
+	}
 
-    constructor(props: AllProps) {
-        super(props);
-    }
+	componentDidMount() {}
 
-    componentDidMount() {
-    }
-
-    render() {
-        const { currentNotification, removeNotification } = this.props;
-        return (
-            <React.Fragment>
-                {
-                    currentNotification &&
-                    <Snackbar className="snackbar" key={new Date().getTime()} onClose={() => removeNotification()}
-                        before={<Icon24Error className="error" />}>
-                        {currentNotification.message}
-                    </Snackbar>
-                }
-            </React.Fragment>
-        )
-    }
+	render() {
+		const { currentNotification, removeNotification } = this.props;
+		return (
+			<React.Fragment>
+				{currentNotification && (
+					<Snackbar
+						className='snackbar'
+						key={new Date().getTime()}
+						onClose={() => removeNotification()}
+						before={<Icon24Error className='error' />}
+					>
+						{currentNotification.message}
+					</Snackbar>
+				)}
+			</React.Fragment>
+		);
+	}
 }
 
 const mapStateToProps = ({ ui }: AppState) => ({
-    currentNotification: ui.notifications.notificationsList[0]
-})
+	currentNotification: ui.notifications.notificationsList[0],
+});
 
 const mapDispatchToProps: PropsFromDispatch = {
-    removeNotification: removeNotificaiton,
-}
+	removeNotification: removeNotificaiton,
+};
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MainSnackbar);
+export default connect(mapStateToProps, mapDispatchToProps)(MainSnackbar);
