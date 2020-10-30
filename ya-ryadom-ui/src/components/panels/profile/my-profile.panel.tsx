@@ -1,5 +1,5 @@
 import './my-profile.panel.scss';
-import React from "react";
+import React from 'react';
 import {
     Group,
     Panel,
@@ -10,9 +10,9 @@ import {
     Caption,
     Button,
     PanelHeader,
-} from "@vkontakte/vkui";
+} from '@vkontakte/vkui';
 import { connect } from 'react-redux';
-import { AppState } from "../../../store/app-state";
+import { AppState } from '../../../store/app-state';
 import { UserInfo } from "@vkontakte/vk-bridge";
 import { goForward } from "../../../store/history/actions";
 import { CurrentUser } from "../../../store/authentication/models";
@@ -40,7 +40,9 @@ type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class MyProfilePanel extends React.Component<AllProps>{
 
-    componentDidMount() {
+    constructor(props: AllProps) {
+        super(props);
+
     }
 
     private renderThemes() {
@@ -87,8 +89,7 @@ class MyProfilePanel extends React.Component<AllProps>{
     }
 }
 
-const mapStateToProps = ({ events, authentication }: AppState, ownProps: OwnProps) => ({
-    myEvents: events.myEvents.eventsList,
+const mapStateToProps = ({ authentication }: AppState, ownProps: OwnProps) => ({
     vkUserInfo: authentication.vkUserInfo,
     currentUser: authentication.currentUser,
     id: ownProps.id,

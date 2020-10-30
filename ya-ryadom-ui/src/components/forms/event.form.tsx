@@ -51,7 +51,7 @@ interface EventState {
 const maxValues = {
     maxDescription: 84,
     maxTitle: 20
-}
+};
 
 class EventForm extends React.Component<AllProps, EventState> {
 
@@ -62,7 +62,7 @@ class EventForm extends React.Component<AllProps, EventState> {
         this.state = {
             errors: {},
         };
-        this.onFillInProfile = this.onFillInProfile.bind(this)
+        this.onFillInProfile = this.onFillInProfile.bind(this);
         this.autoCompleteRef = React.createRef();
     }
 
@@ -71,7 +71,7 @@ class EventForm extends React.Component<AllProps, EventState> {
         const { onSave, eventForm, vkUserInfo } = this.props;
         if (isEmpty(eventForm.selectedPosition)) {
             // TODO handle show error
-            console.log('handle error')
+            console.log('handle error');
         }
         else {
             if (vkUserInfo) {
@@ -88,7 +88,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                 });
             }
         }
-    }
+    };
 
     handleInputChange = event => {
         event.preventDefault();
@@ -115,18 +115,18 @@ class EventForm extends React.Component<AllProps, EventState> {
         }
         this.setState({
             errors: { ...this.state.errors, [name]: validators }
-        })
-    }
+        });
+    };
 
     getLatitude = () => {
         const { userPosition, lastLocation } = this.props;
         return (userPosition?.lat ?? lastLocation?.latitude) || 0;
-    }
+    };
 
     getLongitude = () => {
         const { userPosition, lastLocation } = this.props;
         return (userPosition?.long ?? lastLocation?.longitude) || 0;
-    }
+    };
 
     renderThemesSelect() {
         const themes = ALL_THEMES;
@@ -137,7 +137,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                         key={key}
                         value={item.id}>
                         {item.name}
-                    </option>
+                    </option>;
                 });
         }
     }
@@ -211,7 +211,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                 errors: { ...this.state.errors, selectedPosition: undefined }
             });
         }
-    }
+    };
 
     render() {
         const { errors } = this.state;
@@ -292,7 +292,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                         }}
                         onGoogleApiLoaded={(map) => {
                             // onClick not working properly with Zoom control, the bug happens when on touch action only
-                            const geoCoder = new map.maps.Geocoder()
+                            const geoCoder = new map.maps.Geocoder();
                             this.autoCompleteRef.current.initAutoComplete();
                             map.map.addListener("click", (e) => {
                                 geoCoder.geocode({
@@ -316,7 +316,7 @@ class EventForm extends React.Component<AllProps, EventState> {
                 </FormStatus>}
                 <Button className="btn-primary" size="xl" onClick={this.onFillInProfile}>Создать</Button>
             </FormLayout>
-        )
+        );
     }
 }
 
@@ -328,11 +328,11 @@ const mapStateToProps = ({ authentication, ui, events }: AppState, ownProps: Own
     isOnline: ui.settings.isOnline,
     eventForm: events.myEvents.eventForm,
     onSave: ownProps.onSave,
-})
+});
 
 const mapDispatchToProps: PropsFromDispatch = {
     updateEventForm: updateEventForm,
-}
+};
 
 export default connect(
     mapStateToProps,
