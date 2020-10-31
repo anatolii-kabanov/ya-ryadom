@@ -25,7 +25,7 @@ type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 interface State {}
 
 class ComplaintReviewModal extends React.Component<AllProps, State> {
-	constructor(props) {
+	constructor(props: AllProps) {
 		super(props);
 		this.onSave = this.onSave.bind(this);
 	}

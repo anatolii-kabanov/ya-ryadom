@@ -10,7 +10,7 @@ import { addReviewRequest } from '../../store/reviews/actions';
 import { setActiveModal } from '../../store/history/actions';
 
 interface PropsFromState {
-	activeModal: string;
+	activeModal: string | null;
 }
 
 interface PropsFromDispatch {
@@ -23,7 +23,7 @@ type AllProps = PropsFromState & PropsFromDispatch;
 interface State {}
 
 class ApplicationsReviewModal extends React.Component<AllProps, State> {
-	constructor(props) {
+	constructor(props: AllProps) {
 		super(props);
 		this.onSaveReview = this.onSaveReview.bind(this);
 	}

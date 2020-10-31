@@ -1,5 +1,8 @@
 import './events-filter.modal.scss';
 import React from 'react';
+import { connect } from 'react-redux';
+import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
+import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
 import {
 	FormLayout,
 	Input,
@@ -14,9 +17,6 @@ import {
 	IOS,
 } from '@vkontakte/vkui';
 import { AppState } from './../../store/app-state';
-import { connect } from 'react-redux';
-import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
-import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
 import { EventsFilter } from '../../store/ui/settings/state';
 import {
 	clearEventsFilter,
@@ -62,7 +62,7 @@ const maxValues = {
 const osname = platform();
 
 class EventsFilterModal extends React.Component<AllProps, State> {
-	constructor(props) {
+	constructor(props: AllProps) {
 		super(props);
 		this.showResultsClick = this.showResultsClick.bind(this);
 	}

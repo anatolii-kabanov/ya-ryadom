@@ -19,7 +19,8 @@ export const initialState: SettingsState = {
 	isWebView: false,
 	vkStyles: {
 		schemeType: 'bright_light',
-		appearance: 'light',
+        appearance: 'light',
+        viewportHeight: 0
 	},
 };
 

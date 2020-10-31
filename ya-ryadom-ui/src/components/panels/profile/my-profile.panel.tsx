@@ -1,5 +1,8 @@
 import './my-profile.panel.scss';
 import React from 'react';
+import { connect } from 'react-redux';
+import { UserInfo } from '@vkontakte/vk-bridge';
+import Icon24Star from '@vkontakte/icons/dist/24/favorite';
 import {
 	Group,
 	Panel,
@@ -11,14 +14,11 @@ import {
 	Button,
 	PanelHeader,
 } from '@vkontakte/vkui';
-import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
-import { UserInfo } from '@vkontakte/vk-bridge';
 import { goForward } from '../../../store/history/actions';
 import { CurrentUser } from '../../../store/authentication/models';
 import PillInput from '../../inputs/pill.input';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
-import Icon24Star from '@vkontakte/icons/dist/24/favorite';
 import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/constants/view.constants';
 import { PANELS } from '../../../utils/constants/panel.constants';

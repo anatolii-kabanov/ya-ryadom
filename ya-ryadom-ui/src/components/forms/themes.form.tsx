@@ -46,7 +46,8 @@ class ThemesForm extends React.Component<AllProps, State> {
 	isValid() {
 		let errors = {};
 		let formIsValid = true;
-		if (!this.state.selectedThemes || this.state.selectedThemes.length === 0) {
+		const { selectedThemes } = this.state;
+		if (!selectedThemes || selectedThemes.length === 0) {
 			formIsValid = false;
 			errors['selectedThemes'] = 'Выберите хотя бы одну тему';
 		}

@@ -1,5 +1,7 @@
 import './my-profile-edit.panel.scss';
 import React from 'react';
+import { connect } from 'react-redux';
+import { UserInfo } from '@vkontakte/vk-bridge';
 import {
 	Group,
 	Panel,
@@ -9,11 +11,8 @@ import {
 	Switch,
 	Placeholder,
 } from '@vkontakte/vkui';
-import { connect } from 'react-redux';
 import { AppState } from '../../../store/app-state';
-
 import MainHeaderPanel from '../headers/main.header';
-import { UserInfo } from '@vkontakte/vk-bridge';
 import { goForward } from '../../../store/history/actions';
 import { CurrentUser, Geo } from '../../../store/authentication/models';
 import { VkHistoryModel } from '../../../store/history/models';
@@ -31,8 +30,8 @@ interface OwnProps {
 }
 
 interface PropsFromState {
-	vkUserInfo: UserInfo;
-	currentUser: CurrentUser;
+	vkUserInfo: UserInfo | null;
+	currentUser: CurrentUser | null;
 	userGeo: Geo | null;
 }
 
@@ -47,16 +46,11 @@ interface PropsFromDispatch {
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class MyProfileEditPanel extends React.Component<AllProps> {
-	/**
-	 *
-	 */
-	constructor(props) {
+	constructor(props: AllProps) {
 		super(props);
 		this.onNotificationClick = this.onNotificationClick.bind(this);
 		this.onGeolocationClick = this.onGeolocationClick.bind(this);
 	}
-
-	componentDidMount() {}
 
 	onNotificationClick(event: any) {
 		const { allowNotifications, disableNotifications } = this.props;
@@ -96,7 +90,7 @@ class MyProfileEditPanel extends React.Component<AllProps> {
 					<Cell
 						asideContent={
 							<Switch
-								checked={currentUser.notificationsEnabled}
+								checked={currentUser?.notificationsEnabled}
 								name='enableNotifications'
 								className='switcher'
 								onClick={this.onNotificationClick}
@@ -111,7 +105,7 @@ class MyProfileEditPanel extends React.Component<AllProps> {
 					<Cell
 						asideContent={
 							<Switch
-								checked={currentUser.geolocationEnabled}
+								checked={currentUser?.geolocationEnabled}
 								name='enableGeolocation'
 								className='switcher'
 								onClick={this.onGeolocationClick}

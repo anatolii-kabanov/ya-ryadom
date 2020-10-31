@@ -23,9 +23,10 @@ function initVkAppSettingsEvents() {
 				const vkStyles: VkStyles = new VkStyles();
 				let isLight = ['bright_light', 'client_light'].includes(data.scheme);
 				vkStyles.schemeType = isLight ? 'bright_light' : 'space_gray';
-				vkStyles.appearance = isLight ? 'light' : 'dark';
+                vkStyles.appearance = isLight ? 'light' : 'dark';
+                vkStyles.viewportHeight = data.viewport_height;
 				eventEmmiter(vkStyles);
-			}
+            }
 		};
 		vkBridge.subscribe(vkAppSettingsHandler);
 		return () => {
@@ -38,7 +39,7 @@ function* vkListener() {
 	const chanel = yield call(initVkAppSettingsEvents);
 	try {
 		while (true) {
-			const message = yield take(chanel);
+            const message = yield take(chanel);
 			yield put(updateVkStyles(message));
 		}
 	} finally {

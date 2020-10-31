@@ -13,10 +13,7 @@ interface State {
 }
 
 class RatingInput extends React.PureComponent<RatingProps, State> {
-	/**
-	 *
-	 */
-	constructor(props) {
+	constructor(props: RatingProps) {
 		super(props);
 		this.state = {} as State;
 		this.onStarClicked = this.onStarClicked.bind(this);
