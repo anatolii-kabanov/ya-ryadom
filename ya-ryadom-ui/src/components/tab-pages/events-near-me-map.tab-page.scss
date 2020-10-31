@@ -1,11 +1,12 @@
 .events-near-me-map {
-  .map {
-    height: 65vh;
-    width: 100%;
-  }
-  .selected-event-aside {
-    display: flex;
-    justify-content: space-between;
-    min-width: 60px;
-  }
+	.map {
+		position: relative;
+		min-height: 100%;
+		width: 100%;
+	}
+	.selected-event-aside {
+		display: flex;
+		justify-content: space-between;
+		min-width: 60px;
+	}
 }

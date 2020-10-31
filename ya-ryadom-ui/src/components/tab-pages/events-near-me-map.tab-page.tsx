@@ -57,15 +57,24 @@ type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {
 	eventOnMap: any;
+	offsetTopToMap: number;
 }
 
 class EventsNearMeMapTabPage extends React.Component<AllProps, State> {
+	private mapRef: any;
+
 	constructor(props: AllProps) {
 		super(props);
 		this.state = {
 			eventOnMap: null,
+			offsetTopToMap: 0,
 		};
+		this.mapRef = React.createRef();
 		this.onMarkerClick = this.onMarkerClick.bind(this);
+	}
+
+	componentDidMount() {
+		this.setState({ offsetTopToMap: this.mapRef?.current?.offsetTop });
 	}
 
 	private renderEvents() {
@@ -225,10 +234,21 @@ class EventsNearMeMapTabPage extends React.Component<AllProps, State> {
 				</Div>
 			);
 		}
+		const { offsetTopToMap } = this.state;
 		return (
 			<Group separator='hide' className='events-near-me-map'>
 				<Group separator='hide'>
-					<div className='map'>
+					<div
+						ref={this.mapRef}
+						className='map'
+						style={
+							offsetTopToMap
+								? {
+										height: `calc(100vh - ${offsetTopToMap}px - var(--safe-area-inset-bottom) - var(--tabbar_height))`,
+								  }
+								: {}
+						}
+					>
 						<GoogleMapReact
 							options={mapOptions}
 							bootstrapURLKeys={{
