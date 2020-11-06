@@ -6,8 +6,8 @@ import { ReactComponent as IntroImage } from '../../../assets/images/svg/hello-i
 import { AppState } from '../../../store/app-state';
 import { goForward } from '../../../store/history/actions';
 import { UserInfo } from '@vkontakte/vk-bridge';
-import { VIEWS } from '../../../utils/constants/view.constants';
-import { PANELS } from '../../../utils/constants/panel.constants';
+import { VIEWS } from '../../../utils/enums/views.enum';
+import { PANELS } from '../../../utils/enums/panels.enum';
 import { VkHistoryModel } from '../../../store/history/models';
 
 interface PropsFromState {

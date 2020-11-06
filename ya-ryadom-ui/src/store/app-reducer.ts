@@ -11,23 +11,25 @@ import { userEventsReducer } from './events/user-events/reducer';
 import { complaintsReducer } from './complaints/reducer';
 import { notificationsReducer } from './ui/notifications/reducer';
 import { usersReducer } from './users/reducer';
+import { scrollReducer } from './ui/scroll/reducer';
 
 export const createRootReducer = () =>
-	combineReducers({
-		authentication: authenticationReducer,
-		complaints: complaintsReducer,
-		history: historyReducer,
-		events: combineReducers({
-			eventsNearMe: eventsNearMeReducer,
-			myEvents: myEventsReducer,
-			userEvents: userEventsReducer,
-		}),
-		applications: applicationsReducer,
-		reviews: reviewsReducer,
-		ui: combineReducers({
-			spinner: spinnerReducer,
-			settings: settingsReducer,
-			notifications: notificationsReducer,
-		}),
-		users: usersReducer,
-	});
+    combineReducers({
+        authentication: authenticationReducer,
+        complaints: complaintsReducer,
+        history: historyReducer,
+        events: combineReducers({
+            eventsNearMe: eventsNearMeReducer,
+            myEvents: myEventsReducer,
+            userEvents: userEventsReducer,
+        }),
+        applications: applicationsReducer,
+        reviews: reviewsReducer,
+        ui: combineReducers({
+            spinner: spinnerReducer,
+            settings: settingsReducer,
+            notifications: notificationsReducer,
+            scroll: scrollReducer,
+        }),
+        users: usersReducer,
+    });

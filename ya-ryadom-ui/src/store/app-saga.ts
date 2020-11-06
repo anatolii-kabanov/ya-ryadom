@@ -9,18 +9,20 @@ import userEventsSagas from './events/user-events/sagas';
 import complaintsSagas from './complaints/sagas';
 import usersSagas from './users/sagas';
 import settingsSagas from './ui/settings/sagas';
+import scrollSagas from './ui/scroll/sagas';
 
 export function* rootSaga() {
-	yield all([
-		fork(authenticationSagas),
-		fork(complaintsSagas),
-		fork(historySagas),
-		fork(eventsNearMeSagas),
-		fork(myEventsSagas),
-		fork(applicationsSagas),
-		fork(reviewsSagas),
-		fork(userEventsSagas),
-		fork(usersSagas),
-		fork(settingsSagas),
-	]);
+    yield all([
+        fork(authenticationSagas),
+        fork(complaintsSagas),
+        fork(historySagas),
+        fork(eventsNearMeSagas),
+        fork(myEventsSagas),
+        fork(applicationsSagas),
+        fork(reviewsSagas),
+        fork(userEventsSagas),
+        fork(usersSagas),
+        fork(settingsSagas),
+        fork(scrollSagas),
+    ]);
 }
