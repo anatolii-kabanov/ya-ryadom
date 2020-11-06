@@ -113,15 +113,7 @@ function* handleOpenEventById(action: ReturnType<typeof openEventById>) {
     if (user?.guideCompleted) {
         yield put(fetchEventByIdRequest(action.payload));
         yield put(setSelectedEvent(action.payload));
-        yield put(
-            goForward(
-                new VkHistoryModel(
-                    VIEWS.EVENTS_NEAR_ME_VIEW,
-                    PANELS.EVENTS_NEAR_ME_PANEL,
-                    TABS.EVENTS_MAP,
-                ),
-            ),
-        );
+        yield put(setCurrentView(VIEWS.EVENTS_NEAR_ME_VIEW));
         yield put(
             goForward(
                 new VkHistoryModel(
@@ -143,7 +135,7 @@ function* historySagas() {
         fork(watchGoBackRequest),
         fork(watchOpenUserProfile),
         fork(watchOpenEventById),
-        fork(watchSetCurrentView)
+        fork(watchSetCurrentView),
     ]);
 }
 
