@@ -22,6 +22,7 @@ import {
     moveToPrevious,
     setActiveModal,
     moveToNext,
+    setCurrentView,
 } from './actions';
 import { VkHistoryModel } from './models';
 import { PANELS } from '../../utils/enums/panels.enum';
@@ -91,13 +92,19 @@ function* watchGoBackRequest() {
 
 function* handleOpenUserProfile(action: ReturnType<typeof openUserProfile>) {
     yield put(setProfileVkId(action.payload));
-    yield put(
-        goForward(new VkHistoryModel(VIEWS.GENERAL_VIEW, PANELS.PROFILE_PANEL)),
-    );
+    yield put(setCurrentView(VIEWS.GENERAL_VIEW));
 }
 
 function* watchOpenUserProfile() {
     yield takeLatest(HistoryTypes.OPEN_USER_PROFILE, handleOpenUserProfile);
+}
+
+function* handleSetCurrentView(action: ReturnType<typeof setCurrentView>) {
+    window.history.pushState(action.payload, action.payload);
+}
+
+function* watchSetCurrentView() {
+    yield takeLatest(HistoryTypes.SET_CURRENT_VIEW, handleSetCurrentView);
 }
 
 function* handleOpenEventById(action: ReturnType<typeof openEventById>) {
@@ -136,6 +143,7 @@ function* historySagas() {
         fork(watchGoBackRequest),
         fork(watchOpenUserProfile),
         fork(watchOpenEventById),
+        fork(watchSetCurrentView)
     ]);
 }
 

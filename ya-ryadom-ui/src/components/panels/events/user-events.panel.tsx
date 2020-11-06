@@ -4,28 +4,14 @@ import { UserInfo } from '@vkontakte/vk-bridge';
 import { setTabForCurrentViewPanel } from '../../../store/history/actions';
 import { connect } from 'react-redux';
 import MainHeaderPanel from '../headers/main.header';
-import {
-    Button,
-    Group,
-    Header,
-    Panel,
-    RichCell,
-    Tabs,
-    TabsItem,
-    UsersStack,
-} from '@vkontakte/vkui';
+import { Panel, Tabs, TabsItem } from '@vkontakte/vkui';
 import UserEventsTabPage from '../../tab-pages/user-events.tab-page';
 import { AppState } from '../../../store/app-state';
-import { ALL_THEMES } from '../../../utils/constants/theme.constants';
-import { dateOptions } from '../../../utils/constants/event-date-options.constant';
-import EmptyText from '../../general/empty-text';
 import { UserEvent } from '../../../store/events/user-events/models';
 import {
     fetchUserCreatedEventsListRequest,
     fetchUserVisitedEventsListRequest,
 } from '../../../store/events/user-events/actions';
-import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
-import { ApplicationStatusString } from '../../../utils/constants/application-status-string.constant';
 import { applyToEventFromUserEvents } from '../../../store/applications/actions';
 import { TABS } from '../../../utils/enums/tabs.enum';
 import { PANELS } from '../../../utils/enums/panels.enum';
@@ -36,7 +22,6 @@ interface OwnProps {
 }
 
 interface PropsFromState {
-    vkUserInfo: UserInfo | null;
     activeTab?: TABS;
     userCreatedEvents: UserEvent[];
     userVisitedEvents: UserEvent[];
@@ -110,7 +95,7 @@ class UserEventsPanel extends React.Component<AllProps> {
 }
 
 const mapStateToProps = (
-    { events, authentication, users, history }: AppState,
+    { events, users, history }: AppState,
     ownProps: OwnProps,
 ) => {
     const currentViewHistory = history.viewPanelsHistory[history.currentView];
@@ -121,7 +106,6 @@ const mapStateToProps = (
             events.userEvents.userCreatedEvents[users.selectedProfileVkId],
         userVisitedEvents:
             events.userEvents.userVisitedEvents[users.selectedProfileVkId],
-        vkUserInfo: authentication.vkUserInfo,
         id: ownProps.id,
     };
 };

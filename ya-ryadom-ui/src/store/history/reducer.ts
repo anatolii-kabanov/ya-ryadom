@@ -21,7 +21,7 @@ export const initialState: HistoryState = {
         [VIEWS.EVENTS_NEAR_ME_VIEW]: [
             { panel: PANELS.EVENTS_NEAR_ME_PANEL, tab: TABS.EVENTS_MAP },
         ],
-        [VIEWS.GENERAL_VIEW]: [],
+        [VIEWS.GENERAL_VIEW]: [{ panel: PANELS.PROFILE_PANEL }],
         [VIEWS.MY_EVENT_CREATE_VIEW]: [{ panel: PANELS.CREATE_EVENT_PANEL }],
         [VIEWS.MY_PROFILE_VIEW]: [{ panel: PANELS.MY_PROFILE_PANEL }],
         [VIEWS.REVIEWS_VIEW]: [{ panel: PANELS.REVIEWS_PANEL }],
