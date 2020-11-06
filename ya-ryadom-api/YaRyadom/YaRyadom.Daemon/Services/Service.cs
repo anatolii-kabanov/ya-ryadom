@@ -21,7 +21,7 @@ namespace YaRyadom.Daemon.Services
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
 			Logger.LogInformation("Starting service: " + _options.Value.Name);
-			await OnStart(cancellationToken);
+			await OnStart(cancellationToken).ConfigureAwait(false);
 
 		}
 
