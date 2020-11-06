@@ -9,10 +9,14 @@ import { revokeApplicationRequest } from '../../../store/applications/actions';
 import { openUserProfile } from '../../../store/history/actions';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import EmptyText from '../../general/empty-text';
-import { setScroll } from '../../../store/ui/scroll/actions';
+import {
+    scrollToIdPosition,
+    setScroll,
+} from '../../../store/ui/scroll/actions';
+import { TABS } from '../../../utils/enums/tabs.enum';
 
 interface OwnProps {
-    id: string;
+    id: TABS;
 }
 
 interface PropsFromState {
@@ -23,6 +27,7 @@ interface PropsFromDispatch {
     revoke: typeof revokeApplicationRequest;
     openUserProfile: typeof openUserProfile;
     setScroll: typeof setScroll;
+    scrollToIdPosition: typeof scrollToIdPosition;
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
@@ -30,6 +35,11 @@ type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 interface State {}
 
 export class MineApplicationsTab extends React.Component<AllProps, State> {
+    componentDidMount() {
+        const { scrollToIdPosition, id } = this.props;
+        scrollToIdPosition(id);
+    }
+
     componentWillUnmount() {
         const { setScroll, id } = this.props;
         setScroll({ id, position: window.scrollY });
@@ -138,6 +148,7 @@ const mapDispatchToProps: PropsFromDispatch = {
     revoke: revokeApplicationRequest,
     openUserProfile: openUserProfile,
     setScroll: setScroll,
+    scrollToIdPosition: scrollToIdPosition,
 };
 
 export default connect(

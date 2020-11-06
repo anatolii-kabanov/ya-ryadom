@@ -9,10 +9,15 @@ import _ from 'lodash';
 import { TABS } from '../../utils/enums/tabs.enum';
 
 export const initialState: HistoryState = {
-    history: [{ view: VIEWS.INTRO_VIEW, panel: PANELS.HELLO_INTRO_PANEL }],
+    viewsHistory: [VIEWS.INTRO_VIEW],
     viewPanelsHistory: {
         [VIEWS.INTRO_VIEW]: [{ panel: PANELS.HELLO_INTRO_PANEL }],
-        [VIEWS.APPLICATIONS_VIEW]: [{ panel: PANELS.APPLICATIONS_PANEL, tab: TABS.CREATED_APPLICATIONS }],
+        [VIEWS.APPLICATIONS_VIEW]: [
+            {
+                panel: PANELS.APPLICATIONS_PANEL,
+                tab: TABS.CREATED_APPLICATIONS,
+            },
+        ],
         [VIEWS.EVENTS_NEAR_ME_VIEW]: [
             { panel: PANELS.EVENTS_NEAR_ME_PANEL, tab: TABS.EVENTS_MAP },
         ],
@@ -32,28 +37,35 @@ const reducer: Reducer<HistoryState, HistoryActions> = (
     switch (action.type) {
         case HistoryTypes.MOVE_TO_NEXT_PANEL: {
             const newState = _.cloneDeep(state);
-            newState.history.push(action.payload);
-            newState.viewPanelsHistory[action.payload.view].push(
-                action.payload,
-            );
             const { view } = action.payload;
+            if (newState.currentView !== view) {
+                newState.viewsHistory.push(view);
+            }
+            newState.viewPanelsHistory[view].push(action.payload);
             newState.currentView = view;
             return newState;
         }
         case HistoryTypes.MOVE_TO_PREVIOUS_PANEL: {
             const newState = _.cloneDeep(state);
-            const model = newState.history.pop();
-            if (model && newState.viewPanelsHistory[model.view].length > 1) {
-                newState.viewPanelsHistory[model.view].pop();
+
+            if (
+                newState.currentView &&
+                newState.viewPanelsHistory[newState.currentView].length > 1
+            ) {
+                newState.viewPanelsHistory[newState.currentView].pop();
+            } else {
+                newState.viewsHistory.pop();
+                const view =
+                    newState.viewsHistory[newState.viewsHistory.length - 1];
+                newState.currentView = view;
             }
-            const { view } = newState.history[newState.history.length - 1];
-            newState.currentView = view;
+
             return newState;
         }
         case HistoryTypes.RESET_VIEW_PANEL: {
             const newState = _.cloneDeep(state);
-            newState.history = [action.payload];
             const { view } = action.payload;
+            newState.viewsHistory = [view];
             newState.currentView = view;
             return newState;
         }
@@ -64,6 +76,7 @@ const reducer: Reducer<HistoryState, HistoryActions> = (
         }
         case HistoryTypes.SET_CURRENT_VIEW: {
             const newState = _.cloneDeep(state);
+            newState.viewsHistory.push(action.payload);
             newState.currentView = action.payload;
             return newState;
         }
@@ -75,10 +88,14 @@ const reducer: Reducer<HistoryState, HistoryActions> = (
 
 export { reducer as historyReducer };
 
-export const getHistoryLength = (state: AppState) =>
-    state.history.history?.length;
+export const getViewsHistoryLength = (state: AppState) =>
+    state.history.viewsHistory?.length;
 export const getIsFirstPanelForView = (state: AppState, view: VIEWS) =>
     state.history.viewPanelsHistory[view].length === 1;
 export const getPanelsCountForCurrentView = (state: AppState) =>
     state.history.viewPanelsHistory[state.history.currentView].length;
+export const getViewLastPanel = (state: AppState) =>
+    state.history.viewPanelsHistory[state.history.currentView][
+        state.history.viewPanelsHistory[state.history.currentView].length - 1
+    ];
 export const getCurrentModal = (state: AppState) => state.history.currentModal;

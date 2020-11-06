@@ -27,6 +27,7 @@ import { VkHistoryModel } from '../../../store/history/models';
 import Icon24Star from '@vkontakte/icons/dist/24/favorite';
 import { User } from '../../../store/users/models';
 import { fetchUserInfoRequest } from '../../../store/users/actions';
+import { TABS } from '../../../utils/enums/tabs.enum';
 
 interface OwnProps {
 	id: string;
@@ -130,7 +131,8 @@ class UserProfilePanel extends React.Component<AllProps, State> {
 								goForwardView(
 									new VkHistoryModel(
 										VIEWS.GENERAL_VIEW,
-										PANELS.USER_REVIEWS_PANEL,
+                                        PANELS.USER_REVIEWS_PANEL,
+                                        TABS.CREATED_USER_EVENTS
 									),
 								)
 							}
@@ -145,7 +147,8 @@ class UserProfilePanel extends React.Component<AllProps, State> {
 								goForwardView(
 									new VkHistoryModel(
 										VIEWS.GENERAL_VIEW,
-										PANELS.USER_EVENTS_PANEL,
+                                        PANELS.USER_EVENTS_PANEL,
+                                        TABS.CREATED_USER_EVENTS
 									),
 								)
 							}

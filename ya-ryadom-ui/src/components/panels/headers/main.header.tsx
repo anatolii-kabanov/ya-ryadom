@@ -45,7 +45,7 @@ class MainHeaderPanel extends React.Component<AllProps> {
 }
 
 const mapStateToProps = ({ history }: AppState, ownProps: OwnProps) => ({
-	firstPage: history.history && history.history.length === 1,
+	firstPage: history.viewsHistory && history.viewsHistory.length === 1,
 	text: ownProps.text,
 	leftButton: ownProps.leftButton,
 });

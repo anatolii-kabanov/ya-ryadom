@@ -15,10 +15,14 @@ import {
 import { setUserToReview } from '../../../store/reviews/actions';
 import { SelectedUserToReview } from '../../../store/reviews/models';
 import EmptyText from '../../general/empty-text';
-import { setScroll } from '../../../store/ui/scroll/actions';
+import {
+    scrollToIdPosition,
+    setScroll,
+} from '../../../store/ui/scroll/actions';
+import { TABS } from '../../../utils/enums/tabs.enum';
 
 interface OwnProps {
-    id: string;
+    id: TABS;
 }
 
 interface PropsFromState {
@@ -30,6 +34,7 @@ interface PropsFromDispatch {
     setUserToReview: typeof setUserToReview;
     openUserProfile: typeof openUserProfile;
     setScroll: typeof setScroll;
+    scrollToIdPosition: typeof scrollToIdPosition;
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
@@ -41,6 +46,11 @@ export class ApplicationsVisitedTab extends React.Component<AllProps, State> {
         super(props);
         this.state = {};
         this.openReviewModal = this.openReviewModal.bind(this);
+    }
+
+    componentDidMount() {
+        const { scrollToIdPosition, id } = this.props;
+        scrollToIdPosition(id);
     }
 
     componentWillUnmount() {
@@ -148,6 +158,7 @@ const mapDispatchToProps: PropsFromDispatch = {
     setUserToReview: setUserToReview,
     openUserProfile: openUserProfile,
     setScroll: setScroll,
+    scrollToIdPosition: scrollToIdPosition,
 };
 
 export default connect(

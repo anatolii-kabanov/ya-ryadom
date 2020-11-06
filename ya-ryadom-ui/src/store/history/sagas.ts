@@ -11,7 +11,7 @@ import vkBridge from '@vkontakte/vk-bridge';
 import { HistoryTypes } from './types';
 import {
     getCurrentModal,
-    getHistoryLength,
+    getViewsHistoryLength,
     getIsFirstPanelForView,
     getPanelsCountForCurrentView,
 } from './reducer';
@@ -63,7 +63,7 @@ function* watchGoForwardRequest() {
 
 function* handleGoBack() {
     try {
-        const historyLength = yield select(getHistoryLength);
+        const historyLength = yield select(getViewsHistoryLength);
         const currentModal = yield select(getCurrentModal);
         const panelsCountForCurrentView = yield select(
             getPanelsCountForCurrentView,
@@ -71,14 +71,14 @@ function* handleGoBack() {
         if (currentModal) {
             yield put(setActiveModal(null));
         } else {
-            if (historyLength === 1) {
+            if (historyLength === 1 && panelsCountForCurrentView === 1) {
                 yield vkBridge.send('VKWebAppDisableSwipeBack');
                 yield vkBridge.send('VKWebAppClose', { status: 'success' });
             }
-            if (historyLength > 1) {
+            if (historyLength > 1 || panelsCountForCurrentView > 1) {
                 yield put(moveToPrevious());
             }
-            if (panelsCountForCurrentView <= 1) {
+            if (panelsCountForCurrentView == 2) {
                 yield vkBridge.send('VKWebAppDisableSwipeBack');
             }
         }

@@ -26,10 +26,14 @@ import {
 } from '../../../store/applications/actions';
 import EmptyText from '../../general/empty-text';
 import { openUserProfile } from '../../../store/history/actions';
-import { setScroll } from '../../../store/ui/scroll/actions';
+import {
+    scrollToIdPosition,
+    setScroll,
+} from '../../../store/ui/scroll/actions';
+import { TABS } from '../../../utils/enums/tabs.enum';
 
 interface OwnProps {
-    id: string;
+    id: TABS;
     openBase: (eventId: number) => void;
 }
 
@@ -45,6 +49,7 @@ interface PropsFromDispatch {
     reject: typeof rejectApplicantRequest;
     openUserProfile: typeof openUserProfile;
     setScroll: typeof setScroll;
+    scrollToIdPosition: typeof scrollToIdPosition;
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
@@ -65,8 +70,9 @@ export class ApplicationsToMyEventsTab extends React.Component<
     }
 
     componentDidMount() {
-        const { fetchMyEvents } = this.props;
+        const { fetchMyEvents, scrollToIdPosition, id } = this.props;
         fetchMyEvents();
+        scrollToIdPosition(id);
     }
 
     componentWillUnmount() {
@@ -257,6 +263,7 @@ const mapDispatchToProps: PropsFromDispatch = {
     reject: rejectApplicantRequest,
     openUserProfile: openUserProfile,
     setScroll: setScroll,
+    scrollToIdPosition: scrollToIdPosition,
 };
 
 export default connect(
