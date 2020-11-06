@@ -31,11 +31,9 @@ import {
 	saveUserAboutMyselfRequest,
 	saveUserAboutMyselfError,
 	saveUserAboutMyselfSuccess,
-	allowNotifications,
 	allowNotificationsRequest,
 	allowNotificationsError,
 	allowNotificationsSuccess,
-	disableNotifications,
 	disableNotificationsRequest,
 	disableNotificationsError,
 	disableNotificationsSuccess,
@@ -53,8 +51,8 @@ import { callApi } from '../../utils/api';
 import { Geo, CurrentUser, SaveUserInfoRequest, Position } from './models';
 import { goForward, reset, goBack } from '../history/actions';
 import { VkHistoryModel } from '../history/models';
-import { VIEWS } from '../../utils/constants/view.constants';
-import { PANELS } from '../../utils/constants/panel.constants';
+import { VIEWS } from '../../utils/enums/views.enum';
+import { PANELS } from '../../utils/enums/panels.enum';
 import {
 	getVkUserId,
 	getGeoData,
@@ -62,7 +60,7 @@ import {
 	getCurrentUser,
 } from './reducer';
 import { showSpinner, hideSpinner } from '../ui/spinner/actions';
-import { TABS } from '../../utils/constants/tab.constants';
+import { TABS } from '../../utils/enums/tabs.enum';
 import { Action } from 'typesafe-actions';
 import { addNotificaiton } from '../ui/notifications/actions';
 import { SnackbarErrorNotification } from '../ui/notifications/models';

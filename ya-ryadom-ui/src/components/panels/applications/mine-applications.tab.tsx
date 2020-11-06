@@ -9,112 +9,149 @@ import { revokeApplicationRequest } from '../../../store/applications/actions';
 import { openUserProfile } from '../../../store/history/actions';
 import { ApplicationStatus } from '../../../utils/enums/application-status.enum';
 import EmptyText from '../../general/empty-text';
+import {
+    scrollToIdPosition,
+    setScroll,
+} from '../../../store/ui/scroll/actions';
+import { TABS } from '../../../utils/enums/tabs.enum';
+
+interface OwnProps {
+    id: TABS;
+}
 
 interface PropsFromState {
-	applications: Application[];
+    applications: Application[];
 }
 
 interface PropsFromDispatch {
-	revoke: typeof revokeApplicationRequest;
-	openUserProfile: typeof openUserProfile;
+    revoke: typeof revokeApplicationRequest;
+    openUserProfile: typeof openUserProfile;
+    setScroll: typeof setScroll;
+    scrollToIdPosition: typeof scrollToIdPosition;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 interface State {}
 
 export class MineApplicationsTab extends React.Component<AllProps, State> {
-	private renderApplications() {
-		const { applications, revoke, openUserProfile } = this.props;
-		if (applications) {
-			const mineApplications = applications.filter(
-				(a) =>
-					a.status === ApplicationStatus.sent ||
-					a.status === ApplicationStatus.confirmed,
-			);
-			return mineApplications.map((item, index) => {
-				return (
-					<Group
-						className='application-card'
-						separator={index !== mineApplications.length - 1 ? 'show' : 'hide'}
-						key={index}
-						header={
-							<Header mode='secondary'>
-								{ALL_THEMES.find((m) => m.id === item.themeType)?.name}
-							</Header>
-						}
-					>
-						<RichCell
-							disabled
-							multiline
-							before={
-								<Avatar
-									size={48}
-									src={item.vkUserAvatarUrl}
-									onClick={() => openUserProfile(item.vkUserId)}
-								/>
-							}
-							caption={`${new Date(item.eventDate).toLocaleDateString(
-								'ru-RU',
-								dateOptions,
-							)} в ${item.eventTime}`}
-							actions={
-								<span className='application-btns'>
-									<Button
-										className='btn-primary'
-										onClick={() => openUserProfile(item.vkUserId)}
-									>
-										Профиль
-									</Button>
-									<Button
-										className='btn-secondary'
-										onClick={() => revoke(item.id)}
-									>
-										Отменить
-									</Button>
-								</span>
-							}
-						>
-							<div className='head'>
-								{item.userFullName}{' '}
-								<span className='distance'>
-									{(item?.distance / 1000).toFixed(2)}км
-								</span>
-							</div>
-							<Text weight='medium' className='description'>
-								{item.text}
-							</Text>
-						</RichCell>
-					</Group>
-				);
-			});
-		}
-	}
+    componentDidMount() {
+        const { scrollToIdPosition, id } = this.props;
+        scrollToIdPosition(id);
+    }
 
-	render() {
-		const { applications } = this.props;
-		return applications?.filter(
-			(a) =>
-				a.status === ApplicationStatus.sent ||
-				a.status === ApplicationStatus.confirmed,
-		).length > 0 ? (
-			this.renderApplications()
-		) : (
-			<EmptyText />
-		);
-	}
+    componentWillUnmount() {
+        const { setScroll, id } = this.props;
+        setScroll({ id, position: window.scrollY });
+    }
+
+    private renderApplications() {
+        const { applications, revoke, openUserProfile } = this.props;
+        if (applications) {
+            const mineApplications = applications.filter(
+                (a) =>
+                    a.status === ApplicationStatus.sent ||
+                    a.status === ApplicationStatus.confirmed,
+            );
+            return mineApplications.map((item, index) => {
+                return (
+                    <Group
+                        className='application-card'
+                        separator={
+                            index !== mineApplications.length - 1
+                                ? 'show'
+                                : 'hide'
+                        }
+                        key={index}
+                        header={
+                            <Header mode='secondary'>
+                                {
+                                    ALL_THEMES.find(
+                                        (m) => m.id === item.themeType,
+                                    )?.name
+                                }
+                            </Header>
+                        }
+                    >
+                        <RichCell
+                            disabled
+                            multiline
+                            before={
+                                <Avatar
+                                    size={48}
+                                    src={item.vkUserAvatarUrl}
+                                    onClick={() =>
+                                        openUserProfile(item.vkUserId)
+                                    }
+                                />
+                            }
+                            caption={`${new Date(
+                                item.eventDate,
+                            ).toLocaleDateString('ru-RU', dateOptions)} в ${
+                                item.eventTime
+                            }`}
+                            actions={
+                                <span className='application-btns'>
+                                    <Button
+                                        className='btn-primary'
+                                        onClick={() =>
+                                            openUserProfile(item.vkUserId)
+                                        }
+                                    >
+                                        Профиль
+                                    </Button>
+                                    <Button
+                                        className='btn-secondary'
+                                        onClick={() => revoke(item.id)}
+                                    >
+                                        Отменить
+                                    </Button>
+                                </span>
+                            }
+                        >
+                            <div className='head'>
+                                {item.userFullName}{' '}
+                                <span className='distance'>
+                                    {(item?.distance / 1000).toFixed(2)}км
+                                </span>
+                            </div>
+                            <Text weight='medium' className='description'>
+                                {item.text}
+                            </Text>
+                        </RichCell>
+                    </Group>
+                );
+            });
+        }
+    }
+
+    render() {
+        const { applications } = this.props;
+        return applications?.filter(
+            (a) =>
+                a.status === ApplicationStatus.sent ||
+                a.status === ApplicationStatus.confirmed,
+        ).length > 0 ? (
+            this.renderApplications()
+        ) : (
+            <EmptyText />
+        );
+    }
 }
 
-const mapStateToProps = ({ applications }: AppState) => ({
-	applications: applications.mineApplications,
+const mapStateToProps = ({ applications }: AppState, ownProps: OwnProps) => ({
+    applications: applications.mineApplications,
+    id: ownProps.id,
 });
 
 const mapDispatchToProps: PropsFromDispatch = {
-	revoke: revokeApplicationRequest,
-	openUserProfile: openUserProfile,
+    revoke: revokeApplicationRequest,
+    openUserProfile: openUserProfile,
+    setScroll: setScroll,
+    scrollToIdPosition: scrollToIdPosition,
 };
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
+    mapStateToProps,
+    mapDispatchToProps,
 )(MineApplicationsTab);

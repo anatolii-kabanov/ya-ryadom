@@ -5,51 +5,68 @@ import { AppState } from '../../../store/app-state';
 import ThemesForm from '../../forms/themes.form';
 import { saveUserProfileThemes } from '../../../store/authentication/actions';
 import MainHeaderPanel from '../headers/main.header';
+import { PANELS } from '../../../utils/enums/panels.enum';
+import {
+    scrollToIdPosition,
+    setScroll,
+} from '../../../store/ui/scroll/actions';
 
 interface OwnProps {
-	id: string;
+    id: PANELS;
 }
 
 interface PropsFromState {}
 
 interface PropsFromDispatch {
-	save: typeof saveUserProfileThemes;
+    save: typeof saveUserProfileThemes;
+    setScroll: typeof setScroll;
+    scrollToIdPosition: typeof scrollToIdPosition;
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class MyProfileEditThemesPanel extends React.Component<AllProps> {
-	constructor(props) {
-		super(props);
-		this.onIntroCompleted = this.onIntroCompleted.bind(this);
-	}
+    constructor(props: AllProps) {
+        super(props);
+    }
 
-	componentDidMount() {}
+    componentDidMount() {
+        const { scrollToIdPosition, id } = this.props;
+        scrollToIdPosition(id);
+    }
 
-	onIntroCompleted() {}
+    componentWillUnmount() {
+        const { setScroll, id } = this.props;
+        setScroll({ id, position: window.scrollY });
+    }
 
-	render() {
-		const { id, save } = this.props;
-		return (
-			<Panel id={id} className='profile-themes-panel'>
-				<MainHeaderPanel />
-				<Group className='profile-group'>
-					<ThemesForm onSave={save} btnText={'Сохранить'}></ThemesForm>
-				</Group>
-			</Panel>
-		);
-	}
+    render() {
+        const { id, save } = this.props;
+        return (
+            <Panel id={id} className='profile-themes-panel'>
+                <MainHeaderPanel />
+                <Group className='profile-group'>
+                    <ThemesForm
+                        onSave={save}
+                        btnText={'Сохранить'}
+                    ></ThemesForm>
+                </Group>
+            </Panel>
+        );
+    }
 }
 
 const mapStateToProps = ({}: AppState, ownProps: OwnProps) => ({
-	id: ownProps.id,
+    id: ownProps.id,
 });
 
 const mapDispatchToProps: PropsFromDispatch = {
-	save: saveUserProfileThemes,
+    save: saveUserProfileThemes,
+    setScroll: setScroll,
+    scrollToIdPosition: scrollToIdPosition,
 };
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
+    mapStateToProps,
+    mapDispatchToProps,
 )(MyProfileEditThemesPanel);

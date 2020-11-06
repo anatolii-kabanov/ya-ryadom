@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { AppState } from '../../store/app-state';
 import { goForward } from '../../store/history/actions';
 import { VkHistoryModel } from '../../store/history/models';
-import { VIEWS } from '../../utils/constants/view.constants';
-import { PANELS } from '../../utils/constants/panel.constants';
+import { VIEWS } from '../../utils/enums/views.enum';
+import { PANELS } from '../../utils/enums/panels.enum';
 
 interface PropsFromState {
 	id: string;

@@ -1,7 +1,9 @@
-import { VkHistoryModel } from './models';
+import { VIEWS } from '../../utils/enums/views.enum';
+import { ViewPanelsHistory } from './models';
 
 export interface HistoryState {
-	history: VkHistoryModel[];
-	currentViewPanel: VkHistoryModel;
+    viewsHistory: VIEWS[];
+    viewPanelsHistory: ViewPanelsHistory;
+    currentView: VIEWS;
 	currentModal: string | null;
 }
