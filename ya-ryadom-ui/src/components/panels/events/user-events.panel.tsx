@@ -1,7 +1,7 @@
 import './user-events.panel.scss';
 import React from 'react';
 import { UserInfo } from '@vkontakte/vk-bridge';
-import { goForward } from '../../../store/history/actions';
+import { setTabForCurrentViewPanel } from '../../../store/history/actions';
 import { connect } from 'react-redux';
 import MainHeaderPanel from '../headers/main.header';
 import {
@@ -14,6 +14,7 @@ import {
     TabsItem,
     UsersStack,
 } from '@vkontakte/vkui';
+import UserEventsTabPage from '../../tab-pages/user-events.tab-page';
 import { AppState } from '../../../store/app-state';
 import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { dateOptions } from '../../../utils/constants/event-date-options.constant';
@@ -27,9 +28,8 @@ import { ApplicationStatus } from '../../../utils/enums/application-status.enum'
 import { ApplicationStatusString } from '../../../utils/constants/application-status-string.constant';
 import { applyToEventFromUserEvents } from '../../../store/applications/actions';
 import { TABS } from '../../../utils/enums/tabs.enum';
-import { VkHistoryModel } from '../../../store/history/models';
 import { PANELS } from '../../../utils/enums/panels.enum';
-import { VIEWS } from '../../../utils/enums/views.enum';
+import { scrollToIdPosition } from '../../../store/ui/scroll/actions';
 
 interface OwnProps {
     id: PANELS;
@@ -45,8 +45,9 @@ interface PropsFromState {
 interface PropsFromDispatch {
     fetchCreatedEvents: typeof fetchUserCreatedEventsListRequest;
     fetchVisitedEvents: typeof fetchUserVisitedEventsListRequest;
-    goForward: typeof goForward;
+    setTabForCurrentViewPanel: typeof setTabForCurrentViewPanel;
     applyToEvent: typeof applyToEventFromUserEvents;
+    scrollToIdPosition: typeof scrollToIdPosition;
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
@@ -62,127 +63,22 @@ class UserEventsPanel extends React.Component<AllProps> {
         fetchVisitedEvents();
     }
 
-    renderEvents() {
+    render() {
         const {
+            id,
+            activeTab,
+            setTabForCurrentViewPanel,
             userCreatedEvents,
             userVisitedEvents,
-            vkUserInfo,
-            applyToEvent,
-            activeTab
         } = this.props;
-
-        let eventsToRender: UserEvent[];
-        if (activeTab === TABS.CREATED_USER_EVENTS) {
-            eventsToRender = userCreatedEvents;
-        } else {
-            eventsToRender = userVisitedEvents;
-        }
-
-        if (!eventsToRender || eventsToRender.length === 0) {
-            return <EmptyText text='Событий пока нет' />;
-        } else {
-            return eventsToRender.map((event, key) => {
-                const userApplication = event.participants.find(
-                    (m) => m.vkUserId === vkUserInfo?.id,
-                );
-                return (
-                    <Group key={key}>
-                        <Header mode='secondary'>
-                            {
-                                ALL_THEMES.filter(
-                                    (theme) => theme.id === event.themeType,
-                                )[0].name
-                            }
-                        </Header>
-                        <RichCell
-                            disabled
-                            multiline={true}
-                            text={event.description}
-                            bottom={
-                                <>
-                                    <p className='rc-bottom'>
-                                        Адрес
-                                        <span className='rc-bottom-span'>
-                                            {new Date(
-                                                event.date,
-                                            ).toLocaleDateString(
-                                                'ru-RU',
-                                                dateOptions,
-                                            )}{' '}
-                                            в {event.time}
-                                        </span>
-                                    </p>
-                                    <UsersStack
-                                        photos={event.participants.map(
-                                            ({ vkUserAvatarUrl }) =>
-                                                vkUserAvatarUrl,
-                                        )}
-                                    >
-                                        {event.participants.length} желающих
-                                    </UsersStack>
-                                </>
-                            }
-                            actions={
-                                <React.Fragment>
-                                    {event.ended ? (
-                                        <Button
-                                            mode='secondary'
-                                            className='button-disabled'
-                                            disabled={true}
-                                        >
-                                            Завершено
-                                        </Button>
-                                    ) : !userApplication ||
-                                      userApplication?.applicationStatus ===
-                                          ApplicationStatus.none ? (
-                                        <Button
-                                            className='button-primary'
-                                            onClick={() =>
-                                                applyToEvent(event.id)
-                                            }
-                                        >
-                                            Иду
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            className='button-primary btn-status disabled'
-                                            disabled={true}
-                                        >
-                                            {
-                                                ApplicationStatusString[
-                                                    userApplication
-                                                        .applicationStatus
-                                                ]
-                                            }
-                                        </Button>
-                                    )}
-                                </React.Fragment>
-                            }
-                        >
-                            {event.title}
-                        </RichCell>
-                    </Group>
-                );
-            });
-        }
-    }
-
-    render() {
-        const { id, activeTab, goForward } = this.props;
         return (
-            <Panel className='' id={id}>
+            <Panel id={id}>
                 <MainHeaderPanel text='События'></MainHeaderPanel>
                 <Tabs>
                     <TabsItem
                         selected={activeTab === TABS.CREATED_USER_EVENTS}
                         onClick={() =>
-                            goForward(
-                                new VkHistoryModel(
-                                    VIEWS.GENERAL_VIEW,
-                                    id,
-                                    TABS.CREATED_USER_EVENTS,
-                                ),
-                            )
+                            setTabForCurrentViewPanel(TABS.CREATED_USER_EVENTS)
                         }
                     >
                         Создал
@@ -190,20 +86,24 @@ class UserEventsPanel extends React.Component<AllProps> {
                     <TabsItem
                         selected={activeTab === TABS.VISITED_USER_EVENTS}
                         onClick={() =>
-                            goForward(
-                                new VkHistoryModel(
-                                    VIEWS.GENERAL_VIEW,
-                                    id,
-                                    TABS.VISITED_USER_EVENTS,
-                                ),
-                            )
+                            setTabForCurrentViewPanel(TABS.VISITED_USER_EVENTS)
                         }
                     >
                         Сходил
                     </TabsItem>
                 </Tabs>
-
-                {this.renderEvents()}
+                {activeTab === TABS.CREATED_USER_EVENTS && (
+                    <UserEventsTabPage
+                        id={TABS.CREATED_USER_EVENTS}
+                        userEvents={userCreatedEvents}
+                    />
+                )}
+                {activeTab === TABS.VISITED_USER_EVENTS && (
+                    <UserEventsTabPage
+                        id={TABS.VISITED_USER_EVENTS}
+                        userEvents={userVisitedEvents}
+                    />
+                )}
             </Panel>
         );
     }
@@ -229,8 +129,9 @@ const mapStateToProps = (
 const mapDispatchToProps: PropsFromDispatch = {
     fetchCreatedEvents: fetchUserCreatedEventsListRequest,
     fetchVisitedEvents: fetchUserVisitedEventsListRequest,
-    goForward: goForward,
+    setTabForCurrentViewPanel: setTabForCurrentViewPanel,
     applyToEvent: applyToEventFromUserEvents,
+    scrollToIdPosition: scrollToIdPosition,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserEventsPanel);

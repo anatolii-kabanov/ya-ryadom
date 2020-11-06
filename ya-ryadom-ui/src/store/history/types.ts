@@ -6,6 +6,7 @@ export enum HistoryTypes {
     MOVE_TO_PREVIOUS_PANEL = '[History Types] Move to previous view panel (pop)',
 
     SET_CURRENT_VIEW = '[History Types] Set current view',
+    SET_TAB_FOR_CURRENT_VIEW_PANEL = '[History Types] Set tab for view panel',
     
 	RESET_VIEW_PANEL = '[History Types] Reset to view panel',
 	SET_ACTIVE_MODAL = '[History Types] Set active modal',

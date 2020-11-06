@@ -2,6 +2,7 @@ import { action, ActionType } from 'typesafe-actions';
 import { HistoryTypes } from './types';
 import { VkHistoryModel } from './models';
 import { VIEWS } from '../../utils/enums/views.enum';
+import { TABS } from '../../utils/enums/tabs.enum';
 
 export const goForward = (payload: VkHistoryModel) =>
     action(HistoryTypes.GO_FORWARD_PANEL, payload);
@@ -15,6 +16,8 @@ export const moveToPrevious = () => action(HistoryTypes.MOVE_TO_PREVIOUS_PANEL);
 
 export const setCurrentView = (payload: VIEWS) =>
     action(HistoryTypes.SET_CURRENT_VIEW, payload);
+export const setTabForCurrentViewPanel = (payload: TABS) =>
+    action(HistoryTypes.SET_TAB_FOR_CURRENT_VIEW_PANEL, payload);
 
 export const setActiveModal = (payload: string | null) =>
     action(HistoryTypes.SET_ACTIVE_MODAL, payload);
@@ -32,4 +35,5 @@ export type HistoryActions = ActionType<
     | typeof moveToPrevious
     | typeof moveToNext
     | typeof setCurrentView
+    | typeof setTabForCurrentViewPanel
 >;

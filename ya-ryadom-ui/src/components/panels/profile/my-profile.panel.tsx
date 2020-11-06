@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import { UserInfo } from '@vkontakte/vk-bridge';
 import Icon24Star from '@vkontakte/icons/dist/24/favorite';
 import {
-	Group,
-	Panel,
-	Avatar,
-	RichCell,
-	Div,
-	Header,
-	Caption,
-	Button,
-	PanelHeader,
+    Group,
+    Panel,
+    Avatar,
+    RichCell,
+    Div,
+    Header,
+    Caption,
+    Button,
+    PanelHeader,
 } from '@vkontakte/vkui';
 import { AppState } from '../../../store/app-state';
 import { goForward } from '../../../store/history/actions';
@@ -22,95 +22,125 @@ import { ALL_THEMES } from '../../../utils/constants/theme.constants';
 import { VkHistoryModel } from '../../../store/history/models';
 import { VIEWS } from '../../../utils/enums/views.enum';
 import { PANELS } from '../../../utils/enums/panels.enum';
+import { scrollToIdPosition, setScroll } from '../../../store/ui/scroll/actions';
 
 interface OwnProps {
-	id: string;
+    id: PANELS;
 }
 
 interface PropsFromState {
-	vkUserInfo: UserInfo | null;
-	currentUser: CurrentUser | null;
+    vkUserInfo: UserInfo | null;
+    currentUser: CurrentUser | null;
 }
 
 interface PropsFromDispatch {
-	goForwardView: typeof goForward;
+    goForwardView: typeof goForward;
+    setScroll: typeof setScroll;
+    scrollToIdPosition: typeof scrollToIdPosition;
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
 
 class MyProfilePanel extends React.Component<AllProps> {
-	constructor(props: AllProps) {
-		super(props);
-	}
+    constructor(props: AllProps) {
+        super(props);
+    }
 
-	private renderThemes() {
-		const { currentUser } = this.props;
-		if (currentUser?.selectedThemes) {
-			const themes = ALL_THEMES;
-			return themes.map((item, key) => {
-				return (
-					<PillInput
-						key={key}
-						id={item.id}
-						disabled={true}
-						selected={currentUser.selectedThemes.indexOf(item.id) !== -1}
-						text={item.name}
-					></PillInput>
-				);
-			});
-		}
-	}
+    componentDidMount() {
+        const { scrollToIdPosition, id } = this.props;
+        scrollToIdPosition(id);
+    }
 
-	render() {
-		const { id, vkUserInfo, goForwardView, currentUser } = this.props;
-		return (
-			<Panel className='my-profile' id={id}>
-				<PanelHeader separator={false}>Мой профиль</PanelHeader>
-				<Group separator='hide'>
-					<RichCell
-						disabled
-						multiline
-						text={currentUser?.aboutMySelf}
-						before={<Avatar size={72} src={vkUserInfo?.photo_200} />}
-					>
-						<span className='profile-main-row'>
-							{vkUserInfo?.first_name} {vkUserInfo?.last_name}
-							<Icon24Star className='star' width={18} height={18}></Icon24Star>
-							<Caption className='rating' weight='regular' level='1'>
-								{currentUser?.avgRating.toFixed(1)}
-							</Caption>
-						</span>
-					</RichCell>
-					<Button
-						className='btn-secondary text-center'
-						onClick={() =>
-							goForwardView(
-								new VkHistoryModel(
-									VIEWS.MY_PROFILE_VIEW,
-									PANELS.MY_PROFILE_EDIT_PANEL,
-								),
-							)
-						}
-					>
-						Редактировать
-					</Button>
-				</Group>
-				<Group header={<Header mode='secondary'>Темы</Header>} separator='hide'>
-					<Div className='pills'>{this.renderThemes()}</Div>
-				</Group>
-			</Panel>
-		);
-	}
+    componentWillUnmount() {
+        const { setScroll, id } = this.props;
+        setScroll({ id, position: window.scrollY });
+    }
+
+    private renderThemes() {
+        const { currentUser } = this.props;
+        if (currentUser?.selectedThemes) {
+            const themes = ALL_THEMES;
+            return themes.map((item, key) => {
+                return (
+                    <PillInput
+                        key={key}
+                        id={item.id}
+                        disabled={true}
+                        selected={
+                            currentUser.selectedThemes.indexOf(item.id) !== -1
+                        }
+                        text={item.name}
+                    ></PillInput>
+                );
+            });
+        }
+    }
+
+    render() {
+        const { id, vkUserInfo, goForwardView, currentUser } = this.props;
+        return (
+            <Panel className='my-profile' id={id}>
+                <PanelHeader separator={false}>Мой профиль</PanelHeader>
+                <Group separator='hide'>
+                    <RichCell
+                        disabled
+                        multiline
+                        text={currentUser?.aboutMySelf}
+                        before={
+                            <Avatar size={72} src={vkUserInfo?.photo_200} />
+                        }
+                    >
+                        <span className='profile-main-row'>
+                            {vkUserInfo?.first_name} {vkUserInfo?.last_name}
+                            <Icon24Star
+                                className='star'
+                                width={18}
+                                height={18}
+                            ></Icon24Star>
+                            <Caption
+                                className='rating'
+                                weight='regular'
+                                level='1'
+                            >
+                                {currentUser?.avgRating.toFixed(1)}
+                            </Caption>
+                        </span>
+                    </RichCell>
+                    <Button
+                        className='btn-secondary text-center'
+                        onClick={() =>
+                            goForwardView(
+                                new VkHistoryModel(
+                                    VIEWS.MY_PROFILE_VIEW,
+                                    PANELS.MY_PROFILE_EDIT_PANEL,
+                                ),
+                            )
+                        }
+                    >
+                        Редактировать
+                    </Button>
+                </Group>
+                <Group
+                    header={<Header mode='secondary'>Темы</Header>}
+                    separator='hide'
+                >
+                    <Div className='pills'>{this.renderThemes()}</Div>
+                </Group>
+            </Panel>
+        );
+    }
 }
 
 const mapStateToProps = ({ authentication }: AppState, ownProps: OwnProps) => ({
-	vkUserInfo: authentication.vkUserInfo,
-	currentUser: authentication.currentUser,
-	id: ownProps.id,
+    vkUserInfo: authentication.vkUserInfo,
+    currentUser: authentication.currentUser,
+    id: ownProps.id,
 });
 
 const mapDispatchToProps: PropsFromDispatch = {
-	goForwardView: goForward,
+    goForwardView: goForward,
+    setScroll: setScroll,
+    scrollToIdPosition: scrollToIdPosition,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyProfilePanel);

@@ -21,8 +21,7 @@ import ApplicationsVisitedTab from './applications-visited.tab';
 import ApplicationsToMyEventsTab from './applications-to-my-events.tab';
 import { PANELS } from '../../../utils/enums/panels.enum';
 import { VIEWS } from '../../../utils/enums/views.enum';
-import { VkHistoryModel } from '../../../store/history/models';
-import { goForward } from '../../../store/history/actions';
+import { setTabForCurrentViewPanel } from '../../../store/history/actions';
 
 interface OwnProps {
     id: PANELS;
@@ -37,7 +36,7 @@ interface PropsFromState {
 interface PropsFromDispatch {
     fetchMyApplications: typeof fetchMineApplicationsRequest;
     revokeApplication: typeof revokeApplicationRequest;
-    goForward: typeof goForward;
+    setTabForCurrentViewPanel: typeof setTabForCurrentViewPanel;
 }
 
 type AllProps = OwnProps & PropsFromState & PropsFromDispatch;
@@ -61,14 +60,8 @@ class ApplicationsPanel extends React.Component<AllProps, State> {
     }
 
     onTabChanged(selectedTab: TABS) {
-        const { goForward } = this.props;
-        goForward(
-            new VkHistoryModel(
-                VIEWS.APPLICATIONS_VIEW,
-                PANELS.APPLICATIONS_PANEL,
-                selectedTab,
-            ),
-        );
+        const { setTabForCurrentViewPanel } = this.props;
+        setTabForCurrentViewPanel(selectedTab);
     }
 
     private renderApplications() {
@@ -158,7 +151,7 @@ const mapStateToProps = (
 const mapDispatchToProps: PropsFromDispatch = {
     fetchMyApplications: fetchMineApplicationsRequest,
     revokeApplication: revokeApplicationRequest,
-    goForward: goForward,
+    setTabForCurrentViewPanel: setTabForCurrentViewPanel,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationsPanel);

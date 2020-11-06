@@ -1,12 +1,9 @@
 import './events.tabs.scss';
 import React from 'react';
 import { Tabs, TabsItem, HorizontalScroll } from '@vkontakte/vkui';
-import { PANELS } from '../../utils/enums/panels.enum';
 import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
-import { VkHistoryModel } from '../../store/history/models';
-import { goForward } from '../../store/history/actions';
-import { VIEWS } from '../../utils/enums/views.enum';
+import { setTabForCurrentViewPanel } from '../../store/history/actions';
 import { TABS } from '../../utils/enums/tabs.enum';
 
 interface PropsFromState {
@@ -14,14 +11,14 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
-    goForwardView: typeof goForward;
+    setTabForCurrentViewPanel: typeof setTabForCurrentViewPanel;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch;
 
 class EventsTabs extends React.Component<AllProps> {
     render() {
-        const { activeTab, goForwardView } = this.props;
+        const { activeTab, setTabForCurrentViewPanel } = this.props;
         return (
             <Tabs>
                 <HorizontalScroll>
@@ -30,13 +27,7 @@ class EventsTabs extends React.Component<AllProps> {
                             activeTab === TABS.EVENTS_MAP ? 'tab-selected' : ''
                         }
                         onClick={() =>
-                            goForwardView(
-                                new VkHistoryModel(
-                                    VIEWS.EVENTS_NEAR_ME_VIEW,
-                                    PANELS.EVENTS_NEAR_ME_PANEL,
-                                    TABS.EVENTS_MAP,
-                                ),
-                            )
+                            setTabForCurrentViewPanel(TABS.EVENTS_MAP)
                         }
                         selected={activeTab === TABS.EVENTS_MAP}
                     >
@@ -47,13 +38,7 @@ class EventsTabs extends React.Component<AllProps> {
                             activeTab === TABS.EVENTS_LIST ? 'tab-selected' : ''
                         }
                         onClick={() =>
-                            goForwardView(
-                                new VkHistoryModel(
-                                    VIEWS.EVENTS_NEAR_ME_VIEW,
-                                    PANELS.EVENTS_NEAR_ME_PANEL,
-                                    TABS.EVENTS_LIST,
-                                ),
-                            )
+                            setTabForCurrentViewPanel(TABS.EVENTS_LIST)
                         }
                         selected={activeTab === TABS.EVENTS_LIST}
                     >
@@ -74,7 +59,7 @@ const mapStateToProps = ({ history }: AppState) => {
 };
 
 const mapDispatchToProps: PropsFromDispatch = {
-    goForwardView: goForward,
+    setTabForCurrentViewPanel: setTabForCurrentViewPanel,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsTabs);

@@ -80,6 +80,13 @@ const reducer: Reducer<HistoryState, HistoryActions> = (
             newState.currentView = action.payload;
             return newState;
         }
+        case HistoryTypes.SET_TAB_FOR_CURRENT_VIEW_PANEL: {
+            const newState = _.cloneDeep(state);
+            newState.viewPanelsHistory[newState.currentView][
+                newState.viewPanelsHistory[newState.currentView].length - 1
+            ].tab = action.payload;
+            return newState;
+        }
         default: {
             return state;
         }
