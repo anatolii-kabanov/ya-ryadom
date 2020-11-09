@@ -24,7 +24,7 @@ class EventsTabs extends React.Component<AllProps> {
                 <HorizontalScroll>
                     <TabsItem
                         className={
-                            activeTab === TABS.EVENTS_MAP ? 'tab-selected' : ''
+                            activeTab === TABS.EVENTS_MAP ? 'tab-selected' : 'tab'
                         }
                         onClick={() =>
                             setTabForCurrentViewPanel(TABS.EVENTS_MAP)
@@ -35,7 +35,7 @@ class EventsTabs extends React.Component<AllProps> {
                     </TabsItem>
                     <TabsItem
                         className={
-                            activeTab === TABS.EVENTS_LIST ? 'tab-selected' : ''
+                            activeTab === TABS.EVENTS_LIST ? 'tab-selected' : 'tab'
                         }
                         onClick={() =>
                             setTabForCurrentViewPanel(TABS.EVENTS_LIST)

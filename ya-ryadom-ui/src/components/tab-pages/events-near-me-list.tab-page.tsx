@@ -6,7 +6,7 @@ import { fetchListRequest } from '../../store/events/events-near-me/actions';
 import { EventNearMe } from '../../store/events/events-near-me/models';
 import { applyToEventFromEvents } from '../../store/applications/actions';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
-import { ALL_THEMES } from '../../utils/constants/theme.constants';
+import { ThemesNames } from '../../utils/constants/theme.constants';
 import { dateOptions } from '../../utils/constants/event-date-options.constant';
 import { openUserProfile } from './../../store/history/actions';
 import EmptyText from '../general/empty-text';
@@ -65,11 +65,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State> {
                                     />
                                 }
                             >
-                                {
-                                    ALL_THEMES.find(
-                                        (m) => m.id === item.themeType,
-                                    )?.name
-                                }
+                                {ThemesNames[item.themeType]}
                             </Header>
                         }
                     >
@@ -78,6 +74,7 @@ class EventsNearMeListTabPage extends React.Component<AllProps, State> {
                             multiline
                             before={
                                 <Avatar
+                                    className={'avatar'}
                                     onClick={() =>
                                         openUserProfile(item.vkUserOwnerId)
                                     }

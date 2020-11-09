@@ -4,7 +4,7 @@ import { AppState } from '../../store/app-state';
 import { connect } from 'react-redux';
 import { applyToEventFromUserEvents } from '../../store/applications/actions';
 import { ApplicationStatus } from '../../utils/enums/application-status.enum';
-import { ALL_THEMES } from '../../utils/constants/theme.constants';
+import { ThemesNames } from '../../utils/constants/theme.constants';
 import { dateOptions } from '../../utils/constants/event-date-options.constant';
 import EmptyText from '../general/empty-text';
 import { ApplicationStatusString } from '../../utils/constants/application-status-string.constant';
@@ -55,11 +55,7 @@ class UserEventsTabPage extends React.Component<AllProps, State> {
                 return (
                     <Group key={key}>
                         <Header mode='secondary'>
-                            {
-                                ALL_THEMES.filter(
-                                    (theme) => theme.id === event.themeType,
-                                )[0].name
-                            }
+                            {ThemesNames[event.themeType]}
                         </Header>
                         <RichCell
                             disabled
