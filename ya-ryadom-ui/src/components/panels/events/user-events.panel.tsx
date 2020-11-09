@@ -61,6 +61,11 @@ class UserEventsPanel extends React.Component<AllProps> {
                 <MainHeaderPanel text='События'></MainHeaderPanel>
                 <Tabs>
                     <TabsItem
+                        className={
+                            activeTab === TABS.CREATED_USER_EVENTS
+                                ? 'tab-selected'
+                                : 'tab'
+                        }
                         selected={activeTab === TABS.CREATED_USER_EVENTS}
                         onClick={() =>
                             setTabForCurrentViewPanel(TABS.CREATED_USER_EVENTS)
@@ -69,6 +74,11 @@ class UserEventsPanel extends React.Component<AllProps> {
                         Создал
                     </TabsItem>
                     <TabsItem
+                        className={
+                            activeTab === TABS.VISITED_USER_EVENTS
+                                ? 'tab-selected'
+                                : 'tab'
+                        }
                         selected={activeTab === TABS.VISITED_USER_EVENTS}
                         onClick={() =>
                             setTabForCurrentViewPanel(TABS.VISITED_USER_EVENTS)

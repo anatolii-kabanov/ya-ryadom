@@ -78,6 +78,7 @@ export class MineApplicationsTab extends React.Component<AllProps, State> {
                             multiline
                             before={
                                 <Avatar
+                                    className={'avatar'}
                                     size={48}
                                     src={item.vkUserAvatarUrl}
                                     onClick={() =>

@@ -94,6 +94,11 @@ class ApplicationsPanel extends React.Component<AllProps, State> {
                     <Tabs>
                         <HorizontalScroll>
                             <TabsItem
+                                className={
+                                    activeTab === TABS.CREATED_APPLICATIONS
+                                        ? 'tab-selected'
+                                        : 'tab'
+                                }
                                 onClick={() =>
                                     this.onTabChanged(TABS.CREATED_APPLICATIONS)
                                 }
@@ -104,6 +109,11 @@ class ApplicationsPanel extends React.Component<AllProps, State> {
                                 Создал
                             </TabsItem>
                             <TabsItem
+                                className={
+                                    activeTab === TABS.WANT_VISIT_APPLICATIONS
+                                        ? 'tab-selected'
+                                        : 'tab'
+                                }
                                 onClick={() =>
                                     this.onTabChanged(
                                         TABS.WANT_VISIT_APPLICATIONS,
@@ -116,6 +126,11 @@ class ApplicationsPanel extends React.Component<AllProps, State> {
                                 Хочу
                             </TabsItem>
                             <TabsItem
+                                className={
+                                    activeTab === TABS.VISITED_APPLICATIONS
+                                        ? 'tab-selected'
+                                        : 'tab'
+                                }
                                 onClick={() =>
                                     this.onTabChanged(TABS.VISITED_APPLICATIONS)
                                 }

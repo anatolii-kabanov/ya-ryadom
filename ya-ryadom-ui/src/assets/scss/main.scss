@@ -1,139 +1,141 @@
 @import '/variables';
 
 .error {
-	color: $error-color;
+    color: $error-color;
 }
 
 .btn-primary {
-	background-color: $background-color !important;
-	margin-left: 24px !important;
-	margin-right: 24px !important;
-	width: calc(100% - 2 * 24px) !important;
+    cursor: pointer !important;
+    background-color: $background-color !important;
+    margin-left: 24px !important;
+    margin-right: 24px !important;
+    width: calc(100% - 2 * 24px) !important;
 }
 
 .btn-info {
-	background-color: $info-color !important;
-	color: black !important;
-	margin-left: 24px !important;
-	margin-right: 24px !important;
-	width: calc(100% - 2 * 24px) !important;
+    background-color: $info-color !important;
+    color: black !important;
+    margin-left: 24px !important;
+    margin-right: 24px !important;
+    width: calc(100% - 2 * 24px) !important;
 }
 
 .btn-secondary {
-	background-color: #f2f3f5 !important;
-	color: $primary-color !important;
-	margin-left: 24px !important;
-	margin-right: 24px !important;
-	width: calc(100% - 2 * 24px) !important;
+    cursor: pointer !important;
+    background-color: #f2f3f5 !important;
+    color: $primary-color !important;
+    margin-left: 24px !important;
+    margin-right: 24px !important;
+    width: calc(100% - 2 * 24px) !important;
 }
 
 .btn-status {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 .nav-icon {
-	color: $secondary-color;
+    color: $secondary-color;
 }
 
 .nav-icon-selected {
-	color: $primary-color;
+    color: $primary-color;
 }
 
 .text-center {
-	text-align: center;
+    text-align: center;
 }
 
 .text-primary {
-	color: $primary-color !important;
+    color: $primary-color !important;
 }
 
 .btn-container-bottom {
-	bottom: 0;
-	position: fixed;
-	width: 100%;
-	padding-left: 0px;
-	margin-bottom: 24px;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+    padding-left: 0px;
+    margin-bottom: 24px;
 }
 
 .Slider__dragger::before {
-	background: $primary-color !important;
+    background: $primary-color !important;
 }
 
 .pills {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .distance {
-	font-style: normal;
-	font-weight: normal;
-	font-size: 13px;
-	line-height: 16px;
-	letter-spacing: -0.078px;
-	margin-left: 10px;
-	color: #818c99;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+    letter-spacing: -0.078px;
+    margin-left: 10px;
+    color: #818c99;
 }
 
 .switcher {
-	.Switch__self:checked + .Switch__pseudo {
-		border-color: $primary-color !important;
-		background: $primary-color !important;
-	}
+    .Switch__self:checked + .Switch__pseudo {
+        border-color: $primary-color !important;
+        background: $primary-color !important;
+    }
 
-	.Switch__self:checked + .Switch__pseudo::before {
-		border-color: white !important;
-		background: white !important;
-	}
+    .Switch__self:checked + .Switch__pseudo::before {
+        border-color: white !important;
+        background: white !important;
+    }
+}
+
+.avatar {
+    cursor: pointer;
+    .disabled {
+        cursor: default;
+    }
 }
 
 /* Google maps*/
 
 .map {
-	height: 50vh;
-	width: 100%;
+    height: 50vh;
+    width: 100%;
 }
 
 .pac-icon {
-	display: none;
+    display: none;
 }
 
 .pac-item {
-	border-top: none;
-	padding: 11px 12px;
+    border-top: none;
+    padding: 11px 12px;
 }
 
 .pac-container:after {
-	content: none;
+    content: none;
 }
 
 /* Google maps*/
 
-.tab-selected::after {
-	background: $primary-color !important;
-}
-
-/* Tabs */
-.Tabs__in,
-.Tabs .HorizontalScroll__in {
-	justify-content: space-between;
-}
-
-.Tabs--default .TabsItem--selected::after {
-	background: $primary-color !important;
+.tab {
+    cursor: pointer;
+    &-selected::after {
+        background: $primary-color !important;
+    }
 }
 
 .Textarea textarea:focus,
 .Textarea textarea:active {
-	border-radius: 1px solid $primary-color !important;
+    border-radius: 1px solid $primary-color !important;
 }
 
 .flex-between {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 .flex-center {
-	display: flex;
-	justify-content: center;
+    display: flex;
+    justify-content: center;
 }
